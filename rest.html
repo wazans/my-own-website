@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REST Assured</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">QA Training Hub</a>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="selenium.html">Selenium</a>
+        <a href="hybrid.html">Hybrid</a>
+        <a href="playwright.html">Playwright</a>
+        <a href="api.html">API</a>
+        <a class="active" href="rest.html">REST Assured</a>
+        <a href="cucumber.html">Cucumber</a>
+        <a href="jenkins.html">Jenkins</a>
+        <a href="master.html">Master Doc</a>
+        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-header">
+    <h1>REST Assured Basics</h1>
+    <p>Automate API validation with local Rest Assured examples. Learn request setup, GET operations, JSON extraction, and response assertions.</p>
+  </main>
+
+  <main class="container page-grid">
+    <aside class="page-sidebar">
+      <h3>On this page</h3>
+      <a class="sidebar-link" href="#setup">Setup</a>
+      <a class="sidebar-link" href="#base-uri">Base URI</a>
+      <a class="sidebar-link" href="#get-requests">GET requests</a>
+      <a class="sidebar-link" href="#validate-response">Validate response</a>
+      <a class="sidebar-link" href="#local-docs">Local notes</a>
+    </aside>
+
+    <article class="page-content">
+      <section class="section" id="setup">
+        <h2>Rest Assured setup</h2>
+        <p>Create a Maven project and add Rest Assured in <code>pom.xml</code>. This gives you the core API testing library for Java.</p>
+        <div class="code-block">
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;io.rest-assured&lt;/groupId&gt;
+  &lt;artifactId&gt;rest-assured&lt;/artifactId&gt;
+  &lt;version&gt;5.3.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+        </div>
+      </section>
+
+      <section class="section" id="base-uri">
+        <h2>Base URI</h2>
+        <p>Set the base URI once for all requests. Using a local API makes tests faster and isolated from external services.</p>
+        <div class="code-block">
+<pre>RestAssured.baseURI = "http://localhost:3000";</pre>
+        </div>
+      </section>
+
+      <section class="section" id="get-requests">
+        <h2>GET requests</h2>
+        <p>Use <code>given().when().get()</code> to request resources. Verify the HTTP status code and response payload.</p>
+        <div class="code-block">
+<pre>given()
+  .when()
+    .get("/booking")
+  .then()
+    .statusCode(200);
+
+given()
+  .when()
+    .get("/booking/1")
+  .then()
+    .statusCode(200);
+</pre>
+      </div>
+      </section>
+
+      <section class="section" id="validate-response">
+        <h2>Validate response</h2>
+        <p>Extract JSON values and assert the response body using Hamcrest matchers.</p>
+        <div class="code-block">
+<pre>Response response = given()
+  .header("Content-Type", "application/json")
+.when()
+  .get("/booking/1")
+.then()
+  .statusCode(200)
+  .extract().response();
+
+String firstName = response.jsonPath().getString("firstname");
+response.then().body("id", equalTo(1));</pre>
+        </div>
+        <p>Schema validation can be added later with <code>JsonSchemaValidator.matchesJsonSchemaInClasspath</code>, but start with basic request and response checks first.</p>
+      </section>
+
+      <section class="section" id="local-docs">
+        <h2>Local REST notes</h2>
+        <p>This page uses your local REST training notes for the example flow and API concepts.</p>
+        <a class="link-btn" href="REST.txt" target="_blank">Open local REST notes</a>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>QA Training Hub · REST Assured page.</p>
+    </div>
+  </footer>
+</body>
+</html>

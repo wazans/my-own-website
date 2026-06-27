@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playwright with TypeScript</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="playwright-page" data-progress-key="qa-hub-playwright-progress-v1">
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">QA Training Hub</a>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="selenium.html">Selenium</a>
+        <a href="hybrid.html">Hybrid</a>
+        <a class="active" href="playwright.html">Playwright</a>
+        <a href="api.html">API</a>
+        <a href="rest.html">REST Assured</a>
+        <a href="cucumber.html">Cucumber</a>
+        <a href="jenkins.html">Jenkins</a>
+        <a href="master.html">Master Doc</a>
+        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-header">
+    <h1>Playwright with TypeScript</h1>
+    <p>A two-part track: first build a solid JavaScript / TypeScript base, then learn Playwright end-to-end — from environment setup to data-driven tests in CI. Tick the box on each section to track how much you've covered.</p>
+  </main>
+
+  <main class="container page-grid">
+    <aside class="page-sidebar">
+      <h3>On this page</h3>
+      <div class="progress-badge" id="progress-badge" data-testid="progress-badge">
+        <span id="progress-text">0 / 0 · 0%</span>
+        <span class="bar"><i id="progress-fill"></i></span>
+      </div>
+
+      <a class="sidebar-link" href="#part-a"><strong>Part A — JS / TS Basics</strong></a>
+      <a class="sidebar-link" href="#js-hello">Hello world</a>
+      <a class="sidebar-link" href="#js-variables">Variables</a>
+      <a class="sidebar-link" href="#js-constants">Constants</a>
+      <a class="sidebar-link" href="#js-datatypes">Data types</a>
+      <a class="sidebar-link" href="#js-concat">Concatenation</a>
+      <a class="sidebar-link" href="#js-interp">Interpolation</a>
+      <a class="sidebar-link" href="#js-objects">Objects</a>
+      <a class="sidebar-link" href="#js-arrays">Arrays</a>
+      <a class="sidebar-link" href="#js-obj-arr">Objects with arrays</a>
+      <a class="sidebar-link" href="#js-relational">Relational operators</a>
+      <a class="sidebar-link" href="#js-equality">Equality operators</a>
+      <a class="sidebar-link" href="#js-logical">Logical operators</a>
+      <a class="sidebar-link" href="#js-if">Conditional statements</a>
+      <a class="sidebar-link" href="#js-for">for loop</a>
+      <a class="sidebar-link" href="#js-forof">for...of</a>
+      <a class="sidebar-link" href="#js-foreach">forEach</a>
+      <a class="sidebar-link" href="#js-break">Loop break</a>
+      <a class="sidebar-link" href="#js-fn">Functions</a>
+      <a class="sidebar-link" href="#js-fn-arg">Function with argument</a>
+      <a class="sidebar-link" href="#js-fn-return">Return function</a>
+      <a class="sidebar-link" href="#js-arrow">Arrow function</a>
+      <a class="sidebar-link" href="#js-import">Import / Export</a>
+      <a class="sidebar-link" href="#js-ts-extras">TypeScript extras</a>
+
+      <a class="sidebar-link" href="#part-b" style="margin-top:0.6rem;"><strong>Part B — Playwright</strong></a>
+      <a class="sidebar-link" href="#pw-nodejs">Setup · Node.js</a>
+      <a class="sidebar-link" href="#pw-vscode">Setup · VS Code</a>
+      <a class="sidebar-link" href="#pw-git">Setup · Git</a>
+      <a class="sidebar-link" href="#pw-clone">Clone test app</a>
+      <a class="sidebar-link" href="#pw-runapp">Run test app</a>
+      <a class="sidebar-link" href="#pw-init">Init Playwright project</a>
+      <a class="sidebar-link" href="#pw-config">playwright.config.ts</a>
+      <a class="sidebar-link" href="#pw-first">First test</a>
+      <a class="sidebar-link" href="#pw-locators">Built-in locators</a>
+      <a class="sidebar-link" href="#pw-xpath">XPath &amp; axes</a>
+      <a class="sidebar-link" href="#pw-css">CSS locators</a>
+      <a class="sidebar-link" href="#pw-actions">Actions</a>
+      <a class="sidebar-link" href="#pw-dropdowns">Dropdowns</a>
+      <a class="sidebar-link" href="#pw-upload">File upload</a>
+      <a class="sidebar-link" href="#pw-extract">Extract text &amp; tables</a>
+      <a class="sidebar-link" href="#pw-pagination">Pagination</a>
+      <a class="sidebar-link" href="#pw-datepicker">Date pickers</a>
+      <a class="sidebar-link" href="#pw-dialogs">Dialogs &amp; frames</a>
+      <a class="sidebar-link" href="#pw-context">Context, tabs &amp; popups</a>
+      <a class="sidebar-link" href="#pw-waits">Auto-waiting &amp; assertions</a>
+      <a class="sidebar-link" href="#pw-codegen">Codegen</a>
+      <a class="sidebar-link" href="#pw-trace">Trace, screenshots, flaky</a>
+      <a class="sidebar-link" href="#pw-hooks">Hooks &amp; parallelism</a>
+      <a class="sidebar-link" href="#pw-ddt">Data-driven testing</a>
+      <a class="sidebar-link" href="#pw-cheatsheet">Cheat sheet</a>
+    </aside>
+
+    <article class="page-content">
+      <!-- =================== PART A =================== -->
+      <section class="section" id="part-a">
+        <span class="part-banner">Part A</span>
+        <h2>JavaScript &amp; TypeScript Basics</h2>
+        <p>Playwright tests are just TypeScript code. Before you write a single <code>test(...)</code> block, you should be comfortable with variables, data types, control flow, functions, and modules. Tick each section as you cover it — your progress is saved locally in your browser.</p>
+      </section>
+
+      <section class="section progress-item" id="js-hello">
+        <h2>Hello world</h2>
+        <p>Open VS Code at an empty folder (e.g. <code>D:\JS Fundamentals</code>) and initialize a Node project:</p>
+        <div class="code-block">
+<pre>D:\JS Fundamentals&gt; npm init
+# keep pressing enter, say yes at the end -- package.json is created
+
+# create a folder for lessons, then a file
+# lessons/lesson_1.js
+console.log("Hello world !");
+
+# run it
+PS D:\JS Fundamentals\Lessons&gt; node lesson_1.js
+# output: Hello world !</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-variables">
+        <h2>Variables</h2>
+        <p>A variable holds one value (or an object — see later). <code>var</code> is the old-style declaration, <code>let</code> is the modern, block-scoped form. Prefer <code>let</code>.</p>
+        <div class="code-block">
+<pre>var firstName = "John";
+let lastName = "Smith";
+console.log(firstName);
+
+// declare now, assign later
+var age, dateOfBirth, sex;
+age = 5;
+sex = "Male";
+console.log(age);  // 5
+age = 6;
+console.log(age);  // 6</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-constants">
+        <h2>Constants</h2>
+        <p>Use <code>const</code> when the binding should not be reassigned. Reassigning throws <code>TypeError: Assignment to constant variable</code>.</p>
+        <div class="code-block">
+<pre>const occupation = "engineer";
+occupation = "driver";  // TypeError: Assignment to constant variable.
+console.log(occupation);</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-datatypes">
+        <h2>Data types</h2>
+        <p>JavaScript has dynamic types. TypeScript adds static typing on top.</p>
+        <div class="code-block">
+<pre>var middleName    = "David";     // string
+var yearInService = 5;            // number
+var isHeMarried   = false;        // boolean
+var yearInMarriage = null;        // null (intentionally empty)
+var numOfCars     = undefined;    // undefined (not assigned)</pre>
+        </div>
+        <p>TypeScript equivalent:</p>
+        <div class="code-block">
+<pre>let middleName: string = "David";
+let yearInService: number = 5;
+let isHeMarried: boolean = false;
+let yearInMarriage: null = null;
+let numOfCars: undefined = undefined;</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-concat">
+        <h2>Concatenation</h2>
+        <p>Glue strings together with <code>+</code>. Readable for two or three pieces; gets noisy beyond that — use interpolation below for anything bigger.</p>
+        <div class="code-block">
+<pre>var item_name = "coffee";
+var item_price = 50;
+console.log("the price of your " + item_name + " is " + item_price + " dollars");
+// the price of your coffee is 50 dollars</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-interp">
+        <h2>Interpolation (template literals)</h2>
+        <p>Use backticks (<code>`</code>) — the key under <code>Esc</code>, left of <code>1</code>. Embed expressions with <code>${ ... }</code>.</p>
+        <div class="code-block">
+<pre>var item_name = "tea";
+var item_price = 5;
+var msg = `my ${item_name} price is ${item_price} dollars`;
+console.log(msg);
+// my tea price is 5 dollars</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-objects">
+        <h2>Objects</h2>
+        <p>An object holds multiple named values. Read / write fields with dot or bracket notation.</p>
+        <div class="code-block">
+<pre>var customer = { firstName: "John", lastName: "Smith" };
+
+// dot notation
+console.log(customer.firstName);  // John
+customer.firstName = "Mike";
+
+// bracket notation
+console.log(`${customer["firstName"]} ${customer["lastName"]}`);
+customer["lastName"] = "Brown";</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-arrays">
+        <h2>Arrays</h2>
+        <p>Ordered, zero-indexed list.</p>
+        <div class="code-block">
+<pre>var cars = ["Volvo", "Toyota", "Tesla"];
+console.log(cars[1]);  // Toyota
+console.log(cars.length);  // 3</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-obj-arr">
+        <h2>Objects with arrays</h2>
+        <p>Objects can hold arrays as values — the most common shape for real data.</p>
+        <div class="code-block">
+<pre>var customer = {
+    firstName: "John",
+    lastName: "Smith",
+    cars: ["Volvo", "Toyota", "Tesla"]
+};
+console.log(customer.cars[1]);  // Toyota</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-relational">
+        <h2>Relational operators</h2>
+        <p>Compare two values. Result is always <code>true</code> or <code>false</code>.</p>
+        <div class="code-block">
+<pre>console.log(10 &lt; 75);   // true
+console.log(10 &gt; 75);   // false
+console.log(10 &lt;= 10);  // true
+console.log(10 &gt;= 20);  // false</pre>
+        </div>
+        <ul>
+          <li><code>&lt;</code> — less than</li>
+          <li><code>&gt;</code> — greater than</li>
+          <li><code>&lt;=</code> — less than or equal</li>
+          <li><code>&gt;=</code> — greater than or equal</li>
+        </ul>
+      </section>
+
+      <section class="section progress-item" id="js-equality">
+        <h2>Equality operators</h2>
+        <p><strong>Loose</strong> (<code>==</code>) compares value only, coercing types. <strong>Strict</strong> (<code>===</code>) compares value <em>and</em> type. Always prefer <code>===</code>.</p>
+        <div class="code-block">
+<pre>let x: any = 1;
+
+console.log(x == "1");   // true  -- value match (loose)
+console.log(x === "1");  // false -- type differs (strict)
+console.log(x === 1);    // true</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-logical">
+        <h2>Logical operators</h2>
+        <div class="code-block">
+<pre>console.log(true &amp;&amp; true);   // true   (AND)
+console.log(true || false);   // true   (OR)
+console.log(!true);           // false  (NOT)</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-if">
+        <h2>Conditional statements</h2>
+        <div class="code-block">
+<pre>let hour = 6;
+
+if (hour &gt;= 6 &amp;&amp; hour &lt; 12) {
+    console.log("Good morning");
+} else if (hour &gt;= 12 &amp;&amp; hour &lt; 18) {
+    console.log("Good afternoon");
+} else {
+    console.log("Good evening");
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-for">
+        <h2>for loop</h2>
+        <div class="code-block">
+<pre>for (let i = 0; i &lt; 5; i++) {
+    console.log(i);  // 0 1 2 3 4
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-forof">
+        <h2>for...of</h2>
+        <p>Walk through every item of an iterable (array, string, set, etc.).</p>
+        <div class="code-block">
+<pre>let cars = ["Volvo", "Toyota", "Tesla"];
+for (let car of cars) {
+    console.log(car);
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-foreach">
+        <h2>forEach</h2>
+        <p>Array method that runs a callback per element. <code>car</code> is the iterator.</p>
+        <div class="code-block">
+<pre>cars.forEach(car =&gt; console.log(car));</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-break">
+        <h2>Loop break</h2>
+        <div class="code-block">
+<pre>for (let car of cars) {
+    if (car === "Toyota") {
+        break;
+    }
+    console.log(car);  // prints only "Volvo"
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-fn">
+        <h2>Functions</h2>
+        <div class="code-block">
+<pre>function hello() {
+    console.log("Hello");
+}
+hello();</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-fn-arg">
+        <h2>Function with argument</h2>
+        <div class="code-block">
+<pre>function printName(name: string) {
+    console.log(name);
+}
+printName("Wasim");</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-fn-return">
+        <h2>Return function</h2>
+        <div class="code-block">
+<pre>function multiplyBy2(num: number): number {
+    return num * 2;
+}
+console.log(multiplyBy2(5));  // 10</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-arrow">
+        <h2>Arrow function</h2>
+        <p>Shorter syntax. No own <code>this</code> binding (matters in callbacks).</p>
+        <div class="code-block">
+<pre>const hello = () =&gt; {
+    console.log("Hello");
+};
+
+// concise body returns automatically
+const square = (n: number) =&gt; n * n;
+console.log(square(4));  // 16</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-import">
+        <h2>Import / Export</h2>
+        <p>Split code across files. <em>Export</em> from one module, <em>import</em> into another.</p>
+        <div class="code-block">
+<pre>// helper.ts
+export function printAge(age: number) {
+    console.log(`Age is ${age}`);
+}
+
+// main.ts
+import { printAge } from "./helper";
+printAge(30);</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="js-ts-extras">
+        <h2>TypeScript extras you'll meet in Playwright</h2>
+        <ul>
+          <li><strong>Type annotations</strong> — <code>let name: string</code>, <code>const count: number = 0</code>.</li>
+          <li><strong>Interfaces</strong> — describe object shapes: <code>interface User { id: number; name: string; }</code></li>
+          <li><strong>Async / await</strong> — almost every Playwright call returns a Promise: <code>await page.goto(url)</code>.</li>
+          <li><strong>Optional chaining</strong> — <code>user?.address?.city</code> returns <code>undefined</code> instead of throwing.</li>
+          <li><strong>Nullish coalescing</strong> — <code>const port = process.env.PORT ?? 3000;</code></li>
+        </ul>
+      </section>
+
+      <!-- =================== PART B =================== -->
+      <section class="section" id="part-b">
+        <span class="part-banner b">Part B</span>
+        <div class="practice-heading">
+          <h2>Playwright with TypeScript</h2>
+          <a class="practice-open-btn" href="https://playwright.dev" target="_blank" rel="noopener noreferrer">Playwright docs</a>
+        </div>
+        <p>Playwright is a Node.js end-to-end testing library by Microsoft. It drives Chromium, Firefox, and WebKit through a single API, ships with auto-waiting, network interception, video / trace recording, and parallel execution out of the box.</p>
+      </section>
+
+      <section class="section progress-item" id="pw-nodejs">
+        <h2>Setup · Node.js</h2>
+        <p>Node.js is a runtime that runs JavaScript / TypeScript <em>outside</em> the browser. Playwright is published as a Node package, so Node is the first thing you install.</p>
+        <ol>
+          <li>Open <a href="https://nodejs.org/en/download" target="_blank" rel="noopener noreferrer">nodejs.org/en/download</a>.</li>
+          <li>Click <strong>Windows</strong> and pick the <strong>x64</strong> installer (Intel / AMD chips).</li>
+          <li>Run the installer with default options. Verify in a new terminal:</li>
+        </ol>
+        <div class="code-block">
+<pre>node -v   # e.g. v20.11.1
+npm -v    # e.g. 10.2.4</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-vscode">
+        <h2>Setup · VS Code (+ Playwright extension)</h2>
+        <p>Download <strong>Visual Studio Code</strong> (<em>not</em> Visual Studio — they are different products) from <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">code.visualstudio.com</a>.</p>
+        <p>Open VS Code → top menu <code>Terminal → New Terminal</code> and verify Node:</p>
+        <div class="code-block">
+<pre>node -v
+npm -v
+# If npm fails on Windows with a script-execution policy error, open PowerShell as user and run:
+# Set-ExecutionPolicy RemoteSigned -Scope CurrentUser</pre>
+        </div>
+        <p>Install the official Playwright extension: <strong>Playwright Test for VSCode (v1.1.17+)</strong>. After installation a test-runner icon appears in the activity bar — from there you can run individual tests, see results, manage projects, and record new tests.</p>
+      </section>
+
+      <section class="section progress-item" id="pw-git">
+        <h2>Setup · Git</h2>
+        <p>Search Google for <strong>“Git SCM”</strong> → <strong>Git for Windows</strong> → install with defaults. Verify:</p>
+        <div class="code-block">
+<pre>git -v
+# git version 2.45.1.windows.1</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-clone">
+        <h2>Clone the test application</h2>
+        <p>We'll use a public practice app to learn against.</p>
+        <ol>
+          <li>Go to <a href="https://github.com" target="_blank" rel="noopener noreferrer">github.com</a>, search <code>pw-practice</code>.</li>
+          <li>Open the repo, click <strong>Code</strong>, and copy the HTTPS clone URL.</li>
+          <li>Create a folder on your desktop (e.g. <code>D:\pw-practice</code>) and open a terminal in it.</li>
+        </ol>
+        <div class="code-block">
+<pre>D:\pw-practice&gt; git clone https://github.com/bondar-artem/pw-practice-app.git
+Cloning into 'pw-practice-app'...
+Receiving objects: 100% (8166/8166), 14.70 MiB
+Resolving deltas: 100% (5558/5558), done.
+
+D:\pw-practice&gt; cd pw-practice-app</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-runapp">
+        <h2>Run the test app</h2>
+        <p>Open the folder in VS Code (<code>File → Open Folder → D:\pw-practice\pw-practice-app</code>) and install dependencies.</p>
+        <div class="code-block">
+<pre>cd D:\pw-practice\pw-practice-app
+
+# 1. Clean npm cache (only if first install fails)
+npm cache clean --force
+
+# 2. Install dependencies (force flag handles peer-dep conflicts in this demo app)
+npm install --force
+
+# 3. Start the app
+npm start
+# -&gt; http://localhost:4200/ — &quot;compiled successfully&quot;
+
+# Stop the app: Ctrl + C in the terminal
+# Restart: npm start (keep the terminal open while testing)</pre>
+        </div>
+        <p>Troubleshooting: if <code>npm install</code> stalls, delete <code>node_modules</code> + the project folder, re-clone, and retry. A computer restart sometimes clears stuck file handles on Windows.</p>
+      </section>
+
+      <section class="section progress-item" id="pw-init">
+        <h2>Init a Playwright project</h2>
+        <p>In a separate folder (so the test code is its own project) initialize npm and add Playwright:</p>
+        <div class="code-block">
+<pre>D:\pw-tests&gt; npm init -y
+D:\pw-tests&gt; npm init playwright@latest
+# answer the prompts:
+#   - TypeScript
+#   - tests folder name: tests
+#   - add GitHub Actions workflow? no (for now)
+#   - install Playwright browsers? yes
+
+# Playwright also installs browser binaries (Chromium, Firefox, WebKit).</pre>
+        </div>
+        <p>Resulting layout:</p>
+        <div class="code-block">
+<pre>pw-tests/
+├── tests/
+│   └── example.spec.ts
+├── tests-examples/
+├── playwright.config.ts
+├── package.json
+└── tsconfig.json</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-config">
+        <h2><code>playwright.config.ts</code></h2>
+        <p>Central config — base URL, timeouts, retries, browser projects, reporters, trace / video / screenshot settings.</p>
+        <div class="code-block">
+<pre>import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests',
+  fullyParallel: true,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: [['html'], ['list']],
+
+  use: {
+    baseURL: 'http://localhost:4200',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    actionTimeout: 10_000,
+  },
+
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'firefox',  use: { ...devices['Desktop Firefox'] } },
+    { name: 'webkit',   use: { ...devices['Desktop Safari'] } },
+  ],
+});</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-first">
+        <h2>First test</h2>
+        <div class="code-block">
+<pre>// tests/first.spec.ts
+import { test, expect } from '@playwright/test';
+
+test('home page shows welcome', async ({ page }) =&gt; {
+  await page.goto('/');
+  await expect(page).toHaveTitle(/Pw Practice App/i);
+
+  await page.getByRole('textbox', { name: 'Email' }).fill('test@test.com');
+  await page.getByRole('button', { name: 'Submit' }).click();
+
+  await expect(page.getByText('Welcome')).toBeVisible();
+});</pre>
+        </div>
+        <p>Run it:</p>
+        <div class="code-block">
+<pre>npx playwright test
+npx playwright test --headed         # show the browser
+npx playwright test --ui             # interactive UI mode
+npx playwright show-report           # open last HTML report</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-locators">
+        <h2>Built-in locators</h2>
+        <p>Prefer Playwright's user-facing locators — they auto-wait and survive small DOM changes.</p>
+        <div class="code-block">
+<pre>page.getByRole('button', { name: 'Sign in' });
+page.getByText('Welcome back');
+page.getByLabel('Password');
+page.getByPlaceholder('Email address');
+page.getByTestId('submit-btn');
+page.getByAltText('Profile picture');
+page.getByTitle('Close');</pre>
+        </div>
+        <p>Fall back to CSS or XPath only when the user-facing locator does not fit.</p>
+      </section>
+
+      <section class="section progress-item" id="pw-xpath">
+        <h2>XPath &amp; axes</h2>
+        <p>Absolute XPath starts at <code>/html</code>; relative XPath starts with <code>//</code> and is much more stable.</p>
+        <div class="code-block">
+<pre>page.locator("//button[text()='Submit']");
+page.locator("//input[@name='email']");
+page.locator("//ul/li[3]");                        // index
+page.locator("//label[normalize-space()='Email']/following-sibling::input");
+page.locator("//input[@id='email']/parent::div");</pre>
+        </div>
+        <p>Useful axes: <code>parent</code>, <code>ancestor</code>, <code>following-sibling</code>, <code>preceding-sibling</code>, <code>child</code>, <code>descendant</code>, <code>following</code>, <code>preceding</code>.</p>
+      </section>
+
+      <section class="section progress-item" id="pw-css">
+        <h2>CSS locators</h2>
+        <div class="code-block">
+<pre>page.locator('#login');                  // id
+page.locator('.btn-primary');            // class
+page.locator('input.form-control');      // tag + class
+page.locator('input[name="email"]');     // attribute
+page.locator('form &gt; button');           // direct child
+page.locator('label + input');           // adjacent sibling
+page.locator('li:nth-child(3)');         // pseudo-class
+page.locator('li:has(span.tag-new)');    // Playwright :has()
+page.locator('.row').filter({ hasText: 'Toyota' });  // Playwright filter</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-actions">
+        <h2>Actions</h2>
+        <div class="code-block">
+<pre>await page.getByRole('button', { name: 'Save' }).click();
+await page.getByRole('button').dblclick();
+await page.getByRole('button').click({ button: 'right' });
+await page.getByRole('button').click({ modifiers: ['Shift'] });
+await page.locator('#canvas').click({ position: { x: 10, y: 20 } });
+await page.getByRole('button').click({ force: true });
+
+await page.getByLabel('Email').fill('wasim@test.com');
+await page.getByLabel('Search').type('laptop', { delay: 50 });
+await page.getByLabel('Email').clear();
+await page.keyboard.press('Enter');
+
+await page.getByLabel('Subscribe').check();
+await page.getByLabel('Subscribe').uncheck();
+await page.getByLabel('Gender').first().check();   // radio
+await page.getByRole('link', { name: 'Home' }).hover();
+await page.getByRole('textbox').focus();</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-dropdowns">
+        <h2>Dropdowns</h2>
+        <div class="code-block">
+<pre>// Native &lt;select&gt;
+await page.getByLabel('Country').selectOption('IN');                 // by value
+await page.getByLabel('Country').selectOption({ label: 'India' });   // by text
+await page.getByLabel('Country').selectOption({ index: 2 });         // by index
+
+// Custom JS dropdown
+await page.locator('.dropdown-trigger').click();
+await page.locator('.dropdown-item').filter({ hasText: 'India' }).click();</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-upload">
+        <h2>File upload</h2>
+        <div class="code-block">
+<pre>await page.getByLabel('Avatar').setInputFiles('fixtures/avatar.png');
+// multiple
+await page.getByLabel('Docs').setInputFiles(['a.pdf', 'b.pdf']);
+// clear
+await page.getByLabel('Avatar').setInputFiles([]);</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-extract">
+        <h2>Extract text &amp; iterate tables</h2>
+        <div class="code-block">
+<pre>const title = await page.locator('h1').textContent();
+const visible = await page.locator('h1').innerText();
+const value = await page.getByLabel('Email').inputValue();
+const all = await page.locator('li').allTextContents();
+const href = await page.getByRole('link', { name: 'Docs' }).getAttribute('href');
+
+// Iterate a table
+const rows = page.locator('table tbody tr');
+const count = await rows.count();
+for (let i = 0; i &lt; count; i++) {
+    const cells = rows.nth(i).locator('td');
+    console.log(await cells.nth(0).textContent(), await cells.nth(1).textContent());
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-pagination">
+        <h2>Pagination</h2>
+        <div class="code-block">
+<pre>const next = page.getByRole('button', { name: 'Next' });
+const collected: string[] = [];
+
+while (await next.isEnabled()) {
+    collected.push(...(await page.locator('.product-name').allTextContents()));
+    await next.click();
+    await page.waitForLoadState('networkidle');
+}
+collected.push(...(await page.locator('.product-name').allTextContents()));
+console.log('Total:', collected.length);</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-datepicker">
+        <h2>Date pickers</h2>
+        <div class="code-block">
+<pre>// Native HTML5 date input
+await page.getByLabel('Date').fill('2026-06-24');
+
+// jQuery UI / Bootstrap calendar widget
+await page.locator('#date').click();
+await page.locator('.ui-datepicker-month').selectOption('5'); // June
+await page.locator('.ui-datepicker-year').selectOption('2026');
+await page.getByRole('link', { name: '24', exact: true }).click();</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-dialogs">
+        <h2>Dialogs &amp; frames</h2>
+        <div class="code-block">
+<pre>// Alert / Confirm / Prompt
+page.on('dialog', async dialog =&gt; {
+    console.log(dialog.type(), dialog.message());
+    await dialog.accept('optional prompt answer');
+    // or: await dialog.dismiss();
+});
+await page.getByRole('button', { name: 'Show alert' }).click();
+
+// Frames
+const frame = page.frameLocator('iframe#payment');
+await frame.getByLabel('Card number').fill('4242424242424242');</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-context">
+        <h2>Browser context, tabs &amp; popups</h2>
+        <div class="code-block">
+<pre>// New tab / popup opened by the app
+const [popup] = await Promise.all([
+    page.waitForEvent('popup'),
+    page.getByRole('link', { name: 'Open profile' }).click(),
+]);
+await popup.waitForLoadState();
+await expect(popup).toHaveTitle(/Profile/);
+
+// Two isolated users in one test
+const ctxA = await browser.newContext();
+const ctxB = await browser.newContext();
+const userA = await ctxA.newPage();
+const userB = await ctxB.newPage();
+
+// Save / reuse login state
+await context.storageState({ path: 'auth.json' });</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-waits">
+        <h2>Auto-waiting, timeouts &amp; assertions</h2>
+        <p>Before interacting, Playwright waits for the element to be Attached → Visible → Stable → Enabled → Editable. You rarely need explicit sleeps.</p>
+        <div class="code-block">
+<pre>await page.waitForURL('**/dashboard');
+await page.waitForLoadState('networkidle');
+await page.waitForResponse(r =&gt; r.url().includes('/api/me') &amp;&amp; r.ok());
+
+// Page-level
+await expect(page).toHaveURL(/dashboard/);
+await expect(page).toHaveTitle(/Home/);
+
+// Element-level
+await expect(page.getByRole('alert')).toBeVisible();
+await expect(page.getByLabel('Email')).toHaveValue('test@test.com');
+await expect(page.locator('li')).toHaveCount(5);
+
+// Soft (test continues after failure)
+await expect.soft(page.locator('.banner')).toBeHidden();</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-codegen">
+        <h2>Codegen — record your first test</h2>
+        <div class="code-block">
+<pre>npx playwright codegen http://localhost:4200
+# A browser opens. Click around -- Playwright writes the spec for you in the Inspector.
+# Copy the generated code into tests/, clean it up, add assertions.</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-trace">
+        <h2>Trace viewer, screenshots &amp; flaky tests</h2>
+        <div class="code-block">
+<pre>await page.screenshot({ path: 'home.png', fullPage: true });
+await page.locator('#summary').screenshot({ path: 'summary.png' });
+
+// In config: trace: 'on-first-retry'  -- produces a .zip per failure
+npx playwright show-trace trace.zip
+
+// Mark known-bad tests so they don't fail the suite
+test.fixme('legacy date picker breaks in webkit', async () =&gt; { /* ... */ });
+test.slow();  // triples the timeout for the current test</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-hooks">
+        <h2>Hooks, groups, tags &amp; parallelism</h2>
+        <div class="code-block">
+<pre>import { test, expect } from '@playwright/test';
+
+test.describe('Checkout', () =&gt; {
+    test.beforeAll(async () =&gt; { /* seed once */ });
+    test.beforeEach(async ({ page }) =&gt; { await page.goto('/cart'); });
+    test.afterEach(async () =&gt; { /* cleanup per test */ });
+    test.afterAll(async () =&gt; { /* teardown */ });
+
+    test('happy path @smoke', async ({ page }) =&gt; {
+        await expect(page.getByRole('heading')).toHaveText('Cart');
+    });
+
+    test.skip('legacy coupon @regression', async () =&gt; { /* ... */ });
+});
+
+// Filter by tag:  npx playwright test --grep @smoke
+// Workers:        npx playwright test --workers 4
+// CI sharding:    npx playwright test --shard=1/3</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-ddt">
+        <h2>Data-driven testing</h2>
+        <div class="code-block">
+<pre>// Inline
+for (const term of ['laptop', 'mobile', 'headphones']) {
+    test(`search for ${term}`, async ({ page }) =&gt; {
+        await page.goto('/');
+        await page.getByPlaceholder('Search').fill(term);
+        await page.keyboard.press('Enter');
+        await expect(page.locator('.results')).toBeVisible();
+    });
+}
+
+// JSON
+import data from './fixtures/search.json';
+for (const row of data) { /* ...same shape... */ }
+
+// Excel (via xlsx)
+import * as XLSX from 'xlsx';
+const wb = XLSX.readFile('fixtures/search.xlsx');
+const rows = XLSX.utils.sheet_to_json&lt;{ keyword: string }&gt;(wb.Sheets['Sheet1']);
+for (const { keyword } of rows) { /* ... */ }</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="pw-cheatsheet">
+        <h2>Cheat sheet</h2>
+        <div class="code-block">
+<pre># Install
+npm init playwright@latest
+
+# Run
+npx playwright test
+npx playwright test --headed
+npx playwright test --ui
+npx playwright test --project=chromium
+npx playwright test --grep @smoke
+npx playwright test path/to/file.spec.ts:42
+
+# Reports / traces
+npx playwright show-report
+npx playwright show-trace trace.zip
+
+# Record
+npx playwright codegen http://localhost:4200
+
+# Navigation
+await page.goto(url);
+await page.goBack();
+await page.reload();
+
+# Locate
+page.getByRole / getByText / getByLabel / getByPlaceholder / getByTestId
+page.locator('css or //xpath').filter({ hasText })
+
+# Act
+.click() .dblclick() .fill() .type() .check() .selectOption()
+.setInputFiles() .hover() .focus() .press('Enter')
+
+# Assert
+expect(page).toHaveURL(...)  toHaveTitle(...)
+expect(locator).toBeVisible() toBeHidden() toHaveText() toHaveValue() toHaveCount()
+
+# Config knobs
+testDir, retries, workers, projects, use.baseURL,
+use.trace, use.screenshot, use.video, use.actionTimeout</pre>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>QA Training Hub · Playwright with TypeScript.</p>
+    </div>
+  </footer>
+
+  <script src="progress.js"></script>
+</body>
+</html>

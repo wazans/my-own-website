@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Master Doc Notes</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">QA Training Hub</a>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="selenium.html">Selenium</a>
+        <a href="hybrid.html">Hybrid</a>
+        <a href="playwright.html">Playwright</a>
+        <a href="api.html">API</a>
+        <a href="rest.html">REST Assured</a>
+        <a href="cucumber.html">Cucumber</a>
+        <a href="jenkins.html">Jenkins</a>
+        <a class="active" href="master.html">Master Doc</a>
+        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-header">
+    <h1>Master Doc Notes</h1>
+    <p>Core Java concepts from your master document, including execution flow, loops, collections, and practical examples for automation.</p>
+  </main>
+
+  <main class="container page-grid">
+    <aside class="page-sidebar">
+      <h3>On this page</h3>
+      <a class="sidebar-link" href="#java-flow">Java flow</a>
+      <a class="sidebar-link" href="#palindrome">Palindrome</a>
+      <a class="sidebar-link" href="#collections">Collections</a>
+      <a class="sidebar-link" href="#loops">Loops</a>
+      <a class="sidebar-link" href="#local-docs">Local notes</a>
+    </aside>
+
+    <article class="page-content">
+      <section class="section" id="java-flow">
+        <h2>Java execution flow</h2>
+        <p>Java source files are compiled by <code>javac</code> into bytecode (<code>.class</code> files). The JVM executes bytecode and converts it to machine instructions.</p>
+        <p>This flow is the foundation for automation code written in Java, including Selenium and API tests.</p>
+      </section>
+
+      <section class="section" id="palindrome">
+        <h2>Palindrome example</h2>
+        <div class="code-block">
+<pre>public class E_StringPalindromeCheck {
+  public static void main(String[] args) {
+    String s = "arora";
+    String rev = "";
+    for (int i = s.length() - 1; i >= 0; i--) {
+      rev = rev + s.charAt(i);
+    }
+    if (s.equals(rev)) {
+      System.out.println("palindrome string");
+    } else {
+      System.out.println("not palindrome");
+    }
+  }
+}</pre>
+        </div>
+        <p>This example shows string reversal, loop control, and conditional checking in Java.</p>
+      </section>
+
+      <section class="section" id="collections">
+        <h2>ArrayList iteration</h2>
+        <div class="code-block">
+<pre>ArrayList<String> al = new ArrayList<String>();
+al.add("wasim");
+al.add("Amna");
+al.add("Daniyal");
+al.add("Noida");
+al.add("Delhi");
+
+for (int i = 0; i < al.size(); i++) {
+  System.out.println(al.get(i));
+}
+
+for (String name : al) {
+  System.out.println(name);
+}</pre>
+        </div>
+        <p>Use indexed loops or enhanced for-each loops depending on whether you need the current index.</p>
+      </section>
+
+      <section class="section" id="loops">
+        <h2>While loops</h2>
+        <p>Use a while loop when you want to repeat work until a condition is no longer true.</p>
+        <div class="code-block">
+<pre>int i = 1;
+while (i <= 5) {
+  System.out.println(i);
+  i++;
+}</pre>
+        </div>
+      </section>
+
+      <section class="section" id="local-docs">
+        <h2>Local Master Doc notes</h2>
+        <p>This page is based on your local master training notes and Java examples.</p>
+        <a class="link-btn" href="Master Doc.txt" target="_blank">Open local Master Doc notes</a>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>QA Training Hub · Master Doc notes.</p>
+    </div>
+  </footer>
+</body>
+</html>

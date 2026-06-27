@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<!-- saved from url=(0074)https://qa-training-base.preview.emergentagent.com/downloads/selenium.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selenium Basics</title>
+  <link rel="stylesheet" href="styles.css">
+<style type="text/css">
+  @keyframes sectionFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style></head>
+<body class="selenium-page">
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="https://qa-training-base.preview.emergentagent.com/downloads/index.html">QA Training Hub</a>
+      <nav class="site-nav">
+        <a href="https://qa-training-base.preview.emergentagent.com/downloads/index.html">Home</a>
+        <a class="active" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html">Selenium</a>
+        <a href="https://qa-training-base.preview.emergentagent.com/downloads/hybrid.html">Hybrid</a>
+        <a href="playwright.html">Playwright</a>
+        <a href="https://qa-training-base.preview.emergentagent.com/downloads/api.html">API</a>
+        <a href="https://qa-training-base.preview.emergentagent.com/downloads/rest.html">REST Assured</a>
+        <a href="https://qa-training-base.preview.emergentagent.com/downloads/cucumber.html">Cucumber</a>
+        <a href="https://qa-training-base.preview.emergentagent.com/downloads/jenkins.html">Jenkins</a>
+        <a href="https://qa-training-base.preview.emergentagent.com/downloads/master.html">Master Doc</a>
+        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-header">
+    <h1>Selenium Basics</h1>
+    <p>Core browser automation concepts, locator strategies, synchronization, interaction patterns, and practical Selenium Java examples using a dedicated practice site.</p>
+  </main>
+
+  <main class="container page-grid">
+    <aside class="page-sidebar">
+      <h3>On this page</h3>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#architecture">Architecture</a>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#locators">Locators</a>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#shadow-dom">Shadow DOM</a>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#dropdowns">Selections</a>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#sync">Waits</a>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#actions">Actions</a>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#calendar">Date handling</a>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#javascript-executor">JavaScript</a>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#screenshots">Screenshots</a>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#tables">Tables</a>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#advanced-strategy">Automation strategy</a>
+      <a class="sidebar-link" href="https://qa-training-base.preview.emergentagent.com/downloads/selenium.html#practice-programs">Practice programs (30 sections)</a>
+    </aside>
+
+    <article class="page-content">
+      <section class="section" id="architecture">
+        <h2>Architecture</h2>
+        <p>Selenium works as a command chain between your Java code and the browser. Your test does not talk directly to Chrome or Edge. It sends commands through WebDriver, the driver translates them, and the browser executes them.</p>
+        <div class="code-block">
+<pre>You (Test Script) -&gt; WebDriver -&gt; JSON Wire Protocol -&gt; Browser Driver -&gt; Browser</pre>
+        </div>
+        <p>A simple mental model is a courier flow: the test creates the instruction, WebDriver passes it forward, and the browser driver delivers it in the format the browser understands.</p>
+      </section>
+
+      <section class="section" id="locators">
+        <h2>Locators</h2>
+        <p>Locator quality determines how stable the test is. Prefer IDs and simple CSS when available. Use XPath when relationships in the DOM are more stable than direct attributes.</p>
+        <h3>XPath traversal</h3>
+        <div class="code-block">
+<pre>//tbody/tr[2]/following-sibling::tr
+//tbody/tr[2]/preceding::td
+//header/div/button[1]/following-sibling::button[1]
+//form/div/input[@name='name']/preceding-sibling::label
+//*[text()='Ann']/following-sibling::td[@id='jillAge']
+//header/div/button[1]/parent::div/parent::header/a[0]</pre>
+        </div>
+        <p>Use sibling traversal when nearby labels or buttons are easier to anchor than the target itself. Use parent traversal when the child is easy to find but the useful ancestor is the real target.</p>
+        <h3>CSS selectors</h3>
+        <div class="code-block">
+<pre>css=input#email
+css=input.text
+.cart-header-navlink
+div.container input#username
+form h2</pre>
+        </div>
+        <p>In browser developer tools, XPath and CSS can be checked quickly before they go into code.</p>
+        <div class="code-block">
+<pre>$x("//a[text()='Courses']")
+$(".link")</pre>
+        </div>
+      </section>
+
+      <section class="section" id="shadow-dom">
+        <h2>Shadow DOM</h2>
+        <p>Shadow DOM elements live behind a shadow boundary, so standard DOM traversal is not always enough. Older examples often use helper libraries; modern Selenium also supports native shadow access on supported browsers.</p>
+        <div class="code-block">
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;io.github.sukgu&lt;/groupId&gt;
+  &lt;artifactId&gt;automation&lt;/artifactId&gt;
+  &lt;version&gt;0.1.5&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+        </div>
+        <div class="code-block">
+<pre>public class Z_ShadowDOM_Demo {
+   public static WebDriver driver;
+   public static void iShadow() {
+       driver = new ChromeDriver();
+       driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+       driver.get("https://books-pwakit.appspot.com/");
+       Shadow shadow = new Shadow(driver);
+       WebElement element = shadow.findElementByXPath("//input[@id='input']");
+       element.sendKeys("do it work");
+   }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section" id="dropdowns">
+        <h2>Selections</h2>
+        <p>Dropdown behavior varies. Some controls are standard HTML selects, some are custom lists, and some are auto-suggest fields driven by JavaScript.</p>
+        <h3>Increment and passenger selection</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("divpaxinfo")).click();
+for (int i = 0; i &lt;= 4; i++) {
+    driver.findElement(By.id("hrefIncAdt")).click();
+}</pre>
+        </div>
+        <h3>Dynamic dropdowns</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("ctl00_mainContent_ddl_originStation1_CTXT")).click();
+driver.findElement(By.xpath("//a[@value='BLR']")).click();
+Thread.sleep(5000);
+driver.findElement(By.xpath("(//a[@value='MAA'])[2]")).click();</pre>
+        </div>
+        <p>Where duplicate values exist, avoid index-heavy XPath if a stable container is available.</p>
+        <div class="code-block">
+<pre>driver.findElement(By.xpath("//div[@id='ctl00_mainContent_ddl_destinationStation1_CTNR']//a[@value='MAA']")).click();</pre>
+        </div>
+        <h3>Auto-suggest</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("autosuggest")).click();
+driver.findElement(By.id("autosuggest")).sendKeys("IND");
+for (int i = 0; i &lt; 3; i++) {
+    driver.findElement(By.id("autosuggest")).sendKeys(Keys.DOWN);
+}
+driver.findElement(By.id("autosuggest")).sendKeys(Keys.ENTER);</pre>
+        </div>
+      </section>
+
+      <section class="section" id="sync">
+        <h2>Waits</h2>
+        <p>Synchronization is what separates a script that sometimes works from a test that can survive real page timing. Implicit waits apply broadly. Explicit waits target a specific state such as visibility or clickability.</p>
+        <div class="code-block">
+<pre>driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+WebDriverWait wait = new WebDriverWait(driver, 10);
+WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Conditions of Use")));</pre>
+        </div>
+        <p>For shared test code, a reusable wait utility is usually cleaner than repeating wait creation in every test.</p>
+        <div class="code-block">
+<pre>public class WaitUtils {
+   public static WebElement mywaitforclickable(WebDriver driver, By locator, int timeunitinSeconds) {
+       WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeunitinSeconds));
+       return wait.until(ExpectedConditions.elementToBeClickable(locator));
+   }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section" id="actions">
+        <h2>Actions</h2>
+        <p>Mouse and keyboard interactions are handled through the <code>Actions</code> API. This becomes useful for hover states, modified key input, drag-and-drop, and custom widgets.</p>
+        <h3>Complete example: uppercase search</h3>
+        <div class="code-block">
+<pre>public class M_SearchWithUpperCase {
+   public static WebDriver driver;
+
+   public static void SearchWithUpperCase() {
+       driver = new ChromeDriver();
+       driver.get("https://www.amazon.in/");
+       WebElement searchBox = WaitUtils.ElementClickable(
+           driver,
+           By.xpath("//input[@id='twotabsearchtextbox']"),
+           10
+       );
+       Actions act = new Actions(driver);
+       act.moveToElement(searchBox)
+          .click()
+          .keyDown(Keys.SHIFT)
+          .sendKeys("the wolf")
+          .build()
+          .perform();
+   }
+
+   public static void main(String[] args) {
+       SearchWithUpperCase();
+   }
+}</pre>
+        </div>
+        <h3>Complete example: window switching</h3>
+        <div class="code-block">
+<pre>public static void WindowSwitch() {
+   driver = new ChromeDriver();
+   driver.get("https://rahulshettyacademy.com/loginpagePractise/");
+   driver.manage().window().maximize();
+
+   WebElement blinkingLink = driver.findElement(By.xpath("//a[@class='blinkingText']"));
+   blinkingLink.click();
+
+   Set&lt;String&gt; windowIds = driver.getWindowHandles();
+   Iterator&lt;String&gt; itr = windowIds.iterator();
+   String parentWindow = itr.next();
+   String childWindow = itr.next();
+
+   driver.switchTo().window(childWindow);
+   String myemailid = driver.findElement(
+       By.xpath("//a[normalize-space()='mentor@rahulshettyacademy.com']")
+   ).getText();
+
+   driver.switchTo().window(parentWindow);
+   WebElement userIdBox = driver.findElement(By.xpath("//input[@id='username']"));
+   userIdBox.click();
+   userIdBox.sendKeys(myemailid);
+}</pre>
+        </div>
+      </section>
+
+      <section class="section" id="calendar">
+        <h2>Date Handling</h2>
+        <p>Date controls can be handled either by interacting with the visible calendar widget or by sending values directly when the input allows it.</p>
+        <h3>Complete example: specific date selection</h3>
+        <div class="code-block">
+<pre>package s1_SeleniumBasics;
+
+import Utils.WaitUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class O_CalenderSpecific {
+   public static WebDriver driver;
+
+   public static void CalenderSpecific() throws InterruptedException {
+       driver = new ChromeDriver();
+       driver.get("https://www.tutorialspoint.com/selenium/practice/date-picker.php");
+       driver.manage().window().maximize();
+
+       WebElement cal_icon = driver.findElement(By.xpath("//input[@id='datetimepicker1']"));
+       cal_icon.click();
+
+       WebElement year = WaitUtils.ElementClickable(driver, By.cssSelector(".numInput"), 10);
+       year.clear();
+       year.sendKeys("1989");
+
+       WebElement monthDropdown = driver.findElement(By.xpath("//select[@aria-label='Month']"));
+       monthDropdown.click();
+       monthDropdown.sendKeys("October");
+       monthDropdown.sendKeys(Keys.ENTER);
+
+       String date = "20";
+       WebElement Date = driver.findElement(By.xpath("//span[text()='" + date + "']"));
+       Date.click();
+   }
+
+   public static void main(String[] args) throws InterruptedException {
+       CalenderSpecific();
+   }
+}</pre>
+        </div>
+        <h3>Complete example: default highlighted date</h3>
+        <div class="code-block">
+<pre>package s1_SeleniumBasics;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class E_DefaultCalenderDate {
+   public static WebDriver driver;
+
+   public static void Cal_auto_date() throws InterruptedException {
+       driver = new ChromeDriver();
+       driver.get("https://rahulshettyacademy.com/dropdownsPractise/");
+
+       driver.findElement(By.id("ctl00_mainContent_ddl_originStation1_CTXT")).click();
+       driver.findElement(By.xpath("//a[@value='BLR']")).click();
+       Thread.sleep(5000);
+
+       driver.findElement(
+           By.xpath("//div[@id='ctl00_mainContent_ddl_destinationStation1_CTNR']//a[@value='MAA']")
+       ).click();
+
+       driver.findElement(By.cssSelector(".ui-state-default.ui-state-highlight")).click();
+   }
+
+   public static void main(String[] args) throws InterruptedException {
+       Cal_auto_date();
+   }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section" id="javascript-executor">
+        <h2>JavaScript</h2>
+        <p>JavaScriptExecutor is useful when a standard Selenium action is blocked by overlays, custom components, or hidden interaction layers.</p>
+        <h3>Complete example: send value using JavaScript</h3>
+        <div class="code-block">
+<pre>package s1_SeleniumBasics;
+
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.concurrent.TimeUnit;
+
+public class U_JavaScript_Demo {
+   public static WebDriver driver;
+
+   public static void sendKeys_usingJSE() {
+       driver = new ChromeDriver();
+       driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+       driver.get("https://rahulshettyacademy.com/seleniumPractise/#/");
+
+       JavascriptExecutor jse = (JavascriptExecutor) driver;
+       jse.executeScript("document.getElementsByClassName('search-keyword')[0].value='Cucumber';");
+       jse.executeScript("document.getElementById('email').value='wasim1065@gmail.com';");
+       jse.executeScript("window.scrollBy(0,1000)");
+       jse.executeScript("return document.readyState");
+   }
+
+   public static void main(String[] args) {
+       sendKeys_usingJSE();
+   }
+}</pre>
+        </div>
+        <h3>Direct click fallback</h3>
+        <div class="code-block">
+<pre>JavascriptExecutor js2 = (JavascriptExecutor) driver;
+js2.executeScript("arguments[0].click();", closebtn);</pre>
+        </div>
+      </section>
+
+      <section class="section" id="screenshots">
+        <h2>Screenshots</h2>
+        <p>Screenshots help when a test fails in CI or when you want evidence of the browser state after a specific step.</p>
+        <h3>Complete example: capture after adding product</h3>
+        <div class="code-block">
+<pre>package s1_SeleniumBasics;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+public class P_ScreenShot {
+   public static WebDriver driver;
+
+   public static void myss() throws InterruptedException, IOException {
+       driver = new ChromeDriver();
+       driver.get("https://rahulshettyacademy.com/seleniumPractise/");
+
+       List&lt;WebElement&gt; allproducts = driver.findElements(By.cssSelector("h4.product-name"));
+       for (int i = 0; i &lt; allproducts.size(); i++) {
+           String myproduct = allproducts.get(i).getText();
+           if (myproduct.contains("Cucumber")) {
+               driver.findElement(By.xpath("//div[3]//div[3]//button[1]")).click();
+               break;
+           }
+       }
+
+       File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+       File destFile = new File("src/main/java/Utils/myss.png");
+       FileUtils.copyFile(srcFile, destFile);
+   }
+
+   public static void main(String[] args) throws InterruptedException, IOException {
+       myss();
+   }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section" id="tables">
+        <h2>Tables</h2>
+        <p>Tables can be automated at two levels: row iteration for broad validation, or direct cell targeting for a specific value check.</p>
+        <h3>Complete example: iterate rows and columns</h3>
+        <div class="code-block">
+<pre>package s1_SeleniumBasics;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public class Q_ListinAutomation {
+   public static void main(String[] args) {
+       WebDriver driver = new ChromeDriver();
+       driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+       driver.get("https://rahulshettyacademy.com/seleniumPractise/#/offers");
+
+       List&lt;WebElement&gt; tablerows = driver.findElements(By.cssSelector("tr"));
+       for (WebElement iter : tablerows) {
+           List&lt;WebElement&gt; column = iter.findElements(By.xpath("td"));
+           String get_value = column.get(2).getText();
+           System.out.println(get_value);
+       }
+   }
+}</pre>
+        </div>
+        <h3>Complete example: target one cell</h3>
+        <div class="code-block">
+<pre>public class TableHand {
+   public static WebDriver driver;
+
+   public static void Table_me() throws InterruptedException {
+       driver = new ChromeDriver();
+       driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+       driver.get("https://rahulshettyacademy.com/seleniumPractise/#/offers");
+
+       WebElement FifthRowSecondElement = driver.findElement(By.xpath("//table/tbody/tr[5]/td[2]"));
+       String s = FifthRowSecondElement.getText();
+       System.out.println(s);
+   }
+
+   public static void main(String[] args) throws InterruptedException {
+       Table_me();
+   }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section" id="advanced-strategy">
+        <h2>Automation Strategy</h2>
+        <p>UI automation should target stable, business-relevant workflows. Repeated paths, critical user journeys, and complex regression areas are good candidates. Low-value, short-lived, or highly subjective checks are usually poor candidates.</p>
+        <p>Framework choice should follow the surface you are testing. Use Selenium for browser workflows, API tools for service-level validation, and shared utilities for synchronization and reuse.</p>
+      </section>
+
+      <section class="section" id="practice-programs">
+        <div class="practice-heading">
+          <h2>Selenium Java Practice Programs (30 Sections)</h2>
+          <a class="practice-open-btn" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Open practice site</a>
+        </div>
+        <p>Each section below uses the shared <code>BaseTest</code> that creates the driver, opens the practice site, and quits the browser after every test. The snippets show the exact body that goes inside the test method for that section.</p>
+
+        <h3>Base Class</h3>
+        <div class="code-block">
+<pre>package base;
+
+import org.junit.After;
+import org.junit.Before;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.time.Duration;
+
+public class BaseTest {
+
+    protected WebDriver driver;
+
+    @Before
+    public void setup() {
+
+        driver = new ChromeDriver();
+
+        driver.manage().window().maximize();
+
+        driver.manage().timeouts()
+                .implicitlyWait(Duration.ofSeconds(10));
+
+        driver.get("https://www.sreenidhirajakrishnan.com/practice");
+    }
+
+    @After
+    public void tearDown() {
+
+        driver.quit();
+    }
+}</pre>
+        </div>
+
+        <h3>Section 1 — Basic Form Elements</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("text-input")).sendKeys("Wasim");
+driver.findElement(By.id("password-input")).sendKeys("1234");
+driver.findElement(By.id("email-input")).sendKeys("test@gmail.com");
+driver.findElement(By.id("phone-input")).sendKeys("9999999999");
+driver.findElement(By.id("textarea-input")).sendKeys("QA Engineer");
+driver.findElement(By.id("form-submit")).click();</pre>
+        </div>
+
+        <h3>Section 2 — Button Interactions</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("single-click-btn")).click();
+new Actions(driver).doubleClick(driver.findElement(By.id("double-click-btn"))).perform();
+new Actions(driver).contextClick(driver.findElement(By.id("right-click-btn"))).perform();
+driver.findElement(By.id("start-delay-btn")).click();</pre>
+        </div>
+
+        <h3>Section 3 — Checkboxes &amp; Radio Buttons</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("select-all")).click();
+driver.findElement(By.id("radio-1")).click();</pre>
+        </div>
+
+        <h3>Section 4 — Dropdowns</h3>
+        <div class="code-block">
+<pre>new Select(driver.findElement(By.id("standard-select"))).selectByVisibleText("Red");
+Select multi = new Select(driver.findElement(By.id("multi-select")));
+multi.selectByVisibleText("Java");
+multi.selectByVisibleText("Python");</pre>
+        </div>
+
+        <h3>Section 5 — Locator Practice</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("locator-by-id"));
+driver.findElement(By.className("locator-by-class"));
+driver.findElement(By.name("locator-name"));
+driver.findElement(By.xpath("//span[text()='ExactTextTarget']"));</pre>
+        </div>
+
+        <h3>Section 6 — Dynamic Content</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("change-text-btn")).click();
+driver.findElement(By.id("increment-btn")).click();
+driver.findElement(By.id("load-content-btn")).click();</pre>
+        </div>
+
+        <h3>Section 7 — Waits &amp; Synchronisation</h3>
+        <div class="code-block">
+<pre>WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[text()='Loaded']")));
+driver.findElement(By.id("ajax-btn")).click();</pre>
+        </div>
+
+        <h3>Section 8 — Table Automation</h3>
+        <div class="code-block">
+<pre>List&lt;WebElement&gt; rows = driver.findElements(By.xpath("//table[@id='practice-table']//tr"));
+for (WebElement row : rows) {
+    System.out.println(row.getText());
+}</pre>
+        </div>
+
+        <h3>Section 9 — Alerts</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("alert-btn")).click();
+driver.switchTo().alert().accept();
+
+driver.findElement(By.id("confirm-btn")).click();
+driver.switchTo().alert().dismiss();</pre>
+        </div>
+
+        <h3>Section 10 — Modals</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("open-modal-btn")).click();</pre>
+        </div>
+
+        <h3>Section 11 — iFrame</h3>
+        <div class="code-block">
+<pre>driver.switchTo().frame(0);
+driver.findElement(By.tagName("input")).sendKeys("Inside Frame");
+driver.switchTo().defaultContent();</pre>
+        </div>
+
+        <h3>Section 12 — Shadow DOM</h3>
+        <div class="code-block">
+<pre>WebElement host = driver.findElement(By.cssSelector("practice-shadow-box"));
+SearchContext shadow = host.getShadowRoot();
+shadow.findElement(By.cssSelector("#shadow-input")).sendKeys("Hello");
+shadow.findElement(By.cssSelector("#shadow-btn")).click();</pre>
+        </div>
+
+        <h3>Section 13 — Drag &amp; Drop</h3>
+        <div class="code-block">
+<pre>WebElement source = driver.findElement(By.id("drag-source"));
+WebElement target = driver.findElement(By.id("drop-zone"));
+new Actions(driver).dragAndDrop(source, target).perform();</pre>
+        </div>
+
+        <h3>Section 14 — Hover Menu</h3>
+        <div class="code-block">
+<pre>new Actions(driver).moveToElement(driver.findElement(By.id("hover-menu-trigger"))).perform();</pre>
+        </div>
+
+        <h3>Section 15 — Tooltip</h3>
+        <div class="code-block">
+<pre>new Actions(driver).moveToElement(driver.findElement(By.id("tooltip-trigger"))).perform();</pre>
+        </div>
+
+        <h3>Section 16 — File Upload</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("file-upload")).sendKeys("C:\\test.txt");</pre>
+        </div>
+
+        <h3>Section 17 — Download</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("download-btn")).click();</pre>
+        </div>
+
+        <h3>Section 18 — Hidden Elements</h3>
+        <div class="code-block">
+<pre>JavascriptExecutor js = (JavascriptExecutor) driver;
+js.executeScript("arguments[0].click();", driver.findElement(By.id("css-hidden-btn")));</pre>
+        </div>
+
+        <h3>Section 19 — Scroll Testing</h3>
+        <div class="code-block">
+<pre>WebElement element = driver.findElement(By.id("scroll-target"));
+((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);</pre>
+        </div>
+
+        <h3>Section 20 — Multiple Windows</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("open-window-btn")).click();
+for (String win : driver.getWindowHandles()) {
+    driver.switchTo().window(win);
+}</pre>
+        </div>
+
+        <h3>Section 21 — Authentication Simulation</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("auth-username")).sendKeys("admin");
+driver.findElement(By.id("auth-password")).sendKeys("admin123");
+driver.findElement(By.id("auth-login-btn")).click();</pre>
+        </div>
+
+        <h3>Section 22 — Stale Element Simulation</h3>
+        <div class="code-block">
+<pre>WebElement element = driver.findElement(By.id("stale-target"));
+driver.findElement(By.id("stale-refresh-btn")).click();
+element = driver.findElement(By.id("stale-target"));</pre>
+        </div>
+
+        <h3>Section 23 — Dynamic List</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("list-input")).sendKeys("Item1");
+driver.findElement(By.id("add-item-btn")).click();</pre>
+        </div>
+
+        <h3>Section 24 — Network Delay Simulation</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("delay-btn")).click();</pre>
+        </div>
+
+        <h3>Section 25 — Random Fail (Flaky) Elements</h3>
+        <div class="code-block">
+<pre>new WebDriverWait(driver, Duration.ofSeconds(10))
+        .until(ExpectedConditions.elementToBeClickable(By.id("flaky-btn")));
+driver.findElement(By.id("flaky-btn")).click();</pre>
+        </div>
+
+        <h3>Section 26 — Keyboard Actions</h3>
+        <div class="code-block">
+<pre>new Actions(driver)
+        .sendKeys(Keys.CONTROL + "a")
+        .sendKeys(Keys.DELETE)
+        .perform();</pre>
+        </div>
+
+        <h3>Section 27 — Slider</h3>
+        <div class="code-block">
+<pre>new Actions(driver)
+        .clickAndHold(driver.findElement(By.id("slider")))
+        .moveByOffset(50, 0)
+        .release()
+        .perform();</pre>
+        </div>
+
+        <h3>Section 28 — Date Picker</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.id("date-picker")).sendKeys("2026-06-24");</pre>
+        </div>
+
+        <h3>Section 29 — Resizable Element</h3>
+        <div class="code-block">
+<pre>new Actions(driver)
+        .clickAndHold(driver.findElement(By.cssSelector(".resize-handle")))
+        .moveByOffset(50, 50)
+        .release()
+        .perform();</pre>
+        </div>
+
+        <h3>Section 30 — Complex DOM Structure</h3>
+        <div class="code-block">
+<pre>driver.findElement(By.xpath("//div[@id='xpath-grandparent']//span[@id='xpath-leaf']")).getText();</pre>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>QA Training Hub · Selenium Basics.</p>
+    </div>
+  </footer>
+</body>
+</html>

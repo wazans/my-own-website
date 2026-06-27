@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jenkins Automation</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">QA Training Hub</a>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="selenium.html">Selenium</a>
+        <a href="hybrid.html">Hybrid</a>
+        <a href="playwright.html">Playwright</a>
+        <a href="api.html">API</a>
+        <a href="rest.html">REST Assured</a>
+        <a href="cucumber.html">Cucumber</a>
+        <a class="active" href="jenkins.html">Jenkins</a>
+        <a href="master.html">Master Doc</a>
+        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-header">
+    <h1>Jenkins Working Project</h1>
+    <p>Use Jenkins to run your automation suite in CI/CD, collect reports, and manage scheduled builds from a local project repository.</p>
+  </main>
+
+  <main class="container page-grid">
+    <aside class="page-sidebar">
+      <h3>On this page</h3>
+      <a class="sidebar-link" href="#why-jenkins">Why Jenkins?</a>
+      <a class="sidebar-link" href="#build-process">Build process</a>
+      <a class="sidebar-link" href="#repo-setup">Repository setup</a>
+      <a class="sidebar-link" href="#benefits">Benefits</a>
+    </aside>
+
+    <article class="page-content">
+      <section class="section" id="why-jenkins">
+        <h2>Why Jenkins?</h2>
+        <p>Jenkins automates test execution and build deliveries so QA work runs on schedule or when code changes, without manual execution.</p>
+      </section>
+
+      <section class="section" id="build-process">
+        <h2>Build process</h2>
+        <p>A Jenkins pipeline typically checks out a repo, installs dependencies, runs Maven tests, and publishes test artifacts or reports.</p>
+        <div class="code-block">
+<pre>pipeline {
+  agent any
+  stages {
+    stage('Checkout') {
+      steps { git url: 'your-repo-url.git' }
+    }
+    stage('Build + Test') {
+      steps { bat 'mvn clean test' }
+    }
+  }
+}</pre>
+        </div>
+        <p>Update the git URL to point to your local automation repository or internal Git host.</p>
+      </section>
+
+      <section class="section" id="repo-setup">
+        <h2>Repository setup</h2>
+        <p>Keep Jenkins configuration inside your automation project, including pipeline scripts, test commands, and report generation.</p>
+        <p>Use local project branches and internal Git repositories instead of external document links.</p>
+      </section>
+
+      <section class="section" id="benefits">
+        <h2>Key benefits</h2>
+        <div class="cards-grid">
+          <article>
+            <h4>Scheduled runs</h4>
+            <p>Run tests automatically on every commit or at fixed intervals.</p>
+          </article>
+          <article>
+            <h4>Central reports</h4>
+            <p>Keep logs, screenshots, and test results in one accessible place.</p>
+          </article>
+          <article>
+            <h4>CI/CD alignment</h4>
+            <p>Use Jenkins as the integration point between source control and automated QA tests.</p>
+          </article>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>QA Training Hub · Jenkins page.</p>
+    </div>
+  </footer>
+</body>
+</html>

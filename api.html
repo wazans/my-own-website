@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Basics</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">QA Training Hub</a>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="selenium.html">Selenium</a>
+        <a href="hybrid.html">Hybrid</a>
+        <a href="playwright.html">Playwright</a>
+        <a class="active" href="api.html">API</a>
+        <a href="rest.html">REST Assured</a>
+        <a href="cucumber.html">Cucumber</a>
+        <a href="jenkins.html">Jenkins</a>
+        <a href="master.html">Master Doc</a>
+        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-header">
+    <h1>API Basics</h1>
+    <p>Understand API behavior, request/response flow, and why API testing is more stable than UI-only testing.</p>
+  </main>
+
+  <main class="container page-grid">
+    <aside class="page-sidebar">
+      <h3>On this page</h3>
+      <a class="sidebar-link" href="#definition">What is an API?</a>
+      <a class="sidebar-link" href="#api-vs-ui">API vs UI testing</a>
+      <a class="sidebar-link" href="#api-types">API types</a>
+      <a class="sidebar-link" href="#contract">API contract</a>
+      <a class="sidebar-link" href="#local-docs">Local notes</a>
+    </aside>
+
+    <article class="page-content">
+      <section class="section" id="definition">
+        <h2>What is an API?</h2>
+        <p>An API (Application Programming Interface) is a contract between a client and a server. It allows one system to request data or actions without exposing how the backend works.</p>
+        <p>Example: Uber calls the Google Maps API to show routes, distances, and travel time. Uber does not build the map service itself.</p>
+      </section>
+
+      <section class="section" id="api-vs-ui">
+        <h2>API vs UI testing</h2>
+        <p>UI testing depends on pages, buttons, and browser rendering. API testing calls the backend directly, making it faster and less brittle.</p>
+        <ul>
+          <li>UI failure: broken button, layout change, or CSS issue</li>
+          <li>API failure: incorrect response, wrong status code, or data contract mismatch</li>
+        </ul>
+      </section>
+
+      <section class="section" id="api-types">
+        <h2>Types of APIs</h2>
+        <div class="cards-grid">
+          <article>
+            <h4>REST</h4>
+            <p>Common web API style using HTTP and JSON. REST APIs are stateless and easy to automate.</p>
+          </article>
+          <article>
+            <h4>SOAP</h4>
+            <p>Legacy XML-based APIs with strict message formats. Often found in banking and enterprise systems.</p>
+          </article>
+          <article>
+            <h4>GraphQL</h4>
+            <p>Modern API style where clients request only the fields they need, reducing over-fetching.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="contract">
+        <h2>API contract example</h2>
+        <p>An API contract is the documented request and response shape. Tests validate that the contract remains stable.</p>
+        <div class="code-block">
+<pre>GET /users/1
+
+Response:
+{
+  "id": 1,
+  "name": "Wasim"
+}</pre>
+        </div>
+        <p>Focus on the request input, expected status code, and response body rather than server internals.</p>
+      </section>
+
+      <section class="section" id="local-docs">
+        <h2>Local API notes</h2>
+        <p>This page is based on your local API training notes for clear, self-contained content.</p>
+        <a class="link-btn" href="API in detail.txt" target="_blank">Open local API notes</a>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>QA Training Hub · API Basics page.</p>
+    </div>
+  </footer>
+</body>
+</html>

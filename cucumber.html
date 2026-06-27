@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cucumber Basics</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">QA Training Hub</a>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="selenium.html">Selenium</a>
+        <a href="hybrid.html">Hybrid</a>
+        <a href="playwright.html">Playwright</a>
+        <a href="api.html">API</a>
+        <a href="rest.html">REST Assured</a>
+        <a class="active" href="cucumber.html">Cucumber</a>
+        <a href="jenkins.html">Jenkins</a>
+        <a href="master.html">Master Doc</a>
+        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-header">
+    <h1>Cucumber Basics</h1>
+    <p>Use BDD feature files, step definitions, and runner configuration to write readable automation scenarios.</p>
+  </main>
+
+  <main class="container page-grid">
+    <aside class="page-sidebar">
+      <h3>On this page</h3>
+      <a class="sidebar-link" href="#feature-files">Feature files</a>
+      <a class="sidebar-link" href="#step-definitions">Step definitions</a>
+      <a class="sidebar-link" href="#scenario-outline">Scenario outline</a>
+      <a class="sidebar-link" href="#local-docs">Local docs</a>
+    </aside>
+
+    <article class="page-content">
+      <section class="section" id="feature-files">
+        <h2>Feature files</h2>
+        <p>Write scenarios in plain English using Gherkin. Each scenario describes a behavior from the user's perspective.</p>
+        <div class="code-block">
+<pre>Feature: OrangeHRM Login validation
+
+Background:
+  Given user is on orangeHRM login page
+
+Scenario: Successful login
+  When user enters username "Admin" and password "admin123"
+  And clicks on login button
+  Then user should be logged in successfully</pre>
+        </div>
+      </section>
+
+      <section class="section" id="step-definitions">
+        <h2>Step definitions</h2>
+        <p>Map each Gherkin step to Java methods using Cucumber annotations.</p>
+        <div class="code-block">
+<pre>@Given("user is on orangeHRM login page")
+public void openLoginPage() {
+  driver = new ChromeDriver();
+  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+  driver.manage().window().maximize();
+  driver.get("http://localhost:8080/orangehrm");
+}
+
+@When("user enters username {string} and password {string}")
+public void enterCredentials(String username, String password) {
+  driver.findElement(By.name("username")).sendKeys(username);
+  driver.findElement(By.name("password")).sendKeys(password);
+}
+</pre>
+        </div>
+      </section>
+
+      <section class="section" id="scenario-outline">
+        <h2>Scenario outline</h2>
+        <p>Use examples tables to run the same scenario with multiple inputs.</p>
+        <div class="code-block">
+<pre>Scenario Outline: Multiple login attempts
+  When user enters username "<username>" and password "<password>"
+  And clicks on login button
+  Then user should see "<result>"
+
+Examples:
+  | username | password   | result |
+  | Admin    | admin123   | success|
+  | Admin    | wrong123   | error  |</pre>
+        </div>
+      </section>
+
+      <section class="section" id="local-docs">
+        <h2>Local BDD notes</h2>
+        <p>The Cucumber examples on this page are based on your local BDD notes in <code>BDD.txt</code>. This keeps the training material accessible directly from the site.</p>
+        <div class="cards-grid">
+          <article>
+            <h4>Feature file structure</h4>
+            <p>Background, scenarios, and scenario outlines are defined in Gherkin for readable test behavior.</p>
+          </article>
+          <article>
+            <h4>Step definitions</h4>
+            <p>Java methods map Gherkin steps to Selenium WebDriver actions for browser automation.</p>
+          </article>
+          <article>
+            <h4>Local runner guidance</h4>
+            <p>Use your local Cucumber runner setup instead of external docs when configuring `@CucumberOptions`.</p>
+          </article>
+        </div>
+        <a class="link-btn" href="BDD.txt" target="_blank">Open local BDD notes</a>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>QA Training Hub · Cucumber page.</p>
+    </div>
+  </footer>
+</body>
+</html>

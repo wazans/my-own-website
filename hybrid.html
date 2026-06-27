@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UI Hybrid Framework</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="hybrid-page" data-progress-key="qa-hub-hybrid-progress-v1">
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">QA Training Hub</a>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="selenium.html">Selenium</a>
+        <a class="active" href="hybrid.html">Hybrid</a>
+        <a href="playwright.html">Playwright</a>
+        <a href="api.html">API</a>
+        <a href="rest.html">REST Assured</a>
+        <a href="cucumber.html">Cucumber</a>
+        <a href="jenkins.html">Jenkins</a>
+        <a href="master.html">Master Doc</a>
+        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-header">
+    <h1>UI Hybrid Framework</h1>
+    <p>Build a professional Selenium Java automation framework step by step — from a single hardcoded script to a production-grade hybrid setup with TestNG, config-driven runs, waits, reporting, retries, logging, data-driven tests, CI/CD, Grid, parallel execution and Page Factory. Reference: <code>amazon-selenium</code>.</p>
+  </main>
+
+  <main class="container page-grid">
+    <aside class="page-sidebar">
+      <h3>On this page</h3>
+      <div class="progress-badge" id="progress-badge" data-testid="progress-badge">
+        <span id="progress-text">0 / 0 · 0%</span>
+        <span class="bar"><i id="progress-fill"></i></span>
+      </div>
+      <a class="sidebar-link" href="#framework-overview">Framework overview</a>
+      <a class="sidebar-link" href="#from-scratch">From scratch guide</a>
+      <a class="sidebar-link" href="#step-0">Step 0 · Environment setup</a>
+      <a class="sidebar-link" href="#step-1">Step 1 · First interaction</a>
+      <a class="sidebar-link" href="#step-2">Step 2 · Page + Test split</a>
+      <a class="sidebar-link" href="#step-3">Step 3 · TestNG</a>
+      <a class="sidebar-link" href="#step-4">Step 4 · BaseTest</a>
+      <a class="sidebar-link" href="#step-5">Step 5 · Config properties</a>
+      <a class="sidebar-link" href="#step-6">Step 6 · Wait strategy</a>
+      <a class="sidebar-link" href="#step-7">Step 7 · Meaningful tests</a>
+      <a class="sidebar-link" href="#step-8">Step 8 · testng.xml</a>
+      <a class="sidebar-link" href="#step-9">Step 9 · Multi-browser support</a>
+      <a class="sidebar-link" href="#step-10">Step 10 · Logging in pages</a>
+      <a class="sidebar-link" href="#step-11">Step 11 · Maven plugins</a>
+      <a class="sidebar-link" href="#step-12">Step 12 · Screenshot on failure</a>
+      <a class="sidebar-link" href="#step-13">Step 13 · Retry Analyzer</a>
+      <a class="sidebar-link" href="#step-14">Step 14 · TestListener</a>
+      <a class="sidebar-link" href="#step-15">Step 15 · Wire listener + retry</a>
+      <a class="sidebar-link" href="#step-16">Step 16 · Run with failure handling</a>
+      <a class="sidebar-link" href="#step-17">Step 17 · Logging (Log4j)</a>
+      <a class="sidebar-link" href="#step-18">Step 18 · Extent report</a>
+      <a class="sidebar-link" href="#step-19">Step 19 · Real assertions</a>
+      <a class="sidebar-link" href="#step-20">Step 20 · Results page object</a>
+      <a class="sidebar-link" href="#step-21">Step 21 · Inline DataProvider</a>
+      <a class="sidebar-link" href="#step-22">Step 22 · Listener in testng.xml</a>
+      <a class="sidebar-link" href="#step-23">Step 23 · Data driven (POI)</a>
+      <a class="sidebar-link" href="#step-24">Step 24 · WebDriverManager</a>
+      <a class="sidebar-link" href="#step-25">Step 25 · CI/CD Jenkins</a>
+      <a class="sidebar-link" href="#step-26">Step 26 · Jenkins email</a>
+      <a class="sidebar-link" href="#step-27">Step 27 · Parallel execution</a>
+      <a class="sidebar-link" href="#step-28">Step 28 · Selenium Grid</a>
+      <a class="sidebar-link" href="#step-29">Step 29 · Page Factory</a>
+    </aside>
+
+    <article class="page-content">
+      <section class="section" id="framework-overview">
+        <h2>Framework overview</h2>
+        <p>A hybrid framework combines page objects, utilities, and test logic so automation stays maintainable and scalable.</p>
+        <div class="cards-grid">
+          <article>
+            <h4>Modular structure</h4>
+            <p>Separate page classes, test classes, and utilities to keep responsibilities clear.</p>
+          </article>
+          <article>
+            <h4>Reusable actions</h4>
+            <p>Keep browser actions inside page methods instead of repeating them in tests.</p>
+          </article>
+          <article>
+            <h4>Cleaner tests</h4>
+            <p>Tests should describe the scenario, not low-level locator details.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="from-scratch">
+        <div class="practice-heading">
+          <h2>Build Guide</h2>
+          <a class="practice-open-btn" href="#step-0">Selenium Java Hybrid Framework from Scratch</a>
+        </div>
+        <p>This is the full progression from “open a browser” to a production-ready hybrid framework. Every step adds exactly one capability so you can stop at any point and still have a working setup. Each section below shows the goal, the change to make, and the code that goes with it. Code mirrors the reference <code>amazon-selenium</code> project.</p>
+      </section>
+
+      <section class="section progress-item" id="step-0">
+        <h2>Step 0 — Environment Setup (Java + Selenium + Maven)</h2>
+        <p><strong>Goal:</strong> Browser should open Amazon. Nothing else matters yet.</p>
+
+        <h3>1. Install Java (JDK)</h3>
+        <p>You need JDK installed. Verify with <code>java -version</code>. Expected: <code>java version "17"</code> (or 11+). If it is not installed, install JDK (Temurin or Oracle, either works).</p>
+
+        <h3>2. Create Maven Project</h3>
+        <p>In IntelliJ IDEA or Eclipse: <code>New Project → Maven</code>.</p>
+        <ul>
+          <li><strong>GroupId:</strong> <code>com.automation</code></li>
+          <li><strong>ArtifactId:</strong> <code>amazon-selenium</code></li>
+        </ul>
+
+        <h3>3. Add Selenium Dependency</h3>
+        <p>Open <code>pom.xml</code> and add:</p>
+        <div class="code-block">
+<pre>&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
+        &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
+        &lt;version&gt;4.43.0&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</pre>
+        </div>
+
+        <h3>4. ChromeDriver Setup</h3>
+        <p>Download ChromeDriver matching your Chrome version and set the path in code (you will replace this with <code>WebDriverManager</code> in Step 24):</p>
+        <div class="code-block">
+<pre>System.setProperty("webdriver.chrome.driver", "C:\\drivers\\chromedriver.exe");</pre>
+        </div>
+
+        <h3>5. Create First Class</h3>
+        <p>Path: <code>src/test/java/com/automation/basic</code> · Class: <code>AmazonLaunchTest.java</code>.</p>
+
+        <h3>6. Write Raw Code</h3>
+        <div class="code-block">
+<pre>package com.automation.basic;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class AmazonLaunchTest {
+    public static void main(String[] args) {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.amazon.in");
+        System.out.println("Title is: " + driver.getTitle());
+        driver.quit();
+    }
+}</pre>
+        </div>
+
+        <h3>7. Run It</h3>
+        <p>Run as Java Application. Expected: Chrome opens, Amazon loads, title prints, browser closes.</p>
+      </section>
+
+      <section class="section progress-item" id="step-1">
+        <h2>Step 1 — First Real Interaction (Still Hardcoded)</h2>
+        <p><strong>Goal:</strong> Search for a product (e.g. “laptop”).</p>
+        <div class="code-block">
+<pre>package com.automation.basic;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class AmazonLaunchTest {
+    public static void main(String[] args) {
+        System.setProperty("webdriver.chrome.driver", "C:\\drivers\\chromedriver.exe");
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.amazon.in");
+
+        // Search for product
+        driver.findElement(By.id("twotabsearchtextbox")).sendKeys("laptop");
+        driver.findElement(By.id("nav-search-submit-button")).click();
+
+        System.out.println("Search done. Title: " + driver.getTitle());
+        driver.quit();
+    }
+}</pre>
+        </div>
+        <h3>What you just learned</h3>
+        <ul>
+          <li>Locate elements using <code>css</code>, <code>xpath</code>, <code>id</code>.</li>
+          <li>Perform actions: <code>sendKeys</code>, <code>click</code>.</li>
+          <li>Basic end-to-end automation flow.</li>
+        </ul>
+      </section>
+
+      <section class="section progress-item" id="step-2">
+        <h2>Step 2 — Convert Amazon Script into Page + Test Structure</h2>
+        <p><strong>Goal:</strong> Take the working hardcoded script and split it into a <em>Page class</em> (UI logic) and a <em>Test class</em> (flow).</p>
+
+        <h3>1. Page Class</h3>
+        <div class="code-block">
+<pre>// pages/AmazonHomePage.java
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+public class AmazonHomePage {
+    WebDriver driver;
+
+    public AmazonHomePage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    private By searchBox = By.id("twotabsearchtextbox");
+    private By searchButton = By.id("nav-search-submit-button");
+
+    public void enterSearchText(String text) {
+        driver.findElement(searchBox).sendKeys(text);
+    }
+
+    public void clickSearch() {
+        driver.findElement(searchButton).click();
+    }
+
+    public String getPageTitle() {
+        return driver.getTitle();
+    }
+}</pre>
+        </div>
+
+        <h3>2. Test Class</h3>
+        <div class="code-block">
+<pre>// tests/AmazonSearchTest.java
+package tests;
+
+import pages.AmazonHomePage;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class AmazonSearchTest {
+    public static void main(String[] args) {
+        System.setProperty("webdriver.chrome.driver", "C:\\drivers\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.amazon.in");
+
+        AmazonHomePage homePage = new AmazonHomePage(driver);
+        homePage.enterSearchText("laptop");
+        homePage.clickSearch();
+        System.out.println("Result Page Title: " + homePage.getPageTitle());
+
+        driver.quit();
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-3">
+        <h2>Step 3 — Introduce TestNG (Execution Layer)</h2>
+
+        <h3>1. Add TestNG Dependency</h3>
+        <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.testng&lt;/groupId&gt;
+    &lt;artifactId&gt;testng&lt;/artifactId&gt;
+    &lt;version&gt;7.9.0&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+        </div>
+
+        <h3>2. Update Your Test Class</h3>
+        <div class="code-block">
+<pre>package tests;
+
+import pages.AmazonHomePage;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.*;
+
+public class AmazonSearchTest {
+    WebDriver driver;
+    AmazonHomePage homePage;
+
+    @BeforeMethod
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", "C:\\drivers\\chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.amazon.in");
+        homePage = new AmazonHomePage(driver);
+    }
+
+    @Test
+    public void searchProductTest() {
+        homePage.enterSearchText("laptop");
+        homePage.clickSearch();
+        System.out.println("Result Page Title: " + homePage.getPageTitle());
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        driver.quit();
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-4">
+        <h2>Step 4 — Introduce BaseTest (Driver Reusability)</h2>
+
+        <h3>1. BaseTest Class</h3>
+        <div class="code-block">
+<pre>// utils/BaseTest.java
+package utils;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.*;
+
+public class BaseTest {
+    protected WebDriver driver;
+
+    @BeforeMethod
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", "C:\\drivers\\chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.amazon.in");
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        driver.quit();
+    }
+}</pre>
+        </div>
+
+        <h3>2. Test Class with Inheritance</h3>
+        <div class="code-block">
+<pre>public class AmazonSearchTest extends BaseTest {
+
+    @Test
+    public void searchProductTest() {
+        AmazonHomePage homePage = new AmazonHomePage(driver);
+        homePage.enterSearchText("laptop");
+        homePage.clickSearch();
+        System.out.println("Result Page Title: " + homePage.getPageTitle());
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-5">
+        <h2>Step 5 — Config Properties (Remove Hardcoding)</h2>
+
+        <h3>1. config.properties</h3>
+        <p>File path: <code>src/test/resources/config.properties</code></p>
+        <div class="code-block">
+<pre>url=https://www.amazon.in
+qa.url=https://qa.example.com
+uat.url=https://uat.example.com
+browser=chrome</pre>
+        </div>
+
+        <h3>2. ConfigReader</h3>
+        <div class="code-block">
+<pre>// utils/ConfigReader.java
+package utils;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+public class ConfigReader {
+    Properties prop;
+
+    public ConfigReader() {
+        try {
+            FileInputStream fis = new FileInputStream(
+                System.getProperty("user.dir") + "/src/test/resources/config.properties"
+            );
+            prop = new Properties();
+            prop.load(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getProperty(String key) {
+        return prop.getProperty(key);
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-6">
+        <h2>Step 6 — Wait Strategy (Stability Layer)</h2>
+
+        <h3>WaitUtils</h3>
+        <div class="code-block">
+<pre>// utils/WaitUtils.java
+package utils;
+
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.*;
+import java.time.Duration;
+
+public class WaitUtils {
+    WebDriver driver;
+    WebDriverWait wait;
+
+    public WaitUtils(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    }
+
+    public WebElement waitForVisibility(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    public WebElement waitForClickable(By locator) {
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-7">
+        <h2>Step 7 — Add Meaningful, Different Tests</h2>
+        <p>With <code>BaseTest</code>, <code>ConfigReader</code>, and <code>WaitUtils</code> in place, plug them into the Page Object so every action waits before interacting and logs what it is doing.</p>
+        <div class="code-block">
+<pre>// pages/AmazonHomePage.java
+package pages;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import utils.WaitUtils;
+
+import java.util.Objects;
+
+public class AmazonHomePage {
+    private static final Logger log = LogManager.getLogger(AmazonHomePage.class);
+
+    WebDriver driver;
+    WaitUtils wait;
+
+    public AmazonHomePage(WebDriver driver) {
+        this.driver = Objects.requireNonNull(driver,
+            "WebDriver is null. Check BaseTest.setUp() and your TestNG run configuration.");
+        this.wait = new WaitUtils(this.driver);
+    }
+
+    private By searchBox = By.id("twotabsearchtextbox");
+    private By searchButton = By.id("nav-search-submit-button");
+
+    public void enterSearchText(String text) {
+        log.info("Entering search text: {}", text);
+        WebElement searchInput = wait.waitForVisibility(searchBox);
+        searchInput.clear();
+        searchInput.sendKeys(text);
+    }
+
+    public void clickSearch() {
+        log.info("Clicking search");
+        wait.waitForClickable(searchButton).click();
+    }
+
+    public String getPageTitle() {
+        log.info("Reading page title");
+        return driver.getTitle();
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-8">
+        <h2>Step 8 — Create testng.xml</h2>
+        <div class="code-block">
+<pre>&lt;!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd"&gt;
+&lt;suite name="Amazon Suite"&gt;
+    &lt;test name="All Tests"&gt;
+        &lt;classes&gt;
+            &lt;class name="tests.AmazonSearchTest"/&gt;
+            &lt;class name="tests.AmazonResultsTest"/&gt;
+        &lt;/classes&gt;
+    &lt;/test&gt;
+&lt;/suite&gt;</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-9">
+        <h2>Step 9 — Multi-browser Support (Chrome / Edge / Firefox)</h2>
+        <p><strong>Goal:</strong> Pick the browser from <code>config.properties</code> instead of hardcoding <code>new ChromeDriver()</code>. Each browser also gets headless options so it runs the same way locally and in CI.</p>
+        <div class="code-block">
+<pre>// utils/BaseTest.java (multi-browser variant)
+package utils;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+public class BaseTest {
+
+    protected static final ThreadLocal&lt;WebDriver&gt; driver = new ThreadLocal&lt;&gt;();
+    private ConfigReader config;
+
+    @BeforeMethod
+    public void setUp() {
+        config = new ConfigReader();
+        String browser = config.getProperty("browser");
+        String url = config.getProperty("url");
+
+        if (browser == null || browser.trim().isEmpty()) {
+            throw new IllegalStateException("Browser value is missing in config.properties");
+        }
+        if (url == null || url.trim().isEmpty()) {
+            throw new IllegalStateException("URL value is missing in config.properties");
+        }
+
+        browser = browser.trim();
+        url = url.trim();
+
+        WebDriver wd;
+        if (browser.equalsIgnoreCase("chrome")) {
+            wd = new ChromeDriver(createChromeOptions());
+        } else if (browser.equalsIgnoreCase("edge")) {
+            wd = new EdgeDriver(createEdgeOptions());
+        } else if (browser.equalsIgnoreCase("firefox")) {
+            wd = new FirefoxDriver(createFirefoxOptions());
+        } else {
+            throw new IllegalStateException("Unsupported browser in config.properties: " + browser);
+        }
+
+        driver.set(wd);
+        driver.get().get(url);
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        if (driver.get() != null) {
+            driver.get().quit();
+            driver.remove();
+        }
+    }
+
+    public WebDriver getDriver() {
+        return driver.get();
+    }
+
+    private ChromeOptions createChromeOptions() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--remote-allow-origins=*");
+        return options;
+    }
+
+    private EdgeOptions createEdgeOptions() {
+        EdgeOptions options = new EdgeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--remote-allow-origins=*");
+        return options;
+    }
+
+    private FirefoxOptions createFirefoxOptions() {
+        FirefoxOptions options = new FirefoxOptions();
+        options.addArguments("--headless");
+        options.addArguments("--width=1920");
+        options.addArguments("--height=1080");
+        return options;
+    }
+}</pre>
+        </div>
+        <p>Note the use of <code>ThreadLocal&lt;WebDriver&gt;</code>. This is a small change today but it becomes critical in Step 27 when tests run in parallel — each thread keeps its own driver instance.</p>
+      </section>
+
+      <section class="section progress-item" id="step-10">
+        <h2>Step 10 — Add Logging Inside Page Objects</h2>
+        <p>Tests should not need to know <em>why</em> the search box was clicked. The Page Object handles the log, so when a failure shows up in CI, you can read the run history straight from the log.</p>
+        <div class="code-block">
+<pre>private static final Logger log = LogManager.getLogger(AmazonHomePage.class);
+
+public void enterSearchText(String text) {
+    log.info("Entering search text: {}", text);
+    WebElement searchInput = wait.waitForVisibility(searchBox);
+    searchInput.clear();
+    searchInput.sendKeys(text);
+}
+
+public void clickSearch() {
+    log.info("Clicking search");
+    wait.waitForClickable(searchButton).click();
+}</pre>
+        </div>
+        <p>Use <code>log.info</code> for normal actions, <code>log.warn</code> for skipped paths, and <code>log.error</code> for unrecoverable conditions. The actual <code>log4j2.xml</code> wiring is in Step 17.</p>
+      </section>
+
+      <section class="section progress-item" id="step-11">
+        <h2>Step 11 — Add Maven Plugins (Surefire + Compiler)</h2>
+        <p>Add this to your <code>pom.xml</code>:</p>
+        <div class="code-block">
+<pre>&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.2.5&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;suiteXmlFiles&gt;
+                    &lt;suiteXmlFile&gt;${suiteXmlFile}&lt;/suiteXmlFile&gt;
+                &lt;/suiteXmlFiles&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.11.0&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;source&gt;17&lt;/source&gt;
+                &lt;target&gt;17&lt;/target&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;</pre>
+        </div>
+        <p>Add a <code>properties</code> block so the suite file can be overridden from the command line: <code>&lt;suiteXmlFile&gt;testng.xml&lt;/suiteXmlFile&gt;</code> inside <code>&lt;properties&gt;</code>. Then run <code>mvn test -DsuiteXmlFile=testng-parallel-execution.xml</code> to switch suites without editing the pom.</p>
+      </section>
+
+      <section class="section progress-item" id="step-12">
+        <h2>Step 12 — Screenshot on Failure</h2>
+        <p>On test failure you want evidence. <code>ScreenshotUtils</code> writes a PNG named after the failing test into <code>screenshots/</code>.</p>
+        <div class="code-block">
+<pre>// utils/ScreenshotUtils.java
+package utils;
+
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+
+import java.io.File;
+import java.nio.file.Files;
+
+public class ScreenshotUtils {
+
+    public static String capture(WebDriver driver, String testName) {
+        try {
+            File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            String dir = System.getProperty("user.dir") + "/screenshots/";
+            String path = dir + testName + ".png";
+
+            File dest = new File(path);
+            dest.getParentFile().mkdirs(); // ensure folder exists
+            Files.copy(src.toPath(), dest.toPath());
+
+            return path;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-13">
+        <h2>Step 13 — Retry Analyzer (Flaky Test Recovery)</h2>
+        <p>Real UI tests sometimes fail because of one-off timing. <code>RetryAnalyzer</code> reruns a failed test up to N times before marking it failed for good.</p>
+        <div class="code-block">
+<pre>// utils/RetryAnalyzer.java
+package utils;
+
+import org.testng.IRetryAnalyzer;
+import org.testng.ITestResult;
+
+public class RetryAnalyzer implements IRetryAnalyzer {
+    private int count = 0;
+    private final int maxTry = 2; // total tries = 1 (original) + 2 retries
+
+    @Override
+    public boolean retry(ITestResult result) {
+        if (count &lt; maxTry) {
+            count++;
+            System.out.println("Retrying test: " + result.getName() + " (attempt " + (count + 1) + ")");
+            return true;
+        }
+        return false;
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-14">
+        <h2>Step 14 — TestListener (Hooks for Every Test Event)</h2>
+        <p><code>TestListener</code> reacts to test start, success, failure, skip, and finish. It also creates an Extent report entry per test and attaches the screenshot from Step 12 on failure (Extent report wiring is in Step 18).</p>
+        <div class="code-block">
+<pre>// utils/TestListener.java
+package utils;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
+
+public class TestListener implements ITestListener {
+
+    private static final Logger log = LogManager.getLogger(TestListener.class);
+    private static ExtentReports extent = ReportManager.getInstance();
+    private static ThreadLocal&lt;ExtentTest&gt; test = new ThreadLocal&lt;&gt;();
+
+    @Override
+    public void onTestStart(ITestResult result) {
+        ExtentTest extentTest = extent.createTest(result.getMethod().getMethodName());
+        test.set(extentTest);
+        System.out.println("STARTED: " + result.getName());
+        log.info("STARTED: {}", result.getName());
+    }
+
+    @Override
+    public void onTestSuccess(ITestResult result) {
+        System.out.println("PASSED: " + result.getName());
+        log.info("PASSED: {}", result.getName());
+        test.get().pass("Test passed");
+    }
+
+    @Override
+    public void onTestFailure(ITestResult result) {
+        WebDriver driver = ((BaseTest) result.getInstance()).getDriver();
+        String path = ScreenshotUtils.capture(driver, result.getName());
+
+        test.get().fail(result.getThrowable());
+        if (path != null) {
+            test.get().addScreenCaptureFromPath(path);
+        }
+
+        log.error("FAILED: {}", result.getName());
+        System.out.println("FAILED: " + result.getName());
+        if (path != null) {
+            System.out.println("Screenshot saved at: " + path);
+            log.error("Screenshot saved at: {}", path);
+        }
+    }
+
+    @Override
+    public void onTestSkipped(ITestResult result) {
+        System.out.println("SKIPPED: " + result.getName());
+        log.warn("SKIPPED: {}", result.getName());
+        if (test.get() == null) {
+            ExtentTest extentTest = extent.createTest(result.getMethod().getMethodName());
+            test.set(extentTest);
+        }
+        test.get().skip("Test skipped");
+    }
+
+    @Override
+    public void onFinish(ITestContext context) {
+        extent.flush();
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-15">
+        <h2>Step 15 — Wire Listener + Retry into a Test</h2>
+        <p>Two things connect the moving parts:</p>
+        <ol>
+          <li>Add <code>retryAnalyzer = RetryAnalyzer.class</code> to the test annotation that should auto-retry.</li>
+          <li>Register the listener (per class or globally in <code>testng.xml</code> — see Step 22).</li>
+        </ol>
+        <div class="code-block">
+<pre>// tests/AmazonResultsTest.java
+package tests;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import pages.AmazonHomePage;
+import pages.AmazonResultsPage;
+import utils.BaseTest;
+
+public class AmazonResultsTest extends BaseTest {
+
+    @Test(retryAnalyzer = utils.RetryAnalyzer.class)
+    public void verifySearchResultsDisplayed() {
+        AmazonHomePage home = new AmazonHomePage(getDriver());
+        home.enterSearchText("headphones");
+        home.clickSearch();
+
+        AmazonResultsPage results = new AmazonResultsPage(getDriver());
+        Assert.assertTrue(results.isResultsDisplayed(), "Results not displayed");
+
+        System.out.println("Results page validation passed");
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-16">
+        <h2>Step 16 — Run with Failure Handling End-to-End</h2>
+        <p>Force-fail a test (<code>Assert.assertTrue(false, "Force failure to test retry &amp; screenshot");</code>) and run the suite. You should observe:</p>
+        <ul>
+          <li>The test runs once, fails, and is automatically retried up to 2 more times by <code>RetryAnalyzer</code>.</li>
+          <li>A screenshot is written to <code>screenshots/&lt;testName&gt;.png</code> for each failure.</li>
+          <li>The Extent report (Step 18) shows the test as failed with the screenshot attached.</li>
+          <li>Log4j prints <code>STARTED / FAILED / Screenshot saved at: …</code> lines.</li>
+        </ul>
+        <p>Once verified, remove the forced failure and your real assertion is back in charge.</p>
+      </section>
+
+      <section class="section progress-item" id="step-17">
+        <h2>Step 17 — Logging (Log4j)</h2>
+        <p>Add dependencies to <code>pom.xml</code>:</p>
+        <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+    &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;
+    &lt;version&gt;2.23.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+    &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;
+    &lt;version&gt;2.23.1&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+        </div>
+
+        <p>Create <code>log4j2.xml</code> under <code>src/test/resources</code> with both console and file appenders so the log shows up live and persists in <code>logs/test.log</code>:</p>
+        <div class="code-block">
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Configuration status="WARN"&gt;
+    &lt;Appenders&gt;
+        &lt;Console name="Console" target="SYSTEM_OUT"&gt;
+            &lt;PatternLayout pattern="%d{HH:mm:ss} %-5level %c - %msg%n"/&gt;
+        &lt;/Console&gt;
+        &lt;File name="File" fileName="logs/test.log"&gt;
+            &lt;PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %c - %msg%n"/&gt;
+        &lt;/File&gt;
+    &lt;/Appenders&gt;
+    &lt;Loggers&gt;
+        &lt;Root level="info"&gt;
+            &lt;AppenderRef ref="Console"/&gt;
+            &lt;AppenderRef ref="File"/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+&lt;/Configuration&gt;</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-18">
+        <h2>Step 18 — Extent Report</h2>
+        <p>Add the Extent dependency:</p>
+        <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;com.aventstack&lt;/groupId&gt;
+    &lt;artifactId&gt;extentreports&lt;/artifactId&gt;
+    &lt;version&gt;5.1.1&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+        </div>
+
+        <p><code>ReportManager</code> owns the singleton <code>ExtentReports</code> instance and points the Spark reporter at <code>reports/extent.html</code>:</p>
+        <div class="code-block">
+<pre>// utils/ReportManager.java
+package utils;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+
+public class ReportManager {
+
+    private static ExtentReports extent;
+
+    public static ExtentReports getInstance() {
+        if (extent == null) {
+            String path = System.getProperty("user.dir") + "/reports/extent.html";
+            ExtentSparkReporter spark = new ExtentSparkReporter(path);
+            spark.config().setReportName("Automation Report");
+
+            extent = new ExtentReports();
+            extent.attachReporter(spark);
+        }
+        return extent;
+    }
+}</pre>
+        </div>
+        <p><code>TestListener</code> (Step 14) calls <code>extent.flush()</code> in <code>onFinish</code>, which writes the HTML report. Open <code>reports/extent.html</code> in a browser after the run.</p>
+      </section>
+
+      <section class="section progress-item" id="step-19">
+        <h2>Step 19 — Real Assertions with TestNG <code>Assert</code></h2>
+        <p>A test without an assertion is just a click recorder. Use <code>Assert.assertTrue / assertEquals</code> so the test fails for the right reason and the listener can attach a screenshot.</p>
+        <div class="code-block">
+<pre>import org.testng.Assert;
+
+@Test
+public void searchProductTest() {
+    AmazonHomePage home = new AmazonHomePage(getDriver());
+    home.enterSearchText("laptop");
+    home.clickSearch();
+
+    String title = home.getPageTitle().toLowerCase();
+    Assert.assertTrue(title.contains("laptop"),
+        "Result page title did not contain 'laptop'. Actual: " + title);
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-20">
+        <h2>Step 20 — Add the Results Page Object</h2>
+        <p>Search is only half the journey. Add an <code>AmazonResultsPage</code> so tests can ask “did results actually render?”. It uses <code>WaitUtils</code> from Step 6 so the check is synchronized, not racy.</p>
+        <div class="code-block">
+<pre>// pages/AmazonResultsPage.java
+package pages;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import utils.WaitUtils;
+
+public class AmazonResultsPage {
+    private static final Logger log = LogManager.getLogger(AmazonResultsPage.class);
+
+    WebDriver driver;
+    WaitUtils wait;
+
+    public AmazonResultsPage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WaitUtils(driver);
+    }
+
+    private By resultsContainer = By.cssSelector("div.s-main-slot");
+
+    public boolean isResultsDisplayed() {
+        log.info("Verifying that the results container is displayed");
+        return wait.waitForVisibility(resultsContainer).isDisplayed();
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-21">
+        <h2>Step 21 — Inline <code>@DataProvider</code></h2>
+        <p>Data-driven without external files: declare the rows in code. Each row makes TestNG re-run the same test once.</p>
+        <div class="code-block">
+<pre>// tests/AmazonSearchDataProviderTest.java
+package tests;
+
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import pages.AmazonHomePage;
+import pages.AmazonResultsPage;
+import utils.BaseTest;
+
+public class AmazonSearchDataProviderTest extends BaseTest {
+
+    @DataProvider(name = "searchData")
+    public Object[][] data() {
+        return new Object[][]{
+            {"pen"},
+            {"car"},
+            {"stand"}
+        };
+    }
+
+    @Test(dataProvider = "searchData")
+    public void searchProductWithInlineDataProvider(String keyword) {
+        AmazonHomePage home = new AmazonHomePage(getDriver());
+        home.enterSearchText(keyword);
+        home.clickSearch();
+
+        AmazonResultsPage results = new AmazonResultsPage(getDriver());
+        Assert.assertTrue(results.isResultsDisplayed(),
+            "Results not displayed for keyword: " + keyword);
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-22">
+        <h2>Step 22 — Register the Listener in <code>testng.xml</code></h2>
+        <p>Instead of decorating every test class with <code>@Listeners</code>, declare the listener once at the suite level. It applies to every test that runs from this suite file.</p>
+        <div class="code-block">
+<pre>&lt;!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd"&gt;
+
+&lt;suite name="Amazon Suite"&gt;
+    &lt;listeners&gt;
+        &lt;listener class-name="utils.TestListener"/&gt;
+    &lt;/listeners&gt;
+
+    &lt;test name="All Tests"&gt;
+        &lt;classes&gt;
+            &lt;class name="tests.AmazonSearchExcelDataTest"/&gt;
+            &lt;class name="tests.AmazonSearchDataProviderTest"/&gt;
+            &lt;class name="tests.AmazonResultsTest"/&gt;
+        &lt;/classes&gt;
+    &lt;/test&gt;
+&lt;/suite&gt;</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-23">
+        <h2>Step 23 — Data Driven Testing (Apache POI)</h2>
+        <p>Add the POI dependency:</p>
+        <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.poi&lt;/groupId&gt;
+    &lt;artifactId&gt;poi-ooxml&lt;/artifactId&gt;
+    &lt;version&gt;5.2.5&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+        </div>
+
+        <p><code>ExcelUtils</code> reads a sheet and returns an <code>Object[][]</code> that TestNG’s <code>@DataProvider</code> can consume. Row 0 is the header; the rest become individual test executions.</p>
+        <div class="code-block">
+<pre>// utils/ExcelUtils.java
+package utils;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+public class ExcelUtils {
+
+    public static Object[][] getTestData(String filePath, String sheetName) {
+        try (FileInputStream fis = new FileInputStream(filePath);
+             Workbook workbook = new XSSFWorkbook(fis)) {
+
+            Sheet sheet = workbook.getSheet(sheetName);
+            if (sheet == null) {
+                throw new IllegalArgumentException("Sheet not found: " + sheetName);
+            }
+
+            int rows = sheet.getPhysicalNumberOfRows();
+            int cols = sheet.getRow(0).getPhysicalNumberOfCells();
+
+            // TestNG DataProvider expects Object[][]; each row becomes one execution.
+            Object[][] data = new Object[rows - 1][cols];
+
+            for (int i = 1; i &lt; rows; i++) {
+                Row row = sheet.getRow(i);
+                for (int j = 0; j &lt; cols; j++) {
+                    // i starts from 1 because row 0 is the header.
+                    data[i - 1][j] = row.getCell(j).toString();
+                }
+            }
+            return data;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read test data from Excel: " + filePath, e);
+        }
+    }
+}</pre>
+        </div>
+
+        <p>Use it from a test class:</p>
+        <div class="code-block">
+<pre>// tests/AmazonSearchExcelDataTest.java
+package tests;
+
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import pages.AmazonHomePage;
+import pages.AmazonResultsPage;
+import utils.BaseTest;
+import utils.ExcelUtils;
+
+public class AmazonSearchExcelDataTest extends BaseTest {
+
+    @DataProvider(name = "excelData")
+    public Object[][] getData() {
+        String path = System.getProperty("user.dir") + "/testdata/searchData.xlsx";
+        return ExcelUtils.getTestData(path, "Sheet1");
+    }
+
+    @Test(dataProvider = "excelData")
+    public void searchProductWithExcelData(String keyword) {
+        AmazonHomePage home = new AmazonHomePage(getDriver());
+        home.enterSearchText(keyword);
+        home.clickSearch();
+
+        AmazonResultsPage results = new AmazonResultsPage(getDriver());
+        Assert.assertTrue(results.isResultsDisplayed(),
+            "Results not displayed for keyword: " + keyword);
+    }
+}</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-24">
+        <h2>Step 24 — WebDriverManager (No More Manual Driver Path)</h2>
+        <p>Hardcoded ChromeDriver paths break on every machine. <code>WebDriverManager</code> downloads and wires the correct driver binary automatically.</p>
+        <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;io.github.bonigarcia&lt;/groupId&gt;
+    &lt;artifactId&gt;webdrivermanager&lt;/artifactId&gt;
+    &lt;version&gt;5.8.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+        </div>
+        <p>Update <code>BaseTest</code>:</p>
+        <div class="code-block">
+<pre>import io.github.bonigarcia.wdm.WebDriverManager;
+
+if (browser.equalsIgnoreCase("chrome")) {
+    WebDriverManager.chromedriver().setup();
+    wd = new ChromeDriver(createChromeOptions());
+} else if (browser.equalsIgnoreCase("edge")) {
+    WebDriverManager.edgedriver().setup();
+    wd = new EdgeDriver(createEdgeOptions());
+} else if (browser.equalsIgnoreCase("firefox")) {
+    WebDriverManager.firefoxdriver().setup();
+    wd = new FirefoxDriver(createFirefoxOptions());
+}</pre>
+        </div>
+        <p>You can now delete the <code>System.setProperty("webdriver.chrome.driver", ...)</code> line completely.</p>
+      </section>
+
+      <section class="section progress-item" id="step-25">
+        <h2>Step 25 — CI/CD using Jenkins</h2>
+        <ol>
+          <li>Create a Freestyle project in Jenkins.</li>
+          <li>Configure Source Code Management (Git) with your repo URL and credentials.</li>
+          <li>Add an <em>Invoke top-level Maven targets</em> build step with goals: <code>clean test</code>.</li>
+          <li>Run the job and monitor the Console Output for build success / failure.</li>
+        </ol>
+      </section>
+
+      <section class="section progress-item" id="step-26">
+        <h2>Step 26 — Jenkins Email Trigger</h2>
+        <ol>
+          <li>Generate an App Password in Gmail (2-step verification must be ON).</li>
+          <li>In Jenkins → <code>Manage Jenkins → Configure System</code>, set the SMTP server, port, and the Gmail account with the App Password.</li>
+          <li>Use the <code>emailext</code> plugin in your job (or pipeline) to send Success / Failure notifications with attached reports.</li>
+        </ol>
+      </section>
+
+      <section class="section progress-item" id="step-27">
+        <h2>Step 27 — Parallel Execution</h2>
+        <p><strong>Goal:</strong> Run multiple test classes at the same time. Two pieces matter: a thread-safe <code>BaseTest</code> (driver kept inside a <code>ThreadLocal</code>) and a dedicated suite file with <code>parallel="classes"</code>.</p>
+
+        <h3>1. BaseTestParallelExecution</h3>
+        <div class="code-block">
+<pre>// utils/BaseTestParallelExecution.java
+package utils;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+public class BaseTestParallelExecution {
+
+    protected static final Logger log = LogManager.getLogger(BaseTestParallelExecution.class);
+    private static final ThreadLocal&lt;WebDriver&gt; driver = new ThreadLocal&lt;&gt;();
+    private ConfigReader config;
+
+    @BeforeMethod(alwaysRun = true)
+    public void setUpParallelExecution() {
+        config = new ConfigReader();
+        String browser = config.getProperty("browser");
+        String url = config.getProperty("url");
+
+        WebDriver webDriver;
+        if (browser.equalsIgnoreCase("chrome")) {
+            WebDriverManager.chromedriver().setup();
+            webDriver = new ChromeDriver(createChromeOptions());
+        } else if (browser.equalsIgnoreCase("edge")) {
+            WebDriverManager.edgedriver().setup();
+            webDriver = new EdgeDriver(createEdgeOptions());
+        } else if (browser.equalsIgnoreCase("firefox")) {
+            WebDriverManager.firefoxdriver().setup();
+            webDriver = new FirefoxDriver();
+        } else {
+            throw new IllegalStateException("Unsupported browser: " + browser);
+        }
+
+        driver.set(webDriver);
+        log.info("Launching browser for thread {}", Thread.currentThread().getId());
+        getDriver().get(url.trim());
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void tearDownParallelExecution() {
+        if (getDriver() != null) {
+            log.info("Closing browser for thread {}", Thread.currentThread().getId());
+            getDriver().quit();
+            driver.remove();
+        }
+    }
+
+    public WebDriver getDriver() {
+        return driver.get();
+    }
+
+    private ChromeOptions createChromeOptions() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--remote-allow-origins=*");
+        return options;
+    }
+
+    private EdgeOptions createEdgeOptions() {
+        EdgeOptions options = new EdgeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--remote-allow-origins=*");
+        return options;
+    }
+}</pre>
+        </div>
+
+        <h3>2. Parallel-aware listener, screenshot, and report</h3>
+        <p>The thread id is appended to test names, screenshots, and report nodes so two parallel failures cannot collide:</p>
+        <div class="code-block">
+<pre>// utils/ScreenshotUtilsParallelExecution.java
+String path = System.getProperty("user.dir")
+        + "/screenshots/parallel-execution/"
+        + testName + "-" + Thread.currentThread().getId() + ".png";
+
+// utils/ReportManagerParallelExecution.java
+public static synchronized ExtentReports getInstance() {
+    if (extent == null) {
+        String path = System.getProperty("user.dir")
+                + "/reports/parallel-execution/extent-parallel-execution.html";
+        ExtentSparkReporter spark = new ExtentSparkReporter(path);
+        spark.config().setReportName("Parallel Execution Report");
+        spark.config().setDocumentTitle("Parallel Execution Suite");
+
+        extent = new ExtentReports();
+        extent.attachReporter(spark);
+    }
+    return extent;
+}
+
+// utils/TestListenerParallelExecution.java
+String testName = result.getMethod().getMethodName()
+        + " [thread-" + Thread.currentThread().getId() + "]";
+test.set(extent.createTest(testName));</pre>
+        </div>
+
+        <h3>3. testng-parallel-execution.xml</h3>
+        <div class="code-block">
+<pre>&lt;!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd"&gt;
+
+&lt;suite name="Parallel Execution Suite" parallel="classes" thread-count="2"&gt;
+    &lt;listeners&gt;
+        &lt;listener class-name="utils.TestListenerParallelExecution"/&gt;
+    &lt;/listeners&gt;
+
+    &lt;test name="Parallel Execution Tests"&gt;
+        &lt;classes&gt;
+            &lt;class name="tests.AmazonSearchParallelExecutionTest"/&gt;
+            &lt;class name="tests.AmazonMobileParallelExecutionTest"/&gt;
+        &lt;/classes&gt;
+    &lt;/test&gt;
+&lt;/suite&gt;</pre>
+        </div>
+
+        <h3>4. Parallel test classes</h3>
+        <div class="code-block">
+<pre>public class AmazonSearchParallelExecutionTest extends BaseTestParallelExecution {
+    @Test
+    public void searchLaptopParallelExecution() {
+        AmazonHomePage home = new AmazonHomePage(getDriver());
+        home.enterSearchText("laptop");
+        home.clickSearch();
+
+        AmazonResultsPage results = new AmazonResultsPage(getDriver());
+        Assert.assertTrue(results.isResultsDisplayed(), "Results not displayed for laptop search");
+    }
+}
+
+public class AmazonMobileParallelExecutionTest extends BaseTestParallelExecution {
+    @Test
+    public void searchMobileParallelExecution() {
+        AmazonHomePage home = new AmazonHomePage(getDriver());
+        home.enterSearchText("mobile");
+        home.clickSearch();
+
+        AmazonResultsPage results = new AmazonResultsPage(getDriver());
+        Assert.assertTrue(results.isResultsDisplayed(), "Results not displayed for mobile search");
+    }
+}</pre>
+        </div>
+        <p>Run with: <code>mvn test -DsuiteXmlFile=testng-parallel-execution.xml</code>. Both classes execute on separate threads against their own browser instance.</p>
+      </section>
+
+      <section class="section progress-item" id="step-28">
+        <h2>Step 28 — Selenium Grid</h2>
+        <ol>
+          <li>Start the Hub: <code>java -jar selenium-server.jar hub</code></li>
+          <li>Start a Node: <code>java -jar selenium-server.jar node</code></li>
+          <li>In <code>BaseTest</code>, switch from <code>new ChromeDriver()</code> to <code>RemoteWebDriver</code> targeting <code>http://localhost:4444</code> with the desired browser capabilities.</li>
+        </ol>
+        <div class="code-block">
+<pre>WebDriver driver = new RemoteWebDriver(
+    new URL("http://localhost:4444"),
+    new ChromeOptions()
+);</pre>
+        </div>
+      </section>
+
+      <section class="section progress-item" id="step-29">
+        <h2>Step 29 — Implement Page Factory</h2>
+        <p>Replace standard <code>By</code> locators with <code>@FindBy</code> annotations so the page object reads more declaratively:</p>
+        <div class="code-block">
+<pre>// pages/AmazonHomePage_withPageFactory.java
+package pages;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class AmazonHomePage_withPageFactory {
+    private static final Logger log = LogManager.getLogger(AmazonHomePage_withPageFactory.class);
+    private final WebDriver driver;
+
+    public AmazonHomePage_withPageFactory(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    @FindBy(id = "twotabsearchtextbox")
+    private WebElement searchBox;
+
+    @FindBy(id = "nav-search-submit-button")
+    private WebElement searchButton;
+
+    public void enterSearchText(String text) {
+        log.info("Entering search text: {}", text);
+        searchBox.clear();
+        searchBox.sendKeys(text);
+    }
+
+    public void clickSearch() {
+        log.info("Clicking search");
+        searchButton.click();
+    }
+}</pre>
+        </div>
+        <p>This is the final shape of a hybrid Selenium Java framework: a clean test layer, declarative page objects, configurable runs, stable waits, reporting, retries, logging, data-driven inputs, CI/CD, parallel execution, Grid, and Page Factory.</p>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>QA Training Hub · Hybrid framework page.</p>
+    </div>
+  </footer>
+  <script src="progress.js"></script>
+</body>
+</html>
