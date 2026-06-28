@@ -672,3 +672,33 @@ footer.site-footer {
   .progress-panel { padding: 0.75rem; }
   .topic-num { min-width: 24px; font-size: 0.78rem; }
 }
+
+
+/* ==== Sidebar polish fix ==== */
+.sidebar,.toc,.page-nav,.left-panel{
+  padding:20px !important;
+  border-radius:20px;
+}
+.sidebar nav,.toc-content,.page-nav-content,.left-panel-content{
+  max-height:70vh;
+  overflow-y:auto;
+  padding-right:12px;
+  scrollbar-gutter:stable;
+}
+.sidebar nav::-webkit-scrollbar,
+.toc-content::-webkit-scrollbar,
+.page-nav-content::-webkit-scrollbar{
+  width:8px;
+}
+.sidebar nav::-webkit-scrollbar-thumb,
+.toc-content::-webkit-scrollbar-thumb,
+.page-nav-content::-webkit-scrollbar-thumb{
+  background:linear-gradient(#5b5cf0,#9b4dff);
+  border-radius:20px;
+}
+.sidebar nav::-webkit-scrollbar-track,
+.toc-content::-webkit-scrollbar-track,
+.page-nav-content::-webkit-scrollbar-track{
+  background:transparent;
+  margin:8px 0;
+}
