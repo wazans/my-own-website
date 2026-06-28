@@ -21,6 +21,7 @@
         <a href="jenkins.html">Jenkins</a>
         <a href="master.html">Master Doc</a>
         <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
+        <a class="nav-register" href="register.html">Register</a>
       </nav>
     </div>
   </header>
@@ -33,9 +34,16 @@
   <main class="container page-grid">
     <aside class="page-sidebar">
       <h3>On this page</h3>
-      <div class="progress-badge" id="progress-badge" data-testid="progress-badge">
-        <span id="progress-text">0 / 0 · 0%</span>
-        <span class="bar"><i id="progress-fill"></i></span>
+      <div class="progress-panel" data-testid="progress-panel">
+        <div class="progress-header">
+          <span class="level-pill" id="progress-level">Lv 1</span>
+          <span class="progress-counts" id="progress-counts">0 / 0</span>
+        </div>
+        <div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>
+        <div class="xp-meta">
+          <span id="progress-pct">0%</span>
+          <span id="progress-next">5 XP to Lv 2</span>
+        </div>
       </div>
 
       <a class="sidebar-link" href="#part-a"><strong>Part A — JS / TS Basics</strong></a>
@@ -883,5 +891,6 @@ use.trace, use.screenshot, use.video, use.actionTimeout</pre>
   </footer>
 
   <script src="progress.js"></script>
+  <script src="site.js"></script>
 </body>
 </html>
