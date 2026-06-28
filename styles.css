@@ -436,3 +436,28 @@ footer.site-footer {
     justify-content: center;
   }
 }
+
+
+/* Sprint 1 */
+.course-card,.card{
+transition:.3s ease;
+border-radius:16px;
+}
+.course-card:hover,.card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 30px rgba(0,0,0,.18);
+}
+.btn-primary,.hero .btn{
+background:linear-gradient(90deg,#2563eb,#7c3aed);
+border:none;
+border-radius:12px;
+}
+footer{
+padding-top:30px;
+}
+.social-links{
+display:flex;
+gap:16px;
+justify-content:center;
+margin:20px 0;
+}
