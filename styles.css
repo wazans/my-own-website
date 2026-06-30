@@ -1,11 +1,1 @@
-/* ============ RESPONSIVE / MOBILE ============ */
-@media (max-width: 980px) {
-  .page-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .page-sidebar {
-    position: static;
-    max-height: 320px;
-  }
-}
+{--bg: #f4f6ff;--surface: #ffffff;--primary: #2f5dff;--primary-soft: #e8eeff;--text: #172031;--muted: #5a647d;--border: #dfe4f5;--shadow: rgba(34, 64, 168, 0.12);--game-purple: #7c3aed;--game-pink: #ec4899;--game-yellow: #fbbf24;--game-green: #10b981;--game-red: #e
