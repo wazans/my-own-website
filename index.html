@@ -3,105 +3,689 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QA Training Hub</title>
+  <title>TestNova | Build AI Agents with MCP for QA Engineers</title>
+  <meta
+    name="description"
+    content="Join TestNova's premium live cohort to build production-ready AI agents with MCP, Playwright, Selenium, ChatGPT, Claude, and GitHub Copilot."
+  />
+  <meta
+    name="keywords"
+    content="TestNova, MCP course, AI agents course, QA automation training, Playwright, Selenium, GitHub Copilot, ChatGPT, Claude"
+  />
+  <meta name="theme-color" content="#0b1020" />
+  <meta property="og:title" content="TestNova | Build AI Agents with MCP for QA Engineers" />
+  <meta
+    property="og:description"
+    content="Learn to design, ship, and evaluate production-ready AI agents for QA workflows in a live cohort led by TestNova."
+  />
+  <meta property="og:type" content="website" />
+  <meta
+    property="og:image"
+    content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80"
+  />
   <link rel="stylesheet" href="styles.css" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "Build AI Agents with MCP for QA Engineers",
+      "description": "A premium live cohort to help QA engineers build production-ready AI agents using MCP, Playwright, Selenium, ChatGPT, Claude and GitHub Copilot.",
+      "provider": {
+        "@type": "Organization",
+        "name": "TestNova"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": ["QA Engineers", "Automation Testers", "Developers", "Students"]
+      }
+    }
+  </script>
 </head>
-<body>
+<body
+  class="landing-page"
+  data-register-href="#register"
+  data-whatsapp-number="919000000000"
+  data-whatsapp-message="Hi TestNova, I want details about the MCP for QA Engineers cohort."
+>
+  <div class="page-loader" id="page-loader" aria-hidden="true">
+    <div class="page-loader__spinner"></div>
+    <p>Loading TestNova</p>
+  </div>
+
   <header class="topbar">
     <div class="container nav-container">
-      <a class="brand" href="index.html">QA Training Hub</a>
+      <a class="brand" href="index.html">TestNova</a>
       <nav class="site-nav">
-        <a class="active" href="index.html">Home</a>
-        <a href="selenium.html">Selenium</a>
-        <a href="hybrid.html">Hybrid</a>
-        <a href="playwright.html">Playwright</a>
-        <a href="api.html">API</a>
-        <a href="rest.html">REST Assured</a>
-        <a href="cucumber.html">Cucumber</a>
-        <a href="jenkins.html">Jenkins</a>
-        <a href="master.html">Master Doc</a>
-        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
-        <a class="nav-register" href="register.html">Register</a>
+        <a class="active" href="#hero">Home</a>
+        <a href="#why-ai">Why AI Agents</a>
+        <a href="#outcomes">What You'll Learn</a>
+        <a href="#curriculum">Agenda</a>
+        <a href="#trainer">Trainer</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#faq">FAQ</a>
+        <a href="selenium.html">Learning Hub</a>
+        <a class="nav-cta" href="#pricing">Pricing</a>
+        <a class="nav-register" href="#register">Register</a>
       </nav>
     </div>
   </header>
 
-  <section class="hero home-hero">
-    <div class="container hero-inner">
-      <div>
-        <span class="eyebrow">QA training hub</span>
-        <h1>QA Training with Full Content on the Site</h1>
-        <p>Structured topic pages now include theory, code examples, and source links so you can learn without leaving the page.</p>
-        <div class="button-row">
-          <a class="primary-btn" href="selenium.html">Start Selenium</a>
-          <a class="secondary-btn" href="hybrid.html">Explore Hybrid</a>
-        </div>
-      </div>
-      <div class="hero-card">
-        <h2>Quick access</h2>
-        <ul>
-          <li>Java and QA notes from your Master Doc</li>
-          <li>Selenium theory plus code and dropdown examples</li>
-          <li>REST Assured with real JSONPath and schema validation</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+  <main>
+    <section class="nova-hero" id="hero">
+      <div class="container hero-shell">
+        <div class="hero-copy" data-reveal>
+          <div class="eyebrow-pill">
+            <span class="eyebrow-dot"></span>
+            Live cohort for modern QA engineers
+          </div>
+          <h1>Build AI Agents with MCP for QA Engineers</h1>
+          <p class="hero-subtitle">
+            Learn to build production-ready AI agents using MCP, Playwright, Selenium,
+            ChatGPT, Claude and GitHub Copilot.
+          </p>
 
-  <main class="container">
-    <section class="section">
-      <h2>Topic pages</h2>
-      <div class="cards-grid">
-        <article>
-          <h3>Selenium Basics</h3>
-          <p>Step-by-step setup, browser automation, page object design, and Amazon search flows.</p>
-          <a class="link-btn" href="selenium.html">Open Selenium</a>
-        </article>
-        <article>
-          <h3>UI Hybrid</h3>
-          <p>Hybrid automation notes from your Amazon Selenium framework and page object best practices.</p>
-          <a class="link-btn" href="hybrid.html">Open Hybrid</a>
-        </article>
-        <article>
-          <h3>API Basics</h3>
-          <p>API fundamentals, request/response flow, API vs UI testing, and REST concepts.</p>
-          <a class="link-btn" href="api.html">Open API</a>
-        </article>
-        <article>
-          <h3>REST Assured</h3>
-          <p>REST Assured setup, GET/POST examples, JSONPath extraction, and schema validation.</p>
-          <a class="link-btn" href="rest.html">Open REST</a>
-        </article>
-        <article>
-          <h3>Cucumber</h3>
-          <p>Feature files, step definitions, scenario outlines, and BDD automation patterns.</p>
-          <a class="link-btn" href="cucumber.html">Open Cucumber</a>
-        </article>
-        <article>
-          <h3>Jenkins</h3>
-          <p>CI/CD pipeline guidance, Maven build jobs, and running test suites automatically.</p>
-          <a class="link-btn" href="jenkins.html">Open Jenkins</a>
-        </article>
-        <article>
-          <h3>Master Doc</h3>
-          <p>Java fundamentals, loops, string logic, collections, and core automation helpers.</p>
-          <a class="link-btn" href="master.html">Open Master Doc</a>
-        </article>
+          <div class="hero-audience">
+            <span>QA Engineers</span>
+            <span>Automation Testers</span>
+            <span>Developers</span>
+            <span>Students</span>
+          </div>
+
+          <div class="hero-actions">
+            <a class="primary-btn" href="#register">Reserve Your Seat</a>
+            <a class="secondary-btn" href="#curriculum">View Curriculum</a>
+          </div>
+
+          <div class="hero-proof">
+            <div class="proof-card glass-card">
+              <strong>Hands-on build track</strong>
+              <span>Agent architecture, prompts, tools, evaluation and QA workflows.</span>
+            </div>
+            <div class="proof-card glass-card">
+              <strong>Built for execution</strong>
+              <span>Real demos, debugging sessions, reusable templates and deployment guidance.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" data-reveal>
+          <div class="hero-media-card glass-card">
+            <img
+              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80"
+              alt="QA engineers collaborating at laptops"
+              width="1400"
+              height="933"
+            />
+            <div class="hero-media-caption">
+              <span>Production-first curriculum</span>
+              <strong>Ship agent workflows your QA team will actually use.</strong>
+            </div>
+          </div>
+
+          <div class="hero-metrics glass-card">
+            <div class="metric-row">
+              <div>
+                <span class="metric-label">Next live cohort</span>
+                <strong>July 20, 2026</strong>
+              </div>
+              <div class="metric-badge">Limited seats</div>
+            </div>
+            <div class="countdown-grid" data-countdown="2026-07-20T20:00:00+05:30">
+              <div><strong data-unit="days">00</strong><span>Days</span></div>
+              <div><strong data-unit="hours">00</strong><span>Hours</span></div>
+              <div><strong data-unit="minutes">00</strong><span>Minutes</span></div>
+              <div><strong data-unit="seconds">00</strong><span>Seconds</span></div>
+            </div>
+            <ul class="hero-checklist">
+              <li>Live code-alongs and guided labs</li>
+              <li>MCP tooling with QA use cases</li>
+              <li>Templates for team rollout</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section">
-      <h2>Why this site</h2>
-      <p>This training hub keeps your QA lessons on the page: theory, example code, and reference links are all visible without external tracker dependencies.</p>
+    <section class="trust-strip">
+      <div class="container trust-grid" data-reveal>
+        <div class="trust-item">
+          <span class="trust-kicker">Focus</span>
+          <strong>Build QA copilots, test agents and workflow automations</strong>
+        </div>
+        <div class="trust-item">
+          <span class="trust-kicker">Format</span>
+          <strong>Live cohort, project walkthroughs, recordings and practical assignments</strong>
+        </div>
+        <div class="trust-item">
+          <span class="trust-kicker">Outcome</span>
+          <strong>Deploy production-ready agent flows instead of just learning prompts</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="nova-section" id="why-ai">
+      <div class="container section-stack">
+        <div class="section-heading" data-reveal>
+          <span class="section-tag">Why AI Agents</span>
+          <h2>QA teams need more than chat prompts. They need agents that can act.</h2>
+          <p>
+            Most teams are experimenting with AI in isolated ways. This cohort shows how to wire
+            models, tools and browser automation into reliable agentic workflows that help teams
+            investigate failures, accelerate authoring and reduce repetitive execution overhead.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="glass-card feature-card" data-reveal>
+            <span class="icon-chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 4v10l-7 4-7-4V7l7-4zm0 3.2L8 8.3v7.4l4 2.1 4-2.1V8.3L12 6.2z"/></svg>
+            </span>
+            <h3>From manual prompts to repeatable systems</h3>
+            <p>Package prompt logic, tools, memory and guardrails into reusable QA workflows.</p>
+          </article>
+
+          <article class="glass-card feature-card" data-reveal>
+            <span class="icon-chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v2H4zm0 6h10v2H4zm0 6h16v2H4zm12-7l4 2-4 2z"/></svg>
+            </span>
+            <h3>Connect browsers, APIs and models</h3>
+            <p>Use MCP to orchestrate tools across Playwright, Selenium, docs and debugging loops.</p>
+          </article>
+
+          <article class="glass-card feature-card" data-reveal>
+            <span class="icon-chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 7h7l-5.7 4.1L18.5 21 12 16.8 5.5 21l2.2-7.9L2 9h7l3-7z"/></svg>
+            </span>
+            <h3>Design for reliability, not demos</h3>
+            <p>Cover evaluation, failure handling, observability and production-ready delivery patterns.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="nova-section section-alt" id="outcomes">
+      <div class="container section-stack">
+        <div class="section-heading" data-reveal>
+          <span class="section-tag">What You'll Learn</span>
+          <h2>The exact skills needed to move from QA automation to agent engineering.</h2>
+        </div>
+
+        <div class="outcomes-grid">
+          <article class="outcome-card glass-card" data-reveal>
+            <h3>Agent architecture fundamentals</h3>
+            <p>Understand tools, models, instructions, context windows, handoffs and guardrails.</p>
+          </article>
+          <article class="outcome-card glass-card" data-reveal>
+            <h3>MCP for real QA workflows</h3>
+            <p>Connect AI agents to browsers, codebases, docs, logs and execution environments.</p>
+          </article>
+          <article class="outcome-card glass-card" data-reveal>
+            <h3>Playwright and Selenium integration</h3>
+            <p>Use agents to generate, debug, inspect and refine browser automation intelligently.</p>
+          </article>
+          <article class="outcome-card glass-card" data-reveal>
+            <h3>Prompting that survives production</h3>
+            <p>Build instruction sets that produce stable outputs and degrade gracefully under change.</p>
+          </article>
+          <article class="outcome-card glass-card" data-reveal>
+            <h3>Copilot-driven delivery loops</h3>
+            <p>Use ChatGPT, Claude and GitHub Copilot together for authoring, reviews and debugging.</p>
+          </article>
+          <article class="outcome-card glass-card" data-reveal>
+            <h3>Evaluation and safety</h3>
+            <p>Measure correctness, detect hallucinations and design agent checks for QA use cases.</p>
+          </article>
+        </div>
+
+        <div class="learning-summary glass-card" data-reveal>
+          <div>
+            <span class="section-tag">Learning outcomes</span>
+            <h3>By the end of the cohort you will have:</h3>
+          </div>
+          <ul>
+            <li>A working understanding of MCP and agentic design patterns</li>
+            <li>A deployable QA-focused AI agent blueprint</li>
+            <li>Reusable prompts, templates and checklists for future projects</li>
+            <li>A clearer path to positioning yourself as an AI-native QA engineer</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="nova-section" id="curriculum">
+      <div class="container section-stack">
+        <div class="section-heading" data-reveal>
+          <span class="section-tag">Course Agenda</span>
+          <h2>A structured timeline from fundamentals to production rollout.</h2>
+          <p>
+            The agenda is designed to help you understand the concepts, build working agent flows,
+            and leave with repeatable patterns instead of disconnected snippets.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <article class="timeline-item glass-card" data-reveal>
+            <span class="timeline-phase">Phase 01</span>
+            <h3>AI agent foundations for QA</h3>
+            <p>
+              Agent types, orchestration basics, model selection, prompt architecture and common
+              failure modes in test engineering.
+            </p>
+          </article>
+          <article class="timeline-item glass-card" data-reveal>
+            <span class="timeline-phase">Phase 02</span>
+            <h3>MCP and tool connectivity</h3>
+            <p>
+              Understand MCP servers, tool schemas, context routing and how agents connect to
+              browsers, repos and execution environments.
+            </p>
+          </article>
+          <article class="timeline-item glass-card" data-reveal>
+            <span class="timeline-phase">Phase 03</span>
+            <h3>Browser automation with Playwright and Selenium</h3>
+            <p>
+              Build agent-assisted workflows for locator analysis, debugging, test generation and
+              failure reproduction.
+            </p>
+          </article>
+          <article class="timeline-item glass-card" data-reveal>
+            <span class="timeline-phase">Phase 04</span>
+            <h3>Prompt systems with ChatGPT, Claude and Copilot</h3>
+            <p>
+              Use the right model for the right task and build prompt patterns that hold up under
+              day-to-day engineering usage.
+            </p>
+          </article>
+          <article class="timeline-item glass-card" data-reveal>
+            <span class="timeline-phase">Phase 05</span>
+            <h3>Evaluation, observability and rollout</h3>
+            <p>
+              Add guardrails, measure quality, review outputs and roll agent workflows into team
+              delivery with fewer surprises.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="nova-section section-alt" id="trainer">
+      <div class="container trainer-layout">
+        <div class="trainer-image glass-card" data-reveal>
+          <img
+            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80"
+            alt="Trainer speaking on software delivery and AI workflows"
+            width="900"
+            height="1100"
+            loading="lazy"
+          />
+        </div>
+        <div class="trainer-copy" data-reveal>
+          <span class="section-tag">Trainer</span>
+          <h2>Built for practitioners who need systems they can defend in production.</h2>
+          <p>
+            This program is led by a QA-focused instructor team that works at the intersection of
+            browser automation, engineering workflows and AI-assisted delivery. The goal is not to
+            impress you with toy demos; it is to help you build agent patterns you can adapt inside
+            real test environments.
+          </p>
+          <div class="trainer-points">
+            <div class="glass-card trainer-point">
+              <strong>Live implementation sessions</strong>
+              <span>Work through real QA examples, not just slides and theory.</span>
+            </div>
+            <div class="glass-card trainer-point">
+              <strong>Debugging-first approach</strong>
+              <span>Understand why agent flows break and how to correct them safely.</span>
+            </div>
+            <div class="glass-card trainer-point">
+              <strong>Reusable assets included</strong>
+              <span>Prompt packs, rollout checklists and agent workflow templates.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nova-section" id="reviews">
+      <div class="container section-stack">
+        <div class="section-heading" data-reveal>
+          <span class="section-tag">Student Reviews</span>
+          <h2>Built to feel like a serious upskilling program, not a weekend tutorial.</h2>
+        </div>
+
+        <div class="testimonial-grid">
+          <article class="glass-card testimonial-card" data-reveal>
+            <p>
+              "The biggest difference was the production focus. We did not just talk about prompts;
+              we learned how to wire agents into actual QA workflows."
+            </p>
+            <div>
+              <strong>Priya S.</strong>
+              <span>Automation Tester</span>
+            </div>
+          </article>
+          <article class="glass-card testimonial-card" data-reveal>
+            <p>
+              "The sessions helped me understand where MCP fits, how to evaluate outputs, and how
+              to use Copilot and Claude more deliberately during automation work."
+            </p>
+            <div>
+              <strong>Rahul K.</strong>
+              <span>Senior QA Engineer</span>
+            </div>
+          </article>
+          <article class="glass-card testimonial-card" data-reveal>
+            <p>
+              "I came in knowing Selenium and Playwright, but the cohort gave me a clean mental
+              model for agent design and practical ways to adopt it safely."
+            </p>
+            <div>
+              <strong>Ananya M.</strong>
+              <span>Developer in Test</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="nova-section section-alt" id="pricing">
+      <div class="container section-stack">
+        <div class="section-heading" data-reveal>
+          <span class="section-tag">Pricing</span>
+          <h2>Choose the format that matches your learning depth and support needs.</h2>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="glass-card pricing-card" data-reveal>
+            <span class="pricing-label">Launch pass</span>
+            <h3>Foundations</h3>
+            <strong class="price">Rs. 4,999</strong>
+            <p>Recorded sessions, notes and assignments for self-paced review.</p>
+            <ul>
+              <li>Session recordings</li>
+              <li>Prompt templates</li>
+              <li>Curriculum notes</li>
+            </ul>
+            <a class="secondary-btn" href="#register">Enroll</a>
+          </article>
+
+          <article class="glass-card pricing-card featured" data-reveal>
+            <span class="pricing-label">Most popular</span>
+            <h3>Live Cohort</h3>
+            <strong class="price">Rs. 7,999</strong>
+            <p>Live sessions, Q&amp;A, assignments, recordings and implementation walkthroughs.</p>
+            <ul>
+              <li>Everything in Foundations</li>
+              <li>Live cohort access</li>
+              <li>Q&amp;A and doubt resolution</li>
+              <li>Project-based guidance</li>
+            </ul>
+            <a class="primary-btn" href="#register">Reserve Seat</a>
+          </article>
+
+          <article class="glass-card pricing-card" data-reveal>
+            <span class="pricing-label">For teams</span>
+            <h3>Team Enablement</h3>
+            <strong class="price">Custom</strong>
+            <p>Private cohort for QA teams adopting agentic workflows across delivery squads.</p>
+            <ul>
+              <li>Custom agenda</li>
+              <li>Team workshops</li>
+              <li>Rollout playbook</li>
+            </ul>
+            <a class="secondary-btn" href="#contact">Talk to us</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="nova-section" id="faq">
+      <div class="container section-stack">
+        <div class="section-heading" data-reveal>
+          <span class="section-tag">FAQ</span>
+          <h2>Questions that typically come up before enrolling.</h2>
+        </div>
+
+        <div class="faq-list" data-accordion>
+          <article class="faq-item glass-card" data-reveal>
+            <button class="faq-trigger" type="button" aria-expanded="false">
+              <span>Do I need prior AI experience?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-panel">
+              <p>No. The program starts with agent foundations and then moves into MCP, tooling and implementation workflows for QA.</p>
+            </div>
+          </article>
+
+          <article class="faq-item glass-card" data-reveal>
+            <button class="faq-trigger" type="button" aria-expanded="false">
+              <span>Is this useful if I already know Selenium or Playwright?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-panel">
+              <p>Yes. The value is in learning how to layer AI agents on top of existing automation practice for authoring, debugging and delivery acceleration.</p>
+            </div>
+          </article>
+
+          <article class="faq-item glass-card" data-reveal>
+            <button class="faq-trigger" type="button" aria-expanded="false">
+              <span>Will I get recordings and templates?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-panel">
+              <p>Yes. Recordings, notes, prompts and reusable templates are included so you can revisit the material and adapt it for your team.</p>
+            </div>
+          </article>
+
+          <article class="faq-item glass-card" data-reveal>
+            <button class="faq-trigger" type="button" aria-expanded="false">
+              <span>How much coding will be involved?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-panel">
+              <p>Expect practical coding. The program is designed for engineers and will involve code walkthroughs, tooling setup and implementation exercises.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="nova-section section-alt" id="register">
+      <div class="container register-layout">
+        <div class="register-copy" data-reveal>
+          <span class="section-tag">Registration</span>
+          <h2>Apply for the next cohort.</h2>
+          <p>
+            Fill in the form to reserve your seat. Once submitted, the TestNova team can follow up
+            with confirmation, payment details and onboarding steps.
+          </p>
+
+          <div class="register-benefits glass-card">
+            <h3>What happens next</h3>
+            <ul>
+              <li>Get a confirmation email when EmailJS is configured</li>
+              <li>Optionally sync leads to Google Sheets through Apps Script</li>
+              <li>Redirect to a thank-you page with your submitted details</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="register-panel glass-card" data-reveal>
+          <form class="lead-form" data-registration-form novalidate>
+            <input type="hidden" name="form_source" value="landing-page" />
+            <div class="form-row">
+              <div class="form-field">
+                <label for="landing-name">Full name *</label>
+                <input id="landing-name" name="name" type="text" placeholder="Your name" required />
+                <small class="field-error" data-error-for="name"></small>
+              </div>
+              <div class="form-field">
+                <label for="landing-email">Work email *</label>
+                <input id="landing-email" name="email" type="email" placeholder="you@example.com" required />
+                <small class="field-error" data-error-for="email"></small>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="landing-phone">Phone / WhatsApp *</label>
+                <input id="landing-phone" name="phone" type="tel" placeholder="+91 98765 43210" required />
+                <small class="field-error" data-error-for="phone"></small>
+              </div>
+              <div class="form-field">
+                <label for="landing-role">You are a *</label>
+                <select id="landing-role" name="role" required>
+                  <option value="">Select an option</option>
+                  <option>QA Engineer</option>
+                  <option>Automation Tester</option>
+                  <option>Developer</option>
+                  <option>Student</option>
+                </select>
+                <small class="field-error" data-error-for="role"></small>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="landing-experience">Experience level</label>
+                <select id="landing-experience" name="experience">
+                  <option value="">Select experience</option>
+                  <option>Fresher</option>
+                  <option>0 - 2 years</option>
+                  <option>2 - 5 years</option>
+                  <option>5+ years</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="landing-plan">Preferred plan</label>
+                <select id="landing-plan" name="plan">
+                  <option value="">Select plan</option>
+                  <option>Foundations</option>
+                  <option>Live Cohort</option>
+                  <option>Team Enablement</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field full">
+                <label for="landing-goals">What do you want to build with AI agents?</label>
+                <textarea
+                  id="landing-goals"
+                  name="goals"
+                  rows="4"
+                  placeholder="Tell us about your QA workflows, tools, or learning goals."
+                ></textarea>
+              </div>
+            </div>
+
+            <label class="consent-row">
+              <input type="checkbox" name="consent" required />
+              <span>I agree to be contacted by TestNova about this cohort.</span>
+            </label>
+            <small class="field-error consent-error" data-error-for="consent"></small>
+
+            <button class="form-submit" type="submit">
+              <span>Submit Registration</span>
+            </button>
+            <div class="form-message" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="nova-section" id="contact">
+      <div class="container section-stack">
+        <div class="section-heading" data-reveal>
+          <span class="section-tag">Contact</span>
+          <h2>Need team pricing or want to discuss fit before enrolling?</h2>
+          <p>
+            Reach out for cohort details, team enablement options, or questions about whether this
+            program matches your current QA workflow and experience level.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="glass-card feature-card" data-reveal>
+            <span class="icon-chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zm2 2v.2l6 4.8 6-4.8V7l-6 4.8L6 7z"/></svg>
+            </span>
+            <h3>Email</h3>
+            <p>Use email for cohort access, payment clarification and schedule questions.</p>
+            <a class="text-link" href="mailto:admin@testnova.in">admin@testnova.in</a>
+          </article>
+
+          <article class="glass-card feature-card" data-reveal>
+            <span class="icon-chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11 11 0 0 0 3.46.55 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.49a1 1 0 0 1 1 1 11 11 0 0 0 .55 3.46 1 1 0 0 1-.24 1z"/></svg>
+            </span>
+            <h3>WhatsApp</h3>
+            <p>Use WhatsApp for fast responses about seats, timing and next steps.</p>
+            <a class="text-link" href="https://api.whatsapp.com/send?phone=919000000000&text=Hi%20TestNova" target="_blank" rel="noopener noreferrer">Message TestNova</a>
+          </article>
+
+          <article class="glass-card feature-card" data-reveal>
+            <span class="icon-chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M6 3v6m12-6v6M5 10h14v10H5z"/></svg>
+            </span>
+            <h3>Team programs</h3>
+            <p>Talk to us if your QA team wants a private batch or an internal enablement workshop.</p>
+            <a class="text-link" href="#pricing">See team option</a>
+          </article>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>QA Training Hub · Full content pages with theory, code, and source links.</p>
+  <footer class="site-footer premium-footer">
+    <div class="container footer-layout">
+      <div class="footer-brand">
+        <a class="brand footer-logo" href="index.html">TestNova</a>
+        <p>
+          Premium QA upskilling for engineers moving into agentic automation, MCP workflows and
+          AI-native delivery systems.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <div>
+          <h3>Explore</h3>
+          <a href="#why-ai">Why AI Agents</a>
+          <a href="#curriculum">Curriculum</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#register">Register</a>
+        </div>
+        <div>
+          <h3>Resources</h3>
+          <a href="selenium.html">Learning Hub</a>
+          <a href="register.html">Dedicated Registration Page</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <a href="mailto:admin@testnova.in">admin@testnova.in</a>
+          <a href="https://api.whatsapp.com/send?phone=919000000000&text=Hi%20TestNova" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a href="register.html">Book your seat</a>
+        </div>
+      </div>
+
+      <div class="footer-social">
+        <h3>Social</h3>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a>
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; <span data-year></span> TestNova. Built for modern QA engineers.</p>
     </div>
   </footer>
-  <script src="script.js"></script>
-  <script src="site.js"></script>
+
+  <script src="site.js?v=20260701-landing"></script>
+  <script src="landing.js?v=20260701-landing"></script>
+  <script src="registration.js?v=20260701-landing"></script>
 </body>
 </html>

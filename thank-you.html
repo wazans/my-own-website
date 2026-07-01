@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You | TestNova</title>
+  <meta
+    name="description"
+    content="Thank you for registering with TestNova. Your application for the MCP for QA Engineers cohort has been received."
+  />
+  <meta name="theme-color" content="#0b1020" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body
+  class="thankyou-page hide-floating-register"
+  data-register-href="register.html"
+  data-whatsapp-number="919000000000"
+  data-whatsapp-message="Hi TestNova, I just registered and want the next steps."
+>
+  <div class="page-loader" id="page-loader" aria-hidden="true">
+    <div class="page-loader__spinner"></div>
+    <p>Loading confirmation</p>
+  </div>
+
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">TestNova</a>
+      <nav class="site-nav">
+        <a href="index.html#hero">Home</a>
+        <a href="index.html#curriculum">Curriculum</a>
+        <a href="index.html#pricing">Pricing</a>
+        <a class="nav-register active" href="register.html">Register</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="thankyou-main">
+    <section class="thankyou-section">
+      <div class="container thankyou-layout">
+        <div class="glass-card thankyou-card" data-reveal>
+          <span class="section-tag">Application received</span>
+          <h1>Thank you for registering.</h1>
+          <p>
+            Your details have been captured for the <strong>Build AI Agents with MCP for QA Engineers</strong>
+            cohort. The TestNova team can now follow up with the next steps.
+          </p>
+
+          <div class="submission-summary" id="submission-summary">
+            <div>
+              <span>Name</span>
+              <strong data-summary="name">-</strong>
+            </div>
+            <div>
+              <span>Email</span>
+              <strong data-summary="email">-</strong>
+            </div>
+            <div>
+              <span>Role</span>
+              <strong data-summary="role">-</strong>
+            </div>
+            <div>
+              <span>Plan</span>
+              <strong data-summary="plan">-</strong>
+            </div>
+          </div>
+
+          <div class="thankyou-actions">
+            <a class="primary-btn" href="index.html#curriculum">Review the curriculum</a>
+            <a class="secondary-btn" href="register.html">Submit another response</a>
+          </div>
+        </div>
+
+        <div class="glass-card next-steps-card" data-reveal>
+          <h2>What happens next</h2>
+          <ol class="steps-list">
+            <li>We review your registration details.</li>
+            <li>We share pricing, payment or cohort access details.</li>
+            <li>You receive onboarding instructions before the batch starts.</li>
+          </ol>
+          <a
+            class="whatsapp-inline"
+            href="https://api.whatsapp.com/send?phone=919000000000&text=Hi%20TestNova%2C%20I%20just%20registered%20for%20the%20MCP%20cohort."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Contact on WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer premium-footer">
+    <div class="container footer-bottom">
+      <p>&copy; <span data-year></span> TestNova. Built for modern QA engineers.</p>
+    </div>
+  </footer>
+
+  <script src="site.js?v=20260701-thankyou"></script>
+  <script src="landing.js?v=20260701-thankyou"></script>
+  <script src="thank-you.js?v=20260701-thankyou"></script>
+</body>
+</html>
