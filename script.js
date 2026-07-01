@@ -28,9 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   sidebarLinks.forEach((link) => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (e) => {
       const id = link.getAttribute('href').slice(1);
-      setActive(id);
+      const target = document.getElementById(id);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setActive(id);
+      }
     });
   });
 
