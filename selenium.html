@@ -61,7 +61,7 @@
     </aside>
 
     <article class="page-content">
-      <section class="section" id="architecture">
+      <section class="section progress-item" id="architecture">
         <h2>Architecture</h2>
         <p>Selenium works as a command chain between your Java code and the browser. Your test does not talk directly to Chrome or Edge. It sends commands through WebDriver, the driver translates them, and the browser executes them.</p>
         <div class="code-block">
@@ -70,7 +70,7 @@
         <p>A simple mental model is a courier flow: the test creates the instruction, WebDriver passes it forward, and the browser driver delivers it in the format the browser understands.</p>
       </section>
 
-      <section class="section" id="locators">
+      <section class="section progress-item" id="locators">
         <h2>Locators</h2>
         <p>Locator quality determines how stable the test is. Prefer IDs and simple CSS when available. Use XPath when relationships in the DOM are more stable than direct attributes.</p>
         <h3>XPath traversal</h3>
@@ -98,7 +98,7 @@ $(".link")</pre>
         </div>
       </section>
 
-      <section class="section" id="shadow-dom">
+      <section class="section progress-item" id="shadow-dom">
         <h2>Shadow DOM</h2>
         <p>Shadow DOM elements live behind a shadow boundary, so standard DOM traversal is not always enough. Older examples often use helper libraries; modern Selenium also supports native shadow access on supported browsers.</p>
         <div class="code-block">
@@ -123,7 +123,7 @@ $(".link")</pre>
         </div>
       </section>
 
-      <section class="section" id="dropdowns">
+      <section class="section progress-item" id="dropdowns">
         <h2>Selections</h2>
         <p>Dropdown behavior varies. Some controls are standard HTML selects, some are custom lists, and some are auto-suggest fields driven by JavaScript.</p>
         <h3>Increment and passenger selection</h3>
@@ -155,7 +155,7 @@ driver.findElement(By.id("autosuggest")).sendKeys(Keys.ENTER);</pre>
         </div>
       </section>
 
-      <section class="section" id="sync">
+      <section class="section progress-item" id="sync">
         <h2>Waits</h2>
         <p>Synchronization is what separates a script that sometimes works from a test that can survive real page timing. Implicit waits apply broadly. Explicit waits target a specific state such as visibility or clickability.</p>
         <div class="code-block">
@@ -175,7 +175,7 @@ WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.linkT
         </div>
       </section>
 
-      <section class="section" id="actions">
+      <section class="section progress-item" id="actions">
         <h2>Actions</h2>
         <p>Mouse and keyboard interactions are handled through the <code>Actions</code> API. This becomes useful for hover states, modified key input, drag-and-drop, and custom widgets.</p>
         <h3>Complete example: uppercase search</h3>
@@ -233,7 +233,7 @@ WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.linkT
         </div>
       </section>
 
-      <section class="section" id="calendar">
+      <section class="section progress-item" id="calendar">
         <h2>Date Handling</h2>
         <p>Date controls can be handled either by interacting with the visible calendar widget or by sending values directly when the input allows it.</p>
         <h3>Complete example: specific date selection</h3>
@@ -310,7 +310,7 @@ public class E_DefaultCalenderDate {
         </div>
       </section>
 
-      <section class="section" id="javascript-executor">
+      <section class="section progress-item" id="javascript-executor">
         <h2>JavaScript</h2>
         <p>JavaScriptExecutor is useful when a standard Selenium action is blocked by overlays, custom components, or hidden interaction layers.</p>
         <h3>Complete example: send value using JavaScript</h3>
@@ -350,7 +350,7 @@ js2.executeScript("arguments[0].click();", closebtn);</pre>
         </div>
       </section>
 
-      <section class="section" id="screenshots">
+      <section class="section progress-item" id="screenshots">
         <h2>Screenshots</h2>
         <p>Screenshots help when a test fails in CI or when you want evidence of the browser state after a specific step.</p>
         <h3>Complete example: capture after adding product</h3>
@@ -397,7 +397,7 @@ public class P_ScreenShot {
         </div>
       </section>
 
-      <section class="section" id="tables">
+      <section class="section progress-item" id="tables">
         <h2>Tables</h2>
         <p>Tables can be automated at two levels: row iteration for broad validation, or direct cell targeting for a specific value check.</p>
         <h3>Complete example: iterate rows and columns</h3>
@@ -449,7 +449,7 @@ public class Q_ListinAutomation {
         </div>
       </section>
 
-      <section class="section" id="advanced-strategy">
+      <section class="section progress-item" id="advanced-strategy">
         <h2>Automation Strategy</h2>
         <p>UI automation should target stable, business-relevant workflows. Repeated paths, critical user journeys, and complex regression areas are good candidates. Low-value, short-lived, or highly subjective checks are usually poor candidates.</p>
         <p>Framework choice should follow the surface you are testing. Use Selenium for browser workflows, API tools for service-level validation, and shared utilities for synchronization and reuse.</p>
