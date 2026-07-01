@@ -29,12 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   sidebarLinks.forEach((link) => {
     link.addEventListener('click', (e) => {
-      const id = link.getAttribute('href').slice(1);
+      e.preventDefault();
+      const href = link.getAttribute('href');
+      const id = href.replace('#', '');
       const target = document.getElementById(id);
+      console.log('Clicked link:', href, 'ID:', id, 'Target:', target);
       if (target) {
-        e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         setActive(id);
+      } else {
+        console.error('Target not found for ID:', id);
       }
     });
   });
