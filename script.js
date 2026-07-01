@@ -31,14 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const href = link.getAttribute('href');
-      const id = href.replace('#', '');
+      const id = href.slice(1);
       const target = document.getElementById(id);
-      console.log('Clicked link:', href, 'ID:', id, 'Target:', target);
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         setActive(id);
-      } else {
-        console.error('Target not found for ID:', id);
       }
     });
   });
