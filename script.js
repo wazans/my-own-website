@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.querySelector('.primary-btn');
+  const pageSidebar = document.querySelector('.page-sidebar');
+  const topbar = document.querySelector('.topbar');
+
   if (btn) {
     btn.addEventListener('click', () => {
       const target = document.querySelector('#lessons');
@@ -14,13 +17,37 @@ document.addEventListener('DOMContentLoaded', () => {
     .map((link) => document.querySelector(link.getAttribute('href')))
     .filter(Boolean);
 
+  const shouldScrollActiveLinkIntoView = () => {
+    if (!pageSidebar) return false;
+
+    const hasScrollableSidebar = pageSidebar.scrollHeight > pageSidebar.clientHeight + 1;
+    const isDesktopSidebar = window.matchMedia('(min-width: 981px)').matches;
+
+    return hasScrollableSidebar && isDesktopSidebar;
+  };
+
+  const scrollToSection = (target) => {
+    if (!target) return;
+
+    const topbarOffset = topbar ? topbar.getBoundingClientRect().height : 0;
+    const targetTop = target.getBoundingClientRect().top + window.scrollY;
+    const scrollTop = Math.max(targetTop - topbarOffset - 16, 0);
+
+    window.scrollTo({
+      top: scrollTop,
+      behavior: 'smooth'
+    });
+  };
+
   const setActive = (id) => {
     sidebarLinks.forEach((link) => {
       const isMatch = link.getAttribute('href') === `#${id}`;
       link.classList.toggle('active', isMatch);
       if (isMatch) {
         link.setAttribute('aria-current', 'true');
-        link.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        if (shouldScrollActiveLinkIntoView()) {
+          link.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        }
       } else {
         link.removeAttribute('aria-current');
       }
@@ -34,8 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const id = href.slice(1);
       const target = document.getElementById(id);
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollToSection(target);
         setActive(id);
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', `#${id}`);
+        }
       }
     });
   });
