@@ -1,0 +1,101 @@
+<div class="register-panel glass-card">
+  <form class="lead-form" data-registration-form novalidate>
+    <input type="hidden" name="form_source" value="common-form" />
+    <div class="form-row">
+      <div class="form-field">
+        <label for="reg-name">Full name *</label>
+        <input id="reg-name" name="name" type="text" placeholder="Your name" required />
+        <small class="field-error" data-error-for="name"></small>
+      </div>
+      <div class="form-field">
+        <label for="reg-email">Work email *</label>
+        <input id="reg-email" name="email" type="email" placeholder="you@example.com" required />
+        <small class="field-error" data-error-for="email"></small>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="reg-phone">Phone / WhatsApp *</label>
+        <input id="reg-phone" name="phone" type="tel" placeholder="+91 98765 43210" required />
+        <small class="field-error" data-error-for="phone"></small>
+      </div>
+      <div class="form-field">
+        <label for="reg-city">City</label>
+        <input id="reg-city" name="city" type="text" placeholder="Your city" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="reg-experience">Experience level</label>
+        <select id="reg-experience" name="experience">
+          <option value="">Select experience</option>
+          <option>Fresher</option>
+          <option>0 - 2 years</option>
+          <option>2 - 5 years</option>
+          <option>5+ years</option>
+          <option>5+ years</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="reg-company">Current Company</label>
+        <input id="reg-company" name="company" type="text" placeholder="Your company" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="reg-role">Current Role</label>
+        <input id="reg-role" name="role" type="text" placeholder="Your role" />
+      </div>
+      <div class="form-field">
+        <label for="reg-course">Interested Course</label>
+        <select id="reg-course" name="course">
+          <option value="">Select course</option>
+          <option>Build AI Agents with MCP</option>
+          <option>Selenium Basics</option>
+          <option>UI Hybrid Framework</option>
+          <option>Playwright with TypeScript</option>
+          <option>API Basics</option>
+          <option>REST Assured</option>
+          <option>Cucumber Basics</option>
+          <option>Jenkins Automation</option>
+          <option>Master Doc Notes (Java)</option>
+          <option>Free Career Guidance</option>
+          <option>Book Free Demo</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field full">
+        <label for="reg-batch">Preferred Batch</label>
+        <input id="reg-batch" name="batch" type="text" placeholder="e.g., July 2026 Weekend" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field full">
+        <label for="reg-questions">Questions / Learning Goals</label>
+        <textarea
+          id="reg-questions"
+          name="questions"
+          rows="4"
+          placeholder="Tell us about your QA workflows, tools, or learning goals."
+        ></textarea>
+      </div>
+    </div>
+
+    <label class="consent-row">
+      <input type="checkbox" name="consent" required />
+      <span>I agree to be contacted by TestNova about this cohort.</span>
+    </label>
+    <small class="field-error consent-error" data-error-for="consent"></small>
+
+    <button class="form-submit" type="submit">
+      <span>Submit Registration</span>
+    </button>
+    <div class="form-message" role="status" aria-live="polite"></div>
+  </form>
+</div>
