@@ -33,31 +33,36 @@
 
   <main class="container page-grid">
     <aside class="page-sidebar">
-      <h3>On this page</h3>
-      <div class="progress-panel" data-testid="progress-panel">
-        <div class="progress-header">
-          <span class="level-pill" id="progress-level">Lv 1</span>
-          <span class="progress-counts" id="progress-counts">0 / 0</span>
+      <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+        <h3>On this page</h3>
+        <span class="faq-icon" aria-hidden="true"></span>
+      </button>
+      <nav class="sidebar-nav-content">
+        <div class="progress-panel" data-testid="progress-panel">
+          <div class="progress-header">
+            <span class="level-pill" id="progress-level">Lv 1</span>
+            <span class="progress-counts" id="progress-counts">0 / 0</span>
+          </div>
+          <div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>
+          <div class="xp-meta">
+            <span id="progress-pct">0%</span>
+            <span id="progress-next">5 XP to Lv 2</span>
+          </div>
         </div>
-        <div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>
-        <div class="xp-meta">
-          <span id="progress-pct">0%</span>
-          <span id="progress-next">5 XP to Lv 2</span>
-        </div>
-      </div>
 
-      <a class="sidebar-link" href="#architecture">Architecture</a>
-      <a class="sidebar-link" href="#locators">Locators</a>
-      <a class="sidebar-link" href="#shadow-dom">Shadow DOM</a>
-      <a class="sidebar-link" href="#dropdowns">Selections</a>
-      <a class="sidebar-link" href="#sync">Waits</a>
-      <a class="sidebar-link" href="#actions">Actions</a>
-      <a class="sidebar-link" href="#calendar">Date handling</a>
-      <a class="sidebar-link" href="#javascript-executor">JavaScript</a>
-      <a class="sidebar-link" href="#screenshots">Screenshots</a>
-      <a class="sidebar-link" href="#tables">Tables</a>
-      <a class="sidebar-link" href="#advanced-strategy">Automation strategy</a>
-      <a class="sidebar-link" href="#practice-programs">Practice programs (30 sections)</a>
+        <a class="sidebar-link" href="#architecture">Architecture</a>
+        <a class="sidebar-link" href="#locators">Locators</a>
+        <a class="sidebar-link" href="#shadow-dom">Shadow DOM</a>
+        <a class="sidebar-link" href="#dropdowns">Selections</a>
+        <a class="sidebar-link" href="#sync">Waits</a>
+        <a class="sidebar-link" href="#actions">Actions</a>
+        <a class="sidebar-link" href="#calendar">Date handling</a>
+        <a class="sidebar-link" href="#javascript-executor">JavaScript</a>
+        <a class="sidebar-link" href="#screenshots">Screenshots</a>
+        <a class="sidebar-link" href="#tables">Tables</a>
+        <a class="sidebar-link" href="#advanced-strategy">Automation strategy</a>
+        <a class="sidebar-link" href="#practice-programs">Practice programs (30 sections)</a>
+      </nav>
     </aside>
 
     <article class="page-content">
@@ -374,7 +379,7 @@ public class P_ScreenShot {
 
    public static void myss() throws InterruptedException, IOException {
        driver = new ChromeDriver();
-       driver.get("https://rahulshettyacademy.com/seleniumPractise/");
+       driver.get("https://rahulshettyacademy.com/seleniumPractise/#/");
 
        List&lt;WebElement&gt; allproducts = driver.findElements(By.cssSelector("h4.product-name"));
        for (int i = 0; i &lt; allproducts.size(); i++) {

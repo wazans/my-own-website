@@ -4,6 +4,7 @@
  * - sticky mobile register button
  * - floating WhatsApp button
  * - footer year sync
+ * - mobile sidebar toggle
  */
 (function () {
   function injectRegisterButton() {
@@ -84,6 +85,35 @@
     });
   }
 
+  function setupMobileSidebar() {
+    var sidebar = document.querySelector('.page-sidebar');
+    var sidebarToggle = document.querySelector('.sidebar-toggle');
+    var sidebarNavContent = document.querySelector('.sidebar-nav-content');
+
+    if (!sidebar || !sidebarToggle || !sidebarNavContent) return;
+
+    sidebarToggle.addEventListener('click', function() {
+      var isOpen = sidebar.classList.toggle('open');
+      sidebarToggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    sidebarNavContent.addEventListener('click', function(event) {
+      var target = event.target;
+      if (target && target.tagName === 'A' && sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+        sidebarToggle.setAttribute('aria-expanded', false);
+      }
+    });
+
+    document.addEventListener('click', function(event) {
+      if (!sidebar.classList.contains('open')) return;
+      if (sidebar.contains(event.target)) return;
+
+      sidebar.classList.remove('open');
+      sidebarToggle.setAttribute('aria-expanded', false);
+    });
+  }
+
   function syncFooterYear() {
     var yearNodes = document.querySelectorAll('[data-year]');
     var year = String(new Date().getFullYear());
@@ -96,6 +126,7 @@
     injectRegisterButton();
     injectWhatsAppButton();
     setupMobileNav();
+    setupMobileSidebar(); // Add the new sidebar setup function
     syncFooterYear();
   }
 

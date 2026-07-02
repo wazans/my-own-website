@@ -33,50 +33,55 @@
 
   <main class="container page-grid">
     <aside class="page-sidebar">
-      <h3>On this page</h3>
-      <div class="progress-panel" data-testid="progress-panel">
-        <div class="progress-header">
-          <span class="level-pill" id="progress-level">Lv 1</span>
-          <span class="progress-counts" id="progress-counts">0 / 0</span>
+      <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+        <h3>On this page</h3>
+        <span class="faq-icon" aria-hidden="true"></span>
+      </button>
+      <nav class="sidebar-nav-content">
+        <div class="progress-panel" data-testid="progress-panel">
+          <div class="progress-header">
+            <span class="level-pill" id="progress-level">Lv 1</span>
+            <span class="progress-counts" id="progress-counts">0 / 0</span>
+          </div>
+          <div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>
+          <div class="xp-meta">
+            <span id="progress-pct">0%</span>
+            <span id="progress-next">5 XP to Lv 2</span>
+          </div>
         </div>
-        <div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>
-        <div class="xp-meta">
-          <span id="progress-pct">0%</span>
-          <span id="progress-next">5 XP to Lv 2</span>
-        </div>
-      </div>
-      <a class="sidebar-link" href="#framework-overview">Framework overview</a>
-      <a class="sidebar-link" href="#from-scratch">From scratch guide</a>
-      <a class="sidebar-link" href="#step-0">Step 0 · Environment setup</a>
-      <a class="sidebar-link" href="#step-1">Step 1 · First interaction</a>
-      <a class="sidebar-link" href="#step-2">Step 2 · Page + Test split</a>
-      <a class="sidebar-link" href="#step-3">Step 3 · TestNG</a>
-      <a class="sidebar-link" href="#step-4">Step 4 · BaseTest</a>
-      <a class="sidebar-link" href="#step-5">Step 5 · Config properties</a>
-      <a class="sidebar-link" href="#step-6">Step 6 · Wait strategy</a>
-      <a class="sidebar-link" href="#step-7">Step 7 · Meaningful tests</a>
-      <a class="sidebar-link" href="#step-8">Step 8 · testng.xml</a>
-      <a class="sidebar-link" href="#step-9">Step 9 · Multi-browser support</a>
-      <a class="sidebar-link" href="#step-10">Step 10 · Logging in pages</a>
-      <a class="sidebar-link" href="#step-11">Step 11 · Maven plugins</a>
-      <a class="sidebar-link" href="#step-12">Step 12 · Screenshot on failure</a>
-      <a class="sidebar-link" href="#step-13">Step 13 · Retry Analyzer</a>
-      <a class="sidebar-link" href="#step-14">Step 14 · TestListener</a>
-      <a class="sidebar-link" href="#step-15">Step 15 · Wire listener + retry</a>
-      <a class="sidebar-link" href="#step-16">Step 16 · Run with failure handling</a>
-      <a class="sidebar-link" href="#step-17">Step 17 · Logging (Log4j)</a>
-      <a class="sidebar-link" href="#step-18">Step 18 · Extent report</a>
-      <a class="sidebar-link" href="#step-19">Step 19 · Real assertions</a>
-      <a class="sidebar-link" href="#step-20">Step 20 · Results page object</a>
-      <a class="sidebar-link" href="#step-21">Step 21 · Inline DataProvider</a>
-      <a class="sidebar-link" href="#step-22">Step 22 · Listener in testng.xml</a>
-      <a class="sidebar-link" href="#step-23">Step 23 · Data driven (POI)</a>
-      <a class="sidebar-link" href="#step-24">Step 24 · WebDriverManager</a>
-      <a class="sidebar-link" href="#step-25">Step 25 · CI/CD Jenkins</a>
-      <a class="sidebar-link" href="#step-26">Step 26 · Jenkins email</a>
-      <a class="sidebar-link" href="#step-27">Step 27 · Parallel execution</a>
-      <a class="sidebar-link" href="#step-28">Step 28 · Selenium Grid</a>
-      <a class="sidebar-link" href="#step-29">Step 29 · Page Factory</a>
+        <a class="sidebar-link" href="#framework-overview">Framework overview</a>
+        <a class="sidebar-link" href="#from-scratch">From scratch guide</a>
+        <a class="sidebar-link" href="#step-0">Step 0 · Environment setup</a>
+        <a class="sidebar-link" href="#step-1">Step 1 · First interaction</a>
+        <a class="sidebar-link" href="#step-2">Step 2 · Page + Test split</a>
+        <a class="sidebar-link" href="#step-3">Step 3 · TestNG</a>
+        <a class="sidebar-link" href="#step-4">Step 4 · BaseTest</a>
+        <a class="sidebar-link" href="#step-5">Step 5 · Config properties</a>
+        <a class="sidebar-link" href="#step-6">Step 6 · Wait strategy</a>
+        <a class="sidebar-link" href="#step-7">Step 7 · Meaningful tests</a>
+        <a class="sidebar-link" href="#step-8">Step 8 · testng.xml</a>
+        <a class="sidebar-link" href="#step-9">Step 9 · Multi-browser support</a>
+        <a class="sidebar-link" href="#step-10">Step 10 · Logging in pages</a>
+        <a class="sidebar-link" href="#step-11">Step 11 · Maven plugins</a>
+        <a class="sidebar-link" href="#step-12">Step 12 · Screenshot on failure</a>
+        <a class="sidebar-link" href="#step-13">Step 13 · Retry Analyzer</a>
+        <a class="sidebar-link" href="#step-14">Step 14 · TestListener</a>
+        <a class="sidebar-link" href="#step-15">Step 15 · Wire listener + retry</a>
+        <a class="sidebar-link" href="#step-16">Step 16 · Run with failure handling</a>
+        <a class="sidebar-link" href="#step-17">Step 17 · Logging (Log4j)</a>
+        <a class="sidebar-link" href="#step-18">Step 18 · Extent report</a>
+        <a class="sidebar-link" href="#step-19">Step 19 · Real assertions</a>
+        <a class="sidebar-link" href="#step-20">Step 20 · Results page object</a>
+        <a class="sidebar-link" href="#step-21">Step 21 · Inline DataProvider</a>
+        <a class="sidebar-link" href="#step-22">Step 22 · Listener in testng.xml</a>
+        <a class="sidebar-link" href="#step-23">Step 23 · Data Driven (Apache POI)</a>
+        <a class="sidebar-link" href="#step-24">Step 24 · WebDriverManager</a>
+        <a class="sidebar-link" href="#step-25">Step 25 · CI/CD Jenkins</a>
+        <a class="sidebar-link" href="#step-26">Step 26 · Jenkins email</a>
+        <a class="sidebar-link" href="#step-27">Step 27 · Parallel execution</a>
+        <a class="sidebar-link" href="#step-28">Step 28 · Selenium Grid</a>
+        <a class="sidebar-link" href="#step-29">Step 29 · Page Factory</a>
+      </nav>
     </aside>
 
     <article class="page-content">
@@ -124,13 +129,12 @@
         <h3>3. Add Selenium Dependency</h3>
         <p>Open <code>pom.xml</code> and add:</p>
         <div class="code-block">
-<pre>&lt;dependencies&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
-        &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
-        &lt;version&gt;4.43.0&lt;/version&gt;
-    &lt;/dependency&gt;
-&lt;/dependencies&gt;</pre>
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
+    &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
+    &lt;version&gt;4.43.0&lt;/version&gt;
+    &lt;!-- ... --&gt;
+&lt;/dependency&gt;</pre>
         </div>
 
         <h3>4. ChromeDriver Setup</h3>
@@ -322,7 +326,8 @@ package utils;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
 public class BaseTest {
     protected WebDriver driver;

@@ -33,11 +33,16 @@
 
   <main class="container page-grid">
     <aside class="page-sidebar">
-      <h3>On this page</h3>
-      <a class="sidebar-link" href="#why-jenkins">Why Jenkins?</a>
-      <a class="sidebar-link" href="#build-process">Build process</a>
-      <a class="sidebar-link" href="#repo-setup">Repository setup</a>
-      <a class="sidebar-link" href="#benefits">Benefits</a>
+      <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+        <h3>On this page</h3>
+        <span class="faq-icon" aria-hidden="true"></span>
+      </button>
+      <nav class="sidebar-nav-content">
+        <a class="sidebar-link" href="#why-jenkins">Why Jenkins?</a>
+        <a class="sidebar-link" href="#build-process">Build process</a>
+        <a class="sidebar-link" href="#repo-setup">Repository setup</a>
+        <a class="sidebar-link" href="#benefits">Benefits</a>
+      </nav>
     </aside>
 
     <article class="page-content">

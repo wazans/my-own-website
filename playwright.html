@@ -33,70 +33,75 @@
 
   <main class="container page-grid">
     <aside class="page-sidebar">
-      <h3>On this page</h3>
-      <div class="progress-panel" data-testid="progress-panel">
-        <div class="progress-header">
-          <span class="level-pill" id="progress-level">Lv 1</span>
-          <span class="progress-counts" id="progress-counts">0 / 0</span>
+      <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+        <h3>On this page</h3>
+        <span class="faq-icon" aria-hidden="true"></span>
+      </button>
+      <nav class="sidebar-nav-content">
+        <div class="progress-panel" data-testid="progress-panel">
+          <div class="progress-header">
+            <span class="level-pill" id="progress-level">Lv 1</span>
+            <span class="progress-counts" id="progress-counts">0 / 0</span>
+          </div>
+          <div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>
+          <div class="xp-meta">
+            <span id="progress-pct">0%</span>
+            <span id="progress-next">5 XP to Lv 2</span>
+          </div>
         </div>
-        <div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>
-        <div class="xp-meta">
-          <span id="progress-pct">0%</span>
-          <span id="progress-next">5 XP to Lv 2</span>
-        </div>
-      </div>
 
-      <a class="sidebar-link" href="#part-a"><strong>Part A — JS / TS Basics</strong></a>
-      <a class="sidebar-link" href="#js-hello">Hello world</a>
-      <a class="sidebar-link" href="#js-variables">Variables</a>
-      <a class="sidebar-link" href="#js-constants">Constants</a>
-      <a class="sidebar-link" href="#js-datatypes">Data types</a>
-      <a class="sidebar-link" href="#js-concat">Concatenation</a>
-      <a class="sidebar-link" href="#js-interp">Interpolation</a>
-      <a class="sidebar-link" href="#js-objects">Objects</a>
-      <a class="sidebar-link" href="#js-arrays">Arrays</a>
-      <a class="sidebar-link" href="#js-obj-arr">Objects with arrays</a>
-      <a class="sidebar-link" href="#js-relational">Relational operators</a>
-      <a class="sidebar-link" href="#js-equality">Equality operators</a>
-      <a class="sidebar-link" href="#js-logical">Logical operators</a>
-      <a class="sidebar-link" href="#js-if">Conditional statements</a>
-      <a class="sidebar-link" href="#js-for">for loop</a>
-      <a class="sidebar-link" href="#js-forof">for...of</a>
-      <a class="sidebar-link" href="#js-foreach">forEach</a>
-      <a class="sidebar-link" href="#js-break">Loop break</a>
-      <a class="sidebar-link" href="#js-fn">Functions</a>
-      <a class="sidebar-link" href="#js-fn-arg">Function with argument</a>
-      <a class="sidebar-link" href="#js-fn-return">Return function</a>
-      <a class="sidebar-link" href="#js-arrow">Arrow function</a>
-      <a class="sidebar-link" href="#js-import">Import / Export</a>
-      <a class="sidebar-link" href="#js-ts-extras">TypeScript extras</a>
+        <a class="sidebar-link" href="#part-a"><strong>Part A — JS / TS Basics</strong></a>
+        <a class="sidebar-link" href="#js-hello">Hello world</a>
+        <a class="sidebar-link" href="#js-variables">Variables</a>
+        <a class="sidebar-link" href="#js-constants">Constants</a>
+        <a class="sidebar-link" href="#js-datatypes">Data types</a>
+        <a class="sidebar-link" href="#js-concat">Concatenation</a>
+        <a class="sidebar-link" href="#js-interp">Interpolation</a>
+        <a class="sidebar-link" href="#js-objects">Objects</a>
+        <a class="sidebar-link" href="#js-arrays">Arrays</a>
+        <a class="sidebar-link" href="#js-obj-arr">Objects with arrays</a>
+        <a class="sidebar-link" href="#js-relational">Relational operators</a>
+        <a class="sidebar-link" href="#js-equality">Equality operators</a>
+        <a class="sidebar-link" href="#js-logical">Logical operators</a>
+        <a class="sidebar-link" href="#js-if">Conditional statements</a>
+        <a class="sidebar-link" href="#js-for">for loop</a>
+        <a class="sidebar-link" href="#js-forof">for...of</a>
+        <a class="sidebar-link" href="#js-foreach">forEach</a>
+        <a class="sidebar-link" href="#js-break">Loop break</a>
+        <a class="sidebar-link" href="#js-fn">Functions</a>
+        <a class="sidebar-link" href="#js-fn-arg">Function with argument</a>
+        <a class="sidebar-link" href="#js-fn-return">Return function</a>
+        <a class="sidebar-link" href="#js-arrow">Arrow function</a>
+        <a class="sidebar-link" href="#js-import">Import / Export</a>
+        <a class="sidebar-link" href="#js-ts-extras">TypeScript extras</a>
 
-      <a class="sidebar-link" href="#part-b" style="margin-top:0.6rem;"><strong>Part B — Playwright</strong></a>
-      <a class="sidebar-link" href="#pw-nodejs">Setup · Node.js</a>
-      <a class="sidebar-link" href="#pw-vscode">Setup · VS Code</a>
-      <a class="sidebar-link" href="#pw-git">Setup · Git</a>
-      <a class="sidebar-link" href="#pw-clone">Clone test app</a>
-      <a class="sidebar-link" href="#pw-runapp">Run test app</a>
-      <a class="sidebar-link" href="#pw-init">Init Playwright project</a>
-      <a class="sidebar-link" href="#pw-config">playwright.config.ts</a>
-      <a class="sidebar-link" href="#pw-first">First test</a>
-      <a class="sidebar-link" href="#pw-locators">Built-in locators</a>
-      <a class="sidebar-link" href="#pw-xpath">XPath &amp; axes</a>
-      <a class="sidebar-link" href="#pw-css">CSS locators</a>
-      <a class="sidebar-link" href="#pw-actions">Actions</a>
-      <a class="sidebar-link" href="#pw-dropdowns">Dropdowns</a>
-      <a class="sidebar-link" href="#pw-upload">File upload</a>
-      <a class="sidebar-link" href="#pw-extract">Extract text &amp; tables</a>
-      <a class="sidebar-link" href="#pw-pagination">Pagination</a>
-      <a class="sidebar-link" href="#pw-datepicker">Date pickers</a>
-      <a class="sidebar-link" href="#pw-dialogs">Dialogs &amp; frames</a>
-      <a class="sidebar-link" href="#pw-context">Context, tabs &amp; popups</a>
-      <a class="sidebar-link" href="#pw-waits">Auto-waiting &amp; assertions</a>
-      <a class="sidebar-link" href="#pw-codegen">Codegen</a>
-      <a class="sidebar-link" href="#pw-trace">Trace, screenshots, flaky</a>
-      <a class="sidebar-link" href="#pw-hooks">Hooks &amp; parallelism</a>
-      <a class="sidebar-link" href="#pw-ddt">Data-driven testing</a>
-      <a class="sidebar-link" href="#pw-cheatsheet">Cheat sheet</a>
+        <a class="sidebar-link" href="#part-b" style="margin-top:0.6rem;"><strong>Part B — Playwright</strong></a>
+        <a class="sidebar-link" href="#pw-nodejs">Setup · Node.js</a>
+        <a class="sidebar-link" href="#pw-vscode">Setup · VS Code</a>
+        <a class="sidebar-link" href="#pw-git">Setup · Git</a>
+        <a class="sidebar-link" href="#pw-clone">Clone test app</a>
+        <a class="sidebar-link" href="#pw-runapp">Run test app</a>
+        <a class="sidebar-link" href="#pw-init">Init Playwright project</a>
+        <a class="sidebar-link" href="#pw-config">playwright.config.ts</a>
+        <a class="sidebar-link" href="#pw-first">First test</a>
+        <a class="sidebar-link" href="#pw-locators">Built-in locators</a>
+        <a class="sidebar-link" href="#pw-xpath">XPath &amp; axes</a>
+        <a class="sidebar-link" href="#pw-css">CSS locators</a>
+        <a class="sidebar-link" href="#pw-actions">Actions</a>
+        <a class="sidebar-link" href="#pw-dropdowns">Dropdowns</a>
+        <a class="sidebar-link" href="#pw-upload">File upload</a>
+        <a class="sidebar-link" href="#pw-extract">Extract text &amp; tables</a>
+        <a class="sidebar-link" href="#pw-pagination">Pagination</a>
+        <a class="sidebar-link" href="#pw-datepicker">Date pickers</a>
+        <a class="sidebar-link" href="#pw-dialogs">Dialogs &amp; frames</a>
+        <a class="sidebar-link" href="#pw-context">Context, tabs &amp; popups</a>
+        <a class="sidebar-link" href="#pw-waits">Auto-waiting &amp; assertions</a>
+        <a class="sidebar-link" href="#pw-codegen">Codegen</a>
+        <a class="sidebar-link" href="#pw-trace">Trace, screenshots, flaky</a>
+        <a class="sidebar-link" href="#pw-hooks">Hooks &amp; parallelism</a>
+        <a class="sidebar-link" href="#pw-ddt">Data-driven testing</a>
+        <a class="sidebar-link" href="#pw-cheatsheet">Cheat sheet</a>
+      </nav>
     </aside>
 
     <article class="page-content">
