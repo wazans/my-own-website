@@ -8,14 +8,23 @@
 
     try {
       var payload = JSON.parse(raw);
-      var fields = ['name', 'email', 'role', 'plan'];
+      // Updated fields to match the comprehensive registration form
+      var fields = [
+        'name', 'email', 'phone', 'city', 'experience',
+        'company', 'role', 'profession', 'course', 'batch', 'questions' // Added 'profession'
+      ];
       fields.forEach(function (field) {
         var node = document.querySelector('[data-summary="' + field + '"]');
         if (!node) return;
         node.textContent = payload[field] || '-';
       });
     } catch (error) {
-      // Ignore malformed session state.
+      console.error("Error parsing last registration data from session storage:", error);
+      // Optionally, display a generic message or hide the summary section
+      var summarySection = document.getElementById('submission-summary');
+      if (summarySection) {
+        summarySection.innerHTML = '<p>Unable to retrieve submission details.</p>';
+      }
     }
   }
 

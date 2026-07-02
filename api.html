@@ -3,87 +3,123 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API Basics</title>
+  <title>API Basics | TestNova</title>
   <link rel="stylesheet" href="styles.css" />
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Learn API Basics with TestNova. Understand API behavior, request/response flow, and why API testing is more stable than UI-only testing." />
+  <meta name="keywords" content="API, API Testing, REST, SOAP, GraphQL, TestNova" />
+  <meta property="og:title" content="API Basics | TestNova" />
+  <meta property="og:description" content="Learn API Basics with TestNova. Understand API behavior, request/response flow, and why API testing is more stable than UI-only testing." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.testnova.in/api.html" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" /> <!-- Placeholder image -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="API Basics | TestNova" />
+  <meta name="twitter:description" content="Learn API Basics with TestNova. Understand API behavior, request/response flow, and why API testing is more stable than UI-only testing." />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" /> <!-- Placeholder image -->
+  <link rel="canonical" href="https://www.testnova.in/api.html" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "API Basics",
+      "description": "Understand API behavior, request/response flow, and why API testing is more stable than UI-only testing.",
+      "provider": {
+        "@type": "Organization",
+        "name": "TestNova"
+      }
+    }
+  </script>
 </head>
-<body>
+<body class="learning-page api-page">
   <header class="topbar">
     <div class="container nav-container">
-      <a class="brand" href="index.html">QA Training Hub</a>
+      <a class="brand" href="index.html">TestNova</a>
       <nav class="site-nav">
         <a href="index.html">Home</a>
-        <a href="selenium.html">Selenium</a>
-        <a href="hybrid.html">Hybrid</a>
-        <a href="playwright.html">Playwright</a>
-        <a class="active" href="api.html">API</a>
-        <a href="rest.html">REST Assured</a>
-        <a href="cucumber.html">Cucumber</a>
-        <a href="jenkins.html">Jenkins</a>
-        <a href="master.html">Master Doc</a>
-        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
-        <a class="nav-register" href="register.html">Register</a>
+        <a href="ai-courses.html">AI Courses</a>
+        <a href="tech-courses.html">Technology Courses</a>
+        <a class="active" href="learning-hub.html">Learning Hub</a>
+        <a href="index.html#free-downloads">Free Resources</a>
+        <a href="index.html#blogs">Blogs</a>
+        <a href="index.html#career-guidance">Career</a>
+        <a href="index.html#about-us">About</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="nav-register" href="#registration-modal">Register</a>
       </nav>
     </div>
   </header>
 
-  <main class="container page-header">
-    <h1>API Basics</h1>
-    <p>Understand API behavior, request/response flow, and why API testing is more stable than UI-only testing.</p>
-  </main>
-
-  <main class="container page-grid">
-    <aside class="page-sidebar">
-      <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
-        <h3>On this page</h3>
-        <span class="faq-icon" aria-hidden="true"></span>
-      </button>
-      <nav class="sidebar-nav-content">
-        <a class="sidebar-link" href="#definition">What is an API?</a>
-        <a class="sidebar-link" href="#api-vs-ui">API vs UI testing</a>
-        <a class="sidebar-link" href="#api-types">API types</a>
-        <a class="sidebar-link" href="#contract">API contract</a>
-        <a class="sidebar-link" href="#local-docs">Local notes</a>
-      </nav>
-    </aside>
-
-    <article class="page-content">
-      <section class="section" id="definition">
-        <h2>What is an API?</h2>
-        <p>An API (Application Programming Interface) is a contract between a client and a server. It allows one system to request data or actions without exposing how the backend works.</p>
-        <p>Example: Uber calls the Google Maps API to show routes, distances, and travel time. Uber does not build the map service itself.</p>
-      </section>
-
-      <section class="section" id="api-vs-ui">
-        <h2>API vs UI testing</h2>
-        <p>UI testing depends on pages, buttons, and browser rendering. API testing calls the backend directly, making it faster and less brittle.</p>
-        <ul>
-          <li>UI failure: broken button, layout change, or CSS issue</li>
-          <li>API failure: incorrect response, wrong status code, or data contract mismatch</li>
-        </ul>
-      </section>
-
-      <section class="section" id="api-types">
-        <h2>Types of APIs</h2>
-        <div class="cards-grid">
-          <article>
-            <h4>REST</h4>
-            <p>Common web API style using HTTP and JSON. REST APIs are stateless and easy to automate.</p>
-          </article>
-          <article>
-            <h4>SOAP</h4>
-            <p>Legacy XML-based APIs with strict message formats. Often found in banking and enterprise systems.</p>
-          </article>
-          <article>
-            <h4>GraphQL</h4>
-            <p>Modern API style where clients request only the fields they need, reducing over-fetching.</p>
-          </article>
+  <main>
+    <section class="page-hero-section">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="breadcrumb">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learning-hub.html">Learning Hub</a></li>
+            <li><a href="api.html" aria-current="page">API Basics</a></li>
+          </ol>
+        </nav>
+        <div class="page-header">
+          <h1>API Basics</h1>
+          <p>Understand API behavior, request/response flow, and why API testing is more stable than UI-only testing.</p>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="section" id="contract">
-        <h2>API contract example</h2>
-        <p>An API contract is the documented request and response shape. Tests validate that the contract remains stable.</p>
-        <div class="code-block">
+    <section class="container page-grid">
+      <aside class="page-sidebar">
+        <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+          <h3>On this page</h3>
+          <span class="faq-icon" aria-hidden="true"></span>
+        </button>
+        <nav class="sidebar-nav-content">
+          <a class="sidebar-link" href="#definition">What is an API?</a>
+          <a class="sidebar-link" href="#api-vs-ui">API vs UI testing</a>
+          <a class="sidebar-link" href="#api-types">API types</a>
+          <a class="sidebar-link" href="#contract">API contract</a>
+          <a class="sidebar-link" href="#local-docs">Local notes</a>
+        </nav>
+      </aside>
+
+      <article class="page-content">
+        <section class="section" id="definition">
+          <h2>What is an API?</h2>
+          <p>An API (Application Programming Interface) is a contract between a client and a server. It allows one system to request data or actions without exposing how the backend works.</p>
+          <p>Example: Uber calls the Google Maps API to show routes, distances, and travel time. Uber does not build the map service itself.</p>
+        </section>
+
+        <section class="section" id="api-vs-ui">
+          <h2>API vs UI testing</h2>
+          <p>UI testing depends on pages, buttons, and browser rendering. API testing calls the backend directly, making it faster and less brittle.</p>
+          <ul>
+            <li>UI failure: broken button, layout change, or CSS issue</li>
+            <li>API failure: incorrect response, wrong status code, or data contract mismatch</li>
+          </ul>
+        </section>
+
+        <section class="section" id="api-types">
+          <h2>Types of APIs</h2>
+          <div class="cards-grid">
+            <article>
+              <h4>REST</h4>
+              <p>Common web API style using HTTP and JSON. REST APIs are stateless and easy to automate.</p>
+            </article>
+            <article>
+              <h4>SOAP</h4>
+              <p>Legacy XML-based APIs with strict message formats. Often found in banking and enterprise systems.</p>
+            </article>
+            <article>
+              <h4>GraphQL</h4>
+              <p>Modern API style where clients request only the fields they need, reducing over-fetching.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="contract">
+          <h2>API contract example</h2>
+          <p>An API contract is the documented request and response shape. Tests validate that the contract remains stable.</p>
+          <div class="code-block">
 <pre>GET /users/1
 
 Response:
@@ -91,21 +127,160 @@ Response:
   "id": 1,
   "name": "Wasim"
 }</pre>
-        </div>
-        <p>Focus on the request input, expected status code, and response body rather than server internals.</p>
-      </section>
+          </div>
+          <p>Focus on the request input, expected status code, and response body rather than server internals.</p>
+        </section>
 
-      <section class="section" id="local-docs">
-        <h2>Local API notes</h2>
-        <p>This page is based on your local API training notes for clear, self-contained content.</p>
-        <a class="link-btn" href="API in detail.txt" target="_blank">Open local API notes</a>
-      </section>
-    </article>
+        <section class="section" id="local-docs">
+          <h2>Local API notes</h2>
+          <p>This page is based on your local API training notes for clear, self-contained content.</p>
+          <a class="link-btn" href="API in detail.txt" target="_blank">Open local API notes</a>
+        </section>
+
+        <!-- Navigation for Previous/Next Lesson -->
+        <nav class="lesson-navigation container">
+          <a href="playwright.html" class="prev-lesson">← Previous Lesson</a>
+          <a href="rest.html" class="next-lesson">Next Lesson →</a>
+        </nav>
+
+        <!-- Related Courses Section -->
+        <section class="nova-section section-alt" id="related-courses">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">More Learning</span>
+              <h2>Related Courses</h2>
+              <p>Expand your QA automation skills with these complementary courses.</p>
+            </div>
+            <div class="cards-grid">
+              <article class="feature-card">
+                <h3>REST Assured</h3>
+                <p>Master API automation with REST Assured, focusing on request setup, JSON extraction, and response assertions.</p>
+                <a href="rest.html" class="secondary-btn">Learn More</a>
+              </article>
+              <article class="feature-card">
+                <h3>Playwright with TypeScript</h3>
+                <p>Modern end-to-end testing with Playwright, covering JavaScript/TypeScript basics and advanced features.</p>
+                <a href="playwright.html" class="secondary-btn">Learn More</a>
+              </article>
+              <article class="feature-card">
+                <h3>UI Hybrid Framework</h3>
+                <p>Build a professional Selenium Java automation framework from scratch with TestNG, Maven, and more.</p>
+                <a href="hybrid.html" class="secondary-btn">Learn More</a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Free Resources Section -->
+        <section class="nova-section" id="free-resources">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">Free Value</span>
+              <h2>Unlock Free QA Resources</h2>
+              <p>Boost your learning with these complimentary guides and templates.</p>
+            </div>
+            <div class="cards-grid">
+              <article class="feature-card">
+                <h3>✅ FREE API Cheat Sheet</h3>
+                <p>A handy reference for common API testing commands and best practices.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE API Cheat Sheet">Grab Cheat Sheet</a>
+              </article>
+              <article class="feature-card">
+                <h3>✅ FREE Automation Roadmap</h3>
+                <p>Get a step-by-step guide to mastering automation from beginner to advanced levels.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE Automation Roadmap">Get Roadmap</a>
+              </article>
+              <article class="feature-card">
+                <h3>✅ FREE QA Resume Template</h3>
+                <p>Download a professional resume template tailored for QA engineers.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE QA Resume Template">Download Template</a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Trainer Section -->
+        <section class="nova-section section-alt" id="trainer">
+          <div class="container trainer-layout">
+            <div class="trainer-image glass-card">
+              <img
+                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80"
+                alt="Wasim Ansari - Senior QA Automation Engineer"
+                width="900"
+                height="1100"
+                loading="lazy"
+              />
+            </div>
+            <div class="trainer-copy">
+              <span class="section-tag">Your Instructor</span>
+              <h2>Meet Wasim Ansari</h2>
+              <p class="hero-subtitle">Senior QA Automation Engineer with 10+ Years Experience</p>
+              <p>Wasim Ansari is a Senior QA Automation Engineer with over 10 years of industry experience. He has trained professionals and freshers in Selenium, Playwright, API Testing, Java, and modern automation frameworks. His focus is practical, project-based learning that helps students become job-ready.</p>
+              <ul class="trainer-specializations">
+                <li>Selenium</li>
+                <li>Playwright</li>
+                <li>API Testing</li>
+                <li>Java</li>
+                <li>Cucumber</li>
+                <li>TestNG</li>
+                <li>CI/CD</li>
+                <li>AI for QA</li>
+              </ul>
+              <div class="trainer-social-links">
+                <a href="https://www.linkedin.com/in/wasimansari" target="_blank" rel="noopener noreferrer" class="secondary-btn">LinkedIn</a>
+                <a href="mailto:wasim.ansari@testnova.in" class="secondary-btn">Email</a>
+                <a href="https://www.testnova.in" target="_blank" rel="noopener noreferrer" class="secondary-btn">Website</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="nova-section" id="faq">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">FAQ</span>
+              <h2>Common Questions About API Testing</h2>
+            </div>
+            <div class="faq-list" data-accordion>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>Why is API testing important?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>API testing is crucial because it allows you to test the core business logic of an application independently of the UI. It's faster, more stable, and helps identify issues earlier in the development cycle.</p>
+                </div>
+              </article>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>What's the difference between REST and SOAP?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>REST (Representational State Transfer) is an architectural style that uses standard HTTP methods and typically JSON/XML for data. SOAP (Simple Object Access Protocol) is a protocol that relies on XML and is more structured and rigid.</p>
+                </div>
+              </article>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>Do I need coding skills for API testing?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>While some tools allow for codeless API testing, having coding skills (e.g., Java for Rest Assured, JavaScript for Playwright API testing) allows for more robust, flexible, and maintainable automation frameworks.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>QA Training Hub · API Basics page.</p>
+      <p>&copy; <span data-year></span> TestNova. All rights reserved.</p>
     </div>
   </footer>
   <script src="site.js"></script>

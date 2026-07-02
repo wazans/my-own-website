@@ -3,74 +3,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>REST Assured</title>
+  <title>REST Assured Basics | TestNova</title>
   <link rel="stylesheet" href="styles.css" />
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Automate API validation with TestNova's Rest Assured examples. Learn request setup, GET operations, JSON extraction, and response assertions." />
+  <meta name="keywords" content="REST Assured, API Testing, Java, Automation, QA, JSON, HTTP, TestNova" />
+  <meta property="og:title" content="REST Assured Basics | TestNova" />
+  <meta property="og:description" content="Automate API validation with TestNova's Rest Assured examples. Learn request setup, GET operations, JSON extraction, and response assertions." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.testnova.in/rest.html" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" /> <!-- Placeholder image -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="REST Assured Basics | TestNova" />
+  <meta name="twitter:description" content="Automate API validation with TestNova's Rest Assured examples. Learn request setup, GET operations, JSON extraction, and response assertions." />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" /> <!-- Placeholder image -->
+  <link rel="canonical" href="https://www.testnova.in/rest.html" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "REST Assured Basics",
+      "description": "Automate API validation with local Rest Assured examples. Learn request setup, GET operations, JSON extraction, and response assertions.",
+      "provider": {
+        "@type": "Organization",
+        "name": "TestNova"
+      }
+    }
+  </script>
 </head>
-<body>
+<body class="learning-page rest-page">
   <header class="topbar">
     <div class="container nav-container">
-      <a class="brand" href="index.html">QA Training Hub</a>
+      <a class="brand" href="index.html">TestNova</a>
       <nav class="site-nav">
         <a href="index.html">Home</a>
-        <a href="selenium.html">Selenium</a>
-        <a href="hybrid.html">Hybrid</a>
-        <a href="playwright.html">Playwright</a>
-        <a href="api.html">API</a>
-        <a class="active" href="rest.html">REST Assured</a>
-        <a href="cucumber.html">Cucumber</a>
-        <a href="jenkins.html">Jenkins</a>
-        <a href="master.html">Master Doc</a>
-        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
-        <a class="nav-register" href="register.html">Register</a>
+        <a href="ai-courses.html">AI Courses</a>
+        <a href="tech-courses.html">Technology Courses</a>
+        <a class="active" href="learning-hub.html">Learning Hub</a>
+        <a href="index.html#free-downloads">Free Resources</a>
+        <a href="index.html#blogs">Blogs</a>
+        <a href="index.html#career-guidance">Career</a>
+        <a href="index.html#about-us">About</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="nav-register" href="#registration-modal">Register</a>
       </nav>
     </div>
   </header>
 
-  <main class="container page-header">
-    <h1>REST Assured Basics</h1>
-    <p>Automate API validation with local Rest Assured examples. Learn request setup, GET operations, JSON extraction, and response assertions.</p>
-  </main>
+  <main>
+    <section class="page-hero-section">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="breadcrumb">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learning-hub.html">Learning Hub</a></li>
+            <li><a href="rest.html" aria-current="page">REST Assured Basics</a></li>
+          </ol>
+        </nav>
+        <div class="page-header">
+          <h1>REST Assured Basics</h1>
+          <p>Automate API validation with local Rest Assured examples. Learn request setup, GET operations, JSON extraction, and response assertions.</p>
+        </div>
+      </div>
+    </section>
 
-  <main class="container page-grid">
-    <aside class="page-sidebar">
-      <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
-        <h3>On this page</h3>
-        <span class="faq-icon" aria-hidden="true"></span>
-      </button>
-      <nav class="sidebar-nav-content">
-        <a class="sidebar-link" href="#setup">Setup</a>
-        <a class="sidebar-link" href="#base-uri">Base URI</a>
-        <a class="sidebar-link" href="#get-requests">GET requests</a>
-        <a class="sidebar-link" href="#validate-response">Validate response</a>
-        <a class="sidebar-link" href="#local-docs">Local notes</a>
-      </nav>
-    </aside>
+    <section class="container page-grid">
+      <aside class="page-sidebar">
+        <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+          <h3>On this page</h3>
+          <span class="faq-icon" aria-hidden="true"></span>
+        </button>
+        <nav class="sidebar-nav-content">
+          <a class="sidebar-link" href="#setup">Setup</a>
+          <a class="sidebar-link" href="#base-uri">Base URI</a>
+          <a class="sidebar-link" href="#get-requests">GET requests</a>
+          <a class="sidebar-link" href="#validate-response">Validate response</a>
+          <a class="sidebar-link" href="#local-docs">Local notes</a>
+        </nav>
+      </aside>
 
-    <article class="page-content">
-      <section class="section" id="setup">
-        <h2>Rest Assured setup</h2>
-        <p>Create a Maven project and add Rest Assured in <code>pom.xml</code>. This gives you the core API testing library for Java.</p>
-        <div class="code-block">
+      <article class="page-content">
+        <section class="section" id="setup">
+          <h2>Rest Assured setup</h2>
+          <p>Create a Maven project and add Rest Assured in <code>pom.xml</code>. This gives you the core API testing library for Java.</p>
+          <div class="code-block">
 <pre>&lt;dependency&gt;
   &lt;groupId&gt;io.rest-assured&lt;/groupId&gt;
   &lt;artifactId&gt;rest-assured&lt;/artifactId&gt;
   &lt;version&gt;5.3.0&lt;/version&gt;
 &lt;/dependency&gt;</pre>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section class="section" id="base-uri">
-        <h2>Base URI</h2>
-        <p>Set the base URI once for all requests. Using a local API makes tests faster and isolated from external services.</p>
-        <div class="code-block">
+        <section class="section" id="base-uri">
+          <h2>Base URI</h2>
+          <p>Set the base URI once for all requests. Using a local API makes tests faster and isolated from external services.</p>
+          <div class="code-block">
 <pre>RestAssured.baseURI = "http://localhost:3000";</pre>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section class="section" id="get-requests">
-        <h2>GET requests</h2>
-        <p>Use <code>given().when().get()</code> to request resources. Verify the HTTP status code and response payload.</p>
-        <div class="code-block">
+        <section class="section" id="get-requests">
+          <h2>GET requests</h2>
+          <p>Use <code>given().when().get()</code> to request resources. Verify the HTTP status code and response payload.</p>
+          <div class="code-block">
 <pre>given()
   .when()
     .get("/booking")
@@ -83,13 +119,13 @@ given()
   .then()
     .statusCode(200);
 </pre>
-      </div>
-      </section>
+        </div>
+        </section>
 
-      <section class="section" id="validate-response">
-        <h2>Validate response</h2>
-        <p>Extract JSON values and assert the response body using Hamcrest matchers.</p>
-        <div class="code-block">
+        <section class="section" id="validate-response">
+          <h2>Validate response</h2>
+          <p>Extract JSON values and assert the response body using Hamcrest matchers.</p>
+          <div class="code-block">
 <pre>Response response = given()
   .header("Content-Type", "application/json")
 .when()
@@ -100,21 +136,160 @@ given()
 
 String firstName = response.jsonPath().getString("firstname");
 response.then().body("id", equalTo(1));</pre>
-        </div>
-        <p>Schema validation can be added later with <code>JsonSchemaValidator.matchesJsonSchemaInClasspath</code>, but start with basic request and response checks first.</p>
-      </section>
+          </div>
+          <p>Schema validation can be added later with <code>JsonSchemaValidator.matchesJsonSchemaInClasspath</code>, but start with basic request and response checks first.</p>
+        </section>
 
-      <section class="section" id="local-docs">
-        <h2>Local REST notes</h2>
-        <p>This page uses your local REST training notes for the example flow and API concepts.</p>
-        <a class="link-btn" href="REST.txt" target="_blank">Open local REST notes</a>
-      </section>
-    </article>
+        <section class="section" id="local-docs">
+          <h2>Local REST notes</h2>
+          <p>This page uses your local REST training notes for the example flow and API concepts.</p>
+          <a class="link-btn" href="REST.txt" target="_blank">Open local REST notes</a>
+        </section>
+
+        <!-- Navigation for Previous/Next Lesson -->
+        <nav class="lesson-navigation container">
+          <a href="playwright.html" class="prev-lesson">← Previous Lesson</a>
+          <a href="api.html" class="next-lesson">Next Lesson →</a>
+        </nav>
+
+        <!-- Related Courses Section -->
+        <section class="nova-section section-alt" id="related-courses">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">More Learning</span>
+              <h2>Related Courses</h2>
+              <p>Expand your QA automation skills with these complementary courses.</p>
+            </div>
+            <div class="cards-grid">
+              <article class="feature-card">
+                <h3>API Basics</h3>
+                <p>Understand API behavior, request/response flow, and why API testing is more stable than UI-only testing.</p>
+                <a href="api.html" class="secondary-btn">Learn More</a>
+              </article>
+              <article class="feature-card">
+                <h3>Cucumber Basics</h3>
+                <p>Use BDD feature files, step definitions, and runner configuration to write readable automation scenarios.</p>
+                <a href="cucumber.html" class="secondary-btn">Learn More</a>
+              </article>
+              <article class="feature-card">
+                <h3>UI Hybrid Framework</h3>
+                <p>Build a professional Selenium Java automation framework from scratch with TestNG, Maven, and more.</p>
+                <a href="hybrid.html" class="secondary-btn">Learn More</a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Free Resources Section -->
+        <section class="nova-section" id="free-resources">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">Free Value</span>
+              <h2>Unlock Free QA Resources</h2>
+              <p>Boost your learning with these complimentary guides and templates.</p>
+            </div>
+            <div class="cards-grid">
+              <article class="feature-card">
+                <h3>✅ FREE API Cheat Sheet</h3>
+                <p>A handy reference for common API testing commands and best practices.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE API Cheat Sheet">Grab Cheat Sheet</a>
+              </article>
+              <article class="feature-card">
+                <h3>✅ FREE Automation Roadmap</h3>
+                <p>Get a step-by-step guide to mastering automation from beginner to advanced levels.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE Automation Roadmap">Get Roadmap</a>
+              </article>
+              <article class="feature-card">
+                <h3>✅ FREE QA Resume Template</h3>
+                <p>Download a professional resume template tailored for QA engineers.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE QA Resume Template">Download Template</a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Trainer Section -->
+        <section class="nova-section section-alt" id="trainer">
+          <div class="container trainer-layout">
+            <div class="trainer-image glass-card">
+              <img
+                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80"
+                alt="Wasim Ansari - Senior QA Automation Engineer"
+                width="900"
+                height="1100"
+                loading="lazy"
+              />
+            </div>
+            <div class="trainer-copy">
+              <span class="section-tag">Your Instructor</span>
+              <h2>Meet Wasim Ansari</h2>
+              <p class="hero-subtitle">Senior QA Automation Engineer with 10+ Years Experience</p>
+              <p>Wasim Ansari is a Senior QA Automation Engineer with over 10 years of industry experience. He has trained professionals and freshers in Selenium, Playwright, API Testing, Java, and modern automation frameworks. His focus is practical, project-based learning that helps students become job-ready.</p>
+              <ul class="trainer-specializations">
+                <li>Selenium</li>
+                <li>Playwright</li>
+                <li>API Testing</li>
+                <li>Java</li>
+                <li>Cucumber</li>
+                <li>TestNG</li>
+                <li>CI/CD</li>
+                <li>AI for QA</li>
+              </ul>
+              <div class="trainer-social-links">
+                <a href="https://www.linkedin.com/in/wasimansari" target="_blank" rel="noopener noreferrer" class="secondary-btn">LinkedIn</a>
+                <a href="mailto:wasim.ansari@testnova.in" class="secondary-btn">Email</a>
+                <a href="https://www.testnova.in" target="_blank" rel="noopener noreferrer" class="secondary-btn">Website</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="nova-section" id="faq">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">FAQ</span>
+              <h2>Common Questions About REST Assured</h2>
+            </div>
+            <div class="faq-list" data-accordion>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>What is REST Assured used for?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>REST Assured is a Java library that provides a domain-specific language (DSL) for writing powerful, maintainable tests for RESTful APIs. It simplifies HTTP requests and response validation.</p>
+                </div>
+              </article>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>Why use REST Assured over other API testing tools?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>REST Assured is a code-based solution, offering greater flexibility and integration with existing Java projects and CI/CD pipelines compared to GUI-based tools. It's excellent for building robust, automated API test suites.</p>
+                </div>
+              </article>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>What are Hamcrest matchers in REST Assured?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>Hamcrest matchers are used with REST Assured to make assertions more readable and expressive. They allow you to write assertions like <code>body("id", equalTo(1))</code>, which clearly states the expected outcome.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>QA Training Hub · REST Assured page.</p>
+      <p>&copy; <span data-year></span> TestNova. All rights reserved.</p>
     </div>
   </footer>
   <script src="site.js"></script>

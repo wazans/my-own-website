@@ -3,58 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jenkins Automation</title>
+  <title>Jenkins Automation | TestNova</title>
   <link rel="stylesheet" href="styles.css" />
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Learn Jenkins Automation with TestNova. Use Jenkins to run your automation suite in CI/CD, collect reports, and manage scheduled builds." />
+  <meta name="keywords" content="Jenkins, CI/CD, Automation, QA, Testing, Pipeline, Maven, Git, TestNova" />
+  <meta property="og:title" content="Jenkins Automation | TestNova" />
+  <meta property="og:description" content="Learn Jenkins Automation with TestNova. Use Jenkins to run your automation suite in CI/CD, collect reports, and manage scheduled builds." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.testnova.in/jenkins.html" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" /> <!-- Placeholder image -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jenkins Automation | TestNova" />
+  <meta name="twitter:description" content="Learn Jenkins Automation with TestNova. Use Jenkins to run your automation suite in CI/CD, collect reports, and manage scheduled builds." />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" /> <!-- Placeholder image -->
+  <link rel="canonical" href="https://www.testnova.in/jenkins.html" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "Jenkins Automation",
+      "description": "Use Jenkins to run your automation suite in CI/CD, collect reports, and manage scheduled builds from a local project repository.",
+      "provider": {
+        "@type": "Organization",
+        "name": "TestNova"
+      }
+    }
+  </script>
 </head>
-<body>
+<body class="learning-page jenkins-page">
   <header class="topbar">
     <div class="container nav-container">
-      <a class="brand" href="index.html">QA Training Hub</a>
+      <a class="brand" href="index.html">TestNova</a>
       <nav class="site-nav">
         <a href="index.html">Home</a>
-        <a href="selenium.html">Selenium</a>
-        <a href="hybrid.html">Hybrid</a>
-        <a href="playwright.html">Playwright</a>
-        <a href="api.html">API</a>
-        <a href="rest.html">REST Assured</a>
-        <a href="cucumber.html">Cucumber</a>
-        <a class="active" href="jenkins.html">Jenkins</a>
-        <a href="master.html">Master Doc</a>
-        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
-        <a class="nav-register" href="register.html">Register</a>
+        <a href="ai-courses.html">AI Courses</a>
+        <a href="tech-courses.html">Technology Courses</a>
+        <a class="active" href="learning-hub.html">Learning Hub</a>
+        <a href="index.html#free-downloads">Free Resources</a>
+        <a href="index.html#blogs">Blogs</a>
+        <a href="index.html#career-guidance">Career</a>
+        <a href="index.html#about-us">About</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="nav-register" href="#registration-modal">Register</a>
       </nav>
     </div>
   </header>
 
-  <main class="container page-header">
-    <h1>Jenkins Working Project</h1>
-    <p>Use Jenkins to run your automation suite in CI/CD, collect reports, and manage scheduled builds from a local project repository.</p>
-  </main>
+  <main>
+    <section class="page-hero-section">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="breadcrumb">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learning-hub.html">Learning Hub</a></li>
+            <li><a href="jenkins.html" aria-current="page">Jenkins Automation</a></li>
+          </ol>
+        </nav>
+        <div class="page-header">
+          <h1>Jenkins Working Project</h1>
+          <p>Use Jenkins to run your automation suite in CI/CD, collect reports, and manage scheduled builds from a local project repository.</p>
+        </div>
+      </div>
+    </section>
 
-  <main class="container page-grid">
-    <aside class="page-sidebar">
-      <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
-        <h3>On this page</h3>
-        <span class="faq-icon" aria-hidden="true"></span>
-      </button>
-      <nav class="sidebar-nav-content">
-        <a class="sidebar-link" href="#why-jenkins">Why Jenkins?</a>
-        <a class="sidebar-link" href="#build-process">Build process</a>
-        <a class="sidebar-link" href="#repo-setup">Repository setup</a>
-        <a class="sidebar-link" href="#benefits">Benefits</a>
-      </nav>
-    </aside>
+    <section class="container page-grid">
+      <aside class="page-sidebar">
+        <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+          <h3>On this page</h3>
+          <span class="faq-icon" aria-hidden="true"></span>
+        </button>
+        <nav class="sidebar-nav-content">
+          <a class="sidebar-link" href="#why-jenkins">Why Jenkins?</a>
+          <a class="sidebar-link" href="#build-process">Build process</a>
+          <a class="sidebar-link" href="#repo-setup">Repository setup</a>
+          <a class="sidebar-link" href="#benefits">Benefits</a>
+        </nav>
+      </aside>
 
-    <article class="page-content">
-      <section class="section" id="why-jenkins">
-        <h2>Why Jenkins?</h2>
-        <p>Jenkins automates test execution and build deliveries so QA work runs on schedule or when code changes, without manual execution.</p>
-      </section>
+      <article class="page-content">
+        <section class="section" id="why-jenkins">
+          <h2>Why Jenkins?</h2>
+          <p>Jenkins automates test execution and build deliveries so QA work runs on schedule or when code changes, without manual execution.</p>
+        </section>
 
-      <section class="section" id="build-process">
-        <h2>Build process</h2>
-        <p>A Jenkins pipeline typically checks out a repo, installs dependencies, runs Maven tests, and publishes test artifacts or reports.</p>
-        <div class="code-block">
+        <section class="section" id="build-process">
+          <h2>Build process</h2>
+          <p>A Jenkins pipeline typically checks out a repo, installs dependencies, runs Maven tests, and publishes test artifacts or reports.</p>
+          <div class="code-block">
 <pre>pipeline {
   agent any
   stages {
@@ -66,39 +102,178 @@
     }
   }
 }</pre>
-        </div>
-        <p>Update the git URL to point to your local automation repository or internal Git host.</p>
-      </section>
+          </div>
+          <p>Update the git URL to point to your local automation repository or internal Git host.</p>
+        </section>
 
-      <section class="section" id="repo-setup">
-        <h2>Repository setup</h2>
-        <p>Keep Jenkins configuration inside your automation project, including pipeline scripts, test commands, and report generation.</p>
-        <p>Use local project branches and internal Git repositories instead of external document links.</p>
-      </section>
+        <section class="section" id="repo-setup">
+          <h2>Repository setup</h2>
+          <p>Keep Jenkins configuration inside your automation project, including pipeline scripts, test commands, and report generation.</p>
+          <p>Use local project branches and internal Git repositories instead of external document links.</p>
+        </section>
 
-      <section class="section" id="benefits">
-        <h2>Key benefits</h2>
-        <div class="cards-grid">
-          <article>
-            <h4>Scheduled runs</h4>
-            <p>Run tests automatically on every commit or at fixed intervals.</p>
-          </article>
-          <article>
-            <h4>Central reports</h4>
-            <p>Keep logs, screenshots, and test results in one accessible place.</p>
-          </article>
-          <article>
-            <h4>CI/CD alignment</h4>
-            <p>Use Jenkins as the integration point between source control and automated QA tests.</p>
-          </article>
-        </div>
-      </section>
-    </article>
+        <section class="section" id="benefits">
+          <h2>Key benefits</h2>
+          <div class="cards-grid">
+            <article>
+              <h4>Scheduled runs</h4>
+              <p>Run tests automatically on every commit or at fixed intervals.</p>
+            </article>
+            <article>
+              <h4>Central reports</h4>
+              <p>Keep logs, screenshots, and test results in one accessible place.</p>
+            </article>
+            <article>
+              <h4>CI/CD alignment</h4>
+              <p>Use Jenkins as the integration point between source control and automated QA tests.</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Navigation for Previous/Next Lesson -->
+        <nav class="lesson-navigation container">
+          <a href="cucumber.html" class="prev-lesson">← Previous Lesson</a>
+          <a href="master.html" class="next-lesson">Next Lesson →</a>
+        </nav>
+
+        <!-- Related Courses Section -->
+        <section class="nova-section section-alt" id="related-courses">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">More Learning</span>
+              <h2>Related Courses</h2>
+              <p>Expand your QA automation skills with these complementary courses.</p>
+            </div>
+            <div class="cards-grid">
+              <article class="feature-card">
+                <h3>UI Hybrid Framework</h3>
+                <p>Build a professional Selenium Java automation framework from scratch with TestNG, Maven, and more.</p>
+                <a href="hybrid.html" class="secondary-btn">Learn More</a>
+              </article>
+              <article class="feature-card">
+                <h3>Cucumber Basics</h3>
+                <p>Use BDD feature files, step definitions, and runner configuration to write readable automation scenarios.</p>
+                <a href="cucumber.html" class="secondary-btn">Learn More</a>
+              </article>
+              <article class="feature-card">
+                <h3>Master Doc Notes (Java)</h3>
+                <p>Core Java concepts from your master document, including execution flow, loops, collections, and practical examples for automation.</p>
+                <a href="master.html" class="secondary-btn">Learn More</a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Free Resources Section -->
+        <section class="nova-section" id="free-resources">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">Free Value</span>
+              <h2>Unlock Free QA Resources</h2>
+              <p>Boost your learning with these complimentary guides and templates.</p>
+            </div>
+            <div class="cards-grid">
+              <article class="feature-card">
+                <h3>✅ FREE CI/CD Checklist</h3>
+                <p>A checklist to ensure your CI/CD pipeline is robust and efficient for automation.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE CI/CD Checklist">Download Now</a>
+              </article>
+              <article class="feature-card">
+                <h3>✅ FREE Automation Roadmap</h3>
+                <p>Get a step-by-step guide to mastering automation from beginner to advanced levels.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE Automation Roadmap">Get Roadmap</a>
+              </article>
+              <article class="feature-card">
+                <h3>✅ FREE QA Resume Template</h3>
+                <p>Download a professional resume template tailored for QA engineers.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE QA Resume Template">Download Template</a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Trainer Section -->
+        <section class="nova-section section-alt" id="trainer">
+          <div class="container trainer-layout">
+            <div class="trainer-image glass-card">
+              <img
+                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80"
+                alt="Wasim Ansari - Senior QA Automation Engineer"
+                width="900"
+                height="1100"
+                loading="lazy"
+              />
+            </div>
+            <div class="trainer-copy">
+              <span class="section-tag">Your Instructor</span>
+              <h2>Meet Wasim Ansari</h2>
+              <p class="hero-subtitle">Senior QA Automation Engineer with 10+ Years Experience</p>
+              <p>Wasim Ansari is a Senior QA Automation Engineer with over 10 years of industry experience. He has trained professionals and freshers in Selenium, Playwright, API Testing, Java, and modern automation frameworks. His focus is practical, project-based learning that helps students become job-ready.</p>
+              <ul class="trainer-specializations">
+                <li>Selenium</li>
+                <li>Playwright</li>
+                <li>API Testing</li>
+                <li>Java</li>
+                <li>Cucumber</li>
+                <li>TestNG</li>
+                <li>CI/CD</li>
+                <li>AI for QA</li>
+              </ul>
+              <div class="trainer-social-links">
+                <a href="https://www.linkedin.com/in/wasimansari" target="_blank" rel="noopener noreferrer" class="secondary-btn">LinkedIn</a>
+                <a href="mailto:wasim.ansari@testnova.in" class="secondary-btn">Email</a>
+                <a href="https://www.testnova.in" target="_blank" rel="noopener noreferrer" class="secondary-btn">Website</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="nova-section" id="faq">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">FAQ</span>
+              <h2>Common Questions About Jenkins</h2>
+            </div>
+            <div class="faq-list" data-accordion>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>What is Jenkins used for in QA?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>In QA, Jenkins is primarily used for continuous integration and continuous delivery (CI/CD). It automates the execution of test suites, generates reports, and integrates with version control systems to trigger builds on code changes.</p>
+                </div>
+              </article>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>Is Jenkins free to use?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>Yes, Jenkins is an open-source automation server, which means it is free to download and use. It has a large community and a rich ecosystem of plugins.</p>
+                </div>
+              </article>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>Can Jenkins run different types of tests?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>Absolutely. Jenkins can be configured to run various types of tests, including unit tests, integration tests, end-to-end UI tests (like Selenium or Playwright), and API tests, by integrating with different build tools and frameworks.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>QA Training Hub · Jenkins page.</p>
+      <p>&copy; <span data-year></span> TestNova. All rights reserved.</p>
     </div>
   </footer>
   <script src="site.js"></script>

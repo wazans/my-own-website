@@ -3,59 +3,95 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Master Doc Notes</title>
+  <title>Master Doc Notes | TestNova</title>
   <link rel="stylesheet" href="styles.css" />
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Master Java concepts for QA automation with TestNova's Master Doc Notes. Covers execution flow, loops, collections, and practical examples." />
+  <meta name="keywords" content="Java, Core Java, Automation, QA, Testing, Loops, Collections, Palindrome, TestNova" />
+  <meta property="og:title" content="Master Doc Notes | TestNova" />
+  <meta property="og:description" content="Master Java concepts for QA automation with TestNova's Master Doc Notes. Covers execution flow, loops, collections, and practical examples." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.testnova.in/master.html" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" /> <!-- Placeholder image -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Master Doc Notes | TestNova" />
+  <meta name="twitter:description" content="Master Java concepts for QA automation with TestNova's Master Doc Notes. Covers execution flow, loops, collections, and practical examples." />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" /> <!-- Placeholder image -->
+  <link rel="canonical" href="https://www.testnova.in/master.html" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "Master Doc Notes (Core Java)",
+      "description": "Core Java concepts from your master document, including execution flow, loops, collections, and practical examples for automation.",
+      "provider": {
+        "@type": "Organization",
+        "name": "TestNova"
+      }
+    }
+  </script>
 </head>
-<body>
+<body class="learning-page master-page">
   <header class="topbar">
     <div class="container nav-container">
-      <a class="brand" href="index.html">QA Training Hub</a>
+      <a class="brand" href="index.html">TestNova</a>
       <nav class="site-nav">
         <a href="index.html">Home</a>
-        <a href="selenium.html">Selenium</a>
-        <a href="hybrid.html">Hybrid</a>
-        <a href="playwright.html">Playwright</a>
-        <a href="api.html">API</a>
-        <a href="rest.html">REST Assured</a>
-        <a href="cucumber.html">Cucumber</a>
-        <a href="jenkins.html">Jenkins</a>
-        <a class="active" href="master.html">Master Doc</a>
-        <a class="nav-cta" href="https://www.sreenidhirajakrishnan.com/practice" target="_blank" rel="noopener noreferrer">Practice site</a>
-        <a class="nav-register" href="register.html">Register</a>
+        <a href="ai-courses.html">AI Courses</a>
+        <a href="tech-courses.html">Technology Courses</a>
+        <a class="active" href="learning-hub.html">Learning Hub</a>
+        <a href="index.html#free-downloads">Free Resources</a>
+        <a href="index.html#blogs">Blogs</a>
+        <a href="index.html#career-guidance">Career</a>
+        <a href="index.html#about-us">About</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="nav-register" href="#registration-modal">Register</a>
       </nav>
     </div>
   </header>
 
-  <main class="container page-header">
-    <h1>Master Doc Notes</h1>
-    <p>Core Java concepts from your master document, including execution flow, loops, collections, and practical examples for automation.</p>
-  </main>
+  <main>
+    <section class="page-hero-section">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="breadcrumb">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learning-hub.html">Learning Hub</a></li>
+            <li><a href="master.html" aria-current="page">Master Doc Notes</a></li>
+          </ol>
+        </nav>
+        <div class="page-header">
+          <h1>Master Doc Notes</h1>
+          <p>Core Java concepts from your master document, including execution flow, loops, collections, and practical examples for automation.</p>
+        </div>
+      </div>
+    </section>
 
-  <main class="container page-grid">
-    <aside class="page-sidebar">
-      <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
-        <h3>On this page</h3>
-        <span class="faq-icon" aria-hidden="true"></span>
-      </button>
-      <nav class="sidebar-nav-content">
-        <a class="sidebar-link" href="#java-flow">Java flow</a>
-        <a class="sidebar-link" href="#palindrome">Palindrome</a>
-        <a class="sidebar-link" href="#collections">Collections</a>
-        <a class="sidebar-link" href="#loops">Loops</a>
-        <a class="sidebar-link" href="#local-docs">Local notes</a>
-      </nav>
-    </aside>
+    <section class="container page-grid">
+      <aside class="page-sidebar">
+        <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
+          <h3>On this page</h3>
+          <span class="faq-icon" aria-hidden="true"></span>
+        </button>
+        <nav class="sidebar-nav-content">
+          <a class="sidebar-link" href="#java-flow">Java flow</a>
+          <a class="sidebar-link" href="#palindrome">Palindrome</a>
+          <a class="sidebar-link" href="#collections">Collections</a>
+          <a class="sidebar-link" href="#loops">Loops</a>
+          <a class="sidebar-link" href="#local-docs">Local notes</a>
+        </nav>
+      </aside>
 
-    <article class="page-content">
-      <section class="section" id="java-flow">
-        <h2>Java execution flow</h2>
-        <p>Java source files are compiled by <code>javac</code> into bytecode (<code>.class</code> files). The JVM executes bytecode and converts it to machine instructions.</p>
-        <p>This flow is the foundation for automation code written in Java, including Selenium and API tests.</p>
-      </section>
+      <article class="page-content">
+        <section class="section" id="java-flow">
+          <h2>Java execution flow</h2>
+          <p>Java source files are compiled by <code>javac</code> into bytecode (<code>.class</code> files). The JVM executes bytecode and converts it to machine instructions.</p>
+          <p>This flow is the foundation for automation code written in Java, including Selenium and API tests.</p>
+        </section>
 
-      <section class="section" id="palindrome">
-        <h2>Palindrome example</h2>
-        <div class="code-block">
+        <section class="section" id="palindrome">
+          <h2>Palindrome example</h2>
+          <div class="code-block">
 <pre>public class E_StringPalindromeCheck {
   public static void main(String[] args) {
     String s = "arora";
@@ -70,13 +106,13 @@
     }
   }
 }</pre>
-        </div>
-        <p>This example shows string reversal, loop control, and conditional checking in Java.</p>
-      </section>
+          </div>
+          <p>This example shows string reversal, loop control, and conditional checking in Java.</p>
+        </section>
 
-      <section class="section" id="collections">
-        <h2>ArrayList iteration</h2>
-        <div class="code-block">
+        <section class="section" id="collections">
+          <h2>ArrayList iteration</h2>
+          <div class="code-block">
 <pre>ArrayList<String> al = new ArrayList<String>();
 al.add("wasim");
 al.add("Amna");
@@ -91,33 +127,172 @@ for (int i = 0; i < al.size(); i++) {
 for (String name : al) {
   System.out.println(name);
 }</pre>
-        </div>
-        <p>Use indexed loops or enhanced for-each loops depending on whether you need the current index.</p>
-      </section>
+          </div>
+          <p>Use indexed loops or enhanced for-each loops depending on whether you need the current index.</p>
+        </section>
 
-      <section class="section" id="loops">
-        <h2>While loops</h2>
-        <p>Use a while loop when you want to repeat work until a condition is no longer true.</p>
-        <div class="code-block">
+        <section class="section" id="loops">
+          <h2>While loops</h2>
+          <p>Use a while loop when you want to repeat work until a condition is no longer true.</p>
+          <div class="code-block">
 <pre>int i = 1;
 while (i <= 5) {
   System.out.println(i);
   i++;
 }</pre>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section class="section" id="local-docs">
-        <h2>Local Master Doc notes</h2>
-        <p>This page is based on your local master training notes and Java examples.</p>
-        <a class="link-btn" href="Master Doc.txt" target="_blank">Open local Master Doc notes</a>
-      </section>
-    </article>
+        <section class="section" id="local-docs">
+          <h2>Local Master Doc notes</h2>
+          <p>This page is based on your local master training notes and Java examples.</p>
+          <a class="link-btn" href="Master Doc.txt" target="_blank">Open local Master Doc notes</a>
+        </section>
+
+        <!-- Navigation for Previous/Next Lesson -->
+        <nav class="lesson-navigation container">
+          <a href="jenkins.html" class="prev-lesson">← Previous Lesson</a>
+          <a href="playwright.html" class="next-lesson">Next Lesson →</a>
+        </nav>
+
+        <!-- Related Courses Section -->
+        <section class="nova-section section-alt" id="related-courses">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">More Learning</span>
+              <h2>Related Courses</h2>
+              <p>Expand your QA automation skills with these complementary courses.</p>
+            </div>
+            <div class="cards-grid">
+              <article class="feature-card">
+                <h3>Selenium Basics</h3>
+                <p>Core browser automation concepts, locator strategies, synchronization, and practical Java examples.</p>
+                <a href="selenium.html" class="secondary-btn">Learn More</a>
+              </article>
+              <article class="feature-card">
+                <h3>UI Hybrid Framework</h3>
+                <p>Build a professional Selenium Java automation framework from scratch with TestNG, Maven, and more.</p>
+                <a href="hybrid.html" class="secondary-btn">Learn More</a>
+              </article>
+              <article class="feature-card">
+                <h3>Cucumber Basics</h3>
+                <p>Use BDD feature files, step definitions, and runner configuration to write readable automation scenarios.</p>
+                <a href="cucumber.html" class="secondary-btn">Learn More</a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Free Resources Section -->
+        <section class="nova-section" id="free-resources">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">Free Value</span>
+              <h2>Unlock Free QA Resources</h2>
+              <p>Boost your learning with these complimentary guides and templates.</p>
+            </div>
+            <div class="cards-grid">
+              <article class="feature-card">
+                <h3>✅ FREE Java Interview Questions</h3>
+                <p>Prepare for your interviews with a curated list of common Java questions for QA roles.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE Java Interview Questions">Download Now</a>
+              </article>
+              <article class="feature-card">
+                <h3>✅ FREE Automation Roadmap</h3>
+                <p>Get a step-by-step guide to mastering automation from beginner to advanced levels.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE Automation Roadmap">Get Roadmap</a>
+              </article>
+              <article class="feature-card">
+                <h3>✅ FREE QA Resume Template</h3>
+                <p>Download a professional resume template tailored for QA engineers.</p>
+                <a href="#registration-modal" class="primary-btn" data-course-interest="FREE QA Resume Template">Download Template</a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Trainer Section -->
+        <section class="nova-section section-alt" id="trainer">
+          <div class="container trainer-layout">
+            <div class="trainer-image glass-card">
+              <img
+                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80"
+                alt="Wasim Ansari - Senior QA Automation Engineer"
+                width="900"
+                height="1100"
+                loading="lazy"
+              />
+            </div>
+            <div class="trainer-copy">
+              <span class="section-tag">Your Instructor</span>
+              <h2>Meet Wasim Ansari</h2>
+              <p class="hero-subtitle">Senior QA Automation Engineer with 10+ Years Experience</p>
+              <p>Wasim Ansari is a Senior QA Automation Engineer with over 10 years of industry experience. He has trained professionals and freshers in Selenium, Playwright, API Testing, Java, and modern automation frameworks. His focus is practical, project-based learning that helps students become job-ready.</p>
+              <ul class="trainer-specializations">
+                <li>Selenium</li>
+                <li>Playwright</li>
+                <li>API Testing</li>
+                <li>Java</li>
+                <li>Cucumber</li>
+                <li>TestNG</li>
+                <li>CI/CD</li>
+                <li>AI for QA</li>
+              </ul>
+              <div class="trainer-social-links">
+                <a href="https://www.linkedin.com/in/wasimansari" target="_blank" rel="noopener noreferrer" class="secondary-btn">LinkedIn</a>
+                <a href="mailto:wasim.ansari@testnova.in" class="secondary-btn">Email</a>
+                <a href="https://www.testnova.in" target="_blank" rel="noopener noreferrer" class="secondary-btn">Website</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="nova-section" id="faq">
+          <div class="container section-stack">
+            <div class="section-heading">
+              <span class="section-tag">FAQ</span>
+              <h2>Common Questions About Java for QA</h2>
+            </div>
+            <div class="faq-list" data-accordion>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>Why is Java popular for QA automation?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>Java is widely used in QA automation due to its platform independence, strong community support, extensive libraries (like Selenium WebDriver), and robust nature, making it suitable for building scalable and maintainable test frameworks.</p>
+                </div>
+              </article>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>What core Java concepts are essential for automation?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>Key concepts include object-oriented programming (OOP), data types, control flow (loops, conditionals), collections (Lists, Maps), exception handling, and file I/O. These form the foundation for writing effective automation scripts.</p>
+                </div>
+              </article>
+              <article class="faq-item glass-card">
+                <button class="faq-trigger" type="button" aria-expanded="false">
+                  <span>Do I need to be a Java expert to start automation?</span>
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </button>
+                <div class="faq-panel">
+                  <p>No, a solid understanding of core Java concepts is sufficient to begin. Automation frameworks often abstract away much of the complexity, allowing you to focus on testing logic. Continuous learning will deepen your expertise.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>QA Training Hub · Master Doc notes.</p>
+      <p>&copy; <span data-year></span> TestNova. All rights reserved.</p>
     </div>
   </footer>
   <script src="site.js"></script>

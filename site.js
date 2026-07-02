@@ -5,9 +5,13 @@
  * - floating WhatsApp button
  * - footer year sync
  * - mobile sidebar toggle
+ * - registration modal handling
+ * - exit intent popup
  */
 (function () {
+  // Function to inject the floating register button
   function injectRegisterButton() {
+    // Check if a floating register button already exists or if it's explicitly hidden
     if (
       document.querySelector('.floating-register') ||
       document.body.classList.contains('hide-floating-register')
@@ -15,22 +19,26 @@
       return;
     }
 
-    var href = document.body.getAttribute('data-register-href') || 'register.html';
+    // Get the target href for the register button (now points to the modal)
+    var href = document.body.getAttribute('data-register-href') || '#registration-modal';
     var link = document.createElement('a');
     link.className = 'floating-register';
     link.href = href;
-    link.textContent = 'Register Now';
+    link.textContent = '🎁 FREE AI Kit'; // Changed text
     link.setAttribute('data-testid', 'floating-register-btn');
+    // Add data attribute to pre-fill course interest if applicable
+    link.setAttribute('data-course-interest', 'FREE AI Starter Kit'); // Default value
     document.body.appendChild(link);
   }
 
+  // Function to inject the floating WhatsApp button
   function injectWhatsAppButton() {
     if (document.querySelector('.floating-whatsapp')) return;
 
-    var number = document.body.getAttribute('data-whatsapp-number');
-    if (!number) return;
+    // Updated WhatsApp number and message as per prompt
+    var number = '919641782691'; // +91 9641782691
+    var message = "Hi TestNova, I'm interested in learning AI and Technology. Please guide me.";
 
-    var message = document.body.getAttribute('data-whatsapp-message') || 'Hi TestNova';
     var href = 'https://api.whatsapp.com/send?phone=' + encodeURIComponent(number) + '&text=' + encodeURIComponent(message);
     var link = document.createElement('a');
     link.className = 'floating-whatsapp';
@@ -46,6 +54,7 @@
     document.body.appendChild(link);
   }
 
+  // Function to set up mobile navigation toggle
   function setupMobileNav() {
     var navContainer = document.querySelector('.nav-container');
     var siteNav = document.querySelector('.site-nav');
@@ -85,6 +94,7 @@
     });
   }
 
+  // Function to set up mobile sidebar toggle for "On this page" sections
   function setupMobileSidebar() {
     var sidebar = document.querySelector('.page-sidebar');
     var sidebarToggle = document.querySelector('.sidebar-toggle');
@@ -114,6 +124,138 @@
     });
   }
 
+  // Generic modal setup function
+  function setupModal(modalId, formSource, courseInterestDefault) {
+    var modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    var modalContentArea = modal.querySelector('.modal-content');
+    var modalTriggers = document.querySelectorAll('a[href="#' + modalId + '"]');
+    var closeButtons = modal.querySelectorAll('[data-micromodal-close]');
+    var isFormLoaded = false; // Flag to prevent multiple loads
+
+    function openModal(courseInterest) {
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open'); // Prevent body scroll
+
+      if (!isFormLoaded) {
+        fetch('registration_form_component.html')
+          .then(response => response.text())
+          .then(html => {
+            modalContentArea.innerHTML = html;
+            isFormLoaded = true;
+            // Set form_source for the dynamically loaded form
+            var form = modalContentArea.querySelector('[data-registration-form]');
+            if (form) {
+              var sourceInput = form.querySelector('input[name="form_source"]');
+              if (sourceInput) sourceInput.value = formSource;
+            }
+            // Re-initialize registration.js if it has an init function
+            if (typeof window.initRegistrationForm === 'function') {
+              window.initRegistrationForm();
+            }
+            prefillCourseInterest(courseInterest);
+          })
+          .catch(error => {
+            console.error('Error loading registration form:', error);
+            modalContentArea.innerHTML = '<p>Error loading form. Please try again later.</p>';
+          });
+      } else {
+        prefillCourseInterest(courseInterest);
+      }
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+      // Clear form messages if any
+      var formMessage = modalContentArea.querySelector('.form-message');
+      if (formMessage) {
+        formMessage.textContent = '';
+        formMessage.classList.remove('success', 'error');
+      }
+    }
+
+    function prefillCourseInterest(courseInterest) {
+      var finalCourseInterest = courseInterest || courseInterestDefault;
+      if (finalCourseInterest) {
+        var courseSelect = modalContentArea.querySelector('#reg-course');
+        if (courseSelect) {
+          var optionExists = Array.from(courseSelect.options).some(option => option.value === finalCourseInterest);
+          if (optionExists) {
+            courseSelect.value = finalCourseInterest;
+          } else {
+            console.warn('Course interest "' + finalCourseInterest + '" not found in dropdown options.');
+            courseSelect.value = "General Inquiry";
+          }
+        }
+      }
+    }
+
+    modalTriggers.forEach(function(trigger) {
+      trigger.addEventListener('click', function(event) {
+        event.preventDefault();
+        var courseInterest = trigger.getAttribute('data-course-interest');
+        openModal(courseInterest);
+      });
+    });
+
+    closeButtons.forEach(function(button) {
+      button.addEventListener('click', closeModal);
+    });
+
+    modal.addEventListener('click', function(event) {
+      if (event.target === modal.querySelector('.modal-overlay')) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+        closeModal();
+      }
+    });
+
+    return { openModal: openModal, closeModal: closeModal };
+  }
+
+  // Function to handle exit intent popup
+  function setupExitIntentPopup() {
+    var exitIntentModal = document.getElementById('exit-intent-modal');
+    if (!exitIntentModal) return;
+
+    var hasShown = localStorage.getItem('testnova-exit-intent-shown');
+    if (hasShown) return; // Don't show if already shown once
+
+    // Set default course interest for exit intent to the FREE AI Starter Kit
+    var modalHandlers = setupModal('exit-intent-modal', 'exit-intent-popup', 'FREE AI Starter Kit');
+
+    function showExitIntent() {
+      if (!exitIntentModal.classList.contains('is-open')) {
+        modalHandlers.openModal('FREE AI Starter Kit'); // Pre-fill with Starter Kit
+        localStorage.setItem('testnova-exit-intent-shown', 'true'); // Mark as shown
+      }
+    }
+
+    // Detect mouse leaving viewport
+    document.addEventListener('mouseout', function(e) {
+      if (e.toElement === null || e.relatedTarget === null) {
+        // Mouse is leaving the document
+        showExitIntent();
+      }
+    });
+
+    // Optional: Show after a delay if user hasn't interacted much
+    // setTimeout(function() {
+    //   if (!localStorage.getItem('testnova-exit-intent-shown')) {
+    //     showExitIntent();
+    //   }
+    // }, 30000); // Show after 30 seconds if not already shown
+  }
+
+  // Function to sync footer year
   function syncFooterYear() {
     var yearNodes = document.querySelectorAll('[data-year]');
     var year = String(new Date().getFullYear());
@@ -122,14 +264,18 @@
     });
   }
 
+  // Initialize all functions
   function init() {
     injectRegisterButton();
     injectWhatsAppButton();
     setupMobileNav();
-    setupMobileSidebar(); // Add the new sidebar setup function
+    setupMobileSidebar();
+    window.registrationModalHandlers = setupModal('registration-modal', 'main-registration', 'General Inquiry'); // Expose handlers if needed
+    setupExitIntentPopup(); // New exit intent popup setup
     syncFooterYear();
   }
 
+  // Run init when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
