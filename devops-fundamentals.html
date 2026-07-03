@@ -6,16 +6,16 @@
   <title>DevOps Fundamentals | TestNova</title>
   <link rel="stylesheet" href="styles.css" />
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Understand the principles and practices of DevOps. Learn about CI/CD pipelines, containerization with Docker, orchestration with Kubernetes, and managing cloud infrastructure." />
+  <meta name="description" content="Understand DevOps principles and practices. Learn CI/CD, Docker, Kubernetes, and cloud infrastructure management." />
   <meta name="keywords" content="DevOps, CI/CD, Docker, Kubernetes, Cloud, Infrastructure, TestNova" />
   <meta property="og:title" content="DevOps Fundamentals | TestNova" />
-  <meta property="og:description" content="Understand the principles and practices of DevOps. Learn about CI/CD pipelines, containerization with Docker, orchestration with Kubernetes, and managing cloud infrastructure." />
+  <meta property="og:description" content="Understand DevOps principles and practices. Learn CI/CD, Docker, Kubernetes, and cloud infrastructure management." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.testnova.in/devops-fundamentals.html" />
   <meta property="og:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="DevOps Fundamentals | TestNova" />
-  <meta name="twitter:description" content="Understand the principles and practices of DevOps. Learn about CI/CD pipelines, containerization with Docker, orchestration with Kubernetes, and managing cloud infrastructure." />
+  <meta name="twitter:description" content="Understand DevOps principles and practices. Learn CI/CD, Docker, Kubernetes, and cloud infrastructure management." />
   <meta name="twitter:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" />
   <link rel="canonical" href="https://www.testnova.in/devops-fundamentals.html" />
 </head>
@@ -30,12 +30,61 @@
       <a class="brand" href="index.html">TestNova</a>
       <nav class="site-nav">
         <a href="index.html">Home</a>
-        <a class="active" href="learning-hub.html">Learning Hub</a>
+        <div class="has-mega-menu">
+          <a class="active" href="learning-hub.html">Learning Hub</a>
+          <div class="mega-menu">
+            <div class="mega-menu-column">
+              <h4><a href="learning-hub.html#qa-engineering-courses">QA Engineering</a></h4>
+              <ul>
+                <li><a href="selenium.html">Selenium Basics</a></li>
+                <li><a href="playwright.html">Playwright with TS</a></li>
+                <li><a href="api.html">API Basics</a></li>
+                <li><a href="rest.html">REST Assured</a></li>
+                <li><a href="cucumber.html">Cucumber BDD</a></li>
+                <li><a href="hybrid.html">UI Hybrid Framework</a></li>
+                <li><a href="jenkins.html">Jenkins Automation</a></li>
+                <li><a href="master.html">Master Doc Notes (Java)</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-column">
+              <h4><a href="learning-hub.html#development-technologies-courses">Development Technologies</a></h4>
+              <ul>
+                <li><a href="java-programming.html">Java Programming</a></li>
+                <li><a href="python-automation.html">Python for Automation</a></li>
+                <li><a href="javascript-frontend.html">JS & Frontend</a></li>
+                <li><a href="typescript-deep-dive.html">TypeScript Deep Dive</a></li>
+                <li><a href="devops-fundamentals.html">DevOps Fundamentals</a></li>
+                <li><a href="cloud-platforms.html">Cloud Platforms</a></li>
+                <li><a href="sql-database-management.html">SQL & Database</a></li>
+                <li><a href="git-github-essentials.html">Git & GitHub</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-column">
+              <h4><a href="learning-hub.html#ai-emerging-technologies-courses">AI & Emerging Technologies</a></h4>
+              <ul>
+                <li><a href="ai-for-beginners.html">AI for Beginners</a></li>
+                <li><a href="prompt-engineering.html">Prompt Engineering</a></li>
+                <li><a href="ai-agents-automation.html">AI Agents & Automation</a></li>
+                <li><a href="machine-learning-fundamentals.html">Machine Learning Fundamentals</a></li>
+                <li><a href="blockchain-web3-basics.html">Blockchain & Web3</a></li>
+                <li><a href="iot-essentials.html">IoT Essentials</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
         <a href="career-services.html">Career Services</a>
         <a href="corporate-training.html">Corporate Training</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
-        <a class="nav-register" href="#registration-modal">Register</a>
+        <div class="nav-right-items">
+          <div class="search-box">
+            <input type="text" placeholder="Search courses..." class="search-input" aria-label="Search courses">
+            <button class="search-button" aria-label="Perform search">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            </button>
+          </div>
+          <a class="nav-register" href="#registration-modal">Register</a>
+        </div>
       </nav>
     </div>
   </header>
@@ -43,17 +92,9 @@
   <main>
     <section class="page-hero-section">
       <div class="container">
-        <nav class="breadcrumb" aria-label="breadcrumb">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="learning-hub.html">Learning Hub</a></li>
-            <li><a href="learning-hub.html#development-technologies-courses">Development Technologies</a></li>
-            <li><a href="devops-fundamentals.html" aria-current="page">DevOps Fundamentals</a></li>
-          </ol>
-        </nav>
         <div class="page-header">
           <h1>DevOps Fundamentals</h1>
-          <p>Understand the principles and practices of DevOps. Learn about CI/CD pipelines, containerization with Docker, orchestration with Kubernetes, and managing cloud infrastructure.</p>
+          <p>Understand DevOps principles and practices. Learn CI/CD, Docker, Kubernetes, and cloud infrastructure management.</p>
         </div>
       </div>
     </section>
@@ -65,7 +106,6 @@
           <h2>Content Coming Soon!</h2>
           <p>
             We are actively developing rich, hands-on content for our <strong>DevOps Fundamentals</strong> course.
-            Our goal is to provide you with the most up-to-date and practical learning experience.
             Register your interest below to be notified as soon as the full course content is available!
           </p>
         </div>
@@ -101,34 +141,6 @@
         <div class="text-center" data-reveal style="margin-top: var(--space-xl);">
           <a href="#registration-modal" class="primary-btn" data-course-interest="DevOps Fundamentals">Register Interest for Updates</a>
           <a href="learning-hub.html#development-technologies-courses" class="secondary-btn">← Back to Development Technologies</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Related Topics Section -->
-    <section class="nova-section section-alt" id="related-topics">
-      <div class="container section-stack">
-        <div class="section-heading" data-reveal>
-          <span class="section-tag">Explore More</span>
-          <h2>Related Topics You Might Like</h2>
-          <p>Expand your knowledge with other courses and learning paths in our hub.</p>
-        </div>
-        <div class="feature-grid">
-          <article class="glass-card feature-card">
-            <h3>Cloud Platforms (AWS/Azure)</h3>
-            <p>Learn to deploy, manage, and scale applications on leading cloud service providers.</p>
-            <a href="cloud-platforms.html" class="text-link">Learn More →</a>
-          </article>
-          <article class="glass-card feature-card">
-            <h3>Git & GitHub Essentials</h3>
-            <p>Collaborate effectively with version control using Git and GitHub.</p>
-            <a href="git-github-essentials.html" class="text-link">Learn More →</a>
-          </article>
-          <article class="glass-card feature-card">
-            <h3>Jenkins Automation</h3>
-            <p>Use Jenkins to run your automation suite in CI/CD, collect reports, and manage scheduled builds.</p>
-            <a href="jenkins.html" class="text-link">Learn More →</a>
-          </article>
         </div>
       </div>
     </section>
