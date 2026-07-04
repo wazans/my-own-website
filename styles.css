@@ -259,7 +259,7 @@ a {
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
   transform: translateX(-50%) translateY(10px); /* Slight drop animation */
-  z-index: 60;
+  z-index: 150; /* Increased to appear above navbar and floating buttons */
 }
 
 .site-nav .has-mega-menu:hover .mega-menu,
@@ -284,7 +284,7 @@ a {
 }
 
 .mega-menu-column h4 a { /* Category titles in mega menu */
-  display: block; /* Make the whole H4 clickable area */
+  display: inline; /* Keep h4 links inline */
   padding: 0;
   background: none;
   color: var(--tn-text);
@@ -1278,6 +1278,7 @@ footer.site-footer::before {
   opacity: 0.3;
 }
 .footer-layout {
+  display: grid;
   grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr));
   align-items: start;
   gap: var(--space-xl);
@@ -1439,86 +1440,6 @@ body.modal-open {
   overflow: hidden;
 }
 
-/* Mega Menu Specific Styles */
-.site-nav .has-mega-menu {
-  position: relative;
-}
-
-.site-nav .mega-menu {
-  display: none; /* Hidden by default */
-  position: absolute;
-  top: 100%; /* Position below the parent link */
-  left: 50%; /* Center it under the "Learning Hub" link */
-  transform: translateX(-50%); /* Adjust to truly center */
-  width: 900px; /* Adjust width as needed */
-  background: var(--tn-surface-strong); /* Use strong surface for better contrast */
-  border: 1px solid var(--tn-surface-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--tn-shadow-lg);
-  backdrop-filter: blur(25px); /* Stronger blur for glassmorphism */
-  -webkit-backdrop-filter: blur(25px);
-  padding: var(--space-lg);
-  flex-direction: row; /* Ensure columns are in a row */
-  gap: var(--space-lg);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-  transform: translateX(-50%) translateY(10px); /* Slight drop animation */
-  z-index: 60; /* Above other content */
-}
-
-.site-nav .has-mega-menu:hover .mega-menu,
-.site-nav .has-mega-menu:focus-within .mega-menu {
-  display: flex; /* Show on hover/focus-within */
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-}
-
-.mega-menu-column {
-  flex: 1;
-  min-width: 200px; /* Minimum width for columns */
-}
-
-.mega-menu-column h4 {
-  margin-top: 0;
-  margin-bottom: var(--space-sm);
-  font-size: var(--font-size-lg);
-  color: var(--tn-text);
-  font-weight: var(--font-weight-bold);
-}
-
-.mega-menu-column h4 a {
-  padding: 0; /* Remove padding from h4 links */
-  background: none;
-  color: var(--tn-text);
-  display: inline; /* Keep h4 links inline */
-}
-
-.mega-menu-column ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.mega-menu-column li {
-  margin-bottom: var(--space-xs);
-}
-
-.mega-menu-column li a {
-  display: block;
-  padding: 0.4rem var(--space-sm);
-  color: var(--tn-muted);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  border-radius: var(--radius-sm);
-  transition: all 0.2s ease;
-}
-
-.mega-menu-column li a:hover {
-  color: var(--tn-accent-light);
-  background: rgba(99, 102, 241, 0.08);
-}
 
 /* Search Box Specific Styles */
 .nav-right-items {
@@ -1576,6 +1497,63 @@ body.modal-open {
 
 .search-button:hover {
   color: var(--tn-accent-light);
+}
+
+/* Floating Buttons */
+.floating-whatsapp,
+.floating-register {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  box-shadow: var(--tn-shadow-lg);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.floating-whatsapp {
+  width: 56px;
+  height: 56px;
+  background: #25D366;
+  border: none;
+}
+
+.floating-whatsapp svg {
+  width: 28px;
+  height: 28px;
+  fill: #ffffff;
+}
+
+.floating-whatsapp:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+}
+
+.floating-register {
+  bottom: 2rem;
+  left: 2rem;
+  right: auto;
+  padding: 0.875rem 1.5rem;
+  background: var(--tn-gradient-primary);
+  color: #ffffff;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  border: none;
+}
+
+.floating-register:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--tn-accent-glow);
+}
+
+/* Hide floating buttons on specific pages */
+.hide-floating-register .floating-register,
+.hide-floating-whatsapp .floating-whatsapp {
+  display: none;
 }
 
 /* ============ RESPONSIVE / MOBILE ============ */
@@ -1692,7 +1670,7 @@ body.modal-open {
     pointer-events: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
     box-shadow: 0 12px 24px rgba(34, 64, 168, 0.10);
-    z-index: 100;
+    z-index: 150; /* Ensure mobile nav appears above floating buttons */
   }
   .site-nav.open {
     opacity: 1;
@@ -1734,5 +1712,30 @@ body.modal-open {
   .thankyou-card,
   .next-steps-card {
     padding: var(--space-sm);
+  }
+
+  /* Adjust floating buttons for mobile */
+  .floating-whatsapp,
+  .floating-register {
+    bottom: 1rem;
+    right: 1rem;
+    left: auto;
+  }
+  
+  .floating-register {
+    left: 1rem;
+    right: auto;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.85rem;
+  }
+  
+  .floating-whatsapp {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .floating-whatsapp svg {
+    width: 24px;
+    height: 24px;
   }
 }
