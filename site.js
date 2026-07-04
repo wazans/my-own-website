@@ -520,7 +520,7 @@
       '<article class="glass-card course-discovery-card invite-card">',
       '<div class="course-card-top">',
       '<span class="difficulty-badge">' + course.difficulty + '</span>',
-      '<span class="access-badge">Access Required</span>',
+      '<span class="access-badge">Invite Only / Access Required</span>',
       '</div>',
       '<h3>' + course.title + '</h3>',
       '<p>' + course.summary + '</p>',

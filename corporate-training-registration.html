@@ -72,11 +72,21 @@
             method="POST"
             target="corporate-submit-frame"
           >
-            <input type="hidden" name="_subject" value="New Corporate Training Registration - TestNova" />
+            <input type="hidden" name="_subject" value="New TestNova Lead - Corporate Training" />
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_next" value="https://www.testnova.in/thank-you.html" />
             <input type="hidden" name="form_source" value="corporate-training-registration" />
+            <input type="hidden" name="source_page" value="corporate-training-registration.html" />
+            <input type="hidden" name="source_button" value="Dedicated corporate registration page" />
+            <input type="hidden" name="selected_category" value="" />
+            <input type="hidden" name="selected_course" value="" />
+            <input type="hidden" name="selected_topic" value="" />
+            <input type="hidden" name="utm_source" value="" />
+            <input type="hidden" name="utm_medium" value="" />
+            <input type="hidden" name="utm_campaign" value="" />
+            <input type="hidden" name="utm_content" value="" />
+            <input type="hidden" name="timestamp" value="" />
 
             <div class="form-row">
               <div class="form-field">
@@ -102,18 +112,28 @@
 
             <div class="form-row">
               <div class="form-field">
+                <label for="company-website">Company Website</label>
+                <input id="company-website" name="Company Website" type="url" placeholder="https://company.com" />
+              </div>
+              <div class="form-field">
                 <label for="team-size">Team Size *</label>
                 <input id="team-size" name="Team Size" type="number" min="1" placeholder="25" required />
               </div>
+            </div>
+
+            <div class="form-row">
               <div class="form-field">
                 <label for="training-mode">Training Mode *</label>
                 <select id="training-mode" name="Training Mode" required>
                   <option value="">Select mode</option>
-                  <option>Online Live</option>
-                  <option>On-site Classroom</option>
+                  <option>Online</option>
+                  <option>Offline</option>
                   <option>Hybrid</option>
-                  <option>Self-paced with Mentor Support</option>
                 </select>
+              </div>
+              <div class="form-field">
+                <label for="preferred-date">Preferred Date</label>
+                <input id="preferred-date" name="Preferred Date" type="date" />
               </div>
             </div>
 
@@ -137,18 +157,26 @@
 
             <div class="form-row">
               <div class="form-field full">
-                <label for="corporate-message">Message</label>
+                <label for="training-location">Location</label>
+                <input id="training-location" name="Location" type="text" placeholder="City or office location" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field full">
+                <label for="corporate-message">Requirements *</label>
                 <textarea
                   id="corporate-message"
-                  name="Message"
+                  name="Requirements"
                   rows="5"
                   placeholder="Tell us about goals, timeline, skill level, or custom curriculum needs."
+                  required
                 ></textarea>
               </div>
             </div>
 
             <button class="form-submit" type="submit">
-              <span>Submit Corporate Registration</span>
+              <span>Request Corporate Training</span>
             </button>
             <div class="form-message" role="status" aria-live="polite"></div>
           </form>

@@ -54,7 +54,7 @@
       phone: (formData.get('Phone Number') || '').toString(),
       company: (formData.get('Company Name') || '').toString(),
       course: (formData.get('Preferred Course') || '').toString(),
-      questions: (formData.get('Message') || '').toString(),
+      questions: (formData.get('Requirements') || '').toString(),
       team_size: (formData.get('Team Size') || '').toString(),
       training_category: (formData.get('Training Category') || '').toString(),
       training_mode: (formData.get('Training Mode') || '').toString(),
@@ -64,6 +64,32 @@
     };
 
     sessionStorage.setItem('testnova-last-registration', JSON.stringify(payload));
+  }
+
+  function getQueryParam(name) {
+    return new URLSearchParams(window.location.search).get(name) || '';
+  }
+
+  function setHidden(form, name, value) {
+    var input = form.querySelector('input[name="' + name + '"]');
+    if (input) input.value = value || '';
+  }
+
+  function syncTrackingFields(form) {
+    var formData = new FormData(form);
+    var category = (formData.get('Training Category') || '').toString();
+    var course = (formData.get('Preferred Course') || '').toString();
+
+    setHidden(form, 'source_page', 'corporate-training-registration.html');
+    setHidden(form, 'source_button', 'Request Corporate Training');
+    setHidden(form, 'selected_category', category);
+    setHidden(form, 'selected_course', course);
+    setHidden(form, 'selected_topic', course);
+    setHidden(form, 'utm_source', getQueryParam('utm_source'));
+    setHidden(form, 'utm_medium', getQueryParam('utm_medium'));
+    setHidden(form, 'utm_campaign', getQueryParam('utm_campaign'));
+    setHidden(form, 'utm_content', getQueryParam('utm_content'));
+    setHidden(form, 'timestamp', new Date().toISOString());
   }
 
   function showThankYou(form) {
@@ -94,6 +120,7 @@
     form.addEventListener('submit', function () {
       if (!form.checkValidity()) return;
 
+      syncTrackingFields(form);
       storeCorporateSubmission(form);
       if (message) {
         message.className = 'form-message success';

@@ -865,6 +865,21 @@ a {
 }
 .form-message.success { display: block; background: rgba(16, 185, 129, 0.12); color: #bef8df; border-color: rgba(16, 185, 129, 0.2); }
 .form-message.error   { display: block; background: rgba(239, 68, 68, 0.12); color: #fecaca; border-color: rgba(239, 68, 68, 0.18); }
+.lead-success {
+  border: 1px solid rgba(16, 185, 129, 0.24);
+  border-radius: var(--radius-lg);
+  background: rgba(16, 185, 129, 0.1);
+  padding: var(--space-lg);
+  text-align: center;
+}
+.lead-success h3 {
+  margin: 0 0 var(--space-xs);
+  font-size: var(--font-size-xl);
+}
+.lead-success p {
+  margin: 0 auto;
+  color: #c8f7df;
+}
 
 /* ============ HOME HERO (Modern Premium) ============ */
 .nova-hero {
