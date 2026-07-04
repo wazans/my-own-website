@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TestNova | Master Tech Skills</title>
+  <title>TestNova | QA, Development & AI Learning</title>
   <meta
     name="description"
-    content="TestNova: A premium platform for QA, Development, AI, and Career growth. Master essential tech skills with minimalist, modern learning."
+    content="TestNova is a clean learning hub for QA Engineering, Development Technologies, AI, and career growth."
   />
   <meta
     name="keywords"
-    content="TestNova, Tech Learning, QA, Development, AI, Career Services, Modern Skills"
+    content="TestNova, QA Engineering, Development Technologies, AI Learning, Career Services"
   />
-  <meta name="theme-color" content="#0b1020" />
-  <meta property="og:title" content="TestNova | Master Tech Skills" />
+  <meta name="theme-color" content="#080b12" />
+  <meta property="og:title" content="TestNova | QA, Development & AI Learning" />
   <meta
     property="og:description"
-    content="TestNova: A premium platform for QA, Development, AI, and Career growth. Master essential tech skills with minimalist, modern learning."
+    content="Focused learning paths for QA Engineering, Development Technologies, AI, and career growth."
   />
   <meta property="og:type" content="website" />
   <meta
@@ -24,8 +24,8 @@
     content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80"
   />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="TestNova | Master Tech Skills" />
-  <meta name="twitter:description" content="TestNova: A premium platform for QA, Development, AI, and Career growth. Master essential tech skills with minimalist, modern learning." />
+  <meta name="twitter:title" content="TestNova | QA, Development & AI Learning" />
+  <meta name="twitter:description" content="Focused learning paths for QA Engineering, Development Technologies, AI, and career growth." />
   <meta name="twitter:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" />
   <link rel="canonical" href="https://www.testnova.in/index.html" />
   <script type="application/ld+json">
@@ -33,320 +33,178 @@
       "@context": "https://schema.org",
       "@type": "EducationalOrganization",
       "name": "TestNova",
-      "description": "Online learning platform for AI, Technology, and QA Automation skills.",
+      "description": "Online learning platform for QA Engineering, Development Technologies, AI, and career growth.",
       "url": "https://www.testnova.in",
-      "logo": "https://www.testnova.in/images/testnova-logo.png",
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+91-9641782691",
         "contactType": "customer service",
         "email": "admin@testnova.in"
-      },
-      "sameAs": [
-        "https://www.linkedin.com/",
-        "https://www.instagram.com/",
-        "https://www.youtube.com/",
-        "https://github.com/"
-      ]
+      }
     }
   </script>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="landing-page">
+<body class="landing-page hide-floating-register hide-floating-whatsapp">
   <div class="page-loader" id="page-loader" aria-hidden="true">
     <div class="page-loader__spinner"></div>
     <p>Loading TestNova</p>
   </div>
 
-  <header class="topbar">
+  <header class="topbar landing-topbar">
     <div class="container nav-container">
       <a class="brand" href="index.html">TestNova</a>
-      <nav class="site-nav">
+      <nav class="site-nav" aria-label="Primary navigation">
         <a class="active" href="index.html">Home</a>
-        <div class="has-mega-menu">
+        <div class="has-mega-menu learning-dropdown">
           <a href="learning-hub.html">Learning Hub</a>
-          <div class="mega-menu">
-            <div class="mega-menu-column">
-              <h4><a href="learning-hub.html#qa-engineering-courses">QA Engineering</a></h4>
-              <ul>
-                <li><a href="selenium.html">Selenium Basics</a></li>
-                <li><a href="playwright.html">Playwright with TS</a></li>
-                <li><a href="api.html">API Basics</a></li>
-                <li><a href="rest.html">REST Assured</a></li>
-                <li><a href="cucumber.html">Cucumber BDD</a></li>
-                <li><a href="hybrid.html">UI Hybrid Framework</a></li>
-                <li><a href="jenkins.html">Jenkins Automation</a></li>
-                <li><a href="master.html">Master Doc Notes (Java)</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-column">
-              <h4><a href="learning-hub.html#development-technologies-courses">Development Technologies</a></h4>
-              <ul>
-                <li><a href="java-programming.html">Java Programming</a></li>
-                <li><a href="python-automation.html">Python for Automation</a></li>
-                <li><a href="javascript-frontend.html">JS & Frontend</a></li>
-                <li><a href="typescript-deep-dive.html">TypeScript Deep Dive</a></li>
-                <li><a href="devops-fundamentals.html">DevOps Fundamentals</a></li>
-                <li><a href="cloud-platforms.html">Cloud Platforms</a></li>
-                <li><a href="sql-database-management.html">SQL & Database</a></li>
-                <li><a href="git-github-essentials.html">Git & GitHub</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-column">
-              <h4><a href="learning-hub.html#ai-emerging-technologies-courses">AI & Emerging Technologies</a></h4>
-              <ul>
-                <li><a href="ai-for-beginners.html">AI for Beginners</a></li>
-                <li><a href="prompt-engineering.html">Prompt Engineering</a></li>
-                <li><a href="ai-agents-automation.html">AI Agents & Automation</a></li>
-                <li><a href="machine-learning-fundamentals.html">Machine Learning Fundamentals</a></li>
-                <li><a href="blockchain-web3-basics.html">Blockchain & Web3</a></li>
-                <li><a href="iot-essentials.html">IoT Essentials</a></li>
-              </ul>
-            </div>
+          <div class="mega-menu compact-learning-menu">
+            <a href="qa-engineering.html">QA Engineering</a>
+            <a href="development-technologies.html">Development Technologies</a>
+            <a href="ai-emerging-technologies.html">AI &amp; Emerging Technologies</a>
           </div>
         </div>
-        <a href="career-services.html">Career Services</a>
-        <a href="corporate-training.html">Corporate Training</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <div class="nav-right-items">
-          <div class="search-box">
-            <input type="text" placeholder="Search courses..." class="search-input" aria-label="Search courses">
-            <button class="search-button" aria-label="Perform search">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            </button>
-          </div>
-          <a class="nav-register" href="#registration-modal">Register</a>
-        </div>
+        <a href="#learning-categories">Categories</a>
+        <a href="#why-testnova">Why TestNova</a>
+        <a href="#career-services">Career Services</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- Hero Section -->
-    <section class="nova-hero" id="hero">
-      <div class="container hero-shell">
-        <div class="hero-copy" data-reveal>
-          <div class="eyebrow-pill">
-            <span class="eyebrow-dot"></span>
-            Your Future Starts Here
-          </div>
-          <h1>Master AI & Technology Skills That Matter</h1>
-          <p class="hero-subtitle">
-            Unlock your potential with cutting-edge courses in Artificial Intelligence,
-            Software Development, QA Engineering, and Emerging Technologies.
-          </p>
-          <div class="hero-actions">
-            <a class="primary-btn" href="learning-hub.html">Explore Learning Hub</a>
-            <a class="secondary-btn" href="career-services.html">Boost Your Career</a>
-          </div>
-        </div>
-        <div class="hero-visual" data-reveal>
-          <div class="hero-media-card glass-card">
-            <img
-              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80"
-              alt="People learning AI and Technology"
-              width="1400"
-              height="933"
-              loading="eager"
-            />
-            <div class="hero-media-caption">
-              <span>Future-Proof Your Career</span>
-              <strong>Master the skills demanded by tomorrow's tech landscape.</strong>
-            </div>
-          </div>
+    <section class="nova-hero landing-hero" id="hero">
+      <div class="container landing-hero__content" data-reveal>
+        <span class="section-tag">Focused tech learning</span>
+        <h1>Learn the skills that move your tech career forward.</h1>
+        <p class="hero-subtitle">
+          Clear learning paths across QA Engineering, Development Technologies, and AI.
+        </p>
+        <div class="hero-actions">
+          <a class="primary-btn" href="learning-hub.html">Explore Learning Hub</a>
         </div>
       </div>
     </section>
 
-    <!-- Three Learning Categories -->
-    <section class="nova-section section-alt" id="learning-categories">
+    <section class="nova-section landing-section" id="learning-categories">
       <div class="container section-stack">
         <div class="section-heading" data-reveal>
-          <span class="section-tag">Dive Deeper</span>
-          <h2>Explore Core Learning Categories</h2>
-          <p>
-            Choose your path to expertise. Our structured categories guide you through essential skills.
-          </p>
+          <span class="section-tag">Learning paths</span>
+          <h2>Three focused categories</h2>
         </div>
-        <div class="feature-grid">
+
+        <div class="feature-grid landing-card-grid">
           <article class="glass-card feature-card" data-reveal>
             <span class="icon-chip">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-5m5 3a8 8 0 1 1-16 0 8 8 0 0 1 16 0z"/></svg>
             </span>
             <h3>QA Engineering</h3>
-            <p>Master quality assurance, from manual testing to advanced automation.</p>
-            <a href="learning-hub.html#qa-engineering-courses" class="text-link">View Courses →</a>
+            <p>Selenium, Playwright, API testing, BDD, CI, and automation frameworks.</p>
+            <span class="access-badge">Access Required</span>
+            <a href="qa-engineering.html" class="primary-btn">View Course</a>
           </article>
+
           <article class="glass-card feature-card" data-reveal>
             <span class="icon-chip">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 10h-2V6h2v4zm0 8h-2v-6h2v6zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 9l-4 3 4 3m8-6 4 3-4 3m-2-9-4 12"/></svg>
             </span>
             <h3>Development Technologies</h3>
-            <p>Build robust applications with Java, Python, JavaScript, DevOps, and Cloud.</p>
-            <a href="learning-hub.html#development-technologies-courses" class="text-link">View Courses →</a>
+            <p>Java, Python, JavaScript, TypeScript, SQL, Git, cloud, and DevOps basics.</p>
+            <span class="access-badge">Access Required</span>
+            <a href="development-technologies.html" class="primary-btn">View Course</a>
           </article>
+
           <article class="glass-card feature-card" data-reveal>
             <span class="icon-chip">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 11.55C9.64 9.35 6.48 8 3 8v13c3.48 0 6.64 1.35 9 3.55 2.36-2.2 5.52-3.55 9-3.55V8c-3.48 0-6.64 1.35-9 3.55zM12 1C5.37 1 0 5.37 0 12s5.37 11 12 11 12-5.37 12-11S18.63 1 12 1zm0 19c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18m7-13-7-5-7 5m14 8-7 5-7-5"/></svg>
             </span>
             <h3>AI & Emerging Technologies</h3>
-            <p>Explore Machine Learning, Prompt Engineering, AI Agents, Blockchain, and IoT.</p>
-            <a href="learning-hub.html#ai-emerging-technologies-courses" class="text-link">View Courses →</a>
+            <p>AI fundamentals, prompt engineering, agents, automation, ML, IoT, and Web3.</p>
+            <span class="access-badge">Access Required</span>
+            <a href="ai-emerging-technologies.html" class="primary-btn">View Course</a>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- Why TestNova Section -->
-    <section class="nova-section" id="why-testnova">
+    <section class="nova-section landing-section section-alt" id="why-testnova">
       <div class="container section-stack">
         <div class="section-heading" data-reveal>
-          <span class="section-tag">Our Advantage</span>
-          <h2>Why Choose TestNova?</h2>
-          <p>
-            We provide an unparalleled learning experience for long-term career growth.
-          </p>
+          <span class="section-tag">Why TestNova</span>
+          <h2>Practical, structured, current</h2>
         </div>
-        <div class="outcomes-grid">
+
+        <div class="outcomes-grid landing-card-grid">
           <article class="outcome-card glass-card" data-reveal>
-            <h3>Practical, Hands-on Learning</h3>
-            <p>Our curriculum focuses on real-world applications and project-based learning.</p>
+            <h3>Hands-on learning</h3>
+            <p>Practice-oriented lessons built around tools and workflows used by modern teams.</p>
           </article>
           <article class="outcome-card glass-card" data-reveal>
-            <h3>Expert Instructors</h3>
-            <p>Learn from seasoned professionals who are leaders in their fields.</p>
+            <h3>Clear progression</h3>
+            <p>Move from fundamentals to real projects without jumping between random topics.</p>
           </article>
           <article class="outcome-card glass-card" data-reveal>
-            <h3>Flexible Learning Paths</h3>
-            <p>Tailor your education to your goals with diverse courses and formats.</p>
-          </article>
-          <article class="outcome-card glass-card" data-reveal>
-            <h3>Vibrant Community Support</h3>
-            <p>Connect with peers and mentors for collaborative learning and networking.</p>
-          </article>
-          <article class="outcome-card glass-card" data-reveal>
-            <h3>Career Advancement</h3>
-            <p>Gain in-demand skills that open doors to new opportunities.</p>
-          </article>
-          <article class="outcome-card glass-card" data-reveal>
-            <h3>Always Up-to-Date Content</h3>
-            <p>Our courses reflect the latest industry trends and technologies.</p>
+            <h3>Career relevance</h3>
+            <p>Courses stay focused on skills that support interviews, projects, and daily work.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- Career Services Summary Section -->
-    <section class="nova-section section-alt" id="homepage-career-services">
-      <div class="container section-stack">
-        <div class="section-heading" data-reveal>
-          <span class="section-tag">Career Boost</span>
-          <h2>Accelerate Your Tech Career</h2>
+    <section class="nova-section landing-section" id="career-services">
+      <div class="container landing-career" data-reveal>
+        <div>
+          <span class="section-tag">Career Services</span>
+          <h2>Support beyond courses</h2>
           <p>
-            Comprehensive career services to help you secure your dream job.
+            Get focused help with resumes, portfolios, interview preparation, and career direction.
           </p>
         </div>
-        <div class="feature-grid">
-          <article class="glass-card feature-card" data-reveal>
-            <h3>Personalized Mentorship</h3>
-            <p>One-on-one sessions with industry experts to chart your career path.</p>
-          </article>
-          <article class="glass-card feature-card" data-reveal>
-            <h3>Resume & Portfolio Review</h3>
-            <p>Get expert feedback to make your application stand out.</p>
-          </article>
-          <article class="glass-card feature-card" data-reveal>
-            <h3>Mock Interview Sessions</h3>
-            <p>Practice with realistic interview scenarios and receive constructive feedback.</p>
-          </article>
-        </div>
-        <div class="text-center" data-reveal>
-          <a href="career-services.html" class="primary-btn">Explore Career Services</a>
-        </div>
+        <a href="career-services.html" class="secondary-btn">Explore Career Services</a>
       </div>
     </section>
-
   </main>
 
-  <footer class="site-footer premium-footer">
+  <footer class="site-footer premium-footer landing-footer">
     <div class="container footer-layout">
       <div class="footer-brand">
         <a class="brand footer-logo" href="index.html">TestNova</a>
-        <p>
-          Empowering the next generation of tech professionals with cutting-edge AI and
-          automation skills. Your future in technology starts here.
-        </p>
+        <p>Focused learning for QA, development, AI, and career growth.</p>
       </div>
 
       <div class="footer-links">
         <div>
-          <h3>Explore</h3>
+          <h3>Learn</h3>
           <a href="learning-hub.html">Learning Hub</a>
-          <a href="career-services.html">Career Services</a>
-          <a href="corporate-training.html">Corporate Training</a>
-          <a href="about.html">About Us</a>
+          <a href="qa-engineering.html">QA Engineering</a>
+          <a href="development-technologies.html">Development</a>
+          <a href="ai-emerging-technologies.html">AI & Emerging Tech</a>
         </div>
         <div>
           <h3>Company</h3>
-          <a href="about.html">Our Story</a>
-          <a href="#testimonials">Testimonials</a>
-          <a href="#blogs">Blog</a>
-          <a href="contact.html">Contact Us</a>
+          <a href="career-services.html">Career Services</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
         </div>
         <div>
-          <h3>Connect</h3>
+          <h3>Contact</h3>
           <a href="mailto:admin@testnova.in">admin@testnova.in</a>
-          <a href="https://api.whatsapp.com/send?phone=919641782691&text=Hi%20TestNova,%20I%27m%20interested%20in%20learning%20AI%20and%20Technology.%20Please%20guide%20me." target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          <a href="#registration-modal">Register Interest</a>
-        </div>
-      </div>
-
-      <div class="footer-social">
-        <h3>Follow Us</h3>
-        <div class="social-links">
-          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a>
-          <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://api.whatsapp.com/send?phone=919641782691&text=Hi%20TestNova" target="_blank" rel="noopener noreferrer">WhatsApp</a>
         </div>
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>&copy; <span data-year></span> TestNova. All rights reserved. Designed for a smarter future.</p>
+      <p>&copy; <span data-year></span> TestNova. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- Registration Modal Structure -->
   <div id="registration-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal-overlay" tabindex="-1" data-micromodal-close>
       <div class="modal-container" role="document">
         <header class="modal-header">
-          <h2 class="modal-title">Register Your Interest</h2>
+          <h2 class="modal-title">Request Learning Access</h2>
           <button class="modal-close" aria-label="Close modal" data-micromodal-close></button>
         </header>
-        <div class="modal-content">
-          <!-- registration_form_component.html will be loaded here -->
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Exit Intent Modal Structure -->
-  <div id="exit-intent-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal-overlay" tabindex="-1" data-micromodal-close>
-      <div class="modal-container" role="document">
-        <header class="modal-header">
-          <h2 class="modal-title">Before You Go...</h2>
-          <button class="modal-close" aria-label="Close modal" data-micromodal-close></button>
-        </header>
-        <div class="modal-content">
-          <p class="hero-subtitle" style="text-align: center; margin-bottom: var(--space-md);">
-            We're sorry to see you leave. Would you like to receive FREE AI resources,
-            technology updates and exclusive learning material?
-          </p>
-          <!-- registration_form_component.html will be loaded here -->
-        </div>
+        <div class="modal-content"></div>
       </div>
     </div>
   </div>

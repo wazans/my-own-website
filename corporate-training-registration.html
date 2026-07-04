@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Corporate Training Registration | TestNova</title>
+  <meta
+    name="description"
+    content="Register your company for TestNova corporate training in QA Engineering, Development Technologies, and AI & Emerging Technologies."
+  />
+  <meta name="theme-color" content="#0b1020" />
+  <link rel="canonical" href="https://www.testnova.in/corporate-training-registration.html" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body
+  class="landing-page corporate-register-page hide-floating-register"
+  data-register-href="corporate-training-registration.html"
+  data-whatsapp-number="919641782691"
+  data-whatsapp-message="Hi TestNova, I want corporate training for my team."
+>
+  <div class="page-loader" id="page-loader" aria-hidden="true">
+    <div class="page-loader__spinner"></div>
+    <p>Preparing corporate registration</p>
+  </div>
+
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">TestNova</a>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="learning-hub.html">Learning Hub</a>
+        <a href="career-services.html">Career Services</a>
+        <a class="active" href="corporate-training.html">Corporate Training</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="corporate-register-main">
+    <section class="corporate-register-hero">
+      <div class="container corporate-register-layout">
+        <div class="corporate-register-copy" data-reveal>
+          <span class="section-tag">Corporate Training</span>
+          <h1>Register your team for a focused training program.</h1>
+          <p>
+            Share your team details and preferred training track. TestNova will review your
+            requirements and contact you with the right course plan.
+          </p>
+
+          <div class="corporate-register-highlights">
+            <div>
+              <strong>Training tracks</strong>
+              <span>QA, development, AI and emerging technologies</span>
+            </div>
+            <div>
+              <strong>Delivery modes</strong>
+              <span>Online, classroom, or hybrid sessions</span>
+            </div>
+            <div>
+              <strong>Admin email</strong>
+              <span>Details are sent to admin@testnova.in</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="corporate-register-panel glass-card" data-reveal>
+          <form
+            class="lead-form corporate-training-form"
+            data-corporate-training-form
+            action="https://formsubmit.co/admin@testnova.in"
+            method="POST"
+            target="corporate-submit-frame"
+          >
+            <input type="hidden" name="_subject" value="New Corporate Training Registration - TestNova" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_next" value="https://www.testnova.in/thank-you.html" />
+            <input type="hidden" name="form_source" value="corporate-training-registration" />
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="company-name">Company Name *</label>
+                <input id="company-name" name="Company Name" type="text" placeholder="Company Pvt Ltd" required />
+              </div>
+              <div class="form-field">
+                <label for="contact-person">Contact Person *</label>
+                <input id="contact-person" name="Contact Person" type="text" placeholder="Your name" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="work-email">Work Email *</label>
+                <input id="work-email" name="Work Email" type="email" placeholder="you@company.com" required />
+              </div>
+              <div class="form-field">
+                <label for="phone-number">Phone Number *</label>
+                <input id="phone-number" name="Phone Number" type="tel" placeholder="+91 98765 43210" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="team-size">Team Size *</label>
+                <input id="team-size" name="Team Size" type="number" min="1" placeholder="25" required />
+              </div>
+              <div class="form-field">
+                <label for="training-mode">Training Mode *</label>
+                <select id="training-mode" name="Training Mode" required>
+                  <option value="">Select mode</option>
+                  <option>Online Live</option>
+                  <option>On-site Classroom</option>
+                  <option>Hybrid</option>
+                  <option>Self-paced with Mentor Support</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="training-category">Training Category *</label>
+                <select id="training-category" name="Training Category" data-training-category required>
+                  <option value="">Select category</option>
+                  <option>QA Engineering</option>
+                  <option>Development Technologies</option>
+                  <option>AI & Emerging Technologies</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="preferred-course">Preferred Course *</label>
+                <select id="preferred-course" name="Preferred Course" data-preferred-course required disabled>
+                  <option value="">Select a category first</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field full">
+                <label for="corporate-message">Message</label>
+                <textarea
+                  id="corporate-message"
+                  name="Message"
+                  rows="5"
+                  placeholder="Tell us about goals, timeline, skill level, or custom curriculum needs."
+                ></textarea>
+              </div>
+            </div>
+
+            <button class="form-submit" type="submit">
+              <span>Submit Corporate Registration</span>
+            </button>
+            <div class="form-message" role="status" aria-live="polite"></div>
+          </form>
+          <iframe class="corporate-submit-frame" name="corporate-submit-frame" title="Corporate training form submission"></iframe>
+
+          <div class="corporate-thankyou" data-corporate-thankyou hidden>
+            <span class="section-tag">Thank You</span>
+            <h2>Thank you for registering.</h2>
+            <p>
+              Your corporate training request has been captured and sent to admin@testnova.in.
+              The TestNova team will contact you shortly.
+            </p>
+            <a class="secondary-btn" href="corporate-training.html">Back to Corporate Training</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer premium-footer landing-footer">
+    <div class="container footer-layout compact-footer">
+      <div class="footer-brand">
+        <a class="brand footer-logo" href="index.html">TestNova</a>
+        <p>Customized technology upskilling for teams building modern software quality practices.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h3>Explore</h3>
+          <a href="learning-hub.html">Learning Hub</a>
+          <a href="career-services.html">Career Services</a>
+          <a href="corporate-training.html">Corporate Training</a>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <a href="mailto:admin@testnova.in">admin@testnova.in</a>
+          <a href="contact.html">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; <span data-year></span> TestNova. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+  <script src="corporate-training-registration.js"></script>
+</body>
+</html>
