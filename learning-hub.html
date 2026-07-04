@@ -6,34 +6,85 @@
   <title>Learning Hub | TestNova</title>
   <link rel="stylesheet" href="styles.css" />
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Explore TestNova's comprehensive Learning Hub for AI, Technology, and Software Testing courses. Find your path to mastering in-demand tech skills." />
-  <meta name="keywords" content="Learning Hub, AI Courses, Technology Courses, Software Testing, Programming, Web Development, DevOps, TestNova" />
+  <meta name="description" content="Explore TestNova's Learning Hub: QA Engineering, Development Technologies, and AI & Emerging Technologies. Master in-demand tech skills." />
+  <meta name="keywords" content="Learning Hub, QA, Development, AI, Emerging Tech, Courses, TestNova" />
   <meta property="og:title" content="Learning Hub | TestNova" />
-  <meta property="og:description" content="Explore TestNova's comprehensive Learning Hub for AI, Technology, and Software Testing courses. Find your path to mastering in-demand tech skills." />
+  <meta property="og:description" content="Explore TestNova's Learning Hub: QA Engineering, Development Technologies, and AI & Emerging Technologies. Master in-demand tech skills." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.testnova.in/learning-hub.html" />
   <meta property="og:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Learning Hub | TestNova" />
-  <meta name="twitter:description" content="Explore TestNova's comprehensive Learning Hub for AI, Technology, and Software Testing courses. Find your path to mastering in-demand tech skills." />
+  <meta name="twitter:description" content="Explore TestNova's Learning Hub: QA Engineering, Development Technologies, and AI & Emerging Technologies. Master in-demand tech skills." />
   <meta name="twitter:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" />
   <link rel="canonical" href="https://www.testnova.in/learning-hub.html" />
 </head>
-<body class="learning-page learning-hub-page" data-progress-key="learning-hub-progress-v1">
+<body class="learning-page learning-hub-page">
+  <div class="page-loader" id="page-loader" aria-hidden="true">
+    <div class="page-loader__spinner"></div>
+    <p>Loading TestNova</p>
+  </div>
+
   <header class="topbar">
     <div class="container nav-container">
       <a class="brand" href="index.html">TestNova</a>
       <nav class="site-nav">
         <a href="index.html">Home</a>
-        <a href="ai-courses.html">AI Courses</a>
-        <a href="tech-courses.html">Technology Courses</a>
-        <a class="active" href="learning-hub.html">Learning Hub</a>
-        <a href="index.html#free-downloads">Free Resources</a>
-        <a href="index.html#blogs">Blogs</a>
-        <a href="index.html#career-guidance">Career</a>
-        <a href="index.html#about-us">About</a>
-        <a href="index.html#contact">Contact</a>
-        <a class="nav-register" href="#registration-modal">Register</a>
+        <div class="has-mega-menu">
+          <a class="active" href="learning-hub.html">Learning Hub</a>
+          <div class="mega-menu">
+            <div class="mega-menu-column">
+              <h4><a href="learning-hub.html#qa-engineering-courses">QA Engineering</a></h4>
+              <ul>
+                <li><a href="selenium.html">Selenium Basics</a></li>
+                <li><a href="playwright.html">Playwright with TS</a></li>
+                <li><a href="api.html">API Basics</a></li>
+                <li><a href="rest.html">REST Assured</a></li>
+                <li><a href="cucumber.html">Cucumber BDD</a></li>
+                <li><a href="hybrid.html">UI Hybrid Framework</a></li>
+                <li><a href="jenkins.html">Jenkins Automation</a></li>
+                <li><a href="master.html">Master Doc Notes (Java)</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-column">
+              <h4><a href="learning-hub.html#development-technologies-courses">Development Technologies</a></h4>
+              <ul>
+                <li><a href="java-programming.html">Java Programming</a></li>
+                <li><a href="python-automation.html">Python for Automation</a></li>
+                <li><a href="javascript-frontend.html">JS & Frontend</a></li>
+                <li><a href="typescript-deep-dive.html">TypeScript Deep Dive</a></li>
+                <li><a href="devops-fundamentals.html">DevOps Fundamentals</a></li>
+                <li><a href="cloud-platforms.html">Cloud Platforms</a></li>
+                <li><a href="sql-database-management.html">SQL & Database</a></li>
+                <li><a href="git-github-essentials.html">Git & GitHub</a></li>
+              </ul>
+            </div>
+            <div class="mega-menu-column">
+              <h4><a href="learning-hub.html#ai-emerging-technologies-courses">AI & Emerging Technologies</a></h4>
+              <ul>
+                <li><a href="ai-for-beginners.html">AI for Beginners</a></li>
+                <li><a href="prompt-engineering.html">Prompt Engineering</a></li>
+                <li><a href="ai-agents-automation.html">AI Agents & Automation</a></li>
+                <li><a href="machine-learning-fundamentals.html">Machine Learning Fundamentals</a></li>
+                <li><a href="blockchain-web3-basics.html">Blockchain & Web3</a></li>
+                <li><a href="iot-essentials.html">IoT Essentials</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <a href="career-services.html">Career Services</a>
+        <a href="corporate-training.html">Corporate Training</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <div class="nav-right-items">
+          <div class="search-box">
+            <input type="text" placeholder="Search courses..." class="search-input" aria-label="Search courses">
+            <button class="search-button" aria-label="Perform search">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            </button>
+          </div>
+          <a class="nav-register" href="#registration-modal">Register</a>
+        </div>
       </nav>
     </div>
   </header>
@@ -41,227 +92,199 @@
   <main>
     <section class="page-hero-section">
       <div class="container">
-        <nav class="breadcrumb" aria-label="breadcrumb">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="learning-hub.html" aria-current="page">Learning Hub</a></li>
-          </ol>
-        </nav>
         <div class="page-header">
           <h1>TestNova Learning Hub</h1>
-          <p>Your central destination for all AI, Technology, and Software Testing courses. Navigate through our diverse offerings and find the perfect path to elevate your skills.</p>
+          <p>Master in-demand tech skills. Explore diverse courses in QA, Development, and AI.</p>
         </div>
       </div>
     </section>
 
-    <section class="container page-grid">
-      <aside class="page-sidebar">
-        <button type="button" class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="false">
-          <h3>Explore Topics</h3>
-          <span class="faq-icon" aria-hidden="true"></span>
-        </button>
-        <nav class="sidebar-nav-content">
-          <div class="progress-panel" data-testid="progress-panel">
-            <div class="progress-header">
-              <span class="level-pill" id="progress-level">Lv 1</span>
-              <span class="progress-counts" id="progress-counts">0 / 0</span>
-            </div>
-            <div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>
-            <div class="xp-meta">
-              <span id="progress-pct">0%</span>
-              <span id="progress-next">5 XP to Lv 2</span>
-            </div>
-          </div>
+    <!-- Three Premium Category Cards Section -->
+    <section class="nova-section section-alt" id="learning-categories-overview">
+      <div class="container section-stack">
+        <div class="section-heading" data-reveal>
+          <span class="section-tag">Explore Programs</span>
+          <h2>Find Your Learning Path</h2>
+          <p>
+            Choose from expertly curated categories to kickstart or advance your career.
+          </p>
+        </div>
 
-          <h4>AI Categories</h4>
-          <a class="sidebar-link" href="#ai-for-beginners">AI for Beginners</a>
-          <a class="sidebar-link" href="#prompt-engineering">Prompt Engineering</a>
-          <a class="sidebar-link" href="#ai-agents-automation">AI Agents & Automation</a>
-          <a class="sidebar-link" href="#ai-for-school-kids">AI for School Kids</a>
-          <a class="sidebar-link" href="ai-courses.html">View All AI Courses</a>
-
-          <h4 style="margin-top: var(--space-md);">Technology Categories</h4>
-          <a class="sidebar-link" href="#java-programming">Java Programming</a>
-          <a class="sidebar-link" href="#python-automation">Python for Automation</a>
-          <a class="sidebar-link" href="#javascript-frontend">JavaScript & Frontend</a>
-          <a class="sidebar-link" href="#devops-fundamentals">DevOps Fundamentals</a>
-          <a class="sidebar-link" href="#sql-database">SQL & Database</a>
-          <a class="sidebar-link" href="tech-courses.html">View All Tech Courses</a>
-
-          <h4 style="margin-top: var(--space-md);">Software Testing Deep Dive</h4>
-          <a class="sidebar-link" href="#selenium-basics">Selenium Basics</a>
-          <a class="sidebar-link" href="#playwright-typescript">Playwright with TypeScript</a>
-          <a class="sidebar-link" href="#api-basics">API Basics</a>
-          <a class="sidebar-link" href="#rest-assured">REST Assured</a>
-          <a class="sidebar-link" href="#cucumber-bdd">Cucumber BDD</a>
-          <a class="sidebar-link" href="#hybrid-framework">UI Hybrid Framework</a>
-          <a class="sidebar-link" href="#jenkins-automation">Jenkins Automation</a>
-          <a class="sidebar-link" href="#master-doc-java">Master Doc Notes (Java)</a>
-        </nav>
-      </aside>
-
-      <article class="page-content">
-        <section class="nova-section" id="ai-courses-overview">
-          <div class="section-heading">
-            <span class="section-tag">AI Learning Paths</span>
-            <h2>AI Courses</h2>
-            <p>Explore the world of Artificial Intelligence with courses designed for every level, from foundational concepts to advanced applications.</p>
-          </div>
-          <div class="feature-grid">
-            <article class="glass-card feature-card progress-item" id="ai-for-beginners">
-              <h3>AI for Beginners</h3>
-              <p>Start your AI journey with foundational concepts and practical applications.</p>
-              <a href="#registration-modal" class="text-link" data-course-interest="AI for Beginners">Learn More</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="prompt-engineering">
-              <h3>Prompt Engineering</h3>
-              <p>Master the art of crafting effective prompts for large language models like ChatGPT and Claude.</p>
-              <a href="#registration-modal" class="text-link" data-course-interest="Prompt Engineering">Learn More</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="ai-agents-automation">
-              <h3>AI Agents & Automation</h3>
-              <p>Build intelligent agents that automate complex tasks and workflows across various domains.</p>
-              <a href="#registration-modal" class="text-link" data-course-interest="AI Agents & Automation">Learn More</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="ai-for-school-kids">
-              <h3>AI for School Kids</h3>
-              <p>Engaging and interactive AI lessons designed to spark curiosity in young minds.</p>
-              <a href="#registration-modal" class="text-link" data-course-interest="AI for School Kids">Learn More</a>
-            </article>
-          </div>
-          <div class="text-center">
-            <a href="ai-courses.html" class="secondary-btn">View All AI Courses</a>
-          </div>
-        </section>
-
-        <section class="nova-section section-alt" id="tech-courses-overview">
-          <div class="section-heading">
-            <span class="section-tag">Tech Learning Paths</span>
-            <h2>Technology Courses</h2>
-            <p>Master the most in-demand programming languages, frameworks, and tools to build, innovate, and excel in the digital world.</p>
-          </div>
-          <div class="feature-grid">
-            <article class="glass-card feature-card progress-item" id="java-programming">
-              <h3>Java Programming</h3>
-              <p>Comprehensive course covering core Java, OOP, and advanced concepts for software development.</p>
-              <a href="#registration-modal" class="text-link" data-course-interest="Java Programming">Learn More</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="python-automation">
-              <h3>Python for Automation</h3>
-              <p>Learn Python for scripting, data manipulation, and automating various tasks.</p>
-              <a href="#registration-modal" class="text-link" data-course-interest="Python for Automation">Learn More</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="javascript-frontend">
-              <h3>JavaScript & Frontend</h3>
-              <p>Master JavaScript, HTML, CSS, and modern frameworks like React and Angular for web development.</p>
-              <a href="#registration-modal" class="text-link" data-course-interest="JavaScript & Frontend">Learn More</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="devops-fundamentals">
-              <h3>DevOps Fundamentals</h3>
-              <p>Understand CI/CD pipelines, Docker, Kubernetes, and cloud infrastructure management.</p>
-              <a href="#registration-modal" class="text-link" data-course-interest="DevOps Fundamentals">Learn More</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="sql-database">
-              <h3>SQL & Database Management</h3>
-              <p>Master SQL for data querying, manipulation, and database administration.</p>
-              <a href="#registration-modal" class="text-link" data-course-interest="SQL & Database Management">Learn More</a>
-            </article>
-          </div>
-          <div class="text-center">
-            <a href="tech-courses.html" class="secondary-btn">View All Technology Courses</a>
-          </div>
-        </section>
-
-        <section class="nova-section" id="software-testing-overview">
-          <div class="section-heading">
-            <span class="section-tag">Software Testing Deep Dive</span>
-            <h2>Software Testing & Automation Courses</h2>
-            <p>Specialized courses to build robust test automation frameworks and master industry-leading tools.</p>
-          </div>
-          <div class="feature-grid">
-            <article class="glass-card feature-card progress-item" id="selenium-basics">
-              <h3>Selenium Basics</h3>
-              <p>Core browser automation concepts, locator strategies, synchronization, and practical Java examples.</p>
-              <a href="selenium.html" class="text-link">Explore Course</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="playwright-typescript">
-              <h3>Playwright with TypeScript</h3>
-              <p>Modern end-to-end testing with Playwright, leveraging TypeScript for powerful automation.</p>
-              <a href="playwright.html" class="text-link">Explore Course</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="api-basics">
-              <h3>API Basics</h3>
-              <p>Understand API behavior, request/response flow, and why API testing is more stable than UI-only testing.</p>
-              <a href="api.html" class="text-link">Explore Course</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="rest-assured">
-              <h3>REST Assured</h3>
-              <p>Master API automation with REST Assured, focusing on request setup, JSON extraction, and response assertions.</p>
-              <a href="rest.html" class="text-link">Explore Course</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="cucumber-bdd">
-              <h3>Cucumber BDD</h3>
-              <p>Use BDD feature files, step definitions, and runner configuration to write readable automation scenarios.</p>
-              <a href="cucumber.html" class="text-link">Explore Course</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="hybrid-framework">
-              <h3>UI Hybrid Framework</h3>
-              <p>Build a professional Selenium Java automation framework from scratch with TestNG, Maven, and more.</p>
-              <a href="hybrid.html" class="text-link">Explore Course</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="jenkins-automation">
-              <h3>Jenkins Automation</h3>
-              <p>Use Jenkins to run your automation suite in CI/CD, collect reports, and manage scheduled builds.</p>
-              <a href="jenkins.html" class="text-link">Explore Course</a>
-            </article>
-            <article class="glass-card feature-card progress-item" id="master-doc-java">
-              <h3>Master Doc Notes (Java)</h3>
-              <p>Core Java concepts from your master document, including execution flow, loops, collections, and practical examples for automation.</p>
-              <a href="master.html" class="text-link">Explore Course</a>
-            </article>
-          </div>
-        </section>
-
-        <!-- Free Resources Section (reusing from homepage) -->
-        <section class="nova-section section-alt" id="free-resources-hub">
-          <div class="section-heading">
-            <span class="section-tag">Free Value</span>
-            <h2>Unlock Free Learning Resources</h2>
-            <p>Access guides, cheat sheets, and templates to support your learning journey.</p>
-          </div>
-          <div class="cards-grid">
-            <article class="feature-card">
-              <h3>✅ FREE AI Guide</h3>
-              <p>A comprehensive guide to understanding Artificial Intelligence for beginners.</p>
-              <a href="#registration-modal" class="primary-btn" data-course-interest="FREE AI Guide">Download FREE AI Guide</a>
-            </article>
-            <article class="feature-card">
-              <h3>✅ FREE Automation Roadmap</h3>
-              <p>Your step-by-step guide to mastering automation from foundational to advanced levels.</p>
-              <a href="#registration-modal" class="primary-btn" data-course-interest="FREE Automation Roadmap">Download FREE Roadmap</a>
-            </article>
-            <article class="feature-card">
-              <h3>✅ FREE QA Resume Template</h3>
-              <p>Craft a winning resume with our professional template tailored for QA engineers.</p>
-              <a href="#registration-modal" class="primary-btn" data-course-interest="FREE QA Resume Template">Download Template</a>
-            </article>
-          </div>
-        </section>
-
-        <!-- Call to Action: Register Interest -->
-        <section class="nova-section" id="register-interest-hub">
-          <div class="container section-stack text-center">
-            <div class="section-heading">
-              <span class="section-tag">Ready to Start?</span>
-              <h2>Begin Your Tech Learning Journey Today</h2>
-              <p>Register your interest and let us guide you to the perfect course.</p>
-            </div>
-            <a href="#registration-modal" class="primary-btn" data-course-interest="General Inquiry">Register Your Interest</a>
-            <a href="#registration-modal" class="secondary-btn" data-course-interest="Free Consultation">Book Free Consultation</a>
-          </div>
-        </section>
-      </article>
+        <div class="feature-grid">
+          <article class="glass-card feature-card" data-reveal>
+            <span class="icon-chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            </span>
+            <h3>QA Engineering</h3>
+            <p>Master software quality assurance, from foundational testing to advanced automation.</p>
+            <a href="#qa-engineering-courses" class="primary-btn">Explore Courses</a>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <span class="icon-chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 10h-2V6h2v4zm0 8h-2v-6h2v6zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            </span>
+            <h3>Development Technologies</h3>
+            <p>Build robust applications with Java, Python, JavaScript, DevOps, and Cloud platforms.</p>
+            <a href="#development-technologies-courses" class="primary-btn">Explore Courses</a>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <span class="icon-chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 11.55C9.64 9.35 6.48 8 3 8v13c3.48 0 6.64 1.35 9 3.55 2.36-2.2 5.52-3.55 9-3.55V8c-3.48 0-6.64 1.35-9 3.55zM12 1C5.37 1 0 5.37 0 12s5.37 11 12 11 12-5.37 12-11S18.63 1 12 1zm0 19c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            </span>
+            <h3>AI & Emerging Technologies</h3>
+            <p>Dive into Machine Learning, Prompt Engineering, AI Agents, Blockchain, and IoT.</p>
+            <a href="#ai-emerging-technologies-courses" class="primary-btn">Explore Courses</a>
+          </article>
+        </div>
+      </div>
     </section>
+
+    <!-- QA Engineering Courses Section -->
+    <section class="nova-section" id="qa-engineering-courses">
+      <div class="container section-stack">
+        <div class="section-heading">
+          <span class="section-tag">QA Engineering</span>
+          <h2>Mastering Software Quality Assurance</h2>
+          <p>From fundamental testing principles to advanced automation frameworks.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="glass-card feature-card">
+            <h3>Selenium Basics</h3>
+            <p>Core browser automation concepts, locator strategies, synchronization.</p>
+            <a href="selenium.html" class="text-link">Explore Course →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>Playwright with TypeScript</h3>
+            <p>Modern end-to-end testing with Playwright, leveraging TypeScript.</p>
+            <a href="playwright.html" class="text-link">Explore Course →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>API Basics</h3>
+            <p>Understand API behavior, request/response flow, and API testing.</p>
+            <a href="api.html" class="text-link">Explore Course →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>REST Assured</h3>
+            <p>Master API automation with REST Assured, JSON extraction, and assertions.</p>
+            <a href="rest.html" class="text-link">Explore Course →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>Cucumber BDD</h3>
+            <p>Use BDD feature files, step definitions, and runner configuration.</p>
+            <a href="cucumber.html" class="text-link">Explore Course →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>UI Hybrid Framework</h3>
+            <p>Build a professional Selenium Java automation framework from scratch.</p>
+            <a href="hybrid.html" class="text-link">Explore Course →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>Jenkins Automation</h3>
+            <p>Use Jenkins to run automation suite in CI/CD, collect reports.</p>
+            <a href="jenkins.html" class="text-link">Explore Course →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>Master Doc Notes (Java)</h3>
+            <p>Core Java concepts from your master document, practical examples.</p>
+            <a href="master.html" class="text-link">Explore Course →</a>
+          </article>
+        </div>
+    </section>
+
+    <!-- Development Technologies Courses Section -->
+    <section class="nova-section section-alt" id="development-technologies-courses">
+      <div class="container section-stack">
+        <div class="section-heading">
+          <span class="section-tag">Development Technologies</span>
+          <h2>Build the Future with Code</h2>
+          <p>Programming languages, frameworks, and tools essential for modern software development.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="glass-card feature-card">
+            <h3>Java Programming</h3>
+            <p>Comprehensive course covering core Java, OOP, and advanced concepts.</p>
+            <a href="java-programming.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>Python for Automation</h3>
+            <p>Learn Python for scripting, data manipulation, and automating tasks.</p>
+            <a href="python-automation.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>JavaScript & Frontend</h3>
+            <p>Master JavaScript, HTML, CSS, and modern frameworks like React and Angular.</p>
+            <a href="javascript-frontend.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>TypeScript Deep Dive</h3>
+            <p>Enhance JavaScript projects with type safety and advanced TypeScript features.</p>
+            <a href="typescript-deep-dive.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>DevOps Fundamentals</h3>
+            <p>Understand CI/CD pipelines, Docker, Kubernetes, and cloud infrastructure.</p>
+            <a href="devops-fundamentals.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>Cloud Platforms (AWS/Azure)</h3>
+            <p>Deploy, manage, and scale applications on leading cloud service providers.</p>
+            <a href="cloud-platforms.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>SQL & Database Management</h3>
+            <p>Master SQL for data querying, manipulation, and database administration.</p>
+            <a href="sql-database-management.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>Git & GitHub Essentials</h3>
+            <p>Collaborate effectively with version control using Git and GitHub.</p>
+            <a href="git-github-essentials.html" class="text-link">Learn More →</a>
+          </article>
+        </div>
+    </section>
+
+    <!-- AI & Emerging Technologies Courses Section -->
+    <section class="nova-section" id="ai-emerging-technologies-courses">
+      <div class="container section-stack">
+        <div class="section-heading">
+          <span class="section-tag">AI & Emerging Technologies</span>
+          <h2>Innovate with Cutting-Edge Tech</h2>
+          <p>Stay ahead of the curve with courses on AI, Machine Learning, Blockchain, and IoT.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="glass-card feature-card">
+            <h3>AI for Beginners</h3>
+            <p>Start your AI journey with foundational concepts and practical applications.</p>
+            <a href="ai-for-beginners.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>Prompt Engineering</h3>
+            <p>Master the art of crafting effective prompts for large language models.</p>
+            <a href="prompt-engineering.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>AI Agents & Automation</h3>
+            <p>Build intelligent agents that automate complex tasks and workflows.</p>
+            <a href="ai-agents-automation.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>Machine Learning Fundamentals</h3>
+            <p>Dive into the core concepts of ML, algorithms, and model building.</p>
+            <a href="machine-learning-fundamentals.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>Blockchain & Web3 Basics</h3>
+            <p>Understand decentralized technologies, cryptocurrencies, and smart contracts.</p>
+            <a href="blockchain-web3-basics.html" class="text-link">Learn More →</a>
+          </article>
+          <article class="glass-card feature-card">
+            <h3>Internet of Things (IoT) Essentials</h3>
+            <p>Connect physical devices to the internet and build smart solutions.</p>
+            <a href="iot-essentials.html" class="text-link">Learn More →</a>
+          </article>
+        </div>
+    </section>
+
   </main>
 
   <footer class="site-footer premium-footer">
@@ -277,17 +300,17 @@
       <div class="footer-links">
         <div>
           <h3>Explore</h3>
-          <a href="ai-courses.html">AI Courses</a>
-          <a href="tech-courses.html">Tech Courses</a>
-          <a href="index.html#learning-paths">Learning Paths</a>
-          <a href="index.html#free-downloads">Free Resources</a>
+          <a href="learning-hub.html">Learning Hub</a>
+          <a href="career-services.html">Career Services</a>
+          <a href="corporate-training.html">Corporate Training</a>
+          <a href="about.html">About Us</a>
         </div>
         <div>
           <h3>Company</h3>
-          <a href="index.html#about-us">About Us</a>
-          <a href="index.html#trainer-section">Our Trainer</a>
-          <a href="index.html#testimonials">Testimonials</a>
-          <a href="index.html#blogs">Blog</a>
+          <a href="about.html">Our Story</a>
+          <a href="#testimonials">Testimonials</a>
+          <a href="#blogs">Blog</a>
+          <a href="contact.html">Contact Us</a>
         </div>
         <div>
           <h3>Connect</h3>
@@ -346,7 +369,6 @@
     </div>
   </div>
 
-  <script src="progress.js"></script>
   <script src="site.js"></script>
   <script src="landing.js"></script>
   <script src="registration.js"></script>

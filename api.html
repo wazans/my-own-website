@@ -37,14 +37,15 @@
       <a class="brand" href="index.html">TestNova</a>
       <nav class="site-nav">
         <a href="index.html">Home</a>
-        <a href="ai-courses.html">AI Courses</a>
-        <a href="tech-courses.html">Technology Courses</a>
-        <a class="active" href="learning-hub.html">Learning Hub</a>
-        <a href="index.html#free-downloads">Free Resources</a>
-        <a href="index.html#blogs">Blogs</a>
-        <a href="index.html#career-guidance">Career</a>
-        <a href="index.html#about-us">About</a>
-        <a href="index.html#contact">Contact</a>
+        <a href="ai-courses.html">AI & ML Courses</a>
+        <a href="tech-courses.html">Development Courses</a>
+        <a href="#ai-emerging-tech">AI & Emerging Tech</a>
+        <a class="active" href="learning-hub.html">Resources</a>
+        <a href="#career-services">Career Services</a>
+        <a href="#corporate-training">Corporate Training</a>
+        <a href="#blogs">Blogs</a>
+        <a href="#about-us">About</a>
+        <a href="#contact">Contact</a>
         <a class="nav-register" href="#registration-modal">Register</a>
       </nav>
     </div>
@@ -56,7 +57,7 @@
         <nav class="breadcrumb" aria-label="breadcrumb">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li><a href="learning-hub.html">Learning Hub</a></li>
+            <li><a href="learning-hub.html">Resources</a></li>
             <li><a href="api.html" aria-current="page">API Basics</a></li>
           </ol>
         </nav>
@@ -278,11 +279,91 @@ Response:
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>&copy; <span data-year></span> TestNova. All rights reserved.</p>
+  <footer class="site-footer premium-footer">
+    <div class="container footer-layout">
+      <div class="footer-brand">
+        <a class="brand footer-logo" href="index.html">TestNova</a>
+        <p>
+          Empowering the next generation of tech professionals with cutting-edge AI and
+          automation skills. Your future in technology starts here.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <div>
+          <h3>Explore</h3>
+          <a href="ai-courses.html">AI & ML Courses</a>
+          <a href="tech-courses.html">Development Courses</a>
+          <a href="#ai-emerging-tech">AI & Emerging Tech</a>
+          <a href="#learning-paths">Learning Paths</a>
+          <a href="#free-downloads">Free Resources</a>
+        </div>
+        <div>
+          <h3>Company</h3>
+          <a href="#about-us">About Us</a>
+          <a href="#trainer-section">Our Trainer</a>
+          <a href="#testimonials">Testimonials</a>
+          <a href="#blogs">Blog</a>
+        </div>
+        <div>
+          <h3>Connect</h3>
+          <a href="mailto:admin@testnova.in">admin@testnova.in</a>
+          <a href="https://api.whatsapp.com/send?phone=919641782691&text=Hi%20TestNova,%20I%27m%20interested%20in%20learning%20AI%20and%20Technology.%20Please%20guide%20me." target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a href="#registration-modal">Register Interest</a>
+        </div>
+      </div>
+
+      <div class="footer-social">
+        <h3>Follow Us</h3>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a>
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; <span data-year></span> TestNova. All rights reserved. Designed for a smarter future.</p>
     </div>
   </footer>
+
+  <!-- Registration Modal Structure -->
+  <div id="registration-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-overlay" tabindex="-1" data-micromodal-close>
+      <div class="modal-container" role="document">
+        <header class="modal-header">
+          <h2 class="modal-title">Register Your Interest</h2>
+          <button class="modal-close" aria-label="Close modal" data-micromodal-close></button>
+        </header>
+        <div class="modal-content">
+          <!-- registration_form_component.html will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exit Intent Modal Structure -->
+  <div id="exit-intent-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-overlay" tabindex="-1" data-micromodal-close>
+      <div class="modal-container" role="document">
+        <header class="modal-header">
+          <h2 class="modal-title">Before You Go...</h2>
+          <button class="modal-close" aria-label="Close modal" data-micromodal-close></button>
+        </header>
+        <div class="modal-content">
+          <p class="hero-subtitle" style="text-align: center; margin-bottom: var(--space-md);">
+            We're sorry to see you leave. Would you like to receive FREE AI resources,
+            technology updates and exclusive learning material?
+          </p>
+          <!-- registration_form_component.html will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="site.js"></script>
+  <script src="landing.js"></script>
+  <script src="registration.js"></script>
 </body>
 </html>
