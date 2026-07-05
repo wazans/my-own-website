@@ -526,7 +526,9 @@
   ];
 
   function currentPageName() {
-    return (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    var pathname = window.location.pathname.toLowerCase();
+    if (/\/registration\/?$/.test(pathname)) return 'registration';
+    return (pathname.split('/').pop() || 'index.html').toLowerCase();
   }
 
   function renderLearningNav() {
@@ -536,20 +538,20 @@
     var page = currentPageName();
     var isLearning = ['learning-hub.html', 'qa-engineering.html', 'development-technologies.html', 'ai-emerging-technologies.html', 'tech-courses.html', 'ai-courses.html'].indexOf(page) !== -1 || document.body.classList.contains('learning-page');
     var navHtml = [
-      '<a' + (page === 'index.html' ? ' class="active"' : '') + ' href="index.html">Home</a>',
+      '<a' + (page === 'index.html' ? ' class="active"' : '') + ' href="/index.html">Home</a>',
       '<div class="has-mega-menu learning-dropdown">',
-      '<a' + (isLearning ? ' class="active"' : '') + ' href="learning-hub.html">Learning Hub</a>',
+      '<a' + (isLearning ? ' class="active"' : '') + ' href="/learning-hub.html">Learning Hub</a>',
       '<div class="mega-menu compact-learning-menu">',
-      '<a href="qa-engineering.html">QA Engineering</a>',
-      '<a href="development-technologies.html">Development Technologies</a>',
-      '<a href="ai-emerging-technologies.html">AI &amp; Emerging Technologies</a>',
+      '<a href="/qa-engineering.html">QA Engineering</a>',
+      '<a href="/development-technologies.html">Development Technologies</a>',
+      '<a href="/ai-emerging-technologies.html">AI &amp; Emerging Technologies</a>',
       '</div>',
       '</div>',
-      '<a' + (page === 'career-services.html' ? ' class="active"' : '') + ' href="career-services.html">Career Services</a>',
-      '<a' + (page === 'corporate-training.html' ? ' class="active"' : '') + ' href="corporate-training.html">Corporate Training</a>',
-      '<a' + (page === 'about.html' ? ' class="active"' : '') + ' href="about.html">About</a>',
-      '<a' + (page === 'contact.html' ? ' class="active"' : '') + ' href="contact.html">Contact</a>',
-      '<a class="nav-register" href="#registration-modal" data-form-type="register">Register</a>'
+      '<a' + (page === 'career-services.html' ? ' class="active"' : '') + ' href="/career-services.html">Career Services</a>',
+      '<a' + (page === 'corporate-training.html' ? ' class="active"' : '') + ' href="/corporate-training.html">Corporate Training</a>',
+      '<a' + (page === 'about.html' ? ' class="active"' : '') + ' href="/about.html">About</a>',
+      '<a' + (page === 'contact.html' ? ' class="active"' : '') + ' href="/contact.html">Contact</a>',
+      '<a class="nav-register' + (page === 'registration' || page === 'register.html' ? ' active' : '') + '" href="/registration/">Register</a>'
     ].join('');
 
     siteNavs.forEach(function(nav) {
@@ -646,6 +648,7 @@
       var isContextButton = action.classList.contains('primary-btn') || action.classList.contains('secondary-btn') || action.classList.contains('nav-register') || action.classList.contains('floating-register');
 
       if (isNavLink || isFooterLink) return;
+      if (action.classList.contains('nav-register') && href && href !== '#registration-modal') return;
       if (!hasLeadHref && (!isLeadLabel || !isContextButton)) return;
 
       if (action.matches('a')) {

@@ -298,7 +298,9 @@
   }
 
   function continueBrowsing(node) {
-    closeContainingModal(node);
+    if (!closeContainingModal(node)) {
+      window.location.href = '/index.html';
+    }
   }
 
   function showSuccess(form) {
@@ -309,7 +311,7 @@
       '<div class="success-actions">',
       '<button class="secondary-btn success-continue" type="button">Continue Browsing</button>',
       '<a class="primary-btn" href="' + WHATSAPP_URL + '" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>',
-      '<a class="secondary-btn" href="index.html">Back to Home</a>',
+      '<a class="secondary-btn" href="/index.html">Back to Home</a>',
       '</div>',
       '</div>'
     ].join('');
