@@ -1951,7 +1951,37 @@ body.modal-open {
 }
 
 .public-discovery-page .page-header {
-  max-width: 860px;
+  max-width: 760px;
+}
+
+.public-discovery-page .page-hero-section {
+  padding: clamp(2rem, 4vw, 3.25rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.public-discovery-page .page-header h1 {
+  margin: 0.55rem 0 0.45rem;
+  font-size: clamp(2.2rem, 4vw, 3.45rem);
+}
+
+.public-discovery-page .page-header p {
+  max-width: 56ch;
+  margin-bottom: 0;
+  font-size: var(--font-size-base);
+  line-height: 1.55;
+}
+
+.public-discovery-page .section-heading {
+  margin-bottom: var(--space-md);
+}
+
+.public-discovery-page .section-heading h2 {
+  margin: 0.45rem 0 0;
+  font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+  letter-spacing: 0;
+}
+
+.public-discovery-page .nova-section {
+  padding: var(--space-lg) 0;
 }
 
 .discovery-hero .hero-actions {
