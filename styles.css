@@ -2694,8 +2694,13 @@ body.landing-page .container {
   color: #ffffff;
 }
 
+.landing-topbar .site-nav > a.nav-register {
+  color: #ffffff;
+  padding-inline: 1rem;
+}
+
 .landing-hero {
-  min-height: clamp(500px, 68vh, 640px);
+  min-height: clamp(460px, 62vh, 590px);
   display: flex;
   align-items: center;
   padding: 5.5rem 0;
@@ -2739,6 +2744,59 @@ body.landing-page .container {
 
 .landing-section {
   padding: clamp(4.5rem, 8vw, 7rem) 0;
+}
+
+.landing-mentors {
+  padding: clamp(2rem, 5vw, 3.5rem) 0;
+  background: rgba(10, 14, 26, 0.5);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.landing-mentors .section-heading {
+  margin-bottom: 0.75rem;
+}
+
+.landing-mentors .section-heading h2 {
+  font-size: clamp(1.8rem, 3vw, 2.55rem);
+}
+
+.landing-mentor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.landing-mentor-card {
+  padding: 1.1rem;
+  min-height: 100%;
+}
+
+.landing-mentor-card .profile-label {
+  display: inline-flex;
+  margin-bottom: 0.55rem;
+  color: var(--tn-accent-light);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.landing-mentor-card h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1.12rem;
+  letter-spacing: 0;
+}
+
+.landing-mentor-card p {
+  margin: 0 0 0.75rem;
+  color: #aeb8c8;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.landing-mentor-card strong {
+  color: #e5eefc;
+  font-size: 0.88rem;
 }
 
 body.landing-page #learning-categories {
@@ -2842,6 +2900,10 @@ body.landing-page .text-link {
     grid-template-columns: 1fr;
   }
 
+  .landing-mentor-grid {
+    grid-template-columns: 1fr;
+  }
+
   body.landing-page .feature-card,
   body.landing-page .outcome-card {
     min-height: auto;
@@ -2867,31 +2929,52 @@ body.landing-page .text-link {
   }
 
   .landing-hero {
-    min-height: 620px;
+    min-height: 520px;
     align-items: flex-end;
-    padding: 4rem 0;
+    padding: 3.2rem 0;
     background:
       linear-gradient(180deg, rgba(8, 11, 18, 0.34) 0%, rgba(8, 11, 18, 0.88) 54%, #080b12 100%),
       url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1100&q=82") center / cover;
   }
 
   .landing-hero h1 {
-    max-width: 12ch;
-    font-size: 3.2rem;
+    max-width: 13ch;
+    font-size: 2.8rem;
   }
 
   .landing-section {
-    padding: 4rem 0;
+    padding: 3rem 0;
+  }
+
+  .landing-mentors {
+    padding: 2rem 0;
+  }
+
+  .landing-mentor-card {
+    padding: 1rem;
   }
 }
 
 @media (max-width: 480px) {
   .landing-hero {
-    min-height: 590px;
+    min-height: 500px;
   }
 
   .landing-hero h1 {
-    font-size: 2.65rem;
+    font-size: 2.35rem;
+  }
+
+  .landing-hero .hero-subtitle {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+
+  .landing-hero .hero-actions {
+    gap: 0.65rem;
+  }
+
+  .landing-hero .hero-actions a {
+    width: 100%;
   }
 
   .landing-career {

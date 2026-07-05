@@ -24,7 +24,7 @@
     var link = document.createElement('a');
     link.className = 'floating-register';
     link.href = href;
-    link.textContent = 'Free AI Kit';
+    link.textContent = 'Register';
     link.setAttribute('data-testid', 'floating-register-btn');
     link.setAttribute('data-form-type', 'free_ai_kit');
     link.setAttribute('data-course-interest', 'Free AI Kit');
