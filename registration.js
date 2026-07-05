@@ -158,10 +158,34 @@
     var context = rawContext || {};
     context.formType = context.formType || 'register';
     var selectedInterest = inferInterest(context);
+    var isDedicatedRegister = document.body.classList.contains('register-page') &&
+      /register-page|direct-registration-page|legacy-form/.test(context.formSource || '');
 
     container.innerHTML = [
       '<form class="lead-form access-form contextual-lead-form universal-lead-form" data-registration-form data-form-type="' + escapeHtml(context.formType) + '" novalidate>',
       hiddenInputs(context),
+      isDedicatedRegister ? [
+      '<div class="form-field register-priority-field">',
+      '<label for="tn-phone">WhatsApp Number *</label>',
+      '<input id="tn-phone" name="Phone Number" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 WhatsApp number" data-lead-field="phone" required />',
+      '<small class="field-error" data-error-for="phone"></small>',
+      '</div>',
+      '<div class="form-row">',
+      '<div class="form-field">',
+      '<label for="tn-full-name">Full Name</label>',
+      '<input id="tn-full-name" name="Full Name" type="text" autocomplete="name" placeholder="Name optional" />',
+      '<small class="field-error" data-error-for="full_name"></small>',
+      '</div>',
+      '<div class="form-field">',
+      '<label for="tn-interested-in">Interested In</label>',
+      '<select id="tn-interested-in" name="Interested In" data-lead-field="interested">',
+      renderInterestOptions(selectedInterest),
+      '</select>',
+      '<small class="field-error" data-error-for="interested"></small>',
+      '</div>',
+      '</div>',
+      '<p class="registration-bonus">Free AI Kit + callback after registration.</p>'
+      ].join('') : [
       '<div class="form-row">',
       '<div class="form-field">',
       '<label for="tn-full-name">Full Name</label>',
@@ -194,7 +218,8 @@
       '<input id="tn-other-interest" name="Other Details" type="text" placeholder="Anything else? Optional." data-lead-field="other_interest" />',
       '</div>',
       '</div>',
-      '<p class="registration-bonus">Free prize after registration: AI starter kit + priority demo callback.</p>',
+      '<p class="registration-bonus">Free prize after registration: AI starter kit + priority demo callback.</p>'
+      ].join(''),
       '<button class="form-submit" type="submit"><span>' + escapeHtml(ctaFor(context)) + '</span></button>',
       '<div class="form-message" role="status" aria-live="polite"></div>',
       '</form>'

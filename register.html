@@ -42,22 +42,22 @@
     <section class="register-hero">
       <div class="container register-hero__layout">
         <div class="register-hero__copy" data-reveal>
-          <span class="section-tag">60-second registration</span>
-          <h1>Register with TestNova.</h1>
-          <p>Drop your number. Pick your interest if you want. We call back with the best track for you.</p>
+          <span class="section-tag">Fast registration</span>
+          <h1>Get your callback.</h1>
+          <p>Enter your WhatsApp number. We will guide you to the right track.</p>
 
           <div class="register-checks glass-card">
             <div>
-              <strong>Free prize</strong>
-              <span>AI starter kit + demo invite</span>
+              <strong>Free AI Kit</strong>
+              <span>Starter resources after registration</span>
             </div>
             <div>
-              <strong>Required</strong>
-              <span>Only phone number</span>
+              <strong>Only required</strong>
+              <span>WhatsApp number</span>
             </div>
             <div>
-              <strong>Fast callback</strong>
-              <span>No long form drama</span>
+              <strong>Quick help</strong>
+              <span>Track guidance on call</span>
             </div>
           </div>
         </div>
@@ -67,24 +67,17 @@
           <!-- The content of registration_form_component.html goes here -->
           <form class="lead-form" data-registration-form novalidate>
             <input type="hidden" name="form_source" value="register-page" />
-            <div class="form-row">
-              <div class="form-field">
-                <label for="reg-name">Full name</label>
-                <input id="reg-name" name="name" type="text" placeholder="Your name" />
-                <small class="field-error" data-error-for="name"></small>
-              </div>
-              <div class="form-field">
-                <label for="reg-email">Email</label>
-                <input id="reg-email" name="email" type="email" placeholder="Email, optional" />
-                <small class="field-error" data-error-for="email"></small>
-              </div>
+            <div class="form-field register-priority-field">
+              <label for="reg-phone">WhatsApp Number *</label>
+              <input id="reg-phone" name="phone" type="tel" placeholder="+91 WhatsApp number" required />
+              <small class="field-error" data-error-for="phone"></small>
             </div>
 
             <div class="form-row">
               <div class="form-field">
-                <label for="reg-phone">Phone / WhatsApp *</label>
-                <input id="reg-phone" name="phone" type="tel" placeholder="+91 98765 43210" required />
-                <small class="field-error" data-error-for="phone"></small>
+                <label for="reg-name">Full name</label>
+                <input id="reg-name" name="name" type="text" placeholder="Name optional" />
+                <small class="field-error" data-error-for="name"></small>
               </div>
               <div class="form-field">
                 <label for="reg-course">Interested In</label>
@@ -109,7 +102,7 @@
               </div>
             </div>
 
-            <p class="registration-bonus">Free prize after registration: AI starter kit + priority demo callback.</p>
+            <p class="registration-bonus">Free AI Kit + callback after registration.</p>
 
             <button class="form-submit" type="submit">
               <span>Unlock My Free Goodies</span>
