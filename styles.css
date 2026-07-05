@@ -1933,7 +1933,7 @@ footer.site-footer::before {
   border: 1px solid var(--tn-surface-border);
   border-radius: var(--radius-xl);
   box-shadow: var(--tn-shadow-lg);
-  max-width: 90%;
+  width: min(620px, 90%);
   max-height: 90%;
   overflow-y: auto;
   position: relative;
@@ -2303,6 +2303,24 @@ body.content-locked .page-header::after {
     order: -1;
   }
 
+  .corporate-register-layout {
+    gap: 1rem;
+  }
+
+  .corporate-register-panel {
+    order: -1;
+  }
+
+  .corporate-register-copy h1 {
+    margin: 0.45rem 0 0.4rem;
+    font-size: clamp(1.9rem, 7vw, 2.6rem);
+  }
+
+  .corporate-register-copy p,
+  .corporate-register-highlights {
+    display: none;
+  }
+
   body.register-page .register-hero__copy h1 {
     max-width: none;
     margin: 0.28rem 0 0.25rem;
@@ -2474,8 +2492,42 @@ body.content-locked .page-header::after {
   .form-row { grid-template-columns: 1fr; }
   .register-card { padding: var(--space-sm); border-radius: var(--radius-md); }
 
+  .modal-overlay {
+    align-items: flex-start;
+    padding: 0.75rem;
+    overflow-y: auto;
+  }
+
   .modal-container {
-    max-width: 95%;
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100dvh - 1.5rem);
+    border-radius: 18px;
+  }
+
+  .modal-header {
+    padding: 0.85rem 1rem;
+  }
+
+  .modal-title {
+    font-size: 1.08rem;
+  }
+
+  .modal-content {
+    padding: 0.85rem;
+  }
+
+  .modal-content .lead-form {
+    gap: 0.62rem;
+  }
+
+  .modal-content .form-row {
+    gap: 0.62rem;
+    margin-bottom: 0;
+  }
+
+  .modal-content .form-field textarea {
+    min-height: 86px;
   }
 }
 
@@ -2509,6 +2561,10 @@ body.content-locked .page-header::after {
     gap: 0.54rem;
   }
 
+  body.register-page .lead-form > .form-row {
+    display: none;
+  }
+
   body.register-page .lead-form input,
   body.register-page .lead-form select {
     min-height: 42px;
@@ -2525,6 +2581,37 @@ body.content-locked .page-header::after {
 
   body.register-page .form-submit {
     min-height: 46px;
+  }
+
+  .modal-content .registration-bonus {
+    display: none;
+  }
+
+  .modal-content .form-submit {
+    min-height: 46px;
+  }
+
+  .corporate-register-hero {
+    min-height: auto;
+    padding: 0.75rem 0 1.25rem;
+  }
+
+  .corporate-register-panel {
+    padding: 0.75rem;
+    border-radius: 16px;
+  }
+
+  .corporate-training-form {
+    gap: 0.55rem;
+  }
+
+  .corporate-training-form .form-row {
+    gap: 0.55rem;
+    margin-bottom: 0;
+  }
+
+  .corporate-training-form textarea {
+    min-height: 82px;
   }
 
   .hero-audience span,
