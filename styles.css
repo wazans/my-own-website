@@ -1582,25 +1582,25 @@ body.register-page .register-hero {
 
 body.register-page .register-hero__layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(360px, 0.74fr);
-  gap: clamp(0.85rem, 2.2vw, 1.5rem);
+  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 0.82fr);
+  gap: clamp(1rem, 3vw, 2rem);
   align-items: center;
 }
 
 body.register-page .register-hero__copy h1 {
-  max-width: 10ch;
-  margin: 0.45rem 0 0.55rem;
-  font-size: clamp(2.3rem, 4.8vw, 4.35rem);
+  max-width: 12ch;
+  margin: 0.55rem 0 0.75rem;
+  font-size: clamp(2.35rem, 5vw, 4.4rem);
   letter-spacing: 0;
-  line-height: 0.98;
+  line-height: 1;
 }
 
 body.register-page .register-hero__copy p {
-  max-width: 430px;
-  margin-bottom: 0.75rem;
+  max-width: 520px;
+  margin-bottom: 1rem;
   color: var(--tn-text-secondary);
-  font-size: clamp(0.95rem, 1.35vw, 1.05rem);
-  line-height: 1.45;
+  font-size: clamp(1rem, 1.45vw, 1.12rem);
+  line-height: 1.55;
 }
 
 body.register-page .register-checks {
@@ -1665,13 +1665,6 @@ body.register-page .lead-form label {
 body.register-page .lead-form input,
 body.register-page .lead-form select {
   min-height: 46px;
-}
-
-body.register-page .register-priority-field input {
-  min-height: 58px;
-  font-size: 1.06rem;
-  border-color: rgba(16, 185, 129, 0.45);
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08);
 }
 
 body.register-page .registration-bonus {
@@ -2567,26 +2560,6 @@ body.content-locked .page-header::after {
     gap: 0.54rem;
   }
 
-  body.register-page .register-priority-field {
-    order: 1;
-  }
-
-  body.register-page .form-submit {
-    order: 2;
-  }
-
-  body.register-page .lead-form > .form-row {
-    order: 3;
-  }
-
-  body.register-page .registration-bonus {
-    order: 4;
-  }
-
-  body.register-page .form-message {
-    order: 5;
-  }
-
   body.register-page .lead-form .form-row {
     grid-template-columns: 1fr;
     gap: 0.54rem;
@@ -2597,14 +2570,6 @@ body.content-locked .page-header::after {
     min-height: 42px;
     padding: 0.58rem 0.72rem;
     font-size: 16px;
-  }
-
-  body.register-page .register-priority-field input {
-    min-height: 52px;
-  }
-
-  body.register-page .registration-bonus {
-    display: none;
   }
 
   body.register-page .form-submit {
