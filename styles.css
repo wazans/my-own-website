@@ -2521,6 +2521,17 @@ body.content-locked .page-header::after {
     gap: 0.62rem;
   }
 
+  .modal-content .form-field label {
+    font-size: 0.82rem;
+  }
+
+  .modal-content .form-field input,
+  .modal-content .form-field select,
+  .modal-content .form-field textarea {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
   .modal-content .form-row {
     gap: 0.62rem;
     margin-bottom: 0;
@@ -2556,19 +2567,36 @@ body.content-locked .page-header::after {
     gap: 0.54rem;
   }
 
-  body.register-page .lead-form .form-row {
-    grid-template-columns: 1fr;
-    gap: 0.54rem;
+  body.register-page .register-priority-field {
+    order: 1;
+  }
+
+  body.register-page .form-submit {
+    order: 2;
   }
 
   body.register-page .lead-form > .form-row {
-    display: none;
+    order: 3;
+  }
+
+  body.register-page .registration-bonus {
+    order: 4;
+  }
+
+  body.register-page .form-message {
+    order: 5;
+  }
+
+  body.register-page .lead-form .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.54rem;
   }
 
   body.register-page .lead-form input,
   body.register-page .lead-form select {
     min-height: 42px;
     padding: 0.58rem 0.72rem;
+    font-size: 16px;
   }
 
   body.register-page .register-priority-field input {

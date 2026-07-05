@@ -26,8 +26,8 @@
     link.href = href;
     link.textContent = 'Register';
     link.setAttribute('data-testid', 'floating-register-btn');
-    link.setAttribute('data-form-type', 'free_ai_kit');
-    link.setAttribute('data-course-interest', 'Free AI Kit');
+    link.setAttribute('data-form-type', 'register');
+    link.setAttribute('data-course-interest', 'General Inquiry');
     document.body.appendChild(link);
   }
 
@@ -714,7 +714,7 @@
   }
 
   function setupContextualLeadActions() {
-    var actionPattern = /^(Register|Register Interest|Register Your Interest|Register Interest for Updates|Request Access|Book Consultation|Send an Inquiry|Send Message|Schedule Now|Contact Sales|Free AI Kit|Download Free AI Kit|Download FREE Cheat Sheet|Download FREE Guide|Download FREE Roadmap|Get Roadmap|Grab Cheat Sheet|Download Template|Download Now)$/i;
+    var actionPattern = /^(Register|Register Now|Register Interest|Register Your Interest|Register Interest for Updates|Request Access|Book Consultation|Send an Inquiry|Send Message|Schedule Now|Contact Sales|Free AI Kit|Download Free AI Kit|Download FREE Cheat Sheet|Download FREE Guide|Download FREE Roadmap|Get Roadmap|Grab Cheat Sheet|Download Template|Download Now)$/i;
     var page = currentPageName();
     var hasRegistrationModal = !!document.getElementById('registration-modal');
 
