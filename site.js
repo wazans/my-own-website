@@ -155,6 +155,85 @@
     syncSidebarForViewport();
   }
 
+  function setupAnchorLandingOffsets() {
+    var ignoredHashes = {
+      '#registration-modal': true,
+      '#exit-intent-modal': true
+    };
+
+    function samePageUrl(url) {
+      return url.origin === window.location.origin &&
+        url.pathname.replace(/\/$/, '') === window.location.pathname.replace(/\/$/, '');
+    }
+
+    function targetFromHash(hash) {
+      if (!hash || ignoredHashes[hash]) return null;
+
+      try {
+        return document.getElementById(decodeURIComponent(hash.slice(1)));
+      } catch (error) {
+        return document.querySelector(hash);
+      }
+    }
+
+    function scrollToHashTarget(hash, behavior) {
+      var target = targetFromHash(hash);
+      if (!target || target.closest('.modal')) return false;
+
+      var topbar = document.querySelector('.topbar');
+      var topbarOffset = topbar ? topbar.getBoundingClientRect().height : 0;
+      var targetTop = target.getBoundingClientRect().top + window.scrollY;
+
+      window.scrollTo({
+        top: Math.max(targetTop - topbarOffset - 18, 0),
+        behavior: behavior || 'smooth'
+      });
+      return true;
+    }
+
+    document.addEventListener('click', function(event) {
+      if (event.defaultPrevented) return;
+      var link = event.target.closest ? event.target.closest('a[href*="#"]') : null;
+      if (!link) return;
+
+      var href = link.getAttribute('href');
+      if (!href || href === '#') return;
+
+      var url;
+      try {
+        url = new URL(href, window.location.href);
+      } catch (error) {
+        return;
+      }
+
+      if (!samePageUrl(url) || !url.hash || ignoredHashes[url.hash]) return;
+      if (!scrollToHashTarget(url.hash, 'smooth')) return;
+
+      event.preventDefault();
+      if (window.history && window.history.pushState) {
+        window.history.pushState(null, '', url.hash);
+      }
+    });
+
+    function correctInitialHash() {
+      if (window.location.hash) {
+        scrollToHashTarget(window.location.hash, 'auto');
+      }
+    }
+
+    window.addEventListener('hashchange', function() {
+      window.setTimeout(function() {
+        scrollToHashTarget(window.location.hash, 'smooth');
+      }, 0);
+    });
+
+    window.requestAnimationFrame(correctInitialHash);
+    window.setTimeout(correctInitialHash, 120);
+    window.addEventListener('load', function() {
+      window.setTimeout(correctInitialHash, 0);
+    });
+  }
+
   // Function to set up active state and offset scrolling for "On this page" links
   function setupPageSidebarLinks() {
     var pageSidebar = document.querySelector('.page-sidebar');
@@ -743,6 +822,7 @@
     setupGatedActions();
     setupContextualLeadActions();
     setupLearningContentGate();
+    setupAnchorLandingOffsets();
     injectRegisterButton();
     setupContextualLeadActions();
     injectWhatsAppButton();
