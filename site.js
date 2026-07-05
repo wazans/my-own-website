@@ -333,8 +333,37 @@
     if (!modal) return;
 
     var modalContentArea = modal.querySelector('.modal-content');
+    var modalContainer = modal.querySelector('.modal-container');
+    var modalOverlay = modal.querySelector('.modal-overlay');
     var modalTriggers = document.querySelectorAll('a[href="#' + modalId + '"]');
-    var closeButtons = modal.querySelectorAll('[data-micromodal-close]');
+    var closeButtons = modal.querySelectorAll('.modal-close, [data-modal-close]');
+
+    if (modalContainer && !modalContainer.dataset.modalEventsContained) {
+      modalContainer.dataset.modalEventsContained = 'true';
+      [
+        'click',
+        'mousedown',
+        'mouseup',
+        'pointerdown',
+        'pointerup',
+        'touchstart',
+        'touchend',
+        'input',
+        'change',
+        'focusin',
+        'focusout'
+      ].forEach(function(eventName) {
+        modalContainer.addEventListener(eventName, function(event) {
+          event.stopPropagation();
+        });
+      });
+
+      modalContainer.addEventListener('keydown', function(event) {
+        if (event.key !== 'Escape') {
+          event.stopPropagation();
+        }
+      });
+    }
 
     function openModal(courseInterest, accessUrl, trigger) {
       var context = inferFormContext(trigger || null, formSource, courseInterest || courseInterestDefault);
@@ -371,11 +400,15 @@
     });
 
     closeButtons.forEach(function(button) {
-      button.addEventListener('click', closeModal);
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        closeModal();
+      });
     });
 
     modal.addEventListener('click', function(event) {
-      if (event.target === modal.querySelector('.modal-overlay')) {
+      if (modalOverlay && event.target === modalOverlay) {
         closeModal();
       }
     });

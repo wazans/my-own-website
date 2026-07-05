@@ -849,6 +849,12 @@ a {
 .form-field textarea::placeholder {
   color: var(--tn-muted);
 }
+.field-error {
+  min-height: 1.1rem;
+  color: #fecaca;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
 
 .form-submit {
   background: linear-gradient(135deg, var(--tn-accent) 0%, var(--tn-accent-light) 50%, var(--tn-accent-dark) 100%);
@@ -889,6 +895,19 @@ a {
 .lead-success p {
   margin: 0 auto;
   color: #c8f7df;
+}
+.success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+}
+.success-actions .primary-btn,
+.success-actions .secondary-btn {
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ============ HOME HERO (Modern Premium) ============ */

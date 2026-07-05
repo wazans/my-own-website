@@ -1,87 +1,52 @@
-<form class="lead-form access-form" data-registration-form novalidate>
-  <input type="hidden" name="form_source" value="learning-access" />
+<form class="lead-form access-form contextual-lead-form universal-lead-form" data-registration-form data-form-type="register" novalidate>
+  <input type="hidden" name="_subject" value="New TestNova Lead - Register Interest" />
+  <input type="hidden" name="_template" value="table" />
+  <input type="hidden" name="_captcha" value="false" />
 
   <div class="form-row">
     <div class="form-field">
-      <label for="reg-name">Full Name *</label>
-      <input id="reg-name" name="name" type="text" placeholder="Your full name" required />
-      <small class="field-error" data-error-for="name"></small>
+      <label for="tn-full-name">Full Name</label>
+      <input id="tn-full-name" name="Full Name" type="text" autocomplete="name" placeholder="Your full name" />
+      <small class="field-error" data-error-for="full_name"></small>
     </div>
     <div class="form-field">
-      <label for="reg-email">Email *</label>
-      <input id="reg-email" name="email" type="email" placeholder="you@example.com" required />
-      <small class="field-error" data-error-for="email"></small>
-    </div>
-  </div>
-
-  <div class="form-row">
-    <div class="form-field">
-      <label for="reg-phone">Phone Number *</label>
-      <input id="reg-phone" name="phone" type="tel" placeholder="+91 98765 43210" required />
+      <label for="tn-phone">Phone Number *</label>
+      <input id="tn-phone" name="Phone Number" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210" data-lead-field="phone" required />
       <small class="field-error" data-error-for="phone"></small>
     </div>
-    <div class="form-field">
-      <label for="reg-role">Current Role *</label>
-      <input id="reg-role" name="role" type="text" placeholder="QA Engineer, Student, Developer..." required />
-      <small class="field-error" data-error-for="role"></small>
-    </div>
   </div>
 
   <div class="form-row">
     <div class="form-field">
-      <label for="reg-experience">Experience Level *</label>
-      <select id="reg-experience" name="experience" required>
-        <option value="">Select experience</option>
-        <option>Fresher</option>
-        <option>0 - 2 years</option>
-        <option>2 - 5 years</option>
-        <option>5+ years</option>
-      </select>
-      <small class="field-error" data-error-for="experience"></small>
+      <label for="tn-email">Email Address</label>
+      <input id="tn-email" name="Email Address" type="email" autocomplete="email" placeholder="you@example.com" data-lead-field="email" />
+      <small class="field-error" data-error-for="email"></small>
     </div>
     <div class="form-field">
-      <label for="reg-course">Interested Track *</label>
-      <select id="reg-course" name="course" required>
-        <option value="">Select track</option>
+      <label for="tn-interested-in">Interested In *</label>
+      <select id="tn-interested-in" name="Interested In" data-lead-field="interested" required>
+        <option value="">Select an option</option>
         <option>QA Engineering</option>
         <option>Development Technologies</option>
-        <option>AI & Emerging Technologies</option>
-        <option>Selenium Basics</option>
-        <option>Playwright with TypeScript</option>
-        <option>API Basics</option>
-        <option>REST Assured</option>
-        <option>Cucumber BDD</option>
-        <option>UI Hybrid Framework</option>
-        <option>Jenkins Automation</option>
-        <option>Master Doc Notes (Java)</option>
-        <option>Java Programming</option>
-        <option>Python for Automation</option>
-        <option>JavaScript & Frontend</option>
-        <option>TypeScript Deep Dive</option>
-        <option>DevOps Fundamentals</option>
-        <option>Cloud Platforms</option>
-        <option>SQL & Database Management</option>
-        <option>Git & GitHub Essentials</option>
-        <option>AI for Beginners</option>
-        <option>Prompt Engineering</option>
-        <option>AI Agents & Automation</option>
-        <option>Machine Learning Fundamentals</option>
-        <option>Blockchain & Web3 Basics</option>
-        <option>IoT Essentials</option>
-        <option>General Inquiry</option>
+        <option>AI &amp; Emerging Technologies</option>
+        <option>Career Guidance</option>
+        <option>Resume Review</option>
+        <option>Corporate Training</option>
+        <option>Free AI Kit</option>
+        <option>Other</option>
       </select>
-      <small class="field-error" data-error-for="course"></small>
+      <small class="field-error" data-error-for="interested"></small>
     </div>
   </div>
 
-  <label class="consent-row">
-    <input type="checkbox" name="consent" required />
-    <span>I consent to TestNova contacting me about access, cohorts, and learning content.</span>
-  </label>
-  <small class="field-error" data-error-for="consent"></small>
+  <div class="form-row">
+    <div class="form-field full">
+      <label for="tn-message">Message</label>
+      <textarea id="tn-message" name="Message" rows="4" placeholder="Tell us what you need help with."></textarea>
+      <small class="field-error" data-error-for="message"></small>
+    </div>
+  </div>
 
-  <button class="form-submit" type="submit">
-    <span>Get Access</span>
-  </button>
+  <button class="form-submit" type="submit"><span>Submit Request</span></button>
   <div class="form-message" role="status" aria-live="polite"></div>
 </form>
