@@ -12,7 +12,7 @@
       </div>
       <div class="form-field">
         <label for="tn-phone">Phone Number *</label>
-        <input id="tn-phone" name="Phone Number" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210" data-lead-field="phone" required />
+        <input id="tn-phone" name="Phone Number" type="tel" inputmode="tel" autocomplete="tel" placeholder="WhatsApp number" data-lead-field="phone" required />
         <small class="field-error" data-error-for="phone"></small>
       </div>
     </div>
@@ -20,13 +20,13 @@
     <div class="form-row">
       <div class="form-field">
         <label for="tn-email">Email Address</label>
-        <input id="tn-email" name="Email Address" type="email" autocomplete="email" placeholder="you@example.com" data-lead-field="email" />
+        <input id="tn-email" name="Email Address" type="email" autocomplete="email" placeholder="Email, optional" data-lead-field="email" />
         <small class="field-error" data-error-for="email"></small>
       </div>
       <div class="form-field">
-        <label for="tn-interested-in">Interested In *</label>
-        <select id="tn-interested-in" name="Interested In" data-lead-field="interested" required>
-          <option value="">Select an option</option>
+        <label for="tn-interested-in">Interested In</label>
+        <select id="tn-interested-in" name="Interested In" data-lead-field="interested">
+          <option value="">Select if you want</option>
           <option>QA Engineering</option>
           <option>Development Technologies</option>
           <option>AI &amp; Emerging Technologies</option>
@@ -40,15 +40,15 @@
       </div>
     </div>
 
-    <div class="form-row">
+    <div class="form-row other-interest-row" hidden>
       <div class="form-field full">
-        <label for="tn-message">Message</label>
-        <textarea id="tn-message" name="Message" rows="4" placeholder="Tell us what you need help with."></textarea>
-        <small class="field-error" data-error-for="message"></small>
+        <label for="tn-other-interest">Other details</label>
+        <input id="tn-other-interest" name="Other Details" type="text" placeholder="Anything else? Optional." data-lead-field="other_interest" />
       </div>
     </div>
 
-    <button class="form-submit" type="submit"><span>Submit Request</span></button>
+    <p class="registration-bonus">Free prize after registration: AI starter kit + priority demo callback.</p>
+    <button class="form-submit" type="submit"><span>Unlock My Free Goodies</span></button>
     <div class="form-message" role="status" aria-live="polite"></div>
   </form>
 </div>

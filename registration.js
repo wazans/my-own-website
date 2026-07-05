@@ -37,7 +37,7 @@
   };
 
   var CTAS = {
-    register: 'Submit Request',
+    register: 'Unlock My Free Goodies',
     learning: 'Request Access',
     free_ai_kit: 'Get Free AI Kit',
     career: 'Request Career Guidance',
@@ -149,7 +149,7 @@
   }
 
   function renderInterestOptions(selected) {
-    return '<option value="">Select an option</option>' + INTEREST_OPTIONS.map(function(option) {
+    return '<option value="">Select if you want</option>' + INTEREST_OPTIONS.map(function(option) {
       return '<option value="' + escapeHtml(option) + '"' + (option === selected ? ' selected' : '') + '>' + escapeHtml(option) + '</option>';
     }).join('');
   }
@@ -165,36 +165,36 @@
       '<div class="form-row">',
       '<div class="form-field">',
       '<label for="tn-full-name">Full Name</label>',
-      '<input id="tn-full-name" name="Full Name" type="text" autocomplete="name" placeholder="Your full name" />',
+      '<input id="tn-full-name" name="Full Name" type="text" autocomplete="name" placeholder="Your name" />',
       '<small class="field-error" data-error-for="full_name"></small>',
       '</div>',
       '<div class="form-field">',
       '<label for="tn-phone">Phone Number *</label>',
-      '<input id="tn-phone" name="Phone Number" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210" data-lead-field="phone" required />',
+      '<input id="tn-phone" name="Phone Number" type="tel" inputmode="tel" autocomplete="tel" placeholder="WhatsApp number" data-lead-field="phone" required />',
       '<small class="field-error" data-error-for="phone"></small>',
       '</div>',
       '</div>',
       '<div class="form-row">',
       '<div class="form-field">',
       '<label for="tn-email">Email Address</label>',
-      '<input id="tn-email" name="Email Address" type="email" autocomplete="email" placeholder="you@example.com" data-lead-field="email" />',
+      '<input id="tn-email" name="Email Address" type="email" autocomplete="email" placeholder="Email, optional" data-lead-field="email" />',
       '<small class="field-error" data-error-for="email"></small>',
       '</div>',
       '<div class="form-field">',
-      '<label for="tn-interested-in">Interested In *</label>',
-      '<select id="tn-interested-in" name="Interested In" data-lead-field="interested" required>',
+      '<label for="tn-interested-in">Interested In</label>',
+      '<select id="tn-interested-in" name="Interested In" data-lead-field="interested">',
       renderInterestOptions(selectedInterest),
       '</select>',
       '<small class="field-error" data-error-for="interested"></small>',
       '</div>',
       '</div>',
-      '<div class="form-row">',
+      '<div class="form-row other-interest-row" hidden>',
       '<div class="form-field full">',
-      '<label for="tn-message">Message</label>',
-      '<textarea id="tn-message" name="Message" rows="4" placeholder="Tell us what you need help with."></textarea>',
-      '<small class="field-error" data-error-for="message"></small>',
+      '<label for="tn-other-interest">Other details</label>',
+      '<input id="tn-other-interest" name="Other Details" type="text" placeholder="Anything else? Optional." data-lead-field="other_interest" />',
       '</div>',
       '</div>',
+      '<p class="registration-bonus">Free prize after registration: AI starter kit + priority demo callback.</p>',
       '<button class="form-submit" type="submit"><span>' + escapeHtml(ctaFor(context)) + '</span></button>',
       '<div class="form-message" role="status" aria-live="polite"></div>',
       '</form>'
@@ -231,18 +231,12 @@
     var valid = true;
     var phone = form.querySelector('[data-lead-field="phone"]');
     var email = form.querySelector('[data-lead-field="email"]');
-    var interested = form.querySelector('[data-lead-field="interested"]');
 
     if (!phone || !phone.value.trim()) {
       setFieldError(form, 'phone', 'Phone Number is required.');
       valid = false;
     } else if (phone.value.replace(/[^\d]/g, '').length < 7) {
       setFieldError(form, 'phone', 'Enter a valid phone number.');
-      valid = false;
-    }
-
-    if (!interested || !interested.value.trim()) {
-      setFieldError(form, 'interested', 'Interested In is required.');
       valid = false;
     }
 
@@ -261,10 +255,10 @@
     if (loading) {
       button.disabled = true;
       button.dataset.originalLabel = normalizedText(button);
-      button.textContent = 'Submitting...';
+      button.textContent = 'Sending your goodies...';
     } else {
       button.disabled = false;
-      button.textContent = button.dataset.originalLabel || 'Submit Request';
+      button.textContent = button.dataset.originalLabel || CTAS.register;
     }
   }
 
@@ -392,6 +386,20 @@
     });
   }
 
+  function setupOtherInterestField(form) {
+    var interested = form.querySelector('[data-lead-field="interested"]');
+    var otherRow = form.querySelector('.other-interest-row');
+    if (!interested || !otherRow || interested.dataset.otherToggleReady) return;
+
+    interested.dataset.otherToggleReady = 'true';
+    function syncOtherField() {
+      otherRow.hidden = interested.value !== 'Other';
+    }
+
+    interested.addEventListener('change', syncOtherField);
+    syncOtherField();
+  }
+
   function initRegistrationForm(root) {
     var scope = root || document;
     scope.querySelectorAll('[data-registration-form]').forEach(function(form) {
@@ -411,6 +419,7 @@
       }
 
       containFormEvents(form);
+      setupOtherInterestField(form);
       form.removeEventListener('submit', submitForm);
       form.addEventListener('submit', submitForm);
     });

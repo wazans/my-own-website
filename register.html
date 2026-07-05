@@ -6,7 +6,7 @@
   <title>Register | TestNova MCP Cohort</title>
   <meta
     name="description"
-    content="Register for TestNova's Build AI Agents with MCP for QA Engineers cohort. Submit your details to reserve a seat."
+    content="Register with TestNova in under a minute. Share your phone number, choose an interest if you want, and unlock a free AI starter prize."
   />
   <meta name="theme-color" content="#0b1020" />
   <link rel="canonical" href="https://www.testnova.in/registration" />
@@ -16,7 +16,7 @@
   class="register-page hide-floating-register"
   data-register-href="/registration/"
   data-whatsapp-number="919641782691"
-  data-whatsapp-message="Hi TestNova, I want to register for the MCP for QA Engineers cohort."
+  data-whatsapp-message="Hi TestNova, I want to register and unlock the free starter prize."
 >
   <div class="page-loader" id="page-loader" aria-hidden="true">
     <div class="page-loader__spinner"></div>
@@ -42,25 +42,22 @@
     <section class="register-hero">
       <div class="container register-hero__layout">
         <div class="register-hero__copy" data-reveal>
-          <span class="section-tag">Registration</span>
-          <h1>Apply for the next TestNova live cohort.</h1>
-          <p>
-            Secure your seat for <strong>Build AI Agents with MCP for QA Engineers</strong> and
-            get ready to build agentic QA workflows with production intent.
-          </p>
+          <span class="section-tag">60-second registration</span>
+          <h1>Register with TestNova.</h1>
+          <p>Drop your number. Pick your interest if you want. We call back with the best track for you.</p>
 
           <div class="register-checks glass-card">
             <div>
-              <strong>Next cohort</strong>
-              <span>July 20, 2026</span>
+              <strong>Free prize</strong>
+              <span>AI starter kit + demo invite</span>
             </div>
             <div>
-              <strong>Format</strong>
-              <span>Live cohort + recordings + templates</span>
+              <strong>Required</strong>
+              <span>Only phone number</span>
             </div>
             <div>
-              <strong>Best fit</strong>
-              <span>QA engineers, automation testers, developers, students</span>
+              <strong>Fast callback</strong>
+              <span>No long form drama</span>
             </div>
           </div>
         </div>
@@ -72,13 +69,13 @@
             <input type="hidden" name="form_source" value="register-page" />
             <div class="form-row">
               <div class="form-field">
-                <label for="reg-name">Full name *</label>
-                <input id="reg-name" name="name" type="text" placeholder="Your name" required />
+                <label for="reg-name">Full name</label>
+                <input id="reg-name" name="name" type="text" placeholder="Your name" />
                 <small class="field-error" data-error-for="name"></small>
               </div>
               <div class="form-field">
-                <label for="reg-email">Work email *</label>
-                <input id="reg-email" name="email" type="email" placeholder="you@example.com" required />
+                <label for="reg-email">Email</label>
+                <input id="reg-email" name="email" type="email" placeholder="Email, optional" />
                 <small class="field-error" data-error-for="email"></small>
               </div>
             </div>
@@ -90,79 +87,32 @@
                 <small class="field-error" data-error-for="phone"></small>
               </div>
               <div class="form-field">
-                <label for="reg-city">City</label>
-                <input id="reg-city" name="city" type="text" placeholder="Your city" />
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-field">
-                <label for="reg-experience">Experience level</label>
-                <select id="reg-experience" name="experience">
-                  <option value="">Select experience</option>
-                  <option>Fresher</option>
-                  <option>0 - 2 years</option>
-                  <option>2 - 5 years</option>
-                  <option>5+ years</option>
-                </select>
-              </div>
-              <div class="form-field">
-                <label for="reg-company">Current Company</label>
-                <input id="reg-company" name="company" type="text" placeholder="Your company" />
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-field">
-                <label for="reg-role">Current Role</label>
-                <input id="reg-role" name="role" type="text" placeholder="Your role" />
-              </div>
-              <div class="form-field">
-                <label for="reg-course">Interested Course</label>
+                <label for="reg-course">Interested In</label>
                 <select id="reg-course" name="course">
-                  <option value="">Select course</option>
-                  <option>Build AI Agents with MCP</option>
-                  <option>Selenium Basics</option>
-                  <option>UI Hybrid Framework</option>
-                  <option>Playwright with TypeScript</option>
-                  <option>API Basics</option>
-                  <option>REST Assured</option>
-                  <option>Cucumber Basics</option>
-                  <option>Jenkins Automation</option>
-                  <option>Master Doc Notes (Java)</option>
-                  <option>Free Career Guidance</option>
-                  <option>Book Free Demo</option>
+                  <option value="">Select if you want</option>
+                  <option>QA Engineering</option>
+                  <option>Development Technologies</option>
+                  <option>AI &amp; Emerging Technologies</option>
+                  <option>Career Guidance</option>
+                  <option>Resume Review</option>
+                  <option>Corporate Training</option>
+                  <option>Free AI Kit</option>
+                  <option>Other</option>
                 </select>
               </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row other-interest-row" hidden>
               <div class="form-field full">
-                <label for="reg-batch">Preferred Batch</label>
-                <input id="reg-batch" name="batch" type="text" placeholder="e.g., July 2026 Weekend" />
+                <label for="reg-other">Other details</label>
+                <input id="reg-other" name="other_interest" type="text" placeholder="Tell us what you need. Optional." />
               </div>
             </div>
 
-            <div class="form-row">
-              <div class="form-field full">
-                <label for="reg-questions">Questions / Learning Goals</label>
-                <textarea
-                  id="reg-questions"
-                  name="questions"
-                  rows="4"
-                  placeholder="Tell us about your QA workflows, tools, or learning goals."
-                ></textarea>
-              </div>
-            </div>
-
-            <label class="consent-row">
-              <input type="checkbox" name="consent" required />
-              <span>I agree to be contacted by TestNova about this cohort.</span>
-            </label>
-            <small class="field-error" data-error-for="consent"></small>
+            <p class="registration-bonus">Free prize after registration: AI starter kit + priority demo callback.</p>
 
             <button class="form-submit" type="submit">
-              <span>Submit Registration</span>
+              <span>Unlock My Free Goodies</span>
             </button>
             <div class="form-message" role="status" aria-live="polite"></div>
           </form>
