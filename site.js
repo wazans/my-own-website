@@ -407,8 +407,17 @@
       }
     }
 
+    function isFormInteraction(target) {
+      var active = document.activeElement;
+      return Boolean(
+        (target && target.closest && target.closest('form, input, select, textarea, button, .modal')) ||
+        (active && active.closest && active.closest('form, input, select, textarea, button, .modal'))
+      );
+    }
+
     // Detect mouse leaving viewport
     document.addEventListener('mouseout', function(e) {
+      if (isFormInteraction(e.target)) return;
       if (e.toElement === null || e.relatedTarget === null) {
         // Mouse is leaving the document
         showExitIntent();

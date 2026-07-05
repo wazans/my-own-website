@@ -239,10 +239,19 @@ a {
   position: relative;
 }
 
-.site-nav .mega-menu {
-  display: none; /* Hidden by default */
+.site-nav .has-mega-menu::after {
+  content: "";
   position: absolute;
-  top: 100%; /* Position below the parent link */
+  left: -0.75rem;
+  right: -0.75rem;
+  top: 100%;
+  height: 0.85rem;
+}
+
+.site-nav .mega-menu {
+  display: flex;
+  position: absolute;
+  top: calc(100% + 0.35rem); /* Position below the parent link */
   left: 50%; /* Center it under the "Learning Hub" link */
   transform: translateX(-50%); /* Adjust to truly center */
   width: 900px; /* Fixed width for mega menu */
@@ -257,16 +266,17 @@ a {
   gap: var(--space-lg);
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-  transform: translateX(-50%) translateY(10px); /* Slight drop animation */
+  transform: translateX(-50%) translateY(6px); /* Slight drop animation */
   z-index: 150; /* Increased to appear above navbar and floating buttons */
 }
 
 .site-nav .has-mega-menu:hover .mega-menu,
 .site-nav .has-mega-menu:focus-within .mega-menu {
-  display: flex;
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
   transform: translateX(-50%) translateY(0);
 }
 
@@ -2207,6 +2217,9 @@ body.content-locked .page-header::after {
   .site-nav a.nav-register { text-align: center; }
   .site-nav .has-mega-menu {
     width: 100%;
+  }
+  .site-nav .has-mega-menu::after {
+    display: none;
   }
   .site-nav .learning-dropdown > a {
     width: 100%;
