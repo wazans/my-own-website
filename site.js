@@ -20,7 +20,7 @@
     }
 
     // Get the target href for the register button (now points to the modal)
-    var href = document.body.getAttribute('data-register-href') || '#registration-modal';
+    var href = document.body.getAttribute('data-register-href') || (document.getElementById('registration-modal') ? '#registration-modal' : '/registration/');
     var link = document.createElement('a');
     link.className = 'floating-register';
     link.href = href;
@@ -637,6 +637,7 @@
   function setupContextualLeadActions() {
     var actionPattern = /^(Register|Register Interest|Register Your Interest|Register Interest for Updates|Request Access|Book Consultation|Send an Inquiry|Send Message|Schedule Now|Contact Sales|Free AI Kit|Download Free AI Kit|Download FREE Cheat Sheet|Download FREE Guide|Download FREE Roadmap|Get Roadmap|Grab Cheat Sheet|Download Template|Download Now)$/i;
     var page = currentPageName();
+    var hasRegistrationModal = !!document.getElementById('registration-modal');
 
     document.querySelectorAll('a, button').forEach(function(action) {
       var label = normalizedText(action);
@@ -650,6 +651,13 @@
       if (isNavLink || isFooterLink) return;
       if (action.classList.contains('nav-register') && href && href !== '#registration-modal') return;
       if (!hasLeadHref && (!isLeadLabel || !isContextButton)) return;
+
+      if (!hasRegistrationModal) {
+        if (action.matches('a') && href === '#registration-modal') {
+          action.setAttribute('href', '/registration/');
+        }
+        return;
+      }
 
       if (action.matches('a')) {
         if (href && href !== '#registration-modal' && !href.startsWith('#') && !action.getAttribute('data-access-url')) {
