@@ -2443,13 +2443,15 @@ body.content-locked .page-header::after {
     gap: 0.65rem;
     transform: translateY(-12px);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
     box-shadow: 0 12px 24px rgba(34, 64, 168, 0.10);
     z-index: 150; /* Ensure mobile nav appears above floating buttons */
   }
   .site-nav.open {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
     transform: translateY(0);
   }
@@ -2733,6 +2735,8 @@ body.landing-page .container {
 
 .landing-hero .hero-actions {
   margin-top: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .landing-section {

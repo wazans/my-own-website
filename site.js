@@ -19,8 +19,7 @@
       return;
     }
 
-    // Get the target href for the register button (now points to the modal)
-    var href = document.body.getAttribute('data-register-href') || (document.getElementById('registration-modal') ? '#registration-modal' : '/registration/');
+    var href = document.body.getAttribute('data-register-href') || '/registration/';
     var link = document.createElement('a');
     link.className = 'floating-register';
     link.href = href;
@@ -726,9 +725,13 @@
       var hasLeadHref = href === '#registration-modal';
       var isLeadLabel = actionPattern.test(label);
       var isContextButton = action.classList.contains('primary-btn') || action.classList.contains('secondary-btn') || action.classList.contains('nav-register') || action.classList.contains('floating-register');
+      var isDirectRegisterAction = /^(Register|Register Now)$/i.test(label) || action.classList.contains('nav-register') || action.classList.contains('floating-register');
 
       if (isNavLink || isFooterLink) return;
-      if (action.classList.contains('nav-register') && href && href !== '#registration-modal') return;
+      if (isDirectRegisterAction && action.matches('a')) {
+        action.setAttribute('href', '/registration/');
+        return;
+      }
       if (!hasLeadHref && (!isLeadLabel || !isContextButton)) return;
 
       if (!hasRegistrationModal) {
