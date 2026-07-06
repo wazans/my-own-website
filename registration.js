@@ -15,6 +15,7 @@
     'Resume Review',
     'Corporate Training',
     'Free AI Kit',
+    'Technology on Demand',
     'Other'
   ];
 
@@ -192,6 +193,7 @@
       '<div class="form-field full">',
       '<label for="tn-other-interest">Other details</label>',
       '<input id="tn-other-interest" name="Other Details" type="text" placeholder="Anything else? Optional." data-lead-field="other_interest" />',
+      '<small class="field-error" data-error-for="other_interest"></small>',
       '</div>',
       '</div>',
       '<p class="registration-bonus">Free prize after registration: AI starter kit + priority demo callback.</p>',
@@ -231,6 +233,8 @@
     var valid = true;
     var phone = form.querySelector('[data-lead-field="phone"]');
     var email = form.querySelector('[data-lead-field="email"]');
+    var interested = form.querySelector('[data-lead-field="interested"]');
+    var otherInterest = form.querySelector('[data-lead-field="other_interest"]');
 
     if (!phone || !phone.value.trim()) {
       setFieldError(form, 'phone', 'Phone Number is required.');
@@ -242,6 +246,16 @@
 
     if (email && email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
       setFieldError(form, 'email', 'Enter a valid email address.');
+      valid = false;
+    }
+
+    if (
+      interested &&
+      interested.value === 'Technology on Demand' &&
+      otherInterest &&
+      !otherInterest.value.trim()
+    ) {
+      setFieldError(form, 'other_interest', 'Please enter the technology you want to learn.');
       valid = false;
     }
 
@@ -389,11 +403,33 @@
   function setupOtherInterestField(form) {
     var interested = form.querySelector('[data-lead-field="interested"]');
     var otherRow = form.querySelector('.other-interest-row');
+    var otherInput = form.querySelector('[data-lead-field="other_interest"]');
+    var otherLabel = otherRow ? otherRow.querySelector('label') : null;
     if (!interested || !otherRow || interested.dataset.otherToggleReady) return;
 
     interested.dataset.otherToggleReady = 'true';
     function syncOtherField() {
-      otherRow.hidden = interested.value !== 'Other';
+      var isTechnologyDemand = interested.value === 'Technology on Demand';
+      var isOther = interested.value === 'Other';
+      otherRow.hidden = !isTechnologyDemand && !isOther;
+
+      if (!otherInput) return;
+
+      if (isTechnologyDemand) {
+        if (otherLabel) otherLabel.textContent = 'Which technology do you want to learn?';
+        otherInput.name = 'Technology On Demand';
+        otherInput.placeholder = 'Example: Cypress, Snowflake, AWS, GenAI, Salesforce';
+        otherInput.required = true;
+      } else {
+        if (otherLabel) otherLabel.textContent = 'Other details';
+        otherInput.name = 'Other Details';
+        otherInput.placeholder = 'Anything else? Optional.';
+        otherInput.required = false;
+      }
+
+      if (otherRow.hidden) {
+        otherInput.value = '';
+      }
     }
 
     interested.addEventListener('change', syncOtherField);
