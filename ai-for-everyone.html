@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI for Everyone | TestNova</title>
+  <meta name="description" content="AI for Everyone reader with editable lessons, topic navigation, and progress tracking." />
+  <link rel="canonical" href="https://www.testnova.in/ai-for-everyone.html" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="learning-page ai-reader-page" data-ai-reader-track="everyone">
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">TestNova</a>
+      <nav class="site-nav" aria-label="Primary navigation"></nav>
+    </div>
+  </header>
+
+  <main class="ai-reader-shell">
+    <aside class="ai-reader-sidebar editable-surface" data-ai-reader-sidebar>
+      <a class="text-link" href="ai-emerging-technologies.html">Back to AI Learning Hub</a>
+      <div class="ai-reader-sidebar-copy" contenteditable="true" data-edit-key="ai-everyone-sidebar-copy">
+        <span class="section-tag">AI for Everyone</span>
+        <h1>AI for Everyone</h1>
+        <p>Use the topic list to open each lesson. Your checkboxes and edits are saved in this browser.</p>
+      </div>
+      <div class="progress-panel">
+        <div class="progress-header">
+          <span class="level-pill" data-reader-level>Lv 1</span>
+          <span class="progress-counts" data-reader-counts>0 / 0</span>
+        </div>
+        <div class="xp-bar"><i class="xp-fill" data-reader-fill></i></div>
+        <div class="xp-meta">
+          <span data-reader-pct>0%</span>
+          <span data-reader-next>Start reading</span>
+        </div>
+      </div>
+      <nav class="ai-reader-topic-nav" aria-label="AI for Everyone topics" data-reader-nav></nav>
+    </aside>
+
+    <section class="ai-reader-main">
+      <div class="ai-reader-toolbar">
+        <button class="secondary-btn" type="button" data-reader-save>Save edits</button>
+        <button class="secondary-btn" type="button" data-reader-copy>Copy current content</button>
+        <span data-reader-save-state>Edits save in this browser.</span>
+      </div>
+      <article class="glass-card ai-reader-content editable-surface" data-reader-content></article>
+    </section>
+  </main>
+
+  <script src="site.js?v=ai-reader-20260707"></script>
+  <script src="ai-reader.js?v=ai-reader-20260707"></script>
+  <script src="registration.js"></script>
+</body>
+</html>

@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Learning Hub | TestNova</title>
-  <meta name="description" content="Structured AI learning roadmap for everyone and QA engineers with module progress, checklists, and practical projects." />
+  <meta name="description" content="Choose an AI learning path: AI for Everyone or AI Engineers." />
   <link rel="canonical" href="https://www.testnova.in/ai-emerging-technologies.html" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="learning-page category-page public-discovery-page ai-learning-hub-page" data-progress-key="testnova-ai-learning-hub-progress-v1">
+<body class="learning-page category-page public-discovery-page ai-learning-hub-page ai-track-landing-page">
   <header class="topbar">
     <div class="container nav-container">
       <a class="brand" href="index.html">TestNova</a>
@@ -17,60 +17,42 @@
   </header>
 
   <main>
-    <section class="page-hero-section discovery-hero">
+    <section class="page-hero-section discovery-hero ai-track-choice-hero">
       <div class="container">
-        <div class="page-header">
+        <div class="page-header editable-surface" contenteditable="true" data-edit-key="ai-landing-hero">
           <span class="section-tag">AI Learning Hub</span>
-          <h1>AI for Everyone. AI for QA Engineers.</h1>
-          <p>Two clear paths: common AI skills for all learners, and industry-ready AI workflows for manual, automation, API, and framework-focused QA engineers.</p>
-          <div class="hero-actions">
-            <a class="primary-btn" href="#ai-for-everyone">AI for Everyone</a>
-            <a class="secondary-btn" href="#ai-for-qa-engineers">AI for QA Engineers</a>
-          </div>
+          <h1>Choose your AI learning path.</h1>
+          <p>Select the track you want to read. Each track opens as a focused reader with topic navigation, progress, checkboxes, and editable content.</p>
         </div>
       </div>
     </section>
 
-    <section class="nova-section ai-hub-dashboard">
-      <div class="container ai-hub-layout">
-        <div class="ai-hub-content">
-          <div class="section-heading">
-            <span class="section-tag">Structured Roadmap</span>
-            <h2>Start common AI first, then move into QA-specific AI</h2>
-            <p>Use the numbered reader navigation to move through the lessons. Progress checkboxes live inside the actual lesson cards, so completion happens where you read.</p>
-          </div>
+    <section class="nova-section ai-track-choice-section">
+      <div class="container">
+        <div class="ai-track-choice-grid">
+          <article class="glass-card ai-track-choice-card editable-surface" contenteditable="true" data-edit-key="ai-landing-card-everyone">
+            <span class="section-tag">Beginner Track</span>
+            <h2>AI for Everyone</h2>
+            <p>Learn AI fundamentals, ChatGPT, LLMs, prompts, embeddings, fine tuning, RAG, and agentic chatbot basics in a clean reader format.</p>
+            <ul>
+              <li>Foundational concepts</li>
+              <li>Readable lesson cards</li>
+              <li>Editable notes and examples</li>
+            </ul>
+          </article>
+          <a class="primary-btn ai-track-choice-action" href="ai-for-everyone.html">Open AI for Everyone</a>
 
-          <div class="ai-reader-tools">
-            <div class="progress-panel">
-              <div class="progress-header">
-                <span class="level-pill" id="progress-level">Lv 1</span>
-                <span class="progress-counts" id="progress-counts">0 / 0</span>
-              </div>
-              <div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>
-              <div class="xp-meta">
-                <span id="progress-pct">0%</span>
-                <span id="progress-next">5 XP to Lv 2</span>
-              </div>
-            </div>
-            <nav class="ai-number-nav" aria-label="Numbered AI reader navigation" data-ai-number-nav></nav>
-          </div>
-
-          <div data-ai-learning-hub></div>
-
-          <section id="ai-final-navigation" class="ai-final-navigation glass-card">
-            <span class="section-tag">Final Navigation</span>
-            <h2>AI Learning Hub</h2>
-            <div class="ai-tree">
-              <div>
-                <h3>AI for Everyone</h3>
-                <ul data-ai-tree="everyone"></ul>
-              </div>
-              <div>
-                <h3>AI for QA Engineers</h3>
-                <ul data-ai-tree="qa"></ul>
-              </div>
-            </div>
-          </section>
+          <article class="glass-card ai-track-choice-card editable-surface" contenteditable="true" data-edit-key="ai-landing-card-engineers">
+            <span class="section-tag">Builder Track</span>
+            <h2>AI Engineers</h2>
+            <p>Go deeper into practical AI implementation: model usage, APIs, RAG systems, agents, automation workflows, evaluation, and production-ready project thinking.</p>
+            <ul>
+              <li>Engineering workflows</li>
+              <li>Implementation-focused topics</li>
+              <li>Editable project notes</li>
+            </ul>
+          </article>
+          <a class="secondary-btn ai-track-choice-action" href="ai-engineers.html">Open AI Engineers</a>
         </div>
       </div>
     </section>
@@ -82,8 +64,8 @@
     </div>
   </footer>
 
-  <script src="site.js?v=ai-hub-redesign-20260707"></script>
-  <script src="progress.js?v=ai-hub-redesign-20260707"></script>
+  <script src="site.js?v=ai-reader-20260707"></script>
+  <script src="ai-reader.js?v=ai-reader-20260707"></script>
   <script src="registration.js"></script>
 </body>
 </html>

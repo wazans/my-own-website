@@ -591,10 +591,10 @@
       id: 'ai-emerging-technologies',
       title: 'AI Learning Hub',
       url: 'ai-emerging-technologies.html',
-      description: 'Common AI skills for all learners plus QA-specific AI workflows, automation, APIs, local LLMs, and projects.',
+      description: 'Choose between AI for Everyone and AI Engineers, each with focused reader pages, progress, and editable lessons.',
       courses: [
-        { title: 'AI for Everyone', url: 'ai-emerging-technologies.html#ai-for-everyone', difficulty: 'Beginner', summary: 'AI basics, LLMs, prompts, productivity, content tools, automation, local AI, and practical projects.' },
-        { title: 'AI for QA Engineers', url: 'ai-emerging-technologies.html#ai-for-qa-engineers', difficulty: 'Intermediate', summary: 'Manual testing, Selenium, Playwright, APIs, OpenAI API, vision testing, coding assistants, frameworks, and projects.' },
+        { title: 'AI for Everyone', url: 'ai-for-everyone.html', difficulty: 'Beginner', summary: 'AI basics, ChatGPT, LLMs, prompts, embeddings, fine tuning, RAG, and agentic AI.' },
+        { title: 'AI Engineers', url: 'ai-engineers.html', difficulty: 'Intermediate', summary: 'AI implementation workflows, model APIs, structured output, RAG systems, agents, evaluation, and automation.' },
         { title: 'AI for Beginners', url: 'ai-for-beginners.html', difficulty: 'Beginner', summary: 'AI concepts, practical usage, limitations, and everyday productivity workflows.' },
         { title: 'Prompt Engineering', url: 'prompt-engineering.html', difficulty: 'Beginner', summary: 'Prompt structure, context, iteration, evaluation, and reusable prompt systems.' },
         { title: 'AI Agents & Automation', url: 'ai-agents-automation.html', difficulty: 'Intermediate', summary: 'Agent workflows, tool use, automation patterns, and practical AI systems.' }
@@ -607,7 +607,7 @@
       id: 'ai-for-everyone',
       tree: 'everyone',
       title: 'AI for Everyone',
-      eyebrow: 'Common for QA & Non-QA',
+      eyebrow: 'Beginner AI track',
       description: 'Foundational AI literacy, tools, prompts, automation, local AI, and practical projects for any learner.',
       modules: [
         {
@@ -737,11 +737,11 @@
       ]
     },
     {
-      id: 'ai-for-qa-engineers',
+      id: 'ai-engineers',
       tree: 'qa',
-      title: 'AI for QA Engineers',
-      eyebrow: 'Industry-ready QA AI track',
-      description: 'Practical AI workflows for manual testing, automation, API testing, local LLMs, coding assistants, frameworks, interviews, and projects.',
+      title: 'AI Engineers',
+      eyebrow: 'Builder AI track',
+      description: 'Practical AI implementation workflows for model APIs, RAG, agents, automation, evaluation, and production readiness.',
       modules: [
         { title: 'AI for Manual Testing', topics: ['Requirement Analysis', 'Test Scenarios', 'Test Cases', 'Test Data', 'BDD Scenarios', 'Bug Reports', 'Exploratory Testing', 'Test Documentation'] },
         { title: 'AI for Selenium', topics: ['Generate Automation Scripts', 'Explain Existing Code', 'Debug Selenium Scripts', 'Self-Healing Concepts', 'Smart Locators', 'Framework Assistance'] },
@@ -773,14 +773,14 @@
   function isUnlockedAiCourseUrl(url) {
     var category = aiEmergingCategory();
     if (!category || !url) return false;
-    if (url === 'ai-emerging-technologies.html' || url === '/ai-emerging-technologies.html') return true;
+    if (['ai-emerging-technologies.html', '/ai-emerging-technologies.html', 'ai-for-everyone.html', '/ai-for-everyone.html', 'ai-engineers.html', '/ai-engineers.html'].indexOf(url) !== -1) return true;
     return category.courses.some(function(course) {
       return course.url === url;
     });
   }
 
   function isAiEmergingPage() {
-    return currentPageName() === 'ai-emerging-technologies.html';
+    return ['ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html'].indexOf(currentPageName()) !== -1;
   }
 
   function renderLearningNav() {
@@ -788,7 +788,7 @@
     if (!siteNavs.length) return;
 
     var page = currentPageName();
-    var isLearning = ['learning-hub.html', 'qa-engineering.html', 'development-technologies.html', 'ai-emerging-technologies.html', 'tech-courses.html', 'ai-courses.html'].indexOf(page) !== -1 || document.body.classList.contains('learning-page');
+    var isLearning = ['learning-hub.html', 'qa-engineering.html', 'development-technologies.html', 'ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'tech-courses.html', 'ai-courses.html'].indexOf(page) !== -1 || document.body.classList.contains('learning-page');
     var navHtml = [
       '<a' + (page === 'index.html' ? ' class="active"' : '') + ' href="/index.html">Home</a>',
       '<div class="has-mega-menu learning-dropdown">',
