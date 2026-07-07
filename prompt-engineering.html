@@ -174,6 +174,24 @@
               <li><strong>Format:</strong> Return files as <code>LoginPage.ts</code>, <code>login.spec.ts</code>, selector strategy, setup steps, and review checklist.</li>
             </ul>
           </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>Hallucination Test Prompt</h3>
+            <ul>
+              <li>Ask AI to answer only from the pasted context and say "not found in context" when evidence is missing.</li>
+              <li>For every claim, require source line, document section, or retrieved chunk ID.</li>
+              <li>Create negative tests: unsupported fact, wrong date, invented policy, conflicting source, and missing context.</li>
+              <li>Pass only when the answer is grounded, relevant, safe, and does not invent facts.</li>
+            </ul>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>Prompt Regression Workflow</h3>
+            <ul>
+              <li>Keep a small CSV of prompts, context, expected traits, forbidden answers, and reviewer notes.</li>
+              <li>Run the same prompts before and after changing model, prompt template, RAG query, or system instruction.</li>
+              <li>Compare answer quality, hallucination rate, format compliance, latency, and token usage.</li>
+              <li>Convert every bad production answer into a new regression prompt.</li>
+            </ul>
+          </article>
         </div>
 
         <div class="text-center" data-reveal style="margin-top: var(--space-xl);">

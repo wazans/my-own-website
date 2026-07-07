@@ -183,6 +183,60 @@
               <li><strong>AI governance:</strong> Require code review, validation, audit trail, secure tool access, and human approval for self-healing edits.</li>
             </ul>
           </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>AI Regression Suite</h3>
+            <ul>
+              <li>Maintain a golden dataset of prompts, expected behavior, source documents, and known edge cases.</li>
+              <li>Run before/after comparisons whenever prompt, model, retrieval, memory, or tool configuration changes.</li>
+              <li>Track answer relevancy, groundedness, hallucination rate, latency, cost, and pass/fail judgment from human review.</li>
+              <li>Put this in CI: run a small smoke evaluation on every PR and a larger regression suite nightly.</li>
+            </ul>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>Langfuse Observability</h3>
+            <ul>
+              <li>Trace the full AI journey: user query, system prompt, retrieved chunks, model response, tool calls, tokens, cost, and latency.</li>
+              <li>Use traces to debug whether the prompt failed, retrieval picked the wrong document, or the model hallucinated.</li>
+              <li>Add release tags so QA can compare model/prompt quality before and after deployment.</li>
+              <li>Review production failures weekly and convert them into regression test cases.</li>
+            </ul>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>Memory Testing for Agents</h3>
+            <ul>
+              <li>Verify what the agent should remember: user preference, task state, previous step result, or tool output.</li>
+              <li>Verify what the agent must forget: passwords, tokens, personal data, temporary OTPs, and stale instructions.</li>
+              <li>Test long sessions, interrupted sessions, context switches, and conflicting memories.</li>
+              <li>Expected result: agent remembers useful context without leaking sensitive data or using outdated facts.</li>
+            </ul>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>Multi-Agent Testing</h3>
+            <ul>
+              <li>Test each agent alone first: planner, browser executor, API validator, data checker, and report writer.</li>
+              <li>Then test collaboration: routing, context handoff, conflict resolution, loop detection, and final answer quality.</li>
+              <li>Example: planner sends login task to browser agent, API checker validates session, report agent summarizes evidence.</li>
+              <li>Fail the test if agents repeat endlessly, lose context, disagree without escalation, or skip human approval.</li>
+            </ul>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>AI Testing Tool Stack</h3>
+            <ul>
+              <li><strong>Evaluation:</strong> DeepEval, RAGAS, Promptfoo, and custom pytest checks for AI quality.</li>
+              <li><strong>Observability:</strong> Langfuse for prompt traces, token usage, cost, latency, and quality metrics.</li>
+              <li><strong>Automation:</strong> Playwright, Selenium, Postman, API tests, CI pipelines, and dataset-driven validation.</li>
+              <li><strong>Agent testing:</strong> tool-call logs, browser traces, memory checks, regression datasets, and approval gates.</li>
+            </ul>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>Cost &amp; Token QA</h3>
+            <ul>
+              <li>Test model routing: simple tasks should use cheaper models, complex tasks can use stronger models.</li>
+              <li>Reduce context: send only relevant RAG chunks instead of entire documents or full chat history.</li>
+              <li>Add response length limits, caching for repeated answers, and guardrails against token abuse.</li>
+              <li>Track cost per request, tokens per request, cache hit rate, latency, and expensive prompt patterns.</li>
+            </ul>
+          </article>
         </div>
 
         <div class="text-center" data-reveal style="margin-top: var(--space-xl);">
