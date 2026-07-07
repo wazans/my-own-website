@@ -33,37 +33,26 @@
 
     <section class="nova-section ai-hub-dashboard">
       <div class="container ai-hub-layout">
-        <aside class="ai-game-nav" aria-label="AI learning progress">
-          <div class="progress-panel">
-            <div class="progress-header">
-              <span class="level-pill" id="progress-level">Lv 1</span>
-              <span class="progress-counts" id="progress-counts">0 / 0</span>
-            </div>
-            <div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>
-            <div class="xp-meta">
-              <span id="progress-pct">0%</span>
-              <span id="progress-next">5 XP to Lv 2</span>
-            </div>
-          </div>
-          <div class="ai-game-card">
-            <span class="section-tag">Navigation</span>
-            <a href="#ai-for-everyone">AI for Everyone</a>
-            <a href="#ai-for-qa-engineers">AI for QA Engineers</a>
-            <a href="#ai-final-navigation">Final Navigation</a>
-          </div>
-          <div class="ai-game-card compact">
-            <strong data-ai-total-modules>0</strong>
-            <span>modules</span>
-            <strong data-ai-total-topics>0</strong>
-            <span>topics to complete</span>
-          </div>
-        </aside>
-
         <div class="ai-hub-content">
           <div class="section-heading">
             <span class="section-tag">Structured Roadmap</span>
             <h2>Start common AI first, then move into QA-specific AI</h2>
-            <p>Every topic has a numbered checkbox. Completion is saved in the browser and each completed topic triggers a celebration.</p>
+            <p>Use the numbered reader navigation to move through the lessons. Progress checkboxes live inside the actual lesson cards, so completion happens where you read.</p>
+          </div>
+
+          <div class="ai-reader-tools">
+            <div class="progress-panel">
+              <div class="progress-header">
+                <span class="level-pill" id="progress-level">Lv 1</span>
+                <span class="progress-counts" id="progress-counts">0 / 0</span>
+              </div>
+              <div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>
+              <div class="xp-meta">
+                <span id="progress-pct">0%</span>
+                <span id="progress-next">5 XP to Lv 2</span>
+              </div>
+            </div>
+            <nav class="ai-number-nav" aria-label="Numbered AI reader navigation" data-ai-number-nav></nav>
           </div>
 
           <div data-ai-learning-hub></div>
@@ -95,7 +84,6 @@
 
   <script src="site.js?v=ai-hub-redesign-20260707"></script>
   <script src="progress.js?v=ai-hub-redesign-20260707"></script>
-  <script src="landing.js"></script>
   <script src="registration.js"></script>
 </body>
 </html>

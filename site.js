@@ -610,7 +610,123 @@
       eyebrow: 'Common for QA & Non-QA',
       description: 'Foundational AI literacy, tools, prompts, automation, local AI, and practical projects for any learner.',
       modules: [
-        { title: 'Introduction to AI', topics: ['What is AI?', 'Types of AI', 'Machine Learning Basics', 'Deep Learning Basics', 'Generative AI', 'Large Language Models (LLMs)', 'AI Agents', 'AI Terminology', 'AI Ethics', 'AI Limitations'] },
+        {
+          title: 'Introduction to AI',
+          intro: 'Build the base vocabulary first: AI, ML, deep learning, generative AI, LLMs, prompts, embeddings, fine tuning, RAG, and agentic AI. These notes are intentionally editable so the team can refine examples, add screenshots, and attach exercises later.',
+          topics: [
+            {
+              title: 'Generative AI - Introduction',
+              summary: 'Generative AI creates new content from learned patterns. It can draft text, summarize documents, write code, generate images, build test ideas, and transform raw information into useful formats.',
+              bullets: [
+                'Traditional software follows explicit rules; generative AI predicts useful outputs from patterns learned during training.',
+                'Common outputs include text, code, images, audio, video, test cases, documentation, and structured JSON.',
+                'The user guides the model with a prompt, context, examples, constraints, and feedback.'
+              ],
+              practice: 'Try asking an AI assistant to explain one QA concept to a beginner, then ask it to rewrite the same answer for a senior automation engineer.'
+            },
+            {
+              title: 'Artificial Intelligence, Machine Learning & Deep Learning',
+              summary: 'AI is the broad goal of making machines perform tasks that usually need human intelligence. Machine learning is a major AI approach where systems learn patterns from data. Deep learning is a machine learning approach that uses neural networks with many layers.',
+              bullets: [
+                'AI includes reasoning, planning, language understanding, perception, and decision support.',
+                'Machine learning improves from examples instead of relying only on hand-written rules.',
+                'Deep learning is especially strong for language, image, speech, and pattern-heavy tasks.'
+              ],
+              practice: 'Map one real feature you use daily, such as search suggestions or spam detection, to AI, ML, and deep learning.'
+            },
+            {
+              title: 'Generative AI - Recap',
+              summary: 'Generative AI is useful when the task needs creation, transformation, summarization, or ideation. It is not a database and should be checked when accuracy matters.',
+              bullets: [
+                'Good use cases: first drafts, explanations, brainstorming, code assistance, test design, and documentation support.',
+                'Risk areas: hallucinated facts, missing context, biased data, outdated knowledge, and overconfident answers.',
+                'Best practice: provide context, specify the output format, verify important claims, and iterate.'
+              ],
+              practice: 'Take a vague prompt and improve it by adding role, task, context, constraints, and output format.'
+            },
+            {
+              title: 'Explore ChatGPT: Features & Capabilities - Introduction',
+              summary: 'ChatGPT can act as a learning assistant, writing partner, coding helper, analysis tool, brainstorming partner, and workflow assistant. Its quality depends heavily on the context and instructions supplied by the user.',
+              bullets: [
+                'Use it to explain concepts, compare options, draft documents, review code, design tests, and summarize long material.',
+                'For better results, provide source material, examples, audience level, and the expected format.',
+                'For professional work, treat the output as a strong draft that still needs human review.'
+              ],
+              practice: 'Ask ChatGPT for a study plan on AI basics, then ask it to convert the plan into a checklist and a quiz.'
+            },
+            {
+              title: 'LLM (Large Language Model)',
+              summary: 'An LLM is a model trained on large volumes of text and code to predict and generate language. It does not understand like a human, but it can produce highly useful language and reasoning-like outputs when prompted well.',
+              bullets: [
+                'LLMs process input as tokens, which are chunks of text such as words, word pieces, or symbols.',
+                'Context window means how much information the model can consider at one time.',
+                'LLMs are strong at language patterns, summarization, classification, extraction, and code assistance.'
+              ],
+              practice: 'Give an LLM a short bug report and ask it to extract severity, steps, expected result, actual result, and missing information.'
+            },
+            {
+              title: 'Prompt Engineering',
+              summary: 'Prompt engineering is the practice of giving clear instructions, context, examples, and constraints so the model can produce the desired output consistently.',
+              bullets: [
+                'A strong prompt defines role, goal, context, input data, constraints, output format, and quality criteria.',
+                'Few-shot prompting uses examples to show the model what good output looks like.',
+                'Prompt iteration is normal: inspect the first answer, identify what is missing, then refine.'
+              ],
+              practice: 'Write a prompt that turns a user story into positive, negative, boundary, and edge test cases.'
+            },
+            {
+              title: 'Embeddings',
+              summary: 'Embeddings convert text into numeric vectors that capture meaning. They make semantic search possible, which means finding related content by meaning instead of only matching exact keywords.',
+              bullets: [
+                'Similar ideas are placed near each other in vector space.',
+                'Embeddings are commonly used for search, recommendations, clustering, duplicate detection, and RAG.',
+                'For learning platforms, embeddings can help retrieve the right lesson, note, or FAQ for a user question.'
+              ],
+              practice: 'Compare keyword search and semantic search by searching for "login fails" versus "user cannot access account."'
+            },
+            {
+              title: 'Fine Tuning',
+              summary: 'Fine tuning adapts a model using additional examples so it follows a specific style, domain, or task pattern more reliably. It is useful when prompts and retrieval are not enough.',
+              bullets: [
+                'Fine tuning changes model behavior; RAG supplies external knowledge at answer time.',
+                'Use fine tuning for repeated output style, classification patterns, or domain-specific response formats.',
+                'Use clean, representative examples. Poor training examples create poor model behavior.'
+              ],
+              practice: 'List three situations where prompt templates are enough and one situation where fine tuning might be justified.'
+            },
+            {
+              title: 'Recap - Summary View',
+              summary: 'AI is the broad field, ML learns from data, deep learning uses neural networks, generative AI creates new outputs, and LLMs are language-focused generative models.',
+              bullets: [
+                'Prompts control the task and output.',
+                'Embeddings help retrieve meaning-based matches.',
+                'Fine tuning changes model behavior for repeated patterns.',
+                'RAG combines retrieval with generation to reduce missing context.'
+              ],
+              practice: 'Explain AI, ML, deep learning, generative AI, LLM, embeddings, fine tuning, and RAG in one sentence each.'
+            },
+            {
+              title: 'Retrieval Augmented Generation (RAG)',
+              summary: 'RAG connects a model to external knowledge. The system retrieves relevant content from documents, notes, databases, or websites, then asks the model to answer using that context.',
+              bullets: [
+                'RAG helps when answers need private, current, or domain-specific information.',
+                'A typical flow is: user question, retrieve relevant chunks, pass chunks to the model, generate grounded answer.',
+                'Quality depends on document preparation, chunking, embeddings, retrieval ranking, and answer instructions.'
+              ],
+              practice: 'Design a simple RAG flow for a TestNova FAQ bot that answers questions from course notes.'
+            },
+            {
+              title: 'Agentic AI - Building Our Own Chat Bot',
+              summary: 'Agentic AI uses a model plus tools, memory, planning, and workflow steps to complete tasks. A chatbot becomes more useful when it can retrieve content, call tools, remember context, and guide the user through a process.',
+              bullets: [
+                'A basic chatbot answers from the model and supplied context.',
+                'An agent can decide when to search notes, call an API, create a ticket, draft a file, or ask a follow-up question.',
+                'Start simple: define the bot purpose, knowledge source, allowed actions, guardrails, and handoff path.'
+              ],
+              practice: 'Sketch a chatbot for AI learners: welcome message, knowledge source, three allowed actions, and one fallback when it is unsure.'
+            }
+          ]
+        },
         { title: 'ChatGPT & LLM Fundamentals', topics: ['ChatGPT Basics', 'GPT Models', 'Claude', 'Gemini', 'Grok', 'Perplexity', 'NotebookLM', 'Comparing AI Models'] },
         { title: 'Prompt Engineering', topics: ['Writing Effective Prompts', 'Role Prompting', 'Zero Shot', 'Few Shot', 'Chain of Thought', 'Prompt Chaining', 'Image Prompts', 'Prompt Templates'] },
         { title: 'AI Productivity', topics: ['Resume', 'Email Writing', 'Presentation', 'Excel', 'Documentation', 'Research', 'Translation', 'Learning Assistant'] },
@@ -722,12 +838,38 @@
       .replace(/^-+|-+$/g, '');
   }
 
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function topicTitle(topic) {
+    return typeof topic === 'string' ? topic : topic.title;
+  }
+
+  function topicContentHtml(topic) {
+    if (typeof topic === 'string') return '';
+
+    return [
+      topic.summary ? '<p class="ai-topic-summary">' + escapeHtml(topic.summary) + '</p>' : '',
+      topic.bullets && topic.bullets.length ? '<ul class="ai-topic-bullets">' + topic.bullets.map(function(item) {
+        return '<li>' + escapeHtml(item) + '</li>';
+      }).join('') + '</ul>' : '',
+      topic.practice ? '<div class="ai-topic-practice"><strong>Try this:</strong><span>' + escapeHtml(topic.practice) + '</span></div>' : '',
+      '<div class="ai-edit-placeholder"><strong>Editing placeholder:</strong><span>Add screenshots, examples, transcript notes, quiz questions, or trainer comments here.</span></div>'
+    ].join('');
+  }
+
   function renderAiLearningHub() {
     var container = document.querySelector('[data-ai-learning-hub]');
     if (!container) return;
 
     var totalModules = 0;
     var totalTopics = 0;
+    var numberNavItems = [];
 
     container.innerHTML = AI_LEARNING_TRACKS.map(function(track) {
       totalModules += track.modules.length;
@@ -742,18 +884,27 @@
         track.modules.map(function(module, moduleIndex) {
           var moduleId = track.id + '-' + slugify(module.title);
           totalTopics += module.topics.length;
+          numberNavItems.push({
+            number: numberNavItems.length + 1,
+            title: module.title,
+            track: track.title,
+            id: moduleId
+          });
           return [
             '<article class="glass-card ai-module-card" id="' + moduleId + '">',
             '<div class="ai-module-heading">',
             '<span>Module ' + (moduleIndex + 1) + '</span>',
             '<h3>' + module.title + '</h3>',
             '</div>',
+            module.intro ? '<p class="ai-module-intro">' + escapeHtml(module.intro) + '</p>' : '',
             '<div class="ai-topic-list">',
             module.topics.map(function(topic) {
-              var topicId = moduleId + '-' + slugify(topic);
+              var title = topicTitle(topic);
+              var topicId = moduleId + '-' + slugify(title);
               return [
                 '<section class="progress-item ai-topic-item" id="' + topicId + '">',
-                '<h4>' + topic + '</h4>',
+                '<h4>' + escapeHtml(title) + '</h4>',
+                topicContentHtml(topic),
                 '</section>'
               ].join('');
             }).join(''),
@@ -772,6 +923,19 @@
 
     var topicCounter = document.querySelector('[data-ai-total-topics]');
     if (topicCounter) topicCounter.textContent = String(totalTopics);
+
+    var numberNav = document.querySelector('[data-ai-number-nav]');
+    if (numberNav) {
+      numberNav.innerHTML = numberNavItems.map(function(item) {
+        return [
+          '<a href="#' + item.id + '">',
+          '<span>' + item.number + '</span>',
+          '<strong>' + escapeHtml(item.title) + '</strong>',
+          '<small>' + escapeHtml(item.track) + '</small>',
+          '</a>'
+        ].join('');
+      }).join('');
+    }
 
     AI_LEARNING_TRACKS.forEach(function(track) {
       var tree = document.querySelector('[data-ai-tree="' + track.tree + '"]');
