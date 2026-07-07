@@ -137,24 +137,161 @@
       ]
     },
     playwright: {
-      storageKey: 'testnova-reader-playwright',
+      storageKey: 'testnova-reader-playwright-v2',
       title: 'Playwright',
       topics: [
-        lesson('playwright-introduction', 'Playwright Introduction', [
-          'Playwright is a modern end-to-end testing framework for web applications.',
-          'It can automate Chromium, Firefox, and WebKit, and supports reliable browser interactions, assertions, tracing, screenshots, and reports.',
-          'A good Playwright test checks user-visible behavior instead of internal implementation details.'
-        ], 'Create a test that opens a page, checks the title, and verifies a visible heading.'),
+        lesson('development-environment-nodejs', 'Configuration of Development Environment - Node JS', [
+          'Node.js is the runtime environment that allows JavaScript and TypeScript to run outside the browser. JavaScript was originally designed to execute inside the browser, but Node.js made it possible to run JavaScript on a local computer, server, command line, build pipeline, and automation framework.',
+          'Playwright supports JavaScript and TypeScript. To run Playwright tests on your machine, Node.js is required because Playwright projects use Node-based tooling, npm packages, test runners, and command-line scripts.',
+          'Install the Windows x64 MSI installer from the official Node.js website. After installation, verify both Node and npm from a terminal before moving forward.'
+        ], 'Install Node.js, open a terminal, and confirm that both node -v and npm -v return versions.', [
+          {
+            title: 'Install and verify Node.js',
+            code: '1. Open https://nodejs.org/en/download\n2. Select Windows Installer (.msi)\n3. Choose x64 for Intel/AMD Windows machines\n4. Install using the default setup\n5. Open terminal\n6. Run:\n\nnode -v\nnpm -v'
+          }
+        ]),
+        lesson('development-environment-vscode', 'Configuration of Development Environment - VS Code', [
+          'Use Visual Studio Code, not Visual Studio. They are separate tools. Visual Studio Code is a lightweight editor that works well for Playwright, JavaScript, TypeScript, terminals, Git integration, and extensions.',
+          'After installing VS Code, open the integrated terminal from Terminal > New Terminal. This terminal is where you will run node, npm, git, and Playwright commands.',
+          'Install the Playwright Test for VS Code extension. This extension adds a testing panel where you can run tests, debug tests, view results, switch projects, and inspect failures more conveniently.'
+        ], 'Install VS Code and the Playwright Test for VS Code extension, then confirm the test runner icon appears in the left activity bar.', [
+          {
+            title: 'Verify VS Code terminal setup',
+            code: 'Terminal > New Terminal\n\nnode -v\nnpm -v\n\nIf npm scripts are blocked on Windows PowerShell, run:\nSet-ExecutionPolicy RemoteSigned -Scope CurrentUser'
+          },
+          {
+            title: 'Recommended VS Code extension',
+            code: 'Extension name: Playwright Test for VSCode\nExample version from notes: v1.1.17\nPurpose: run tests, debug tests, inspect results, and manage Playwright projects.'
+          }
+        ]),
+        lesson('development-environment-git', 'Configuration of Development Environment - Git', [
+          'Git is required to clone practice applications and manage project code. On Windows, install Git for Windows from Git SCM.',
+          'After installation, verify Git from the terminal. If the command returns a version, Git is available and ready for cloning repositories.',
+          'Use Git from the VS Code terminal so your workflow stays in one place: clone projects, install dependencies, run apps, create branches, and commit changes.'
+        ], 'Install Git for Windows and verify git -v from a terminal.', [
+          {
+            title: 'Verify Git',
+            code: 'git -v\n\nExpected example:\ngit version 2.45.1.windows.1'
+          }
+        ]),
+        lesson('clone-test-application', 'Clone Test Application', [
+          'Before writing Playwright tests, you need an application to test. The practice app in the notes is hosted on GitHub and can be cloned locally.',
+          'Create a working folder, open a terminal inside it, clone the repository, then open the cloned folder in VS Code.',
+          'Keeping the app and tests local helps you practice repeatedly without depending on an external training environment.'
+        ], 'Clone the practice app and open the project folder in VS Code.', [
+          {
+            title: 'Clone practice app',
+            code: 'D:\\pw-practice> git clone https://github.com/bondar-artem/pw-practice-app.git\n\nD:\\pw-practice> cd pw-practice-app\n\nOpen this folder in VS Code:\nD:\\pw-practice\\pw-practice-app'
+          }
+        ]),
+        lesson('run-test-application', 'Run Test Application', [
+          'After cloning the practice app, install its dependencies. Dependencies are external packages listed in package.json and downloaded into node_modules.',
+          'If dependency installation fails, clean npm cache, restart if needed, or delete and reclone the project. Use force only when necessary for training setup issues.',
+          'Start the app with npm start. Keep the terminal open while testing. If you press Ctrl+C, the app stops and the browser will no longer be able to load it.'
+        ], 'Install dependencies, start the app, and open http://localhost:4200/ in the browser.', [
+          {
+            title: 'Install and run app',
+            code: 'cd D:\\pw-practice\\pw-practice-app\n\nnpm cache clean --force\nnpm install --force\nnpm start\n\nOpen browser:\nhttp://localhost:4200/\n\nStop app:\nCtrl + C'
+          }
+        ]),
+        lesson('javascript-hello-world', 'JavaScript Fundamentals - Hello World', [
+          'Before Playwright, understand basic JavaScript execution. Create a simple JavaScript project and run a file with Node.js.',
+          'npm init creates package.json, which stores project metadata and scripts. A lessons folder helps organize practice files.',
+          'Running node lesson_1.js executes the file in Node.js and prints output to the terminal.'
+        ], 'Create a lessons folder and run your first JavaScript file with Node.', [
+          {
+            title: 'Hello World setup',
+            code: 'D:\\JS Fundamentals> npm init\n\nPress Enter through defaults, then confirm yes.\n\nCreate folder:\nlessons\n\nCreate file:\nlessons\\lesson_1.js\n\n// 1. Hello World\nconsole.log(\"Hello world !\")\n\nRun:\ncd lessons\nnode lesson_1.js\n\nOutput:\nHello world !'
+          }
+        ]),
+        lesson('javascript-variables-constants-types', 'JavaScript Fundamentals - Variables, Constants & Data Types', [
+          'Variables store values. Use let for values that may change, const for values that should not be reassigned, and avoid var in modern code unless you are reading older examples.',
+          'A variable can hold one value, and objects can hold multiple related values. Playwright tests often use variables for test data, locators, URLs, expected text, and response objects.',
+          'Constants protect values from accidental reassignment. If you try to reassign a const value, JavaScript throws a TypeError.'
+        ], 'Create variables for username, password, expected message, and test status. Use const where the value should not change.', [
+          {
+            title: 'Variables',
+            code: 'var firstName = \"John\"\nlet lastName = \"Smith\"\nconsole.log(firstName)\n\nvar age, dateOfBirth, sex\nage = 5\nsex = \"Male\"\nconsole.log(age)\n\nage = 6\nconsole.log(age)'
+          },
+          {
+            title: 'Constants',
+            code: 'const occupation = \"engineer\"\noccupation = \"driver\"\nconsole.log(occupation)\n\n// Result:\n// TypeError: Assignment to constant variable.'
+          },
+          {
+            title: 'Data types',
+            code: 'var middleName = \"David\"\nvar yearsInService = 5\nvar isHeMarried = false\nvar yearsInMarriage = null\nvar numberOfCars = undefined'
+          }
+        ]),
+        lesson('javascript-strings-objects-arrays', 'JavaScript Fundamentals - Strings, Objects & Arrays', [
+          'Concatenation joins strings with the plus operator. Template interpolation uses backticks and ${} placeholders, which is easier to read for dynamic messages.',
+          'Objects represent entities with multiple properties. Arrays store ordered lists. Playwright test code frequently uses objects for test users and arrays for sets of data.',
+          'Use dot notation when the property name is known, and bracket notation when the property name is dynamic.'
+        ], 'Create a customer object with name, role, and browsers array, then print one browser from the array.', [
+          {
+            title: 'Concatenation and interpolation',
+            code: 'var itemName = \"coffee\"\nvar itemPrice = 50\nconsole.log(\"the price of your \" + itemName + \" is \" + itemPrice + \" dollars\")\n\nvar drinkName = \"tea\"\nvar drinkPrice = 5\nvar message = `my ${drinkName} price is ${drinkPrice} dollars`\nconsole.log(message)'
+          },
+          {
+            title: 'Objects and arrays',
+            code: 'var customer = {\n  firstName: \"John\",\n  lastName: \"Smith\",\n  cars: [\"Volvo\", \"Toyota\", \"Tesla\"]\n}\n\nconsole.log(customer.firstName)\ncustomer.firstName = \"Mike\"\nconsole.log(customer[\"firstName\"])\nconsole.log(customer.cars[1])'
+          }
+        ]),
+        lesson('javascript-operators-control-flow', 'JavaScript Fundamentals - Operators & Control Flow', [
+          'Relational operators compare values and return true or false. Equality operators compare values loosely or strictly. In automation code, strict comparison is usually safer.',
+          'Logical operators combine boolean conditions. Conditional statements let code choose different paths based on runtime values.',
+          'Loops repeat work. Playwright tests may loop through test data, browser projects, API responses, table rows, or validation messages.'
+        ], 'Write a condition that checks whether a user is active and has the admin role before allowing an action.', [
+          {
+            title: 'Relational and equality operators',
+            code: 'console.log(10 < 75)   // true\nconsole.log(10 > 75)   // false\nconsole.log(10 <= 10)  // true\nconsole.log(10 >= 20)  // false\n\nlet x = 1\nconsole.log(x == \"1\")   // true: value only\nconsole.log(x === \"1\")  // false: value + type\nconsole.log(x === 1)    // true'
+          },
+          {
+            title: 'Logical operators and conditionals',
+            code: 'console.log(true && true)\nconsole.log(true || false)\nconsole.log(!true)\n\nlet hour = 6\nif (hour >= 6 && hour < 12) {\n  console.log(\"Good morning\")\n} else if (hour >= 12 && hour < 18) {\n  console.log(\"Good afternoon\")\n} else {\n  console.log(\"Good evening\")\n}'
+          },
+          {
+            title: 'Loops',
+            code: 'for (let i = 0; i < 5; i++) {\n  console.log(i)\n}\n\nlet cars = [\"Volvo\", \"Toyota\", \"Tesla\"]\nfor (let car of cars) {\n  if (car === \"Toyota\") {\n    break\n  }\n  console.log(car)\n}\n\ncars.forEach(car => console.log(car))'
+          }
+        ]),
+        lesson('javascript-functions-modules', 'JavaScript Fundamentals - Functions & Import/Export', [
+          'Functions group reusable logic. In Playwright, functions are useful for repeated steps such as login, navigation, creating test data, or validating common UI states.',
+          'Arrow functions are common in modern JavaScript and TypeScript. They are widely used in callbacks, array methods, and test helper functions.',
+          'Import/export lets you split reusable code into helper files, page objects, fixture files, and utility modules.'
+        ], 'Create a helper function that accepts a name and prints it, then export it from one file and import it in another.', [
+          {
+            title: 'Function examples',
+            code: 'function hello() {\n  console.log(\"Hello\")\n}\n\nfunction printName(name) {\n  console.log(name)\n}\n\nfunction multiplyBy2(num) {\n  return num * 2\n}\n\nconst helloArrow = () => {\n  console.log(\"Hello\")\n}'
+          },
+          {
+            title: 'Import and export',
+            code: '// helper.js\nexport function printAge(age) {\n  console.log(age)\n}\n\n// lesson.js\nimport { printAge } from \"./helper.js\"\nprintAge(25)'
+          }
+        ]),
         lesson('typescript-basics-for-playwright', 'Typescript Basics for Playwright', [
-          'Playwright tests are often written in TypeScript because types make test code, fixtures, page objects, and helper functions easier to maintain.',
-          'Start with basic types, arrays, objects, function parameters, return types, optional values, and interfaces.',
-          'Use TypeScript to describe page objects, test data, API responses, and reusable fixture contracts.'
-        ], 'Create a typed test data object for a login test with username, password, expectedMessage, and shouldPass fields.'),
+          'Playwright tests are often written in TypeScript because types make test code, fixtures, page objects, helper functions, API responses, and test data easier to maintain.',
+          'Start with basic types, arrays, objects, function parameters, return types, optional values, interfaces, and strict equality checks.',
+          'Use TypeScript to describe page objects, login users, expected messages, API response shapes, fixture contracts, and reusable test utilities.'
+        ], 'Create a typed test data object for a login test with username, password, expectedMessage, and shouldPass fields.', [
+          {
+            title: 'Typed Playwright test data',
+            code: 'type LoginCase = {\n  username: string\n  password: string\n  expectedMessage: string\n  shouldPass: boolean\n}\n\nconst validLogin: LoginCase = {\n  username: \"admin@test.com\",\n  password: \"Password123\",\n  expectedMessage: \"Dashboard\",\n  shouldPass: true\n}'
+          },
+          {
+            title: 'Typed helper function',
+            code: 'function buildUserLabel(firstName: string, lastName: string): string {\n  return `${firstName} ${lastName}`\n}\n\nconsole.log(buildUserLabel(\"John\", \"Smith\"))'
+          }
+        ]),
         lesson('setup-config', 'Setup & Configuration', [
-          'A Playwright project usually includes a config file, test directory, browser projects, retries, reporter settings, and base URL.',
-          'Configuration keeps tests consistent across local, CI, staging, and production environments.',
-          'Use environment variables for URLs and secrets instead of hardcoding them.'
-        ], 'Define a base URL and two browser projects in a Playwright config file.'),
+          'A Playwright project usually includes a config file, test directory, browser projects, retries, reporter settings, trace settings, and a base URL.',
+          'Configuration keeps tests consistent across local machines, CI, staging, and production-like environments.',
+          'Use environment variables for URLs and secrets instead of hardcoding them in tests. Keep configuration readable because every test depends on it.'
+        ], 'Define a base URL and at least two browser projects in a Playwright config file.', [
+          {
+            title: 'Typical Playwright config idea',
+            code: 'import { defineConfig, devices } from \"@playwright/test\"\n\nexport default defineConfig({\n  testDir: \"./tests\",\n  use: {\n    baseURL: \"http://localhost:4200\",\n    trace: \"on-first-retry\",\n    screenshot: \"only-on-failure\"\n  },\n  projects: [\n    { name: \"chromium\", use: { ...devices[\"Desktop Chrome\"] } },\n    { name: \"firefox\", use: { ...devices[\"Desktop Firefox\"] } }\n  ]\n})'
+          }
+        ]),
         lesson('locators', 'Locators', [
           'Locators are Playwright handles for finding elements reliably.',
           'Prefer user-facing locators such as role, label, placeholder, text, and test ids.',
@@ -184,8 +321,8 @@
     }
   };
 
-  function lesson(id, title, paragraphs, practice) {
-    return { id: id, title: title, paragraphs: paragraphs, practice: practice };
+  function lesson(id, title, paragraphs, practice, examples) {
+    return { id: id, title: title, paragraphs: paragraphs, practice: practice, examples: examples || [] };
   }
 
   function slugify(value) {
@@ -334,6 +471,14 @@
       '<div class="ai-reader-topic-kicker">Topic ' + (index + 1) + '</div>',
       '<h2 data-topic-title>' + escapeHtml(topic.title) + '</h2>',
       topic.paragraphs.map(function (paragraph) { return '<p>' + escapeHtml(paragraph) + '</p>'; }).join(''),
+      topic.examples && topic.examples.length ? topic.examples.map(function (example) {
+        return [
+          '<div class="ai-code-example">',
+          '<h3>' + escapeHtml(example.title) + '</h3>',
+          '<pre><code>' + escapeHtml(example.code) + '</code></pre>',
+          '</div>'
+        ].join('');
+      }).join('') : '',
       '<div class="ai-topic-practice"><strong>Try this:</strong><span>' + escapeHtml(topic.practice) + '</span></div>',
       '<div class="ai-edit-placeholder"><strong>Editable notes:</strong><span>Type or paste your own examples, transcript notes, exercises, or trainer comments here.</span></div>'
     ].join('');
