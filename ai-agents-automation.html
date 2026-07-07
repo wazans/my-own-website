@@ -152,7 +152,7 @@
             <ul>
               <li>Install Node.js, VS Code, Playwright, and an MCP client such as Claude Desktop or Roo Code.</li>
               <li>Configure a Playwright MCP server so the AI can open a browser, inspect DOM, click, type, and read results.</li>
-              <li>Try this task: “Open the login page, inspect fields, create a Playwright test for valid and invalid login, then explain selectors used.”</li>
+              <li>Try this task: "Open the login page, inspect fields, create a Playwright test for valid and invalid login, then explain selectors used."</li>
               <li>Review every generated action before committing. AI should assist execution, not bypass QA ownership.</li>
             </ul>
           </article>
@@ -163,6 +163,24 @@
               <li>Agent flow: understand instruction, open browser, inspect page, identify locator, execute step, capture error, improve, repeat.</li>
               <li>Example: Ask AI to repair a failing selector by re-inspecting the page and suggesting a stable CSS/test-id locator.</li>
               <li>Use Git diff review, screenshots, logs, and CI result before accepting any self-healing change.</li>
+            </ul>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>Practical Before vs After MCP</h3>
+            <ul>
+              <li><strong>Before:</strong> AI generated snippets, then engineers manually copied, executed, debugged, and maintained them.</li>
+              <li><strong>After:</strong> AI can open a browser, inspect the live DOM, run a test, detect failure, fix a locator, and re-run.</li>
+              <li><strong>Example task:</strong> "Automate login and generate POM structure for Playwright TypeScript."</li>
+              <li><strong>Expected output:</strong> page object file, test spec, locator notes, execution result, failure summary, and fix suggestion.</li>
+            </ul>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>QA Role Upgrade Checklist</h3>
+            <ul>
+              <li><strong>Framework design:</strong> Decide folders, fixtures, data builders, POM rules, selectors, and reporting standards.</li>
+              <li><strong>Stability strategy:</strong> Remove hard waits, prefer test IDs/roles, isolate flaky areas, and capture screenshots/videos/traces.</li>
+              <li><strong>CI/CD integration:</strong> Run AI-generated tests in GitHub Actions or Jenkins before accepting changes.</li>
+              <li><strong>AI governance:</strong> Require code review, validation, audit trail, secure tool access, and human approval for self-healing edits.</li>
             </ul>
           </article>
         </div>
