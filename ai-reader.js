@@ -128,13 +128,15 @@
   function renderTopicHtml(track, topic, index, progress) {
     var contentKey = track.storageKey + ':content:' + topic.id;
     var savedContent = localStorage.getItem(contentKey);
+    if (savedContent) {
+      savedContent = savedContent.replace(/<div class="ai-inline-save-panel"[\s\S]*?<\/div>/g, '');
+    }
     var body = savedContent || [
       '<div class="ai-reader-topic-kicker">Topic ' + (index + 1) + '</div>',
       '<h2 data-topic-title>' + topic.title + '</h2>',
       topic.paragraphs.map(function (paragraph) { return '<p>' + paragraph + '</p>'; }).join(''),
       '<div class="ai-topic-practice"><strong>Try this:</strong><span>' + topic.practice + '</span></div>',
-      '<div class="ai-edit-placeholder"><strong>Editable notes:</strong><span>Type or paste your own examples, transcript notes, exercises, or trainer comments here.</span></div>',
-      '<div class="ai-inline-save-panel" contenteditable="false"><button class="primary-btn" type="button" data-inline-save>Save edits</button><span>Saved edits stay in this browser for future visits.</span></div>'
+      '<div class="ai-edit-placeholder"><strong>Editable notes:</strong><span>Type or paste your own examples, transcript notes, exercises, or trainer comments here.</span></div>'
     ].join('');
 
     return [
@@ -142,7 +144,8 @@
       '<input type="checkbox" data-reader-complete="' + topic.id + '"' + (progress[topic.id] ? ' checked' : '') + ' />',
       '<span>Mark this topic complete</span>',
       '</label>',
-      '<div class="ai-reader-edit-body" contenteditable="true" data-topic-edit="' + topic.id + '">' + body + '</div>'
+      '<div class="ai-reader-edit-body" contenteditable="true" data-topic-edit="' + topic.id + '">' + body + '</div>',
+      '<div class="ai-inline-save-panel"><button class="primary-btn" type="button" data-inline-save>Save edits now</button><span data-inline-save-state>Typing auto-saves. Manual save is here as backup.</span></div>'
     ].join('');
   }
 
@@ -156,6 +159,7 @@
     var saveState = document.querySelector('[data-reader-save-state]');
     var progress = loadJson(track.storageKey + ':progress');
     var currentTopic = track.topics[0].id;
+    var saveTimer = null;
 
     function updateProgress() {
       var done = track.topics.filter(function (topic) { return progress[topic.id]; }).length;
@@ -180,13 +184,27 @@
       });
     }
 
-    function saveCurrentContent() {
+    function saveCurrentContent(mode) {
+      if (saveTimer) {
+        clearTimeout(saveTimer);
+        saveTimer = null;
+      }
       var editBody = content.querySelector('[data-topic-edit]');
       if (!editBody) return;
       localStorage.setItem(track.storageKey + ':content:' + editBody.getAttribute('data-topic-edit'), editBody.innerHTML);
+      var message = (mode === 'auto' ? 'Auto-saved ' : 'Saved ') + new Date().toLocaleTimeString();
       if (saveState) {
-        saveState.textContent = 'Saved ' + new Date().toLocaleTimeString();
+        saveState.textContent = message;
       }
+      var inlineState = content.querySelector('[data-inline-save-state]');
+      if (inlineState) inlineState.textContent = message + '. Edits stay in this browser.';
+    }
+
+    function scheduleSave() {
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(function () {
+        saveCurrentContent('auto');
+      }, 700);
     }
 
     function openTopic(id) {
@@ -214,6 +232,9 @@
       if (editBody) {
         editBody.addEventListener('input', function () {
           if (saveState) saveState.textContent = 'Unsaved edits';
+          var inlineState = content.querySelector('[data-inline-save-state]');
+          if (inlineState) inlineState.textContent = 'Unsaved edits - auto-saving...';
+          scheduleSave();
         });
       }
 
@@ -238,6 +259,10 @@
 
     var saveButton = document.querySelector('[data-reader-save]');
     if (saveButton) saveButton.addEventListener('click', saveCurrentContent);
+
+    window.addEventListener('beforeunload', function () {
+      saveCurrentContent('auto');
+    });
 
     var copyButton = document.querySelector('[data-reader-copy]');
     if (copyButton) {
