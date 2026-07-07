@@ -119,11 +119,41 @@
           'Promises and async/await make async code easier to read and maintain.',
           'Always handle failures so the UI does not silently break.'
         ], 'Fetch JSON from a public API and render a loading, success, and error state.'),
+        lesson('typescript-basics', 'TypeScript Basics', [
+          'TypeScript is JavaScript with type checking. It helps you catch mistakes before running the code, especially in larger applications and automation projects.',
+          'Start with string, number, boolean, arrays, objects, optional properties, function parameter types, and return types.',
+          'Use TypeScript when data shapes matter: users, courses, API responses, form payloads, configuration objects, and test data.'
+        ], 'Create a typed Course object with title, category, duration, isActive, and topics fields.', [
+          {
+            title: 'Basic types and objects',
+            code: 'type Course = {\n  title: string\n  category: string\n  durationHours: number\n  isActive: boolean\n  topics: string[]\n}\n\nconst course: Course = {\n  title: \"Playwright Automation\",\n  category: \"QA Engineering\",\n  durationHours: 24,\n  isActive: true,\n  topics: [\"Locators\", \"Assertions\", \"Reports\"]\n}'
+          }
+        ]),
         lesson('interfaces-types', 'Interfaces, Types & Generics', [
           'Interfaces and type aliases describe object shapes and reusable contracts.',
           'Generics let functions and components work with different data types while keeping type safety.',
           'Use simple types first. Add advanced types only when they improve clarity.'
         ], 'Create a reusable API response type with data, status, and error fields.'),
+        lesson('typescript-functions-classes', 'TypeScript Functions, Classes & Modules', [
+          'Typed functions make inputs and outputs clear. This is useful when helper functions are reused across pages, forms, tests, and API calls.',
+          'Classes group data and behavior. In frontend code they are less common than objects and functions, but in test automation they are useful for page objects.',
+          'Modules keep files focused. Export only what other files need and keep internal helper details private to the file.'
+        ], 'Create a typed helper function and a small class that stores a user name and returns a greeting.', [
+          {
+            title: 'Typed function and class',
+            code: 'export function formatName(firstName: string, lastName: string): string {\n  return `${firstName} ${lastName}`.trim()\n}\n\nexport class LearnerProfile {\n  constructor(private fullName: string) {}\n\n  greeting(): string {\n    return `Welcome, ${this.fullName}`\n  }\n}'
+          }
+        ]),
+        lesson('typescript-async-api-data', 'TypeScript with Async API Data', [
+          'Real applications often receive data from APIs. TypeScript helps document the expected response shape and makes rendering logic easier to maintain.',
+          'Use async/await with typed responses, then handle loading, empty, success, and error states in the UI.',
+          'Avoid pretending every API response is perfect. Validate important fields when the data comes from outside your application.'
+        ], 'Create a typed async function that returns a list of courses and handles an error message for the UI.', [
+          {
+            title: 'Typed async API helper',
+            code: 'type ApiCourse = {\n  id: string\n  title: string\n  level: \"Beginner\" | \"Intermediate\" | \"Advanced\"\n}\n\nasync function loadCourses(): Promise<ApiCourse[]> {\n  const response = await fetch(\"/api/courses\")\n  if (!response.ok) throw new Error(\"Unable to load courses\")\n  return response.json() as Promise<ApiCourse[]>\n}'
+          }
+        ]),
         lesson('frontend-patterns', 'Frontend Patterns', [
           'Clean frontend code separates state, rendering, events, and API communication.',
           'Reusable helpers reduce duplication and make UI behavior easier to test.',
@@ -316,7 +346,91 @@
           'A Playwright framework should be easy to run locally and in CI.',
           'Typical pieces include config, page objects or helpers, test data, reports, retries, screenshots, traces, and pipeline commands.',
           'Keep the framework practical: add abstraction when it reduces real repetition.'
-        ], 'Design a folder structure for a Playwright framework with tests, pages, fixtures, data, and utilities.')
+        ], 'Design a folder structure for a Playwright framework with tests, pages, fixtures, data, and utilities.'),
+        lesson('playwright-overview-installation', 'Playwright End-to-End Overview & Installation', [
+          'Playwright is an open-source end-to-end testing framework from Microsoft. It automates Chromium, Firefox, and WebKit using one API.',
+          'The key advantage is auto-waiting: Playwright waits for elements to be visible, stable, enabled, and actionable before interacting with them.',
+          'A practical setup includes Node.js, a Playwright project, TypeScript support, browsers, an HTML report, and a clear folder structure for tests, pages, fixtures, utilities, and test data.'
+        ], 'Create a fresh Playwright TypeScript project and run the sample tests once.', [
+          {
+            title: 'Install and verify Playwright',
+            code: 'mkdir finsecure-playwright\ncd finsecure-playwright\nnpm init -y\nnpm init playwright@latest\n\n# Verify installation\nnpx playwright test\nnpx playwright show-report'
+          },
+          {
+            title: 'Suggested project folders',
+            code: 'tests/\n  login.spec.ts\n  fund-transfer.spec.ts\n  loan.spec.ts\npages/\n  LoginPage.ts\n  DashboardPage.ts\nfixtures/\n  auth.fixture.ts\nutils/\n  helpers.ts\ntest-data/\n  users.json\n  transfers.csv'
+          }
+        ]),
+        lesson('playwright-built-in-locators', 'Playwright Built-in Locators', [
+          'Built-in locators are the first choice because they describe the page like a user would: role, label, placeholder, text, alt text, title, and test id.',
+          'Use getByRole for accessible controls, getByLabel for form fields, getByPlaceholder for clear placeholders, and getByTestId for stable automation hooks.',
+          'Prefer locators that survive layout and CSS changes. A good locator tells future readers what the user is interacting with.'
+        ], 'Replace three CSS selectors in an old test with role, label, and test id locators.', [
+          {
+            title: 'Locator examples',
+            code: 'await page.getByRole(\"button\", { name: \"Login\" }).click()\nawait page.getByLabel(\"Username\").fill(\"testuser01\")\nawait page.getByPlaceholder(\"Enter amount\").fill(\"5000\")\nawait page.getByText(\"Transfer Successful\").click()\nawait page.getByTestId(\"account-balance\").textContent()'
+          }
+        ]),
+        lesson('playwright-xpath-css-locators', 'XPath & CSS Locators', [
+          'XPath can navigate using text, attributes, parent-child relationships, and axes. It is powerful, but it can become hard to maintain if overused.',
+          'CSS locators are compact and fast for ids, classes, attributes, descendants, and simple structural selection.',
+          'Use XPath or CSS when user-facing locators are not enough, and keep selectors short, stable, and readable.'
+        ], 'Write one XPath selector and one CSS selector for a transfer amount input, then explain which one you would keep.', [
+          {
+            title: 'XPath and CSS selector patterns',
+            code: 'await page.locator(\"//button[text()=\\\"Login\\\"]\").click()\nawait page.locator(\"//input[@name=\\\"username\\\"]\").fill(\"testuser01\")\nawait page.locator(\"#amount\").fill(\"5000\")\nawait page.locator(\"button[type=\\\"submit\\\"]\").click()\nawait page.locator(\".toast.success\").toBeVisible()'
+          }
+        ]),
+        lesson('playwright-actions-auto-waiting', 'Actions, Auto-Waiting & Input Handling', [
+          'Playwright actions include click, fill, type, press, check, uncheck, hover, drag, upload, and keyboard or mouse operations.',
+          'Before most actions, Playwright automatically waits for the target element to be attached, visible, stable, enabled, and ready to receive events.',
+          'For real user journeys, pair each action with a meaningful assertion so the test proves the application responded correctly.'
+        ], 'Create a money transfer test that fills fields, selects an option, submits, and verifies the success message.', [
+          {
+            title: 'Common actions',
+            code: 'await page.getByLabel(\"Username\").fill(\"testuser01\")\nawait page.getByLabel(\"Password\").fill(\"Pass@123\")\nawait page.getByRole(\"button\", { name: \"Login\" }).click()\nawait page.getByLabel(\"Amount\").fill(\"5000\")\nawait page.getByRole(\"checkbox\", { name: \"I agree\" }).check()\nawait expect(page.getByText(\"Transfer Successful\")).toBeVisible()'
+          }
+        ]),
+        lesson('playwright-dropdowns-date-picker', 'Dropdowns, Select Options & Date Pickers', [
+          'Native HTML select elements use selectOption by value, visible label, index, or multiple values.',
+          'Custom dropdowns are built from div, ul, li, button, or framework components. Open the dropdown, wait for options, then click the visible option.',
+          'Date pickers often require either filling a date input directly or navigating the calendar month by month before selecting a day.'
+        ], 'Automate a transfer form that selects bank, transfer type, and scheduled date.', [
+          {
+            title: 'Dropdown and date examples',
+            code: 'await page.locator(\"#transfer-type\").selectOption(\"IMPS\")\nawait page.locator(\"#transfer-type\").selectOption({ label: \"National Electronic Fund Transfer\" })\n\nawait page.locator(\".transfer-type-dropdown\").click()\nawait page.getByRole(\"option\", { name: \"RTGS\" }).click()\n\nawait page.getByLabel(\"Transfer Date\").fill(\"2026-07-07\")'
+          }
+        ]),
+        lesson('playwright-dialogs-frames-popups', 'Dialogs, Frames, Tabs & Popups', [
+          'Browser dialogs must be handled before the action that triggers them. Listen for dialog events, then accept, dismiss, or provide prompt text.',
+          'Frames are embedded documents inside a page. Use frameLocator to target payment gateways, secure inputs, or nested frame content.',
+          'For tabs and popups, wait for the new page event while clicking the link or button that opens it, then assert inside the new page.'
+        ], 'Automate a flow that accepts a confirmation dialog, enters card details in a frame, and verifies a newly opened statement tab.', [
+          {
+            title: 'Dialogs, frames, and new pages',
+            code: 'page.on(\"dialog\", async dialog => {\n  await dialog.accept(\"testuser01\")\n})\nawait page.getByRole(\"button\", { name: \"Confirm\" }).click()\n\nconst paymentFrame = page.frameLocator(\"iframe[src*=\\\"razorpay\\\"]\")\nawait paymentFrame.locator(\"#card-number\").fill(\"4111 1111 1111 1111\")\n\nconst statementPage = await Promise.all([\n  page.waitForEvent(\"popup\"),\n  page.getByRole(\"link\", { name: \"Open Statement\" }).click()\n]).then(([popup]) => popup)'
+          }
+        ]),
+        lesson('playwright-artifacts-downloads-api', 'Screenshots, Videos, Downloads & API Mocking', [
+          'Screenshots, videos, traces, and HTML reports are test artifacts. They help explain failures quickly, especially in CI.',
+          'Downloads should be waited for using the download event, then saved to a known path for validation.',
+          'API mocking with route lets tests control backend responses, simulate failures, and verify UI behavior without depending on unstable test data.'
+        ], 'Add a screenshot on failure, download a statement file, and mock a balance API response.', [
+          {
+            title: 'Artifacts, download, and route',
+            code: 'await page.screenshot({ path: \"screenshots/dashboard.png\", fullPage: true })\n\nconst download = await Promise.all([\n  page.waitForEvent(\"download\"),\n  page.getByRole(\"button\", { name: \"Download Statement\" }).click()\n]).then(([file]) => file)\nawait download.saveAs(\"downloads/statement.pdf\")\n\nawait page.route(\"**/api/balance\", route => {\n  route.fulfill({ status: 200, body: JSON.stringify({ balance: 25000 }) })\n})'
+          }
+        ]),
+        lesson('playwright-assertions-tags-parallel-data', 'Assertions, Tags, Parallel & Data-Driven Tests', [
+          'Assertions should verify user-visible outcomes, URLs, text, counts, attributes, API status, or downloaded artifacts. They auto-wait until the expectation passes or times out.',
+          'Tags help run focused suites such as smoke, regression, login, payments, or API tests. Parallel execution and sharding reduce execution time in larger suites.',
+          'Data-driven tests run the same scenario with multiple inputs, such as several users, transfer types, invalid login cases, or loan application amounts.'
+        ], 'Create a tagged smoke test that runs against three login users from an array.', [
+          {
+            title: 'Tags, parallelism, and data',
+            code: 'const users = [\n  { username: \"testuser01\", password: \"Pass@123\", expected: \"Welcome\" },\n  { username: \"testuser02\", password: \"Pass@123\", expected: \"Welcome\" }\n]\n\nfor (const data of users) {\n  test(`@smoke login works for ${data.username}`, async ({ page }) => {\n    await page.goto(\"/login\")\n    await page.getByLabel(\"Username\").fill(data.username)\n    await page.getByLabel(\"Password\").fill(data.password)\n    await page.getByRole(\"button\", { name: \"Login\" }).click()\n    await expect(page.getByText(data.expected)).toBeVisible()\n  })\n}\n\n// CLI examples:\n// npx playwright test --grep \"@smoke\"\n// npx playwright test --shard=1/3'
+          }
+        ])
       ]
     }
   };
@@ -489,120 +603,8 @@
       '<span>Mark this topic complete</span>',
       '</label>',
       '<div class="ai-reader-edit-body" contenteditable="true" data-topic-edit="' + topic.id + '">' + body + '</div>',
-      renderCodeConsoleHtml(track, topic),
       '<div class="ai-inline-save-panel"><button class="primary-btn" type="button" data-inline-save>Save edits now</button><span data-inline-save-state>Typing auto-saves. Manual save is here as backup.</span></div>'
     ].join('');
-  }
-
-  function isRunnableBrowserJs(code) {
-    var value = String(code || '');
-    if (!value.trim()) return false;
-    if (/^\s*(cd|npm|node|git|set-executionpolicy|run:|open browser:|stop app:)/im.test(value)) return false;
-    if (/[A-Z]:\\|https?:\/\/|press enter|create folder|create file|expected example:/i.test(value)) return false;
-    if (/^\s*(import|export)\s/im.test(value)) return false;
-    if (/\btype\s+\w+\s*=|:\s*(string|number|boolean)\b|from\s+["']/i.test(value)) return false;
-    return true;
-  }
-
-  function defaultConsoleCode(topic) {
-    var fromExamples = (topic.examples || [])
-      .map(function (example) { return example.code || ''; })
-      .find(isRunnableBrowserJs);
-
-    if (fromExamples) return fromExamples;
-
-    return [
-      '// Practice console for: ' + topic.title,
-      'const topic = ' + JSON.stringify(topic.title),
-      'console.log("Running practice for:", topic)',
-      'console.log("Edit this code and click Run code.")'
-    ].join('\n');
-  }
-
-  function renderCodeConsoleHtml(track, topic) {
-    var key = track.storageKey + ':console:' + topic.id;
-    var savedCode = localStorage.getItem(key);
-    var code = savedCode || defaultConsoleCode(topic);
-
-    return [
-      '<section class="ai-code-console" contenteditable="false" data-code-console-panel>',
-      '<div class="ai-code-console-header">',
-      '<div>',
-      '<strong>Practice console</strong>',
-      '<span>Run browser-safe JavaScript here without leaving TestNova.</span>',
-      '</div>',
-      '<div class="ai-code-console-actions">',
-      '<button class="secondary-btn" type="button" data-console-reset>Reset code</button>',
-      '<button class="primary-btn" type="button" data-console-run>Run code</button>',
-      '</div>',
-      '</div>',
-      '<textarea spellcheck="false" data-console-code>' + escapeHtml(code) + '</textarea>',
-      '<pre class="ai-console-output" data-console-output>Output will appear here.</pre>',
-      '</section>'
-    ].join('');
-  }
-
-  function formatConsoleValue(value) {
-    if (typeof value === 'string') return value;
-    try { return JSON.stringify(value, null, 2); } catch (e) { return String(value); }
-  }
-
-  function runConsoleCode(panel) {
-    var textarea = panel.querySelector('[data-console-code]');
-    var output = panel.querySelector('[data-console-output]');
-    if (!textarea || !output) return;
-
-    var logs = [];
-    var runnerConsole = {
-      log: function () {
-        logs.push(Array.prototype.slice.call(arguments).map(formatConsoleValue).join(' '));
-      },
-      warn: function () {
-        logs.push('Warning: ' + Array.prototype.slice.call(arguments).map(formatConsoleValue).join(' '));
-      },
-      error: function () {
-        logs.push('Error: ' + Array.prototype.slice.call(arguments).map(formatConsoleValue).join(' '));
-      }
-    };
-
-    try {
-      var result = new Function('console', textarea.value)(runnerConsole);
-      if (result !== undefined) logs.push(formatConsoleValue(result));
-      output.textContent = logs.length ? logs.join('\n') : 'Code ran successfully with no console output.';
-    } catch (error) {
-      output.textContent = 'Error: ' + (error && error.message ? error.message : String(error));
-    }
-  }
-
-  function initCodeConsole(track, topic, contentRoot) {
-    var panel = contentRoot.querySelector('[data-code-console-panel]');
-    if (!panel) return;
-
-    var textarea = panel.querySelector('[data-console-code]');
-    var runButton = panel.querySelector('[data-console-run]');
-    var resetButton = panel.querySelector('[data-console-reset]');
-    var key = track.storageKey + ':console:' + topic.id;
-
-    if (textarea) {
-      textarea.addEventListener('input', function () {
-        localStorage.setItem(key, textarea.value);
-      });
-    }
-
-    if (runButton) {
-      runButton.addEventListener('click', function () {
-        runConsoleCode(panel);
-      });
-    }
-
-    if (resetButton && textarea) {
-      resetButton.addEventListener('click', function () {
-        textarea.value = defaultConsoleCode(topic);
-        localStorage.setItem(key, textarea.value);
-        var output = panel.querySelector('[data-console-output]');
-        if (output) output.textContent = 'Output will appear here.';
-      });
-    }
   }
 
   function initReader() {
@@ -702,8 +704,6 @@
           scheduleSave();
         });
       }
-
-      initCodeConsole(track, topic, content);
 
       var inlineSave = content.querySelector('[data-inline-save]');
       if (inlineSave) inlineSave.addEventListener('click', saveCurrentContent);
