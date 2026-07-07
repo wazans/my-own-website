@@ -613,6 +613,20 @@
     return (pathname.split('/').pop() || 'index.html').toLowerCase();
   }
 
+  function aiEmergingCategory() {
+    return LEARNING_CATEGORIES.find(function(category) {
+      return category.id === 'ai-emerging-technologies';
+    });
+  }
+
+  function isUnlockedAiCourseUrl(url) {
+    var category = aiEmergingCategory();
+    if (!category || !url) return false;
+    return category.courses.some(function(course) {
+      return course.url === url;
+    });
+  }
+
   function renderLearningNav() {
     var siteNavs = document.querySelectorAll('.site-nav');
     if (!siteNavs.length) return;
@@ -641,16 +655,21 @@
     });
   }
 
-  function courseCardHtml(course) {
+  function courseCardHtml(course, unlocked) {
+    var accessBadge = unlocked ? '<span class="access-badge open-access-badge">Open Access</span>' : '<span class="access-badge">Access Required</span>';
+    var action = unlocked
+      ? '<a href="' + course.url + '" class="primary-btn">View Course</a>'
+      : '<a href="#registration-modal" class="primary-btn gated-action" data-course-interest="' + course.title + '" data-access-url="' + course.url + '">View Course</a>';
+
     return [
       '<article class="glass-card course-discovery-card invite-card">',
       '<div class="course-card-top">',
       '<span class="difficulty-badge">' + course.difficulty + '</span>',
-      '<span class="access-badge">Access Required</span>',
+      accessBadge,
       '</div>',
       '<h3>' + course.title + '</h3>',
       '<p>' + course.summary + '</p>',
-      '<a href="#registration-modal" class="primary-btn gated-action" data-course-interest="' + course.title + '" data-access-url="' + course.url + '">View Course</a>',
+      action,
       '</article>'
     ].join('');
   }
@@ -663,7 +682,10 @@
       });
       if (!category) return;
 
-      container.innerHTML = category.courses.map(courseCardHtml).join('');
+      var unlocked = category.id === 'ai-emerging-technologies';
+      container.innerHTML = category.courses.map(function(course) {
+        return courseCardHtml(course, unlocked);
+      }).join('');
     });
 
     var hubContainer = document.querySelector('[data-learning-hub-categories]');
@@ -697,6 +719,13 @@
       var isExplicit = link.classList.contains('gated-action') || link.hasAttribute('data-access-url');
 
       if (!isGatedLabel && !isExplicit) return;
+      if (link.matches('a') && isUnlockedAiCourseUrl(directCourseUrl)) return;
+      if (existingAccessUrl && isUnlockedAiCourseUrl(existingAccessUrl)) {
+        if (link.matches('a')) link.setAttribute('href', existingAccessUrl);
+        link.classList.remove('gated-action');
+        link.removeAttribute('data-access-url');
+        return;
+      }
 
       if (hasAccess && existingAccessUrl && link.matches('a')) {
         link.setAttribute('href', existingAccessUrl);
@@ -776,6 +805,7 @@
     }, []);
     var page = currentPageName();
     if (gatedPages.indexOf(page) === -1) return;
+    if (isUnlockedAiCourseUrl(page)) return;
     if (sessionStorage.getItem('testnova-learning-access') === 'granted') return;
 
     var main = document.querySelector('main');
