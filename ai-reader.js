@@ -188,12 +188,61 @@
     return { id: id, title: title, paragraphs: paragraphs, practice: practice };
   }
 
+  function slugify(value) {
+    return String(value || 'custom-topic')
+      .toLowerCase()
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60) || 'custom-topic';
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   function loadJson(key) {
     try { return JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) { return {}; }
   }
 
   function saveJson(key, value) {
     try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
+  }
+
+  function customTopicsKey(track) {
+    return track.storageKey + ':custom-topics';
+  }
+
+  function loadTopics(track) {
+    var customTopics = loadJson(customTopicsKey(track));
+    if (!Array.isArray(customTopics)) customTopics = [];
+    return track.topics.concat(customTopics);
+  }
+
+  function saveCustomTopics(track, topics) {
+    saveJson(customTopicsKey(track), topics);
+  }
+
+  function createCustomTopic(track, allTopics, title) {
+    var cleanTitle = String(title || '').replace(/\s+/g, ' ').trim();
+    if (!cleanTitle) return null;
+
+    var baseId = 'custom-' + slugify(cleanTitle);
+    var id = baseId;
+    var index = 2;
+    while (allTopics.some(function (topic) { return topic.id === id; })) {
+      id = baseId + '-' + index;
+      index++;
+    }
+
+    return lesson(id, cleanTitle, [
+      'Start typing your notes for this topic. This content is editable and saved in this browser.',
+      'Add definitions, examples, transcript notes, exercises, links, or trainer comments here.'
+    ], 'Add a practical exercise for this topic.');
   }
 
   function showTopicToast(title) {
@@ -267,9 +316,9 @@
     }
     var body = savedContent || [
       '<div class="ai-reader-topic-kicker">Topic ' + (index + 1) + '</div>',
-      '<h2 data-topic-title>' + topic.title + '</h2>',
-      topic.paragraphs.map(function (paragraph) { return '<p>' + paragraph + '</p>'; }).join(''),
-      '<div class="ai-topic-practice"><strong>Try this:</strong><span>' + topic.practice + '</span></div>',
+      '<h2 data-topic-title>' + escapeHtml(topic.title) + '</h2>',
+      topic.paragraphs.map(function (paragraph) { return '<p>' + escapeHtml(paragraph) + '</p>'; }).join(''),
+      '<div class="ai-topic-practice"><strong>Try this:</strong><span>' + escapeHtml(topic.practice) + '</span></div>',
       '<div class="ai-edit-placeholder"><strong>Editable notes:</strong><span>Type or paste your own examples, transcript notes, exercises, or trainer comments here.</span></div>'
     ].join('');
 
@@ -292,12 +341,15 @@
     var content = document.querySelector('[data-reader-content]');
     var saveState = document.querySelector('[data-reader-save-state]');
     var progress = loadJson(track.storageKey + ':progress');
+    var customTopics = loadJson(customTopicsKey(track));
+    if (!Array.isArray(customTopics)) customTopics = [];
+    var topics = loadTopics(track);
     var currentTopic = track.topics[0].id;
     var saveTimer = null;
 
     function updateProgress() {
-      var done = track.topics.filter(function (topic) { return progress[topic.id]; }).length;
-      var total = track.topics.length;
+      var done = topics.filter(function (topic) { return progress[topic.id]; }).length;
+      var total = topics.length;
       var pct = total ? Math.round((done / total) * 100) : 0;
       var level = Math.floor(done / 5) + 1;
       var fill = document.querySelector('[data-reader-fill]');
@@ -343,9 +395,9 @@
 
     function openTopic(id) {
       saveCurrentContent();
-      var topic = track.topics.find(function (item) { return item.id === id; }) || track.topics[0];
+      var topic = topics.find(function (item) { return item.id === id; }) || topics[0];
       currentTopic = topic.id;
-      var index = track.topics.indexOf(topic);
+      var index = topics.indexOf(topic);
       content.innerHTML = renderTopicHtml(track, topic, index, progress);
 
       nav.querySelectorAll('[data-topic-link]').forEach(function (link) {
@@ -380,20 +432,47 @@
       if (inlineSave) inlineSave.addEventListener('click', saveCurrentContent);
     }
 
-    nav.innerHTML = track.topics.map(function (topic, index) {
-      return [
-        '<button type="button" data-topic-link="' + topic.id + '">',
-        '<span>' + (index + 1) + '</span>',
-        '<strong>' + topic.title + '</strong>',
+    function renderNav() {
+      nav.innerHTML = [
+        topics.map(function (topic, index) {
+          return [
+            '<button type="button" data-topic-link="' + topic.id + '">',
+            '<span>' + (index + 1) + '</span>',
+            '<strong>' + escapeHtml(topic.title) + '</strong>',
+            '</button>'
+          ].join('');
+        }).join(''),
+        '<button class="ai-add-topic-btn" type="button" data-add-topic>',
+        '<span>+</span>',
+        '<strong>Add topic</strong>',
         '</button>'
       ].join('');
-    }).join('');
 
-    nav.querySelectorAll('[data-topic-link]').forEach(function (button) {
-      button.addEventListener('click', function (event) {
-        openTopic(button.getAttribute('data-topic-link'));
+      nav.querySelectorAll('[data-topic-link]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          openTopic(button.getAttribute('data-topic-link'));
+        });
       });
-    });
+
+      var addButton = nav.querySelector('[data-add-topic]');
+      if (addButton) {
+        addButton.addEventListener('click', function () {
+          saveCurrentContent();
+          var title = window.prompt('New topic title');
+          var topic = createCustomTopic(track, topics, title);
+          if (!topic) return;
+          customTopics.push(topic);
+          saveCustomTopics(track, customTopics);
+          topics = loadTopics(track);
+          renderNav();
+          updateProgress();
+          openTopic(topic.id);
+          if (saveState) saveState.textContent = 'Added topic: ' + topic.title;
+        });
+      }
+
+      updateProgress();
+    }
 
     var saveButton = document.querySelector('[data-reader-save]');
     if (saveButton) saveButton.addEventListener('click', saveCurrentContent);
@@ -416,7 +495,7 @@
     }
 
     initEditableSurfaces();
-    updateProgress();
+    renderNav();
     openTopic(currentTopic);
   }
 

@@ -3418,10 +3418,24 @@ body.landing-page .text-link {
 }
 
 .ai-reader-topic-nav button:hover,
-.ai-reader-topic-nav button.active {
+.ai-reader-topic-nav button.active,
+.ai-reader-topic-nav .ai-add-topic-btn:hover {
   color: var(--tn-text);
   border-color: rgba(6, 182, 212, 0.42);
   background: rgba(6, 182, 212, 0.11);
+}
+
+.ai-reader-topic-nav .ai-add-topic-btn {
+  margin-top: 0.35rem;
+  border-style: dashed;
+  border-color: rgba(16, 185, 129, 0.36);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.ai-reader-topic-nav .ai-add-topic-btn span {
+  background: rgba(16, 185, 129, 0.22);
+  color: #bbf7d0;
+  font-size: 1.15rem;
 }
 
 .ai-reader-topic-nav button.is-done {
