@@ -489,8 +489,120 @@
       '<span>Mark this topic complete</span>',
       '</label>',
       '<div class="ai-reader-edit-body" contenteditable="true" data-topic-edit="' + topic.id + '">' + body + '</div>',
+      renderCodeConsoleHtml(track, topic),
       '<div class="ai-inline-save-panel"><button class="primary-btn" type="button" data-inline-save>Save edits now</button><span data-inline-save-state>Typing auto-saves. Manual save is here as backup.</span></div>'
     ].join('');
+  }
+
+  function isRunnableBrowserJs(code) {
+    var value = String(code || '');
+    if (!value.trim()) return false;
+    if (/^\s*(cd|npm|node|git|set-executionpolicy|run:|open browser:|stop app:)/im.test(value)) return false;
+    if (/[A-Z]:\\|https?:\/\/|press enter|create folder|create file|expected example:/i.test(value)) return false;
+    if (/^\s*(import|export)\s/im.test(value)) return false;
+    if (/\btype\s+\w+\s*=|:\s*(string|number|boolean)\b|from\s+["']/i.test(value)) return false;
+    return true;
+  }
+
+  function defaultConsoleCode(topic) {
+    var fromExamples = (topic.examples || [])
+      .map(function (example) { return example.code || ''; })
+      .find(isRunnableBrowserJs);
+
+    if (fromExamples) return fromExamples;
+
+    return [
+      '// Practice console for: ' + topic.title,
+      'const topic = ' + JSON.stringify(topic.title),
+      'console.log("Running practice for:", topic)',
+      'console.log("Edit this code and click Run code.")'
+    ].join('\n');
+  }
+
+  function renderCodeConsoleHtml(track, topic) {
+    var key = track.storageKey + ':console:' + topic.id;
+    var savedCode = localStorage.getItem(key);
+    var code = savedCode || defaultConsoleCode(topic);
+
+    return [
+      '<section class="ai-code-console" contenteditable="false" data-code-console-panel>',
+      '<div class="ai-code-console-header">',
+      '<div>',
+      '<strong>Practice console</strong>',
+      '<span>Run browser-safe JavaScript here without leaving TestNova.</span>',
+      '</div>',
+      '<div class="ai-code-console-actions">',
+      '<button class="secondary-btn" type="button" data-console-reset>Reset code</button>',
+      '<button class="primary-btn" type="button" data-console-run>Run code</button>',
+      '</div>',
+      '</div>',
+      '<textarea spellcheck="false" data-console-code>' + escapeHtml(code) + '</textarea>',
+      '<pre class="ai-console-output" data-console-output>Output will appear here.</pre>',
+      '</section>'
+    ].join('');
+  }
+
+  function formatConsoleValue(value) {
+    if (typeof value === 'string') return value;
+    try { return JSON.stringify(value, null, 2); } catch (e) { return String(value); }
+  }
+
+  function runConsoleCode(panel) {
+    var textarea = panel.querySelector('[data-console-code]');
+    var output = panel.querySelector('[data-console-output]');
+    if (!textarea || !output) return;
+
+    var logs = [];
+    var runnerConsole = {
+      log: function () {
+        logs.push(Array.prototype.slice.call(arguments).map(formatConsoleValue).join(' '));
+      },
+      warn: function () {
+        logs.push('Warning: ' + Array.prototype.slice.call(arguments).map(formatConsoleValue).join(' '));
+      },
+      error: function () {
+        logs.push('Error: ' + Array.prototype.slice.call(arguments).map(formatConsoleValue).join(' '));
+      }
+    };
+
+    try {
+      var result = new Function('console', textarea.value)(runnerConsole);
+      if (result !== undefined) logs.push(formatConsoleValue(result));
+      output.textContent = logs.length ? logs.join('\n') : 'Code ran successfully with no console output.';
+    } catch (error) {
+      output.textContent = 'Error: ' + (error && error.message ? error.message : String(error));
+    }
+  }
+
+  function initCodeConsole(track, topic, contentRoot) {
+    var panel = contentRoot.querySelector('[data-code-console-panel]');
+    if (!panel) return;
+
+    var textarea = panel.querySelector('[data-console-code]');
+    var runButton = panel.querySelector('[data-console-run]');
+    var resetButton = panel.querySelector('[data-console-reset]');
+    var key = track.storageKey + ':console:' + topic.id;
+
+    if (textarea) {
+      textarea.addEventListener('input', function () {
+        localStorage.setItem(key, textarea.value);
+      });
+    }
+
+    if (runButton) {
+      runButton.addEventListener('click', function () {
+        runConsoleCode(panel);
+      });
+    }
+
+    if (resetButton && textarea) {
+      resetButton.addEventListener('click', function () {
+        textarea.value = defaultConsoleCode(topic);
+        localStorage.setItem(key, textarea.value);
+        var output = panel.querySelector('[data-console-output]');
+        if (output) output.textContent = 'Output will appear here.';
+      });
+    }
   }
 
   function initReader() {
@@ -590,6 +702,8 @@
           scheduleSave();
         });
       }
+
+      initCodeConsole(track, topic, content);
 
       var inlineSave = content.querySelector('[data-inline-save]');
       if (inlineSave) inlineSave.addEventListener('click', saveCurrentContent);
