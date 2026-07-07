@@ -102,46 +102,54 @@
     <section class="nova-section">
       <div class="container section-stack">
         <div class="section-heading" data-reveal>
-          <span class="section-tag">Course Status</span>
-          <h2>Content Coming Soon!</h2>
+          <span class="section-tag">Open Lesson</span>
+          <h2>Prompt engineering for QA engineers</h2>
           <p>
-            We are actively developing rich, hands-on content for our <strong>Prompt Engineering</strong> course.
-            Register your interest below to be notified as soon as the full course content is available!
+            Use AI for QA work without generic answers. This lesson follows the R-C-T-F frame:
+            Role, Context, Task, and Format.
           </p>
         </div>
 
         <div class="feature-grid">
           <article class="glass-card feature-card" data-reveal>
-            <h3>Learning Objectives</h3>
+            <h3>Step 1: Use R-C-T-F</h3>
             <ul>
-              <li>Understand the principles of effective prompt design for LLMs.</li>
-              <li>Apply advanced prompting techniques to achieve desired AI outputs.</li>
-              <li>Optimize prompts for various large language models (e.g., ChatGPT, Claude).</li>
-              <li>Develop practical skills for leveraging AI in creative and analytical tasks.</li>
+              <li><strong>Role:</strong> Tell AI who to act as: QA lead, SDET, API tester, automation engineer, or reviewer.</li>
+              <li><strong>Context:</strong> Paste feature details, stack, risks, acceptance criteria, logs, API contract, or existing code.</li>
+              <li><strong>Task:</strong> Ask for one clear output: strategy, plan, cases, test data, code, bug report, or review.</li>
+              <li><strong>Format:</strong> Force a usable result: table, checklist, Jira bug, test file, or review report.</li>
             </ul>
           </article>
           <article class="glass-card feature-card" data-reveal>
-            <h3>Skills Covered</h3>
+            <h3>Step 2: Design QA Work</h3>
             <ul>
-              <li>Prompt Design & Optimization</li>
-              <li>Advanced Prompting Techniques (Chain-of-Thought, Few-Shot)</li>
-              <li>LLM Interaction Strategies</li>
-              <li>AI Output Evaluation</li>
-              <li>Creative & Analytical Prompting</li>
+              <li><strong>Test strategy:</strong> Ask for scope, test levels, tooling, environments, entry/exit criteria, and risk matrix.</li>
+              <li><strong>Test plan:</strong> Convert stories and acceptance criteria into milestones, owners, test data, and deliverables.</li>
+              <li><strong>Test cases:</strong> Generate happy, negative, boundary, edge, permission, validation, and regression scenarios.</li>
+              <li><strong>Test data:</strong> Ask for valid, invalid, boundary, duplicate, expired, missing, and role-based datasets.</li>
             </ul>
           </article>
           <article class="glass-card feature-card" data-reveal>
-            <h3>Course Details</h3>
-            <p><strong>Difficulty:</strong> Intermediate</p>
-            <p><strong>Prerequisites:</strong> Basic understanding of AI concepts recommended.</p>
-            <p><strong>Format:</strong> Interactive workshops, practical exercises, and case studies.</p>
+            <h3>Step 3: Build &amp; Review</h3>
+            <ul>
+              <li><strong>API tests:</strong> Paste endpoint details and ask for status, schema, auth, and contract checks.</li>
+              <li><strong>Automation:</strong> Convert manual cases into Selenium or Playwright tests with Page Object Model.</li>
+              <li><strong>Bug reports:</strong> Turn raw notes, screenshots, logs, and repro steps into clean triage-ready reports.</li>
+              <li><strong>Refactor:</strong> Find flaky waits, brittle locators, missing assertions, duplication, and cleanup ideas.</li>
+            </ul>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>Step 4: Improve Output</h3>
+            <ul>
+              <li>Add team examples so AI follows your style.</li>
+              <li>Add constraints like no hard waits, use test IDs, max 12 cases, or avoid XPath.</li>
+              <li>Ask follow-ups: add negative cases, rank by risk, find gaps, simplify, or convert to code.</li>
+              <li>Never ship unread. Review, run, and own every AI-generated test or report.</li>
+            </ul>
           </article>
         </div>
 
-        <div class="text-center" data-reveal style="margin-top: var(--space-xl);">
-          <a href="#registration-modal" class="primary-btn" data-course-interest="Prompt Engineering">Register Interest for Updates</a>
-          <a href="learning-hub.html#ai-emerging-technologies-courses" class="secondary-btn">← Back to AI & Emerging Technologies</a>
-        </div>
+        <div class="text-center" data-reveal style="margin-top: var(--space-xl);">`r`n          <a href="ai-emerging-technologies.html" class="secondary-btn">Back to AI &amp; Emerging Technologies</a>`r`n        </div>
       </div>
     </section>
   </main>
@@ -175,7 +183,7 @@
           <h3>Connect</h3>
           <a href="mailto:admin@testnova.in">admin@testnova.in</a>
           <a href="https://api.whatsapp.com/send?phone=919641782691&text=Hi%20TestNova,%20I%27m%20interested%20in%20learning%20AI%20and%20Technology.%20Please%20guide%20me." target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          <a href="#registration-modal">Register Interest</a>
+          <a href="/registration/">Register Interest</a>
         </div>
       </div>
 

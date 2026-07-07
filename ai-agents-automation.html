@@ -102,46 +102,54 @@
     <section class="nova-section">
       <div class="container section-stack">
         <div class="section-heading" data-reveal>
-          <span class="section-tag">Course Status</span>
-          <h2>Content Coming Soon!</h2>
+          <span class="section-tag">Open Lesson</span>
+          <h2>AI agents, MCP, and AI-augmented QA automation</h2>
           <p>
-            We are actively developing rich, hands-on content for our <strong>AI Agents & Automation</strong> course.
-            Register your interest below to be notified as soon as the full course content is available!
+            Learn how AI moves from code assistant to execution agent by using tools, browser automation,
+            MCP servers, and feedback loops.
           </p>
         </div>
 
         <div class="feature-grid">
           <article class="glass-card feature-card" data-reveal>
-            <h3>Learning Objectives</h3>
+            <h3>Step 1: Understand AI-Augmented QA</h3>
             <ul>
-              <li>Understand the principles behind intelligent AI agents.</li>
-              <li>Design and develop AI agents for specific automation tasks.</li>
-              <li>Integrate AI agents into existing workflows for enhanced efficiency.</li>
-              <li>Explore real-world applications and ethical considerations of AI automation.</li>
+              <li>AI-augmented QA combines AI models like GPT, Claude, or Gemini with Selenium and Playwright.</li>
+              <li>Before tool control, AI could generate cases, suggest locators, create code, and explain frameworks.</li>
+              <li>The limitation was execution: humans still had to run tests, debug failures, and maintain scripts.</li>
+              <li>With tool access, AI can participate in create, execute, analyze, fix, and improve loops.</li>
             </ul>
           </article>
           <article class="glass-card feature-card" data-reveal>
-            <h3>Skills Covered</h3>
+            <h3>Step 2: Learn MCP &amp; Tool Flow</h3>
             <ul>
-              <li>AI Agent Design</li>
-              <li>Autonomous System Development</li>
-              <li>Workflow Automation</li>
-              <li>Integration with AI Tools</li>
-              <li>Problem-Solving with AI</li>
+              <li>MCP means Model Context Protocol: a standard way for AI models to interact with external tools.</li>
+              <li>An MCP server acts as a bridge between AI and tools like Selenium, Playwright, APIs, files, or browsers.</li>
+              <li>Typical flow: user instruction, AI understands intent, AI selects tool, MCP sends command, browser acts, result returns.</li>
+              <li>The loop continues until the goal is complete or human review is needed.</li>
             </ul>
           </article>
           <article class="glass-card feature-card" data-reveal>
-            <h3>Course Details</h3>
-            <p><strong>Difficulty:</strong> Intermediate to Advanced</p>
-            <p><strong>Prerequisites:</strong> Basic programming knowledge and understanding of AI fundamentals.</p>
-            <p><strong>Format:</strong> Project-based learning, hands-on labs, and theoretical modules.</p>
+            <h3>Step 3: Agent-Based Test Workflow</h3>
+            <ul>
+              <li>Give a goal such as validate login, checkout, search, API contract, or regression flow.</li>
+              <li>Agent opens browser, inspects page, identifies locators, creates test steps, and executes them.</li>
+              <li>Agent analyzes errors, screenshots, logs, network failures, selectors, and assertions.</li>
+              <li>Agent proposes fixes, re-runs tests, and reports what changed for human approval.</li>
+            </ul>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>Step 4: Self-Healing Automation</h3>
+            <ul>
+              <li>When a locator changes, traditional automation fails until a human repairs it.</li>
+              <li>AI + MCP can inspect the DOM again, find a stronger locator, update the test, and re-run.</li>
+              <li>Use this for locator changes, waits, synchronization issues, missing assertions, and flaky failures.</li>
+              <li>Keep approval gates for code changes, audit logs, version control, and secure tool access.</li>
+            </ul>
           </article>
         </div>
 
-        <div class="text-center" data-reveal style="margin-top: var(--space-xl);">
-          <a href="#registration-modal" class="primary-btn" data-course-interest="AI Agents & Automation">Register Interest for Updates</a>
-          <a href="learning-hub.html#ai-emerging-technologies-courses" class="secondary-btn">← Back to AI & Emerging Technologies</a>
-        </div>
+        <div class="text-center" data-reveal style="margin-top: var(--space-xl);">`r`n          <a href="ai-emerging-technologies.html" class="secondary-btn">Back to AI &amp; Emerging Technologies</a>`r`n        </div>
       </div>
     </section>
   </main>
@@ -175,7 +183,7 @@
           <h3>Connect</h3>
           <a href="mailto:admin@testnova.in">admin@testnova.in</a>
           <a href="https://api.whatsapp.com/send?phone=919641782691&text=Hi%20TestNova,%20I%27m%20interested%20in%20learning%20AI%20and%20Technology.%20Please%20guide%20me." target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          <a href="#registration-modal">Register Interest</a>
+          <a href="/registration/">Register Interest</a>
         </div>
       </div>
 

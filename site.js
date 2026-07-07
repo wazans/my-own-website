@@ -595,12 +595,7 @@
       courses: [
         { title: 'AI for Beginners', url: 'ai-for-beginners.html', difficulty: 'Beginner', summary: 'AI concepts, practical usage, limitations, and everyday productivity workflows.' },
         { title: 'Prompt Engineering', url: 'prompt-engineering.html', difficulty: 'Beginner', summary: 'Prompt structure, context, iteration, evaluation, and reusable prompt systems.' },
-        { title: 'Prompt Engineering for QA Engineers', url: 'prompt-engineering.html', difficulty: 'Beginner', summary: 'Use role, context, task, and format prompts to create QA strategy, test plans, cases, data, API tests, automation code, bug reports, and refactors.' },
         { title: 'AI Agents & Automation', url: 'ai-agents-automation.html', difficulty: 'Intermediate', summary: 'Agent workflows, tool use, automation patterns, and practical AI systems.' },
-        { title: 'AI-Augmented QA Automation', url: 'ai-agents-automation.html', difficulty: 'Intermediate', summary: 'Use GPT, Claude, Gemini, Selenium, and Playwright to create, execute, analyze, and improve QA workflows.' },
-        { title: 'MCP for QA Automation', url: 'ai-agents-automation.html', difficulty: 'Advanced', summary: 'Learn how MCP lets AI discover tools, execute browser actions, receive results, and reason in a loop.' },
-        { title: 'Self-Healing AI Test Automation', url: 'ai-agents-automation.html', difficulty: 'Advanced', summary: 'Handle locator changes, inspect failures, update tests, and reduce maintenance with AI-assisted automation.' },
-        { title: 'Agent-Based QA Workflows', url: 'ai-agents-automation.html', difficulty: 'Advanced', summary: 'Move from script-driven automation to goal-driven agents that inspect pages, identify locators, execute tests, and improve results.' },
         { title: 'Machine Learning Fundamentals', url: 'machine-learning-fundamentals.html', difficulty: 'Intermediate', summary: 'ML concepts, model thinking, datasets, training, evaluation, and use cases.' },
         { title: 'Blockchain & Web3 Basics', url: 'blockchain-web3-basics.html', difficulty: 'Beginner', summary: 'Blockchain concepts, wallets, smart contracts, and Web3 fundamentals.' },
         { title: 'IoT Essentials', url: 'iot-essentials.html', difficulty: 'Beginner', summary: 'Connected devices, sensors, data flow, protocols, and IoT solution basics.' }
@@ -713,103 +708,6 @@
         ].join('');
       }).join('');
     }
-  }
-
-  var AI_PUBLIC_COURSE_CONTENT = {
-    'ai-for-beginners.html': {
-      tag: 'Open AI Basics',
-      title: 'AI fundamentals you can use today',
-      intro: 'Start with practical AI concepts, limits, workflows, and responsible use before moving into prompts and automation.',
-      cards: [
-        ['AI Concepts', ['Learn what AI, LLMs, prompts, context, tokens, and outputs mean in daily work.', 'Understand where AI helps QA, development, documentation, learning, and productivity.', 'Avoid vague prompts, blind trust, missing context, and unreviewed output.']],
-        ['Everyday Workflows', ['Summarize requirements and convert notes into action items.', 'Draft checklists, study plans, interview prep notes, and learning roadmaps.', 'Use AI as a thinking partner while keeping ownership of final decisions.']],
-        ['Responsible Usage', ['Validate outputs before sharing or merging.', 'Avoid sending secrets, private customer data, or credentials.', 'Ask for assumptions, risks, edge cases, and verification steps.']]
-      ]
-    },
-    'prompt-engineering.html': {
-      tag: 'Open Prompt Engineering',
-      title: 'Prompt engineering for QA engineers',
-      intro: 'Use a reusable Role, Context, Task, and Format frame to turn QA work into clear, reviewable AI outputs.',
-      cards: [
-        ['R-C-T-F Frame', ['Role: tell AI which expert persona to use.', 'Context: paste real stories, acceptance criteria, logs, code, API contracts, and constraints.', 'Task and Format: ask for one deliverable in a table, checklist, code file, or bug template.']],
-        ['QA Prompt Recipes', ['Create test strategy, test plans, test cases, and test data.', 'Generate API test scaffolds, Playwright or Selenium automation code, and Page Object Models.', 'Turn raw repro notes into clean bug reports and triage-ready summaries.']],
-        ['Review & Refactor', ['Ask AI to find flaky waits, brittle locators, missing assertions, and duplication.', 'Request safer locators, fixtures, explicit waits, and clearer assertions.', 'Never ship unread: run it, review it, and own the merge.']]
-      ]
-    },
-    'ai-agents-automation.html': {
-      tag: 'Open AI Agents',
-      title: 'AI agents, MCP, and AI-augmented QA automation',
-      intro: 'Learn how AI moves from code assistant to execution agent using tools, browser automation, and feedback loops.',
-      cards: [
-        ['AI-Augmented QA', ['Combine GPT, Claude, or Gemini with Selenium and Playwright.', 'Create, execute, analyze, and improve automated tests.', 'Use AI for test cases, locators, framework explanations, and maintenance.']],
-        ['MCP & Tool Use', ['Understand Model Context Protocol and MCP servers.', 'Let AI discover tools, execute browser actions, receive results, and continue reasoning.', 'Connect AI models to Selenium MCP or Playwright MCP for real-time browser control.']],
-        ['Self-Healing Automation', ['Analyze failures, logs, stack traces, and locator changes.', 'Re-inspect DOM, find better locators, update tests, and re-run.', 'Reduce flaky tests and manual debugging effort.']],
-        ['Agent-Based Workflow', ['Understand instruction, open browser, inspect page, identify locators, create tests, execute, analyze, and repeat.', 'Compare script-driven automation with goal-driven automation.', 'Grow from script writer to quality architect and AI supervisor.']]
-      ]
-    },
-    'machine-learning-fundamentals.html': {
-      tag: 'Open ML Basics',
-      title: 'Machine learning fundamentals',
-      intro: 'Understand the core ML ideas needed to discuss AI products, datasets, model behavior, and evaluation.',
-      cards: [
-        ['Core Concepts', ['Features, labels, training data, models, inference, prediction, and feedback.', 'Supervised, unsupervised, and basic classification or regression use cases.', 'Bias, variance, overfitting, underfitting, and data quality.']],
-        ['Evaluation', ['Accuracy, precision, recall, F1, confusion matrix, and practical tradeoffs.', 'Test AI outputs with examples, acceptance criteria, and failure analysis.', 'Understand why monitoring matters after release.']],
-        ['QA Angle', ['Design test data for AI-backed features.', 'Check consistency, safety, edge cases, hallucinations, and explainability needs.', 'Document model assumptions and user-impact risks.']]
-      ]
-    },
-    'blockchain-web3-basics.html': {
-      tag: 'Open Web3 Basics',
-      title: 'Blockchain and Web3 basics',
-      intro: 'Learn the fundamentals of decentralized systems and how to reason about testing Web3 flows.',
-      cards: [
-        ['Blockchain Concepts', ['Blocks, transactions, wallets, keys, gas, consensus, and networks.', 'Smart contracts, tokens, NFTs, and decentralized apps.', 'Mainnet, testnet, faucets, and block explorers.']],
-        ['Testing Focus', ['Wallet connection, transaction signing, confirmations, failed transactions, and network switching.', 'Smart contract edge cases, permissions, events, and gas behavior.', 'Security basics: private keys, phishing, approvals, and irreversible actions.']],
-        ['Tools', ['Use explorers, wallets, testnets, and contract ABIs for validation.', 'Plan test data and test accounts carefully.', 'Document risk because Web3 failures can be hard to reverse.']]
-      ]
-    },
-    'iot-essentials.html': {
-      tag: 'Open IoT Basics',
-      title: 'IoT essentials',
-      intro: 'Understand connected-device systems, data flow, protocols, and testing risks.',
-      cards: [
-        ['IoT Building Blocks', ['Devices, sensors, firmware, gateways, cloud platforms, dashboards, and alerts.', 'Telemetry, commands, state, events, and device identity.', 'Common protocols like MQTT, HTTP, Bluetooth, and Wi-Fi.']],
-        ['Testing Focus', ['Connectivity, offline behavior, retries, latency, battery, data accuracy, and device state sync.', 'Security checks for authentication, authorization, firmware updates, and exposed data.', 'Load, scale, and monitoring for many devices sending data.']],
-        ['QA Workflow', ['Simulate devices and sensor values.', 'Validate end-to-end flow from device to cloud to UI.', 'Check alerts, dashboards, logs, and recovery paths.']]
-      ]
-    }
-  };
-
-  function renderPublicAiCourseContent() {
-    var content = AI_PUBLIC_COURSE_CONTENT[currentPageName()];
-    if (!content) return;
-
-    var section = document.querySelector('main .page-hero-section + .nova-section');
-    if (!section) return;
-
-    section.innerHTML = [
-      '<div class="container section-stack">',
-      '<div class="section-heading" data-reveal>',
-      '<span class="section-tag">' + content.tag + '</span>',
-      '<h2>' + content.title + '</h2>',
-      '<p>' + content.intro + '</p>',
-      '</div>',
-      '<div class="feature-grid">',
-      content.cards.map(function(card) {
-        return [
-          '<article class="glass-card feature-card" data-reveal>',
-          '<h3>' + card[0] + '</h3>',
-          '<ul>',
-          card[1].map(function(item) { return '<li>' + item + '</li>'; }).join(''),
-          '</ul>',
-          '</article>'
-        ].join('');
-      }).join(''),
-      '</div>',
-      '<div class="text-center" data-reveal style="margin-top: var(--space-xl);">',
-      '<a href="ai-emerging-technologies.html" class="secondary-btn">Back to AI &amp; Emerging Technologies</a>',
-      '</div>',
-      '</div>'
-    ].join('');
   }
 
   function setupGatedActions() {
@@ -968,7 +866,6 @@
     renderLearningNav();
     removeDocumentationNavigation();
     renderCategoryCards();
-    renderPublicAiCourseContent();
     setupGatedActions();
     setupContextualLeadActions();
     setupLearningContentGate();
