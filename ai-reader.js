@@ -133,7 +133,8 @@
       '<h2 data-topic-title>' + topic.title + '</h2>',
       topic.paragraphs.map(function (paragraph) { return '<p>' + paragraph + '</p>'; }).join(''),
       '<div class="ai-topic-practice"><strong>Try this:</strong><span>' + topic.practice + '</span></div>',
-      '<div class="ai-edit-placeholder"><strong>Editable notes:</strong><span>Type or paste your own examples, transcript notes, exercises, or trainer comments here. Use the Save edits button when done.</span></div>'
+      '<div class="ai-edit-placeholder"><strong>Editable notes:</strong><span>Type or paste your own examples, transcript notes, exercises, or trainer comments here.</span></div>',
+      '<div class="ai-inline-save-panel" contenteditable="false"><button class="primary-btn" type="button" data-inline-save>Save edits</button><span>Saved edits stay in this browser for future visits.</span></div>'
     ].join('');
 
     return [
@@ -215,6 +216,9 @@
           if (saveState) saveState.textContent = 'Unsaved edits';
         });
       }
+
+      var inlineSave = content.querySelector('[data-inline-save]');
+      if (inlineSave) inlineSave.addEventListener('click', saveCurrentContent);
     }
 
     nav.innerHTML = track.topics.map(function (topic, index) {
