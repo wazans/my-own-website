@@ -3401,7 +3401,8 @@ body.landing-page .text-link {
   gap: 0.45rem;
 }
 
-.ai-reader-topic-nav button {
+.ai-reader-topic-nav button,
+.ai-reader-topic-nav a {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr);
   gap: 0.6rem;
@@ -3419,6 +3420,8 @@ body.landing-page .text-link {
 
 .ai-reader-topic-nav button:hover,
 .ai-reader-topic-nav button.active,
+.ai-reader-topic-nav a:hover,
+.ai-reader-topic-nav a.active,
 .ai-reader-topic-nav .ai-add-topic-btn:hover {
   color: var(--tn-text);
   border-color: rgba(6, 182, 212, 0.42);
@@ -3438,7 +3441,8 @@ body.landing-page .text-link {
   font-size: 1.15rem;
 }
 
-.ai-reader-topic-nav button.is-done {
+.ai-reader-topic-nav button.is-done,
+.ai-reader-topic-nav a.is-done {
   border-color: rgba(16, 185, 129, 0.38);
 }
 
@@ -3454,7 +3458,8 @@ body.landing-page .text-link {
   font-weight: 900;
 }
 
-.ai-reader-topic-nav button.is-done span {
+.ai-reader-topic-nav button.is-done span,
+.ai-reader-topic-nav a.is-done span {
   background: rgba(16, 185, 129, 0.2);
   color: #bbf7d0;
 }

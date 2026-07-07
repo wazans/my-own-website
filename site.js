@@ -982,18 +982,15 @@
   }
 
   function setupGatedActions() {
-    var gatedLabels = /^(View Course|Start Learning|Open Topic|Download Notes|Access Content|Browse Topics|Learn More)$/i;
     var links = document.querySelectorAll('a, button');
     var hasAccess = sessionStorage.getItem('testnova-learning-access') === 'granted';
 
     links.forEach(function(link) {
-      var label = (link.textContent || '').replace(/\s+/g, ' ').trim();
       var directCourseUrl = link.matches('a') ? link.getAttribute('href') : '';
       var existingAccessUrl = link.getAttribute('data-access-url');
-      var isGatedLabel = gatedLabels.test(label);
       var isExplicit = link.classList.contains('gated-action') || link.hasAttribute('data-access-url');
 
-      if (!isGatedLabel && !isExplicit) return;
+      if (!isExplicit) return;
       if (isAiEmergingPage()) {
         if (existingAccessUrl && link.matches('a')) link.setAttribute('href', existingAccessUrl);
         link.classList.remove('gated-action');

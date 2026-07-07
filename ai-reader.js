@@ -119,11 +119,6 @@
           'Promises and async/await make async code easier to read and maintain.',
           'Always handle failures so the UI does not silently break.'
         ], 'Fetch JSON from a public API and render a loading, success, and error state.'),
-        lesson('typescript-basics', 'TypeScript Basics', [
-          'TypeScript adds static types to JavaScript so issues can be caught earlier during development.',
-          'Types make function contracts, object shapes, and expected values clearer.',
-          'TypeScript compiles to JavaScript, so it works with normal browser and Node.js environments.'
-        ], 'Add types to a function that receives a user object and returns a display label.'),
         lesson('interfaces-types', 'Interfaces, Types & Generics', [
           'Interfaces and type aliases describe object shapes and reusable contracts.',
           'Generics let functions and components work with different data types while keeping type safety.',
@@ -150,6 +145,11 @@
           'It can automate Chromium, Firefox, and WebKit, and supports reliable browser interactions, assertions, tracing, screenshots, and reports.',
           'A good Playwright test checks user-visible behavior instead of internal implementation details.'
         ], 'Create a test that opens a page, checks the title, and verifies a visible heading.'),
+        lesson('typescript-basics-for-playwright', 'Typescript Basics for Playwright', [
+          'Playwright tests are often written in TypeScript because types make test code, fixtures, page objects, and helper functions easier to maintain.',
+          'Start with basic types, arrays, objects, function parameters, return types, optional values, and interfaces.',
+          'Use TypeScript to describe page objects, test data, API responses, and reusable fixture contracts.'
+        ], 'Create a typed test data object for a login test with username, password, expectedMessage, and shouldPass fields.'),
         lesson('setup-config', 'Setup & Configuration', [
           'A Playwright project usually includes a config file, test directory, browser projects, retries, reporter settings, and base URL.',
           'Configuration keeps tests consistent across local, CI, staging, and production environments.',
@@ -225,6 +225,22 @@
 
   function saveCustomTopics(track, topics) {
     saveJson(customTopicsKey(track), topics);
+  }
+
+  function topicFromUrl() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      return params.get('topic') || '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function updateTopicUrl(topicId) {
+    if (!window.history || !window.history.pushState) return;
+    var url = new URL(window.location.href);
+    url.searchParams.set('topic', topicId);
+    window.history.pushState({ topic: topicId }, '', url.pathname + url.search + url.hash);
   }
 
   function createCustomTopic(track, allTopics, title) {
@@ -344,7 +360,7 @@
     var customTopics = loadJson(customTopicsKey(track));
     if (!Array.isArray(customTopics)) customTopics = [];
     var topics = loadTopics(track);
-    var currentTopic = track.topics[0].id;
+    var currentTopic = topicFromUrl() || track.topics[0].id;
     var saveTimer = null;
 
     function updateProgress() {
@@ -393,12 +409,14 @@
       }, 700);
     }
 
-    function openTopic(id) {
+    function openTopic(id, options) {
+      options = options || {};
       saveCurrentContent();
       var topic = topics.find(function (item) { return item.id === id; }) || topics[0];
       currentTopic = topic.id;
       var index = topics.indexOf(topic);
       content.innerHTML = renderTopicHtml(track, topic, index, progress);
+      if (options.updateUrl !== false) updateTopicUrl(topic.id);
 
       nav.querySelectorAll('[data-topic-link]').forEach(function (link) {
         link.classList.toggle('active', link.getAttribute('data-topic-link') === topic.id);
@@ -430,16 +448,20 @@
 
       var inlineSave = content.querySelector('[data-inline-save]');
       if (inlineSave) inlineSave.addEventListener('click', saveCurrentContent);
+
+      if (options.scroll !== false) {
+        content.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      }
     }
 
     function renderNav() {
       nav.innerHTML = [
         topics.map(function (topic, index) {
           return [
-            '<button type="button" data-topic-link="' + topic.id + '">',
+            '<a href="?topic=' + encodeURIComponent(topic.id) + '" data-topic-link="' + topic.id + '">',
             '<span>' + (index + 1) + '</span>',
             '<strong>' + escapeHtml(topic.title) + '</strong>',
-            '</button>'
+            '</a>'
           ].join('');
         }).join(''),
         '<button class="ai-add-topic-btn" type="button" data-add-topic>',
@@ -448,9 +470,10 @@
         '</button>'
       ].join('');
 
-      nav.querySelectorAll('[data-topic-link]').forEach(function (button) {
-        button.addEventListener('click', function () {
-          openTopic(button.getAttribute('data-topic-link'));
+      nav.querySelectorAll('[data-topic-link]').forEach(function (link) {
+        link.addEventListener('click', function (event) {
+          event.preventDefault();
+          openTopic(link.getAttribute('data-topic-link'), { updateUrl: true, scroll: true });
         });
       });
 
@@ -466,7 +489,7 @@
           topics = loadTopics(track);
           renderNav();
           updateProgress();
-          openTopic(topic.id);
+          openTopic(topic.id, { updateUrl: true, scroll: true });
           if (saveState) saveState.textContent = 'Added topic: ' + topic.title;
         });
       }
@@ -496,7 +519,11 @@
 
     initEditableSurfaces();
     renderNav();
-    openTopic(currentTopic);
+    openTopic(currentTopic, { updateUrl: !!topicFromUrl(), scroll: false });
+
+    window.addEventListener('popstate', function () {
+      openTopic(topicFromUrl() || track.topics[0].id, { updateUrl: false, scroll: true });
+    });
   }
 
   function init() {
