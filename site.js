@@ -589,16 +589,55 @@
     },
     {
       id: 'ai-emerging-technologies',
-      title: 'AI & Emerging Technologies',
+      title: 'AI Learning Hub',
       url: 'ai-emerging-technologies.html',
-      description: 'AI foundations, prompt workflows, agents, ML, Web3, and IoT discovery tracks.',
+      description: 'Common AI skills for all learners plus QA-specific AI workflows, automation, APIs, local LLMs, and projects.',
       courses: [
+        { title: 'AI for Everyone', url: 'ai-emerging-technologies.html#ai-for-everyone', difficulty: 'Beginner', summary: 'AI basics, LLMs, prompts, productivity, content tools, automation, local AI, and practical projects.' },
+        { title: 'AI for QA Engineers', url: 'ai-emerging-technologies.html#ai-for-qa-engineers', difficulty: 'Intermediate', summary: 'Manual testing, Selenium, Playwright, APIs, OpenAI API, vision testing, coding assistants, frameworks, and projects.' },
         { title: 'AI for Beginners', url: 'ai-for-beginners.html', difficulty: 'Beginner', summary: 'AI concepts, practical usage, limitations, and everyday productivity workflows.' },
         { title: 'Prompt Engineering', url: 'prompt-engineering.html', difficulty: 'Beginner', summary: 'Prompt structure, context, iteration, evaluation, and reusable prompt systems.' },
-        { title: 'AI Agents & Automation', url: 'ai-agents-automation.html', difficulty: 'Intermediate', summary: 'Agent workflows, tool use, automation patterns, and practical AI systems.' },
-        { title: 'Machine Learning Fundamentals', url: 'machine-learning-fundamentals.html', difficulty: 'Intermediate', summary: 'ML concepts, model thinking, datasets, training, evaluation, and use cases.' },
-        { title: 'Blockchain & Web3 Basics', url: 'blockchain-web3-basics.html', difficulty: 'Beginner', summary: 'Blockchain concepts, wallets, smart contracts, and Web3 fundamentals.' },
-        { title: 'IoT Essentials', url: 'iot-essentials.html', difficulty: 'Beginner', summary: 'Connected devices, sensors, data flow, protocols, and IoT solution basics.' }
+        { title: 'AI Agents & Automation', url: 'ai-agents-automation.html', difficulty: 'Intermediate', summary: 'Agent workflows, tool use, automation patterns, and practical AI systems.' }
+      ]
+    }
+  ];
+
+  var AI_LEARNING_TRACKS = [
+    {
+      id: 'ai-for-everyone',
+      tree: 'everyone',
+      title: 'AI for Everyone',
+      eyebrow: 'Common for QA & Non-QA',
+      description: 'Foundational AI literacy, tools, prompts, automation, local AI, and practical projects for any learner.',
+      modules: [
+        { title: 'Introduction to AI', topics: ['What is AI?', 'Types of AI', 'Machine Learning Basics', 'Deep Learning Basics', 'Generative AI', 'Large Language Models (LLMs)', 'AI Agents', 'AI Terminology', 'AI Ethics', 'AI Limitations'] },
+        { title: 'ChatGPT & LLM Fundamentals', topics: ['ChatGPT Basics', 'GPT Models', 'Claude', 'Gemini', 'Grok', 'Perplexity', 'NotebookLM', 'Comparing AI Models'] },
+        { title: 'Prompt Engineering', topics: ['Writing Effective Prompts', 'Role Prompting', 'Zero Shot', 'Few Shot', 'Chain of Thought', 'Prompt Chaining', 'Image Prompts', 'Prompt Templates'] },
+        { title: 'AI Productivity', topics: ['Resume', 'Email Writing', 'Presentation', 'Excel', 'Documentation', 'Research', 'Translation', 'Learning Assistant'] },
+        { title: 'AI Image, Video & Content', topics: ['ChatGPT Images', 'Canva AI', 'Adobe Express AI', 'Midjourney', 'Leonardo AI', 'ElevenLabs', 'HeyGen', 'Content Creation'] },
+        { title: 'AI Automation', topics: ['AI Agents', 'MCP Basics', 'n8n', 'Zapier', 'Make.com', 'Simple Workflows', 'Business Automation'] },
+        { title: 'Local AI', topics: ['Ollama', 'Llama', 'Gemma', 'Running AI Offline', 'Local Models', 'Privacy & Security'] },
+        { title: 'Real Projects', topics: ['Personal Assistant', 'Resume Builder', 'Study Assistant', 'Content Generator', 'AI Chatbot', 'Business Assistant'] }
+      ]
+    },
+    {
+      id: 'ai-for-qa-engineers',
+      tree: 'qa',
+      title: 'AI for QA Engineers',
+      eyebrow: 'Industry-ready QA AI track',
+      description: 'Practical AI workflows for manual testing, automation, API testing, local LLMs, coding assistants, frameworks, interviews, and projects.',
+      modules: [
+        { title: 'AI for Manual Testing', topics: ['Requirement Analysis', 'Test Scenarios', 'Test Cases', 'Test Data', 'BDD Scenarios', 'Bug Reports', 'Exploratory Testing', 'Test Documentation'] },
+        { title: 'AI for Selenium', topics: ['Generate Automation Scripts', 'Explain Existing Code', 'Debug Selenium Scripts', 'Self-Healing Concepts', 'Smart Locators', 'Framework Assistance'] },
+        { title: 'AI for Playwright', topics: ['Generate Playwright Tests', 'Smart Locators', 'Complex Workflows', 'Code Explanation', 'Framework Support', 'Debugging'] },
+        { title: 'AI for API Testing', topics: ['Postman', 'REST Assured', 'API Test Generation', 'JSON Validation', 'Mock APIs', 'API Documentation'] },
+        { title: 'AI with OpenAI API', topics: ['API Keys', 'Models', 'Sending Requests', 'Reading Responses', 'JSON Output', 'Structured Output', 'Error Handling'] },
+        { title: 'Vision AI for Testing', topics: ['Image Comparison', 'Visual Testing', 'OCR Basics', 'Screenshot Validation', 'UI Verification'] },
+        { title: 'Local LLM for Testing', topics: ['Ollama Integration', 'Local AI API', 'Local Prompting', 'Selenium + Local AI', 'Playwright + Local AI'] },
+        { title: 'AI Coding Assistants', topics: ['ChatGPT', 'Codex', 'GitHub Copilot', 'Gemini Code Assist', 'Cursor', 'Windsurf', 'Claude Code'] },
+        { title: 'AI Framework Development', topics: ['Framework Design', 'POM', 'Utilities', 'Reporting', 'Data Driven', 'CI/CD', 'Git Integration'] },
+        { title: 'AI Interview Preparation', topics: ['Resume Review', 'Mock Interviews', 'Selenium Questions', 'Playwright Questions', 'API Questions', 'AI Questions', 'Coding Questions'] },
+        { title: 'End-to-End Projects', topics: ['OrangeHRM Automation', 'SauceDemo Automation', 'Playwright Framework', 'Selenium Framework', 'API Automation Framework', 'AI Powered Test Generator', 'CI/CD Project'] }
       ]
     }
   ];
@@ -641,7 +680,7 @@
       '<div class="mega-menu compact-learning-menu">',
       '<a href="/qa-engineering.html">QA Engineering</a>',
       '<a href="/development-technologies.html">Development Technologies</a>',
-      '<a href="/ai-emerging-technologies.html">AI &amp; Emerging Technologies</a>',
+      '<a href="/ai-emerging-technologies.html">AI Learning Hub</a>',
       '</div>',
       '</div>',
       '<a' + (page === 'career-services.html' ? ' class="active"' : '') + ' href="/career-services.html">Career Services</a>',
@@ -673,6 +712,74 @@
       action,
       '</article>'
     ].join('');
+  }
+
+  function slugify(value) {
+    return String(value || '')
+      .toLowerCase()
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function renderAiLearningHub() {
+    var container = document.querySelector('[data-ai-learning-hub]');
+    if (!container) return;
+
+    var totalModules = 0;
+    var totalTopics = 0;
+
+    container.innerHTML = AI_LEARNING_TRACKS.map(function(track) {
+      totalModules += track.modules.length;
+      return [
+        '<section class="ai-track" id="' + track.id + '">',
+        '<div class="ai-track-header">',
+        '<span class="section-tag">' + track.eyebrow + '</span>',
+        '<h2>' + track.title + '</h2>',
+        '<p>' + track.description + '</p>',
+        '</div>',
+        '<div class="ai-module-grid">',
+        track.modules.map(function(module, moduleIndex) {
+          var moduleId = track.id + '-' + slugify(module.title);
+          totalTopics += module.topics.length;
+          return [
+            '<article class="glass-card ai-module-card" id="' + moduleId + '">',
+            '<div class="ai-module-heading">',
+            '<span>Module ' + (moduleIndex + 1) + '</span>',
+            '<h3>' + module.title + '</h3>',
+            '</div>',
+            '<div class="ai-topic-list">',
+            module.topics.map(function(topic) {
+              var topicId = moduleId + '-' + slugify(topic);
+              return [
+                '<section class="progress-item ai-topic-item" id="' + topicId + '">',
+                '<h4>' + topic + '</h4>',
+                '</section>'
+              ].join('');
+            }).join(''),
+            '</div>',
+            '<a class="text-link ai-module-anchor" href="#' + moduleId + '">' + module.topics.length + ' topics</a>',
+            '</article>'
+          ].join('');
+        }).join(''),
+        '</div>',
+        '</section>'
+      ].join('');
+    }).join('');
+
+    var moduleCounter = document.querySelector('[data-ai-total-modules]');
+    if (moduleCounter) moduleCounter.textContent = String(totalModules);
+
+    var topicCounter = document.querySelector('[data-ai-total-topics]');
+    if (topicCounter) topicCounter.textContent = String(totalTopics);
+
+    AI_LEARNING_TRACKS.forEach(function(track) {
+      var tree = document.querySelector('[data-ai-tree="' + track.tree + '"]');
+      if (!tree) return;
+      tree.innerHTML = track.modules.map(function(module) {
+        return '<li><a href="#' + track.id + '-' + slugify(module.title) + '">' + module.title + '</a></li>';
+      }).join('');
+    });
   }
 
   function renderCategoryCards() {
@@ -865,6 +972,7 @@
   function init() {
     renderLearningNav();
     removeDocumentationNavigation();
+    renderAiLearningHub();
     renderCategoryCards();
     setupGatedActions();
     setupContextualLeadActions();

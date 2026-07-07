@@ -150,6 +150,18 @@
       }, 2400);
     }
 
+    function showTopicToast() {
+      var t = document.createElement('div');
+      t.className = 'level-toast topic-complete-toast';
+      t.textContent = '🎉 Topic complete!';
+      document.body.appendChild(t);
+      requestAnimationFrame(function () { t.classList.add('show'); });
+      setTimeout(function () {
+        t.classList.remove('show');
+        setTimeout(function () { t.remove(); }, 350);
+      }, 1400);
+    }
+
     // ---- Minimal CSS-only confetti (no external dep, ~3KB) ----
     function burstConfetti(opts) {
       opts = opts || {};
@@ -201,6 +213,9 @@
         var id = cb.getAttribute('data-progress-id');
         if (cb.checked) {
           saved[id] = 1;
+          sec.classList.add('topic-celebrate');
+          setTimeout(function () { sec.classList.remove('topic-celebrate'); }, 900);
+          showTopicToast();
           burstConfetti();
         } else {
           delete saved[id];
