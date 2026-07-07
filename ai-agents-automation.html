@@ -147,9 +147,29 @@
               <li>Keep approval gates for code changes, audit logs, version control, and secure tool access.</li>
             </ul>
           </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>Hands-on: Playwright MCP</h3>
+            <ul>
+              <li>Install Node.js, VS Code, Playwright, and an MCP client such as Claude Desktop or Roo Code.</li>
+              <li>Configure a Playwright MCP server so the AI can open a browser, inspect DOM, click, type, and read results.</li>
+              <li>Try this task: “Open the login page, inspect fields, create a Playwright test for valid and invalid login, then explain selectors used.”</li>
+              <li>Review every generated action before committing. AI should assist execution, not bypass QA ownership.</li>
+            </ul>
+          </article>
+          <article class="glass-card feature-card" data-reveal>
+            <h3>Hands-on: Selenium MCP Flow</h3>
+            <ul>
+              <li>Use Chrome, Java or Python Selenium, WebDriver Manager, and an MCP server that exposes browser-control tools.</li>
+              <li>Agent flow: understand instruction, open browser, inspect page, identify locator, execute step, capture error, improve, repeat.</li>
+              <li>Example: Ask AI to repair a failing selector by re-inspecting the page and suggesting a stable CSS/test-id locator.</li>
+              <li>Use Git diff review, screenshots, logs, and CI result before accepting any self-healing change.</li>
+            </ul>
+          </article>
         </div>
 
-        <div class="text-center" data-reveal style="margin-top: var(--space-xl);">`r`n          <a href="ai-emerging-technologies.html" class="secondary-btn">Back to AI &amp; Emerging Technologies</a>`r`n        </div>
+        <div class="text-center" data-reveal style="margin-top: var(--space-xl);">
+          <a href="ai-emerging-technologies.html" class="secondary-btn">Back to AI &amp; Emerging Technologies</a>
+        </div>
       </div>
     </section>
   </main>
