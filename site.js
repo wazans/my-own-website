@@ -595,6 +595,7 @@
       courses: [
         { title: 'AI for Beginners', url: 'ai-for-beginners.html', difficulty: 'Beginner', summary: 'AI concepts, practical usage, limitations, and everyday productivity workflows.' },
         { title: 'Prompt Engineering', url: 'prompt-engineering.html', difficulty: 'Beginner', summary: 'Prompt structure, context, iteration, evaluation, and reusable prompt systems.' },
+        { title: 'Prompt Engineering for QA Engineers', url: 'prompt-engineering.html', difficulty: 'Beginner', summary: 'Use role, context, task, and format prompts to create QA strategy, test plans, cases, data, API tests, automation code, bug reports, and refactors.' },
         { title: 'AI Agents & Automation', url: 'ai-agents-automation.html', difficulty: 'Intermediate', summary: 'Agent workflows, tool use, automation patterns, and practical AI systems.' },
         { title: 'AI-Augmented QA Automation', url: 'ai-agents-automation.html', difficulty: 'Intermediate', summary: 'Use GPT, Claude, Gemini, Selenium, and Playwright to create, execute, analyze, and improve QA workflows.' },
         { title: 'MCP for QA Automation', url: 'ai-agents-automation.html', difficulty: 'Advanced', summary: 'Learn how MCP lets AI discover tools, execute browser actions, receive results, and reason in a loop.' },
