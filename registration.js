@@ -189,10 +189,10 @@
       '<small class="field-error" data-error-for="interested"></small>',
       '</div>',
       '</div>',
-      '<div class="form-row other-interest-row" hidden>',
+      '<div class="form-row other-interest-row">',
       '<div class="form-field full">',
-      '<label for="tn-other-interest">Other details</label>',
-      '<input id="tn-other-interest" name="Other Details" type="text" placeholder="Anything else? Optional." data-lead-field="other_interest" />',
+      '<label for="tn-other-interest">Technology or other details</label>',
+      '<input id="tn-other-interest" name="Technology On Demand" type="text" placeholder="Which technology do you want to learn? Example: Cypress, Snowflake, AWS, GenAI" data-lead-field="other_interest" />',
       '<small class="field-error" data-error-for="other_interest"></small>',
       '</div>',
       '</div>',
@@ -249,12 +249,7 @@
       valid = false;
     }
 
-    if (
-      interested &&
-      interested.value === 'Technology on Demand' &&
-      otherInterest &&
-      !otherInterest.value.trim()
-    ) {
+    if (interested && interested.value === 'Technology on Demand' && otherInterest && !otherInterest.value.trim()) {
       setFieldError(form, 'other_interest', 'Please enter the technology you want to learn.');
       valid = false;
     }
@@ -410,8 +405,7 @@
     interested.dataset.otherToggleReady = 'true';
     function syncOtherField() {
       var isTechnologyDemand = interested.value === 'Technology on Demand';
-      var isOther = interested.value === 'Other';
-      otherRow.hidden = !isTechnologyDemand && !isOther;
+      otherRow.hidden = false;
 
       if (!otherInput) return;
 
@@ -421,14 +415,10 @@
         otherInput.placeholder = 'Example: Cypress, Snowflake, AWS, GenAI, Salesforce';
         otherInput.required = true;
       } else {
-        if (otherLabel) otherLabel.textContent = 'Other details';
-        otherInput.name = 'Other Details';
-        otherInput.placeholder = 'Anything else? Optional.';
+        if (otherLabel) otherLabel.textContent = 'Technology or other details';
+        otherInput.name = 'Technology On Demand';
+        otherInput.placeholder = 'Tell us any specific technology or detail. Optional.';
         otherInput.required = false;
-      }
-
-      if (otherRow.hidden) {
-        otherInput.value = '';
       }
     }
 
