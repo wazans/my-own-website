@@ -628,6 +628,10 @@
     });
   }
 
+  function isAiEmergingPage() {
+    return currentPageName() === 'ai-emerging-technologies.html';
+  }
+
   function renderLearningNav() {
     var siteNavs = document.querySelectorAll('.site-nav');
     if (!siteNavs.length) return;
@@ -720,6 +724,12 @@
       var isExplicit = link.classList.contains('gated-action') || link.hasAttribute('data-access-url');
 
       if (!isGatedLabel && !isExplicit) return;
+      if (isAiEmergingPage()) {
+        if (existingAccessUrl && link.matches('a')) link.setAttribute('href', existingAccessUrl);
+        link.classList.remove('gated-action');
+        link.removeAttribute('data-access-url');
+        return;
+      }
       if (link.matches('a') && isUnlockedAiCourseUrl(directCourseUrl)) return;
       if (existingAccessUrl && isUnlockedAiCourseUrl(existingAccessUrl)) {
         if (link.matches('a')) link.setAttribute('href', existingAccessUrl);
