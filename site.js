@@ -562,7 +562,7 @@
       description: 'Automation, API testing, BDD, CI, and framework skills for practical QA careers.',
       courses: [
         { title: 'Selenium Basics', url: 'selenium.html', difficulty: 'Beginner', summary: 'Browser automation, locators, waits, actions, tables, and Java examples.' },
-        { title: 'Playwright with TypeScript', url: 'playwright.html', difficulty: 'Intermediate', summary: 'Modern end-to-end testing with fixtures, selectors, assertions, and reports.' },
+        { title: 'Playwright with TypeScript', url: 'playwright-reader.html', difficulty: 'Intermediate', summary: 'Modern end-to-end testing with fixtures, selectors, assertions, and reports.' },
         { title: 'API Basics', url: 'api.html', difficulty: 'Beginner', summary: 'HTTP, requests, responses, status codes, JSON, and API testing foundations.' },
         { title: 'REST Assured', url: 'rest.html', difficulty: 'Intermediate', summary: 'Java API automation with request setup, extraction, validation, and assertions.' },
         { title: 'Cucumber BDD', url: 'cucumber.html', difficulty: 'Intermediate', summary: 'Feature files, step definitions, runners, hooks, and readable scenarios.' },
@@ -579,8 +579,8 @@
       courses: [
         { title: 'Java Programming', url: 'java-programming.html', difficulty: 'Beginner', summary: 'Core Java, OOP, collections, exceptions, and coding fundamentals.' },
         { title: 'Python for Automation', url: 'python-automation.html', difficulty: 'Beginner', summary: 'Python scripting, data handling, automation utilities, and practical workflows.' },
-        { title: 'JavaScript & Frontend', url: 'javascript-frontend.html', difficulty: 'Beginner', summary: 'HTML, CSS, JavaScript, UI behavior, and frontend fundamentals.' },
-        { title: 'TypeScript Deep Dive', url: 'typescript-deep-dive.html', difficulty: 'Intermediate', summary: 'Type-safe JavaScript patterns for scalable frontend and automation projects.' },
+        { title: 'JavaScript & Frontend', url: 'js-typescript.html', difficulty: 'Beginner', summary: 'HTML, CSS, JavaScript, UI behavior, and frontend fundamentals.' },
+        { title: 'TypeScript Deep Dive', url: 'js-typescript.html', difficulty: 'Intermediate', summary: 'Type-safe JavaScript patterns for scalable frontend and automation projects.' },
         { title: 'DevOps Fundamentals', url: 'devops-fundamentals.html', difficulty: 'Intermediate', summary: 'CI/CD, Docker, Kubernetes concepts, environments, and release workflows.' },
         { title: 'Cloud Platforms', url: 'cloud-platforms.html', difficulty: 'Intermediate', summary: 'AWS and Azure fundamentals for deployment, scaling, and operations.' },
         { title: 'SQL & Database Management', url: 'sql-database-management.html', difficulty: 'Beginner', summary: 'Queries, joins, constraints, and database concepts for real projects.' },
@@ -773,14 +773,14 @@
   function isUnlockedAiCourseUrl(url) {
     var category = aiEmergingCategory();
     if (!category || !url) return false;
-    if (['ai-emerging-technologies.html', '/ai-emerging-technologies.html', 'ai-for-everyone.html', '/ai-for-everyone.html', 'ai-engineers.html', '/ai-engineers.html'].indexOf(url) !== -1) return true;
+    if (['ai-emerging-technologies.html', '/ai-emerging-technologies.html', 'ai-for-everyone.html', '/ai-for-everyone.html', 'ai-engineers.html', '/ai-engineers.html', 'js-typescript.html', '/js-typescript.html', 'playwright-reader.html', '/playwright-reader.html'].indexOf(url) !== -1) return true;
     return category.courses.some(function(course) {
       return course.url === url;
     });
   }
 
   function isAiEmergingPage() {
-    return ['ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html'].indexOf(currentPageName()) !== -1;
+    return ['ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'js-typescript.html', 'playwright-reader.html'].indexOf(currentPageName()) !== -1;
   }
 
   function renderLearningNav() {
@@ -788,7 +788,7 @@
     if (!siteNavs.length) return;
 
     var page = currentPageName();
-    var isLearning = ['learning-hub.html', 'qa-engineering.html', 'development-technologies.html', 'ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'tech-courses.html', 'ai-courses.html'].indexOf(page) !== -1 || document.body.classList.contains('learning-page');
+    var isLearning = ['learning-hub.html', 'qa-engineering.html', 'development-technologies.html', 'ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'js-typescript.html', 'playwright-reader.html', 'tech-courses.html', 'ai-courses.html'].indexOf(page) !== -1 || document.body.classList.contains('learning-page');
     var navHtml = [
       '<a' + (page === 'index.html' ? ' class="active"' : '') + ' href="/index.html">Home</a>',
       '<div class="has-mega-menu learning-dropdown">',
