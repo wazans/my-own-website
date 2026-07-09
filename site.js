@@ -734,8 +734,7 @@
       courses: [
         { title: 'Java Programming', url: 'java-programming.html', difficulty: 'Beginner', summary: 'Core Java, OOP, collections, exceptions, and coding fundamentals.' },
         { title: 'Python for Automation', url: 'python-automation.html', difficulty: 'Beginner', summary: 'Python scripting, data handling, automation utilities, and practical workflows.' },
-        { title: 'JavaScript & Frontend', url: 'js-typescript.html', difficulty: 'Beginner', summary: 'HTML, CSS, JavaScript, UI behavior, frontend fundamentals, and expanded in-page notes.', openAccess: true },
-        { title: 'TypeScript Deep Dive', url: 'js-typescript.html', difficulty: 'Intermediate', summary: 'Type-safe JavaScript patterns for scalable frontend and automation projects.', openAccess: true },
+        { title: 'JavaScript & TypeScript', url: 'js-typescript.html', difficulty: 'Beginner', summary: 'HTML, CSS, JavaScript, TypeScript, frontend fundamentals, and practical project patterns in one combined reader.', openAccess: true },
         { title: 'DevOps Fundamentals', url: 'devops-fundamentals.html', difficulty: 'Intermediate', summary: 'CI/CD, Docker, Kubernetes concepts, environments, and release workflows.' },
         { title: 'Cloud Platforms', url: 'cloud-platforms.html', difficulty: 'Intermediate', summary: 'AWS and Azure fundamentals for deployment, scaling, and operations.' },
         { title: 'SQL & Database Management', url: 'sql-database-management.html', difficulty: 'Beginner', summary: 'Queries, joins, constraints, and database concepts for real projects.' },
