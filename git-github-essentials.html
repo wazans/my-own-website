@@ -4,232 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Git & GitHub | TestNova</title>
-  <link rel="stylesheet" href="styles.css" />
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Master Git for version control and GitHub for collaborative development. Track changes, merge code, manage repositories." />
-  <meta name="keywords" content="Git, GitHub, Version Control, Collaboration, TestNova" />
-  <meta property="og:title" content="Git & GitHub | TestNova" />
-  <meta property="og:description" content="Master Git for version control and GitHub for collaborative development. Track changes, merge code, manage repositories." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.testnova.in/git-github-essentials.html" />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Git & GitHub | TestNova" />
-  <meta name="twitter:description" content="Master Git for version control and GitHub for collaborative development. Track changes, merge code, manage repositories." />
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80" />
+  <meta name="description" content="Git and GitHub reader with editable lessons, topic navigation, checkboxes, resources, and progress tracking." />
   <link rel="canonical" href="https://www.testnova.in/git-github-essentials.html" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="learning-page course-page">
-  <div class="page-loader" id="page-loader" aria-hidden="true">
-    <div class="page-loader__spinner"></div>
-    <p>Loading TestNova</p>
-  </div>
-
+<body class="learning-page ai-reader-page" data-ai-reader-track="git">
   <header class="topbar">
     <div class="container nav-container">
       <a class="brand" href="index.html">TestNova</a>
-      <nav class="site-nav">
-        <a href="index.html">Home</a>
-        <div class="has-mega-menu">
-          <a class="active" href="learning-hub.html">Learning Hub</a>
-          <div class="mega-menu">
-            <div class="mega-menu-column">
-              <h4><a href="learning-hub.html#qa-engineering-courses">QA Engineering</a></h4>
-              <ul>
-                <li><a href="#registration-modal" data-access-url="selenium.html">Selenium Basics</a></li>
-                <li><a href="#registration-modal" data-access-url="playwright.html">Playwright with TS</a></li>
-                <li><a href="#registration-modal" data-access-url="api.html">API Basics</a></li>
-                <li><a href="#registration-modal" data-access-url="rest.html">REST Assured</a></li>
-                <li><a href="#registration-modal" data-access-url="cucumber.html">Cucumber BDD</a></li>
-                <li><a href="#registration-modal" data-access-url="hybrid.html">UI Hybrid Framework</a></li>
-                <li><a href="#registration-modal" data-access-url="jenkins.html">Jenkins Automation</a></li>
-                <li><a href="#registration-modal" data-access-url="master.html">Master Doc Notes (Java)</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-column">
-              <h4><a href="learning-hub.html#development-technologies-courses">Development Technologies</a></h4>
-              <ul>
-                <li><a href="#registration-modal" data-access-url="java-programming.html">Java Programming</a></li>
-                <li><a href="#registration-modal" data-access-url="python-automation.html">Python for Automation</a></li>
-                <li><a href="#registration-modal" data-access-url="javascript-frontend.html">JS & Frontend</a></li>
-                <li><a href="#registration-modal" data-access-url="typescript-deep-dive.html">TypeScript Deep Dive</a></li>
-                <li><a href="#registration-modal" data-access-url="devops-fundamentals.html">DevOps Fundamentals</a></li>
-                <li><a href="#registration-modal" data-access-url="cloud-platforms.html">Cloud Platforms</a></li>
-                <li><a href="#registration-modal" data-access-url="sql-database-management.html">SQL & Database</a></li>
-                <li><a href="#registration-modal" data-access-url="git-github-essentials.html">Git & GitHub</a></li>
-              </ul>
-            </div>
-            <div class="mega-menu-column">
-              <h4><a href="learning-hub.html#ai-emerging-technologies-courses">AI & Emerging Technologies</a></h4>
-              <ul>
-                <li><a href="#registration-modal" data-access-url="ai-for-beginners.html">AI for Beginners</a></li>
-                <li><a href="#registration-modal" data-access-url="prompt-engineering.html">Prompt Engineering</a></li>
-                <li><a href="#registration-modal" data-access-url="ai-agents-automation.html">AI Agents & Automation</a></li>
-                <li><a href="#registration-modal" data-access-url="machine-learning-fundamentals.html">Machine Learning Fundamentals</a></li>
-                <li><a href="#registration-modal" data-access-url="blockchain-web3-basics.html">Blockchain & Web3</a></li>
-                <li><a href="#registration-modal" data-access-url="iot-essentials.html">IoT Essentials</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <a href="career-services.html">Career Services</a>
-        <a href="corporate-training.html">Corporate Training</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <div class="nav-right-items">
-          <div class="search-box">
-            <input type="text" placeholder="Search courses..." class="search-input" aria-label="Search courses">
-            <button class="search-button" aria-label="Perform search">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-            </button>
-          </div>
-          <a class="nav-register" href="/registration/">Register</a>
-        </div>
-      </nav>
+      <nav class="site-nav" aria-label="Primary navigation"></nav>
     </div>
   </header>
 
-  <main>
-    <section class="page-hero-section">
-      <div class="container">
-        <div class="page-header">
-          <h1>Git & GitHub Essentials</h1>
-          <p>Master Git for version control and GitHub for collaborative development. Track changes, merge code, manage repositories.</p>
+  <main class="ai-reader-shell">
+    <aside class="ai-reader-sidebar editable-surface" data-ai-reader-sidebar>
+      <a class="text-link" href="index.html#featured-readers">Back to landing page</a>
+      <div class="ai-reader-sidebar-copy" contenteditable="true" data-edit-key="git-sidebar-copy">
+        <span class="section-tag">Development Reader</span>
+        <h1>Git &amp; GitHub</h1>
+        <p>Open a topic from the left navigation. Your progress, checkboxes, and edits are saved in this browser.</p>
+      </div>
+      <div class="progress-panel">
+        <div class="progress-header">
+          <span class="level-pill" data-reader-level>Lv 1</span>
+          <span class="progress-counts" data-reader-counts>0 / 0</span>
+        </div>
+        <div class="xp-bar"><i class="xp-fill" data-reader-fill></i></div>
+        <div class="xp-meta">
+          <span data-reader-pct>0%</span>
+          <span data-reader-next>Start reading</span>
         </div>
       </div>
-    </section>
+      <nav class="ai-reader-topic-nav" aria-label="Git and GitHub topics" data-reader-nav></nav>
+    </aside>
 
-    <section class="nova-section">
-      <div class="container section-stack">
-        <div class="section-heading" data-reveal>
-          <span class="section-tag">Course Status</span>
-          <h2>Content Coming Soon!</h2>
-          <p>
-            We are actively developing rich, hands-on content for our <strong>Git & GitHub Essentials</strong> course.
-            Register your interest below to be notified as soon as the full course content is available!
-          </p>
-        </div>
-
-        <div class="feature-grid">
-          <article class="glass-card feature-card" data-reveal>
-            <h3>Learning Objectives</h3>
-            <ul>
-              <li>Understand the core concepts of Git version control.</li>
-              <li>Effectively use GitHub for collaborative software development.</li>
-              <li>Manage code changes, branches, and merges with confidence.</li>
-              <li>Apply best practices for repository management and teamwork.</li>
-            </ul>
-          </article>
-          <article class="glass-card feature-card" data-reveal>
-            <h3>Skills Covered</h3>
-            <ul>
-              <li>Git Commands (commit, push, pull, branch, merge, rebase)</li>
-              <li>GitHub Workflows (Pull Requests, Code Reviews, Issues)</li>
-              <li>Conflict Resolution</li>
-              <li>Repository Management</li>
-              <li>Collaborative Development</li>
-            </ul>
-          </article>
-          <article class="glass-card feature-card" data-reveal>
-            <h3>Course Details</h3>
-            <p><strong>Difficulty:</strong> Beginner to Intermediate</p>
-            <p><strong>Prerequisites:</strong> Basic computer literacy.</p>
-            <p><strong>Format:</strong> Interactive lessons, practical exercises, and simulated team projects.</p>
-          </article>
-        </div>
-
-        <div class="text-center" data-reveal style="margin-top: var(--space-xl);">
-          <a href="#registration-modal" class="primary-btn" data-course-interest="Git & GitHub Essentials">Register Interest for Updates</a>
-          <a href="learning-hub.html#development-technologies-courses" class="secondary-btn">← Back to Development Technologies</a>
-        </div>
+    <section class="ai-reader-main">
+      <div class="ai-reader-toolbar">
+        <button class="secondary-btn" type="button" data-reader-save>Save edits</button>
+        <button class="secondary-btn" type="button" data-reader-copy>Copy current content</button>
+        <span data-reader-save-state>Edits save in this browser.</span>
       </div>
+      <article class="glass-card ai-reader-content editable-surface" data-reader-content></article>
     </section>
   </main>
 
-  <footer class="site-footer premium-footer">
-    <div class="container footer-layout">
-      <div class="footer-brand">
-        <a class="brand footer-logo" href="index.html">TestNova</a>
-        <p>
-          Empowering the next generation of tech professionals with cutting-edge AI and
-          automation skills. Your future in technology starts here.
-        </p>
-      </div>
-
-      <div class="footer-links">
-        <div>
-          <h3>Explore</h3>
-          <a href="learning-hub.html">Learning Hub</a>
-          <a href="career-services.html">Career Services</a>
-          <a href="corporate-training.html">Corporate Training</a>
-          <a href="about.html">About Us</a>
-        </div>
-        <div>
-          <h3>Company</h3>
-          <a href="about.html">Our Story</a>
-          <a href="#testimonials">Testimonials</a>
-          <a href="#blogs">Blog</a>
-          <a href="contact.html">Contact Us</a>
-        </div>
-        <div>
-          <h3>Connect</h3>
-          <a href="mailto:admin@testnova.in">admin@testnova.in</a>
-          <a href="https://api.whatsapp.com/send?phone=919641782691&text=Hi%20TestNova,%20I%27m%20interested%20in%20learning%20AI%20and%20Technology.%20Please%20guide%20me." target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          <a href="#registration-modal">Register Interest</a>
-        </div>
-      </div>
-
-      <div class="footer-social">
-        <h3>Follow Us</h3>
-        <div class="social-links">
-          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a>
-          <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
-        </div>
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <p>&copy; <span data-year></span> TestNova. All rights reserved. Designed for a smarter future.</p>
-    </div>
-  </footer>
-
-  <!-- Registration Modal Structure -->
-  <div id="registration-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal-overlay" tabindex="-1" data-micromodal-close>
-      <div class="modal-container" role="document">
-        <header class="modal-header">
-          <h2 class="modal-title">Register Your Interest</h2>
-          <button class="modal-close" aria-label="Close modal" data-micromodal-close></button>
-        </header>
-        <div class="modal-content">
-          <!-- registration_form_component.html will be loaded here -->
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Exit Intent Modal Structure -->
-  <div id="exit-intent-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal-overlay" tabindex="-1" data-micromodal-close>
-      <div class="modal-container" role="document">
-        <header class="modal-header">
-          <h2 class="modal-title">Before You Go...</h2>
-          <button class="modal-close" aria-label="Close modal" data-micromodal-close></button>
-        </header>
-        <div class="modal-content">
-          <p class="hero-subtitle" style="text-align: center; margin-bottom: var(--space-md);">
-            We're sorry to see you leave. Would you like to receive FREE AI resources,
-            technology updates and exclusive learning material?
-          </p>
-          <!-- registration_form_component.html will be loaded here -->
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="site.js"></script>
-  <script src="landing.js"></script>
+  <script src="site.js?v=reader-20260709"></script>
+  <script src="ai-reader.js?v=reader-20260709"></script>
   <script src="registration.js"></script>
 </body>
 </html>

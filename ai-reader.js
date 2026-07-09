@@ -2,7 +2,7 @@
   var TRACKS = {
     everyone: {
       storageKey: 'testnova-ai-reader-everyone',
-      title: 'AI for Everyone',
+      title: 'Basic AI',
       topics: [
         lesson('generative-ai-introduction', 'Generative AI - Introduction', [
           'Generative AI creates new content from learned patterns. It can draft text, summarize documents, write code, generate images, create study notes, and transform raw information into useful formats.',
@@ -58,17 +58,23 @@
           'Agentic AI combines a model with tools, memory, planning, and workflow steps.',
           'A basic chatbot answers from model knowledge and supplied context. An agent can decide when to search, call an API, create a file, or ask for clarification.',
           'Start simple: define purpose, knowledge source, allowed actions, guardrails, and fallback behavior.'
-        ], 'Sketch a chatbot with a welcome message, knowledge source, three allowed actions, and one fallback when it is unsure.')
+        ], 'Sketch a chatbot with a welcome message, knowledge source, three allowed actions, and one fallback when it is unsure.'),
+        lesson('basic-ai-testing-reference', 'Basic AI Testing Reference', [
+          'Use this external resource as the broader AI testing reference before moving into the QA-specific roadmap.',
+          'Read it after the foundation topics so terms such as prompts, LLMs, agents, evaluation, and hallucination are easier to connect to testing work.'
+        ], 'Open the AI testing reference and add three testing ideas to your editable notes.', [], [
+          { label: 'Open AI Testing Resource', url: 'https://www.sreenidhirajakrishnan.com/ai-testing?utm_source=sp_auto_dm&utm_referrer=sp_auto_dm&fbclid=PAT01DUAS8GqJleHRuA2FlbQIxMABzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAadBnyklCpXS53mQFU_Ohb0tJXafmZpTYhYyatPbTUrmp8ac98fSZcJ5mmYqfA_aem_p_4bwH1DnhE2VkEGjB2g-g' }
+        ])
       ]
     },
     engineers: {
       storageKey: 'testnova-ai-reader-engineers',
-      title: 'AI Engineers',
+      title: 'AI for QA',
       topics: [
-        lesson('engineering-foundations', 'AI Engineering Foundations', [
-          'AI engineering turns model capabilities into usable systems. The work includes model selection, prompting, APIs, data flow, evaluation, monitoring, and user experience.',
+        lesson('ai-for-qa-foundations', 'AI for QA Foundations', [
+          'AI for QA turns model capabilities into usable testing workflows. The work includes prompting, test design support, automation assistance, evaluation, monitoring, and human review.',
           'A practical AI feature needs clear inputs, predictable outputs, error handling, privacy rules, and a way to measure quality.'
-        ], 'Pick one AI feature and define its input, output, model, success criteria, and failure handling.'),
+        ], 'Pick one AI testing feature and define its input, output, model, success criteria, and failure handling.'),
         lesson('model-apis', 'Working with Model APIs', [
           'Model APIs let applications send prompts, context, files, or structured data to an AI model and receive generated output.',
           'Production usage needs retries, timeouts, token limits, response validation, logging, and cost controls.'
@@ -97,7 +103,13 @@
         lesson('production-readiness', 'Production Readiness', [
           'Production AI needs guardrails, monitoring, privacy checks, prompt/version management, fallback paths, and cost visibility.',
           'The system should fail safely when the model is unsure or the source context is weak.'
-        ], 'Create a release checklist for moving an AI chatbot from prototype to production.')
+        ], 'Create a release checklist for moving an AI chatbot from prototype to production.'),
+        lesson('ai-for-qa-roadmap-reference', 'AI for QA Roadmap Reference', [
+          'Use this external roadmap for the testing-focused path: AI-assisted test design, QA automation support, evaluation, and AI quality practices.',
+          'Keep it separate from the Basic AI track so learners can first build AI vocabulary, then apply it to QA workflows.'
+        ], 'Open the AI for QA roadmap and convert it into a personal 30-day study checklist.', [], [
+          { label: 'Open AI for QA Roadmap', url: 'https://www.sreenidhirajakrishnan.com/ai-for-qa-roadmap?utm_source=sp_auto_dm&fbclid=PAT01DUAS8Gs9leHRuA2FlbQIxMABzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAacahLD_FaHL-p-itfYmqbaWDWvT_ZVw5zB5FnGN_0HZZnv-yisosNEPyCx5ng_aem_hlsFjZ3fb8CcoEALZg-n8A' }
+        ])
       ]
     },
     jsTs: {
@@ -163,7 +175,80 @@
           'Unit tests verify small pieces of logic. UI tests verify behavior from the user perspective.',
           'TypeScript reduces some bugs, but tests are still needed for behavior, edge cases, and integrations.',
           'Test meaningful outcomes rather than implementation details.'
-        ], 'Write test cases for a function that validates an email and phone number.')
+        ], 'Write test cases for a function that validates an email and phone number.'),
+        lesson('javascript-pdf-notes', 'JavaScript PDF Notes', [
+          'Use the JavaScript PDF as the downloadable companion for classroom notes, revision, and offline study.',
+          'Keep this reader for progress tracking, editable notes, and topic-by-topic practice. Use the PDF when learners need the full handout in one file.'
+        ], 'Open the PDF, skim the table of contents, and add three topics you want to revise into your editable notes.', [], [
+          { label: 'Open JavaScript PDF', url: 'Java script.pdf' }
+        ])
+      ]
+    },
+    git: {
+      storageKey: 'testnova-reader-git-github',
+      title: 'Git & GitHub',
+      topics: [
+        lesson('git-github-overview', 'Git & GitHub Overview', [
+          'Git is the version control system that tracks code changes on your computer. GitHub is the collaboration platform where teams host repositories, review pull requests, discuss issues, and share releases.',
+          'Learn Git first as a local workflow: working directory, staging area, commits, branches, and history. Then connect that workflow to GitHub for team collaboration.',
+          'For QA and automation projects, Git helps you manage test code, feature branches, framework updates, and reviewable changes.'
+        ], 'Explain the difference between Git and GitHub in two sentences.'),
+        lesson('git-install-setup', 'Install & Configure Git', [
+          'Install Git for Windows from Git SCM, then verify the command is available from the terminal.',
+          'Configure your name and email once. Git stores this identity in your commits so collaborators can understand who changed what.',
+          'Use the VS Code terminal for a consistent workflow: create folders, run Git commands, open files, and commit changes from one place.'
+        ], 'Install Git and configure your name and email.', [
+          {
+            title: 'Verify Git setup',
+            code: 'git -v\n\ngit config --global user.name "Your Name"\ngit config --global user.email "you@example.com"\n\ngit config --global --list'
+          }
+        ]),
+        lesson('git-core-workflow', 'Core Git Workflow', [
+          'The basic workflow is edit files, check status, stage changes, commit a meaningful snapshot, then inspect history.',
+          'Use git status often. It tells you which files are modified, staged, untracked, or clean.',
+          'A commit should represent one logical change. Good commit messages make later debugging and reviews much easier.'
+        ], 'Create a practice folder, edit a README file, stage it, and commit it.', [
+          {
+            title: 'First local commit',
+            code: 'mkdir git-practice\ncd git-practice\ngit init\n\nNew-Item README.md\nAdd-Content README.md "# Git Practice"\n\ngit status\ngit add README.md\ngit commit -m "Add project readme"\ngit log --oneline'
+          }
+        ]),
+        lesson('git-branches-merges', 'Branches, Merges & Conflicts', [
+          'Branches let you work on changes without disturbing the main line of development.',
+          'Merge brings completed branch work back into another branch. A conflict happens when Git cannot safely combine competing edits.',
+          'Resolve conflicts by opening the file, choosing the correct final content, staging the resolved file, and committing the merge.'
+        ], 'Create a branch, make a change, merge it into main, and describe when conflicts happen.', [
+          {
+            title: 'Branch workflow',
+            code: 'git switch -c feature/login-tests\n# edit files\ngit add .\ngit commit -m "Add login test notes"\n\ngit switch main\ngit merge feature/login-tests'
+          }
+        ]),
+        lesson('github-repositories', 'GitHub Repositories & Remotes', [
+          'A remote connects your local repository to a hosted repository such as GitHub.',
+          'Clone copies an existing repository to your machine. Push uploads local commits. Pull brings remote changes into your branch.',
+          'Always check the branch and status before pushing, especially when working on shared repositories.'
+        ], 'Create or clone a GitHub repository and practice push and pull.', [
+          {
+            title: 'Remote commands',
+            code: 'git clone https://github.com/example/project.git\ncd project\n\ngit remote -v\ngit status\n\ngit push origin main\ngit pull origin main'
+          }
+        ]),
+        lesson('pull-requests-reviews', 'Pull Requests & Code Reviews', [
+          'A pull request is a review request for branch changes before they are merged.',
+          'Good pull requests include a clear title, short summary, test evidence, screenshots when UI changed, and any known risks.',
+          'For QA projects, include what was tested: browser, test command, report, or scenario coverage.'
+        ], 'Draft a pull request description for a new automation test.', [
+          {
+            title: 'PR description template',
+            code: 'Summary:\n- Added login smoke test\n- Covered valid user flow\n\nTesting:\n- npx playwright test login.spec.ts\n\nNotes:\n- No data model changes'
+          }
+        ]),
+        lesson('git-github-pdf-notes', 'Git & GitHub PDF Notes', [
+          'Use the Git and GitHub PDF as the downloadable companion for commands, diagrams, classroom handouts, and revision.',
+          'Keep this reader for interactive progress and editable topic notes, then open the PDF when you want the complete reference file.'
+        ], 'Open the PDF and add five commands you want to memorize into your editable notes.', [], [
+          { label: 'Open Git & GitHub PDF', url: 'GIT and GIThub.pdf' }
+        ])
       ]
     },
     playwright: {
@@ -435,8 +520,8 @@
     }
   };
 
-  function lesson(id, title, paragraphs, practice, examples) {
-    return { id: id, title: title, paragraphs: paragraphs, practice: practice, examples: examples || [] };
+  function lesson(id, title, paragraphs, practice, examples, resources) {
+    return { id: id, title: title, paragraphs: paragraphs, practice: practice, examples: examples || [], resources: resources || [] };
   }
 
   function slugify(value) {
@@ -593,6 +678,13 @@
           '</div>'
         ].join('');
       }).join('') : '',
+      topic.resources && topic.resources.length ? [
+        '<div class="ai-resource-row">',
+        topic.resources.map(function (resource) {
+          return '<a class="primary-btn" href="' + escapeHtml(resource.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(resource.label) + '</a>';
+        }).join(''),
+        '</div>'
+      ].join('') : '',
       '<div class="ai-topic-practice"><strong>Try this:</strong><span>' + escapeHtml(topic.practice) + '</span></div>',
       '<div class="ai-edit-placeholder"><strong>Editable notes:</strong><span>Type or paste your own examples, transcript notes, exercises, or trainer comments here.</span></div>'
     ].join('');

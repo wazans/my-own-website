@@ -562,7 +562,7 @@
       description: 'Automation, API testing, BDD, CI, and framework skills for practical QA careers.',
       courses: [
         { title: 'Selenium Basics', url: 'selenium.html', difficulty: 'Beginner', summary: 'Browser automation, locators, waits, actions, tables, and Java examples.' },
-        { title: 'Playwright with TypeScript', url: 'playwright-reader.html', difficulty: 'Intermediate', summary: 'Modern end-to-end testing with fixtures, selectors, assertions, and reports.' },
+        { title: 'Playwright with TypeScript', url: 'playwright-reader.html', difficulty: 'Intermediate', summary: 'Modern end-to-end testing with fixtures, selectors, assertions, and reports.', openAccess: true },
         { title: 'API Basics', url: 'api.html', difficulty: 'Beginner', summary: 'HTTP, requests, responses, status codes, JSON, and API testing foundations.' },
         { title: 'REST Assured', url: 'rest.html', difficulty: 'Intermediate', summary: 'Java API automation with request setup, extraction, validation, and assertions.' },
         { title: 'Cucumber BDD', url: 'cucumber.html', difficulty: 'Intermediate', summary: 'Feature files, step definitions, runners, hooks, and readable scenarios.' },
@@ -579,12 +579,12 @@
       courses: [
         { title: 'Java Programming', url: 'java-programming.html', difficulty: 'Beginner', summary: 'Core Java, OOP, collections, exceptions, and coding fundamentals.' },
         { title: 'Python for Automation', url: 'python-automation.html', difficulty: 'Beginner', summary: 'Python scripting, data handling, automation utilities, and practical workflows.' },
-        { title: 'JavaScript & Frontend', url: 'js-typescript.html', difficulty: 'Beginner', summary: 'HTML, CSS, JavaScript, UI behavior, and frontend fundamentals.' },
-        { title: 'TypeScript Deep Dive', url: 'js-typescript.html', difficulty: 'Intermediate', summary: 'Type-safe JavaScript patterns for scalable frontend and automation projects.' },
+        { title: 'JavaScript & Frontend', url: 'js-typescript.html', difficulty: 'Beginner', summary: 'HTML, CSS, JavaScript, UI behavior, frontend fundamentals, and downloadable PDF notes.', openAccess: true },
+        { title: 'TypeScript Deep Dive', url: 'js-typescript.html', difficulty: 'Intermediate', summary: 'Type-safe JavaScript patterns for scalable frontend and automation projects.', openAccess: true },
         { title: 'DevOps Fundamentals', url: 'devops-fundamentals.html', difficulty: 'Intermediate', summary: 'CI/CD, Docker, Kubernetes concepts, environments, and release workflows.' },
         { title: 'Cloud Platforms', url: 'cloud-platforms.html', difficulty: 'Intermediate', summary: 'AWS and Azure fundamentals for deployment, scaling, and operations.' },
         { title: 'SQL & Database Management', url: 'sql-database-management.html', difficulty: 'Beginner', summary: 'Queries, joins, constraints, and database concepts for real projects.' },
-        { title: 'Git & GitHub Essentials', url: 'git-github-essentials.html', difficulty: 'Beginner', summary: 'Version control, branching, pull requests, and team collaboration basics.' }
+        { title: 'Git & GitHub Essentials', url: 'git-github-essentials.html', difficulty: 'Beginner', summary: 'Version control, branching, pull requests, team collaboration basics, and downloadable PDF notes.', openAccess: true }
       ]
     },
     {
@@ -593,8 +593,8 @@
       url: 'ai-emerging-technologies.html',
       description: 'Choose between AI for Everyone and AI Engineers, each with focused reader pages, progress, and editable lessons.',
       courses: [
-        { title: 'AI for Everyone', url: 'ai-for-everyone.html', difficulty: 'Beginner', summary: 'AI basics, ChatGPT, LLMs, prompts, embeddings, fine tuning, RAG, and agentic AI.' },
-        { title: 'AI Engineers', url: 'ai-engineers.html', difficulty: 'Intermediate', summary: 'AI implementation workflows, model APIs, structured output, RAG systems, agents, evaluation, and automation.' },
+        { title: 'Basic AI', url: 'ai-for-everyone.html', difficulty: 'Beginner', summary: 'AI basics, ChatGPT, LLMs, prompts, embeddings, fine tuning, RAG, and agentic AI.' },
+        { title: 'AI for QA', url: 'ai-engineers.html', difficulty: 'Intermediate', summary: 'AI testing, QA roadmap, test design support, automation assistance, evaluation, and production-ready QA workflows.' },
         { title: 'AI for Beginners', url: 'ai-for-beginners.html', difficulty: 'Beginner', summary: 'AI concepts, practical usage, limitations, and everyday productivity workflows.' },
         { title: 'Prompt Engineering', url: 'prompt-engineering.html', difficulty: 'Beginner', summary: 'Prompt structure, context, iteration, evaluation, and reusable prompt systems.' },
         { title: 'AI Agents & Automation', url: 'ai-agents-automation.html', difficulty: 'Intermediate', summary: 'Agent workflows, tool use, automation patterns, and practical AI systems.' }
@@ -606,8 +606,8 @@
     {
       id: 'ai-for-everyone',
       tree: 'everyone',
-      title: 'AI for Everyone',
-      eyebrow: 'Beginner AI track',
+      title: 'Basic AI',
+      eyebrow: 'Basic AI track',
       description: 'Foundational AI literacy, tools, prompts, automation, local AI, and practical projects for any learner.',
       modules: [
         {
@@ -733,15 +733,35 @@
         { title: 'AI Image, Video & Content', topics: ['ChatGPT Images', 'Canva AI', 'Adobe Express AI', 'Midjourney', 'Leonardo AI', 'ElevenLabs', 'HeyGen', 'Content Creation'] },
         { title: 'AI Automation', topics: ['AI Agents', 'MCP Basics', 'n8n', 'Zapier', 'Make.com', 'Simple Workflows', 'Business Automation'] },
         { title: 'Local AI', topics: ['Ollama', 'Llama', 'Gemma', 'Running AI Offline', 'Local Models', 'Privacy & Security'] },
-        { title: 'Real Projects', topics: ['Personal Assistant', 'Resume Builder', 'Study Assistant', 'Content Generator', 'AI Chatbot', 'Business Assistant'] }
+        { title: 'Real Projects', topics: ['Personal Assistant', 'Resume Builder', 'Study Assistant', 'Content Generator', 'AI Chatbot', 'Business Assistant'] },
+        {
+          title: 'Basic AI Testing Resource',
+          intro: 'External reference for learners who have completed the foundation topics and want to connect AI concepts to testing vocabulary.',
+          topics: [
+            {
+              title: 'AI Testing Reference',
+              summary: 'A broader AI testing resource for connecting foundation concepts to practical quality work.',
+              bullets: [
+                'Use after the Basic AI foundation topics.',
+                'Capture useful testing ideas in your editable notes.',
+                'Move to the AI for QA track when you are ready for a QA-specific roadmap.'
+              ],
+              practice: 'Open the reference and list three testing use cases you want to learn.',
+              resource: {
+                label: 'Open AI Testing Resource',
+                url: 'https://www.sreenidhirajakrishnan.com/ai-testing?utm_source=sp_auto_dm&utm_referrer=sp_auto_dm&fbclid=PAT01DUAS8GqJleHRuA2FlbQIxMABzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAadBnyklCpXS53mQFU_Ohb0tJXafmZpTYhYyatPbTUrmp8ac98fSZcJ5mmYqfA_aem_p_4bwH1DnhE2VkEGjB2g-g'
+              }
+            }
+          ]
+        }
       ]
     },
     {
       id: 'ai-engineers',
       tree: 'qa',
-      title: 'AI Engineers',
-      eyebrow: 'Builder AI track',
-      description: 'Practical AI implementation workflows for model APIs, RAG, agents, automation, evaluation, and production readiness.',
+      title: 'AI for QA',
+      eyebrow: 'AI for QA track',
+      description: 'Practical AI testing workflows for QA roadmap planning, test design, automation support, evaluation, and production readiness.',
       modules: [
         { title: 'AI for Manual Testing', topics: ['Requirement Analysis', 'Test Scenarios', 'Test Cases', 'Test Data', 'BDD Scenarios', 'Bug Reports', 'Exploratory Testing', 'Test Documentation'] },
         { title: 'AI for Selenium', topics: ['Generate Automation Scripts', 'Explain Existing Code', 'Debug Selenium Scripts', 'Self-Healing Concepts', 'Smart Locators', 'Framework Assistance'] },
@@ -753,7 +773,27 @@
         { title: 'AI Coding Assistants', topics: ['ChatGPT', 'Codex', 'GitHub Copilot', 'Gemini Code Assist', 'Cursor', 'Windsurf', 'Claude Code'] },
         { title: 'AI Framework Development', topics: ['Framework Design', 'POM', 'Utilities', 'Reporting', 'Data Driven', 'CI/CD', 'Git Integration'] },
         { title: 'AI Interview Preparation', topics: ['Resume Review', 'Mock Interviews', 'Selenium Questions', 'Playwright Questions', 'API Questions', 'AI Questions', 'Coding Questions'] },
-        { title: 'End-to-End Projects', topics: ['OrangeHRM Automation', 'SauceDemo Automation', 'Playwright Framework', 'Selenium Framework', 'API Automation Framework', 'AI Powered Test Generator', 'CI/CD Project'] }
+        { title: 'End-to-End Projects', topics: ['OrangeHRM Automation', 'SauceDemo Automation', 'Playwright Framework', 'Selenium Framework', 'API Automation Framework', 'AI Powered Test Generator', 'CI/CD Project'] },
+        {
+          title: 'AI for QA Roadmap',
+          intro: 'External roadmap for learners who want the QA-specific path after learning Basic AI vocabulary.',
+          topics: [
+            {
+              title: 'AI for QA Roadmap Reference',
+              summary: 'A QA-focused roadmap for applying AI to testing, automation support, evaluation, and practical project work.',
+              bullets: [
+                'Use this for the QA learning sequence.',
+                'Separate foundation AI literacy from QA application.',
+                'Convert roadmap items into weekly practice tasks.'
+              ],
+              practice: 'Open the roadmap and turn it into a 30-day checklist.',
+              resource: {
+                label: 'Open AI for QA Roadmap',
+                url: 'https://www.sreenidhirajakrishnan.com/ai-for-qa-roadmap?utm_source=sp_auto_dm&fbclid=PAT01DUAS8Gs9leHRuA2FlbQIxMABzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAacahLD_FaHL-p-itfYmqbaWDWvT_ZVw5zB5FnGN_0HZZnv-yisosNEPyCx5ng_aem_hlsFjZ3fb8CcoEALZg-n8A'
+              }
+            }
+          ]
+        }
       ]
     }
   ];
@@ -770,17 +810,40 @@
     });
   }
 
+  function openAccessUrls() {
+    var urls = [
+      'ai-emerging-technologies.html',
+      'ai-for-everyone.html',
+      'ai-engineers.html',
+      'js-typescript.html',
+      'playwright-reader.html',
+      'git-github-essentials.html'
+    ];
+    LEARNING_CATEGORIES.forEach(function(category) {
+      category.courses.forEach(function(course) {
+        if (course.openAccess && urls.indexOf(course.url) === -1) urls.push(course.url);
+      });
+    });
+    return urls;
+  }
+
+  function isOpenAccessUrl(url) {
+    if (!url) return false;
+    var normalized = url.charAt(0) === '/' ? url.slice(1) : url;
+    return openAccessUrls().indexOf(normalized) !== -1;
+  }
+
   function isUnlockedAiCourseUrl(url) {
     var category = aiEmergingCategory();
     if (!category || !url) return false;
-    if (['ai-emerging-technologies.html', '/ai-emerging-technologies.html', 'ai-for-everyone.html', '/ai-for-everyone.html', 'ai-engineers.html', '/ai-engineers.html', 'js-typescript.html', '/js-typescript.html', 'playwright-reader.html', '/playwright-reader.html'].indexOf(url) !== -1) return true;
+    if (isOpenAccessUrl(url)) return true;
     return category.courses.some(function(course) {
       return course.url === url;
     });
   }
 
   function isAiEmergingPage() {
-    return ['ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'js-typescript.html', 'playwright-reader.html'].indexOf(currentPageName()) !== -1;
+    return ['ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'js-typescript.html', 'playwright-reader.html', 'git-github-essentials.html'].indexOf(currentPageName()) !== -1;
   }
 
   function renderLearningNav() {
@@ -788,7 +851,7 @@
     if (!siteNavs.length) return;
 
     var page = currentPageName();
-    var isLearning = ['learning-hub.html', 'qa-engineering.html', 'development-technologies.html', 'ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'js-typescript.html', 'playwright-reader.html', 'tech-courses.html', 'ai-courses.html'].indexOf(page) !== -1 || document.body.classList.contains('learning-page');
+    var isLearning = ['learning-hub.html', 'qa-engineering.html', 'development-technologies.html', 'ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'js-typescript.html', 'playwright-reader.html', 'git-github-essentials.html', 'tech-courses.html', 'ai-courses.html'].indexOf(page) !== -1 || document.body.classList.contains('learning-page');
     var navHtml = [
       '<a' + (page === 'index.html' ? ' class="active"' : '') + ' href="/index.html">Home</a>',
       '<div class="has-mega-menu learning-dropdown">',
@@ -858,6 +921,7 @@
       topic.bullets && topic.bullets.length ? '<ul class="ai-topic-bullets">' + topic.bullets.map(function(item) {
         return '<li>' + escapeHtml(item) + '</li>';
       }).join('') + '</ul>' : '',
+      topic.resource ? '<div class="ai-resource-row"><a class="primary-btn" href="' + escapeHtml(topic.resource.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(topic.resource.label) + '</a></div>' : '',
       topic.practice ? '<div class="ai-topic-practice"><strong>Try this:</strong><span>' + escapeHtml(topic.practice) + '</span></div>' : '',
       '<div class="ai-edit-placeholder"><strong>Editing placeholder:</strong><span>Add screenshots, examples, transcript notes, quiz questions, or trainer comments here.</span></div>'
     ].join('');
@@ -954,9 +1018,9 @@
       });
       if (!category) return;
 
-      var unlocked = category.id === 'ai-emerging-technologies';
+      var categoryUnlocked = category.id === 'ai-emerging-technologies';
       container.innerHTML = category.courses.map(function(course) {
-        return courseCardHtml(course, unlocked);
+        return courseCardHtml(course, categoryUnlocked || !!course.openAccess || isOpenAccessUrl(course.url));
       }).join('');
     });
 
@@ -964,9 +1028,12 @@
     if (hubContainer) {
       hubContainer.innerHTML = LEARNING_CATEGORIES.map(function(category) {
         var unlocked = category.id === 'ai-emerging-technologies';
+        var openCourseCount = category.courses.filter(function(course) {
+          return course.openAccess || isOpenAccessUrl(course.url);
+        }).length;
         return [
           '<article class="glass-card category-discovery-card invite-card">',
-          unlocked ? '<span class="access-badge open-access-badge">Open Access</span>' : '<span class="access-badge">Invite Only</span>',
+          unlocked ? '<span class="access-badge open-access-badge">Open Access</span>' : (openCourseCount ? '<span class="access-badge open-access-badge">' + openCourseCount + ' Open Courses</span>' : '<span class="access-badge">Invite Only</span>'),
           '<h3>' + category.title + '</h3>',
           '<p>' + category.description + '</p>',
           '<div class="pill-row">',

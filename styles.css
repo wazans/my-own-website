@@ -467,6 +467,11 @@ a {
   position: relative;
   isolation: isolate;
   touch-action: manipulation;
+  max-width: 100%;
+  line-height: 1.25;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .primary-btn,
@@ -2867,6 +2872,27 @@ body.landing-page #learning-categories {
   gap: 1rem;
 }
 
+.landing-reader-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.landing-reader-item {
+  display: grid;
+  gap: 0.85rem;
+  align-content: start;
+}
+
+.landing-reader-item .ai-track-choice-card {
+  min-height: 100%;
+}
+
+.landing-reader-item .primary-btn,
+.landing-reader-item .secondary-btn {
+  justify-self: start;
+}
+
 body.landing-page .glass-card {
   background: rgba(15, 21, 32, 0.72);
   border-color: rgba(148, 163, 184, 0.15);
@@ -2939,7 +2965,8 @@ body.landing-page .text-link {
 }
 
 @media (max-width: 980px) {
-  .landing-card-grid {
+  .landing-card-grid,
+  .landing-reader-grid {
     grid-template-columns: 1fr;
   }
 
@@ -3613,6 +3640,18 @@ body.landing-page .text-link {
   font-weight: 700;
 }
 
+.ai-resource-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.ai-resource-row .primary-btn,
+.ai-resource-row .secondary-btn {
+  min-width: min(100%, 220px);
+}
+
 .ai-hub-dashboard {
   padding-top: var(--space-lg);
 }
@@ -3984,6 +4023,11 @@ body.landing-page .text-link {
     min-height: 280px;
   }
 
+  .ai-track-choice-card + .ai-track-choice-action {
+    justify-self: stretch;
+    width: 100%;
+  }
+
   .ai-reader-shell {
     width: min(100% - 1rem, 1440px);
     padding-top: 1rem;
@@ -4004,5 +4048,20 @@ body.landing-page .text-link {
 
   .ai-topic-item h4 {
     font-size: 0.9rem;
+  }
+
+  .ai-resource-row .primary-btn,
+  .ai-resource-row .secondary-btn,
+  .ai-inline-save-panel .primary-btn,
+  .ai-reader-toolbar .secondary-btn,
+  .landing-reader-item .primary-btn,
+  .landing-reader-item .secondary-btn,
+  .course-discovery-card .primary-btn,
+  .category-discovery-card .primary-btn,
+  .feature-card .primary-btn,
+  .feature-card .secondary-btn,
+  .hero-actions .primary-btn,
+  .hero-actions .secondary-btn {
+    width: 100%;
   }
 }
