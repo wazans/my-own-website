@@ -2322,8 +2322,9 @@ body.content-locked .page-header::after {
 }
 
 .ai-assistant-toggle {
-  width: 58px;
+  min-width: 118px;
   height: 58px;
+  padding: 0 1rem;
   border: 1px solid rgba(129, 140, 248, 0.44);
   border-radius: var(--radius-full);
   background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
@@ -2387,7 +2388,7 @@ body.content-locked .page-header::after {
 }
 
 .ai-assistant-close {
-  width: 30px;
+  min-width: 72px;
   height: 30px;
   flex: 0 0 auto;
   border: 1px solid rgba(148, 163, 184, 0.22);
@@ -2395,6 +2396,9 @@ body.content-locked .page-header::after {
   background: rgba(255, 255, 255, 0.04);
   color: var(--tn-text);
   cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-semibold);
+  padding: 0 0.7rem;
 }
 
 .ai-assistant-messages {
@@ -2413,6 +2417,19 @@ body.content-locked .page-header::after {
   font-size: 0.88rem;
   line-height: 1.45;
   word-break: break-word;
+}
+
+.ai-assistant-message-body {
+  white-space: pre-wrap;
+}
+
+.ai-assistant-source {
+  margin-top: 0.55rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
+  color: var(--tn-text-secondary);
+  font-size: 0.76rem;
+  line-height: 1.35;
 }
 
 .ai-assistant-message--assistant {
@@ -2877,9 +2894,10 @@ body.corporate-register-page .floating-register {
   }
 
   .ai-assistant-toggle {
-    width: 50px;
+    min-width: 104px;
     height: 50px;
     font-size: 0.82rem;
+    padding: 0 0.8rem;
   }
 
   .ai-assistant-panel {

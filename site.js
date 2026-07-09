@@ -91,10 +91,26 @@
       learningPages.indexOf(page) !== -1;
   }
 
-  function createAssistantMessage(role, text) {
+  function setAssistantMessageContent(message, text, sources) {
+    var body = message.querySelector('.ai-assistant-message-body');
+    var source = message.querySelector('.ai-assistant-source');
+    if (body) body.textContent = text;
+
+    if (source) {
+      var sourceText = sources && sources.length ? sources.join(', ') : '';
+      source.textContent = sourceText ? 'Source: ' + sourceText : '';
+      source.hidden = !sourceText;
+    }
+  }
+
+  function createAssistantMessage(role, text, sources) {
     var message = document.createElement('div');
     message.className = 'ai-assistant-message ai-assistant-message--' + role;
-    message.textContent = text;
+    message.innerHTML = [
+      '<div class="ai-assistant-message-body"></div>',
+      role === 'assistant' ? '<div class="ai-assistant-source" hidden></div>' : ''
+    ].join('');
+    setAssistantMessageContent(message, text, sources);
     return message;
   }
 
@@ -106,7 +122,7 @@
     shell.setAttribute('aria-label', 'TestNova AI Assistant');
     shell.innerHTML = [
       '<button class="ai-assistant-toggle" type="button" aria-expanded="false" aria-controls="ai-assistant-panel">',
-      '<span aria-hidden="true">AI</span>',
+      '<span aria-hidden="true">Ask TestNova</span>',
       '<span class="sr-only">Open TestNova AI Assistant</span>',
       '</button>',
       '<div class="ai-assistant-panel" id="ai-assistant-panel" aria-hidden="true">',
@@ -115,7 +131,7 @@
       '<h2>TestNova AI Assistant</h2>',
       '<p>Ask course-related questions</p>',
       '</div>',
-      '<button class="ai-assistant-close" type="button" aria-label="Close TestNova AI Assistant">x</button>',
+      '<button class="ai-assistant-close" type="button" aria-label="Close TestNova AI Assistant">Cancel</button>',
       '</header>',
       '<div class="ai-assistant-messages" role="log" aria-live="polite"></div>',
       '<form class="ai-assistant-form">',
@@ -155,7 +171,6 @@
       send.disabled = true;
 
       try {
-        // Future OpenAI/RAG integration will stay behind this backend route so API keys never reach the browser.
         var response = await fetch('/api/course-assistant', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -167,9 +182,17 @@
           throw new Error(data.error || 'Assistant request failed.');
         }
 
-        loadingMessage.textContent = data.reply || 'I can help with TestNova course topics. RAG integration will be added next.';
+        setAssistantMessageContent(
+          loadingMessage,
+          data.reply || 'I could not find this in TestNova course content yet.',
+          data.sources && data.sources.length ? data.sources : ['Not available in course content']
+        );
       } catch (error) {
-        loadingMessage.textContent = 'I could not reach the assistant right now. Please try again in a moment.';
+        setAssistantMessageContent(
+          loadingMessage,
+          error.message || 'I could not reach the assistant right now. Please try again in a moment.',
+          ['Not available in course content']
+        );
       } finally {
         loadingMessage.classList.remove('is-loading');
         input.disabled = false;
@@ -179,7 +202,7 @@
       }
     }
 
-    messages.appendChild(createAssistantMessage('assistant', 'I can help with TestNova course topics. RAG integration will be added next.'));
+    messages.appendChild(createAssistantMessage('assistant', 'Ask me about TestNova course topics. I will answer from the course knowledge base.'));
 
     toggle.addEventListener('click', function() {
       setOpen(!shell.classList.contains('is-open'));
