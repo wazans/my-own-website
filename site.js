@@ -698,10 +698,16 @@
               title: 'Recap - Summary View',
               summary: 'AI is the broad field, ML learns from data, deep learning uses neural networks, generative AI creates new outputs, and LLMs are language-focused generative models.',
               bullets: [
-                'Prompts control the task and output.',
-                'Embeddings help retrieve meaning-based matches.',
-                'Fine tuning changes model behavior for repeated patterns.',
-                'RAG combines retrieval with generation to reduce missing context.'
+                'AI: your phone groups photos by faces, recommends apps, translates languages, and understands voice commands.',
+                'ML: a spam filter learns from thousands of emails instead of needing a hand-written rule for every spam message.',
+                'Deep learning: a self-driving car identifies roads, signs, pedestrians, and vehicles from images.',
+                'Generative AI: creates new content, such as an image from a text prompt.',
+                'LLM: ChatGPT writes a resignation email or generates automation test cases from requirements.',
+                'Prompt: an instruction such as "Generate Selenium Java test cases for OrangeHRM login."',
+                'Embeddings: a search for vacation policy can also find leave rules or annual leave.',
+                'Fine tuning: a company adapts a model to its terminology, standards, and internal procedures.',
+                'RAG: the AI retrieves an HR document before answering a leave-policy question.',
+                'Agent: the AI checks a calendar, schedules a meeting, and sends the invite.'
               ],
               practice: 'Explain AI, ML, deep learning, generative AI, LLM, embeddings, fine tuning, and RAG in one sentence each.'
             },
@@ -779,6 +785,36 @@
       eyebrow: 'AI for QA track',
       description: 'Practical AI testing workflows for QA roadmap planning, test design, automation support, evaluation, and production readiness.',
       modules: [
+        {
+          title: 'AI Concepts in QA Examples',
+          intro: 'Map every major AI concept to realistic QA work so learners understand how the vocabulary applies in testing projects.',
+          topics: [
+            {
+              title: 'AI, ML, Deep Learning & Generative AI in QA',
+              summary: 'AI can summarize failed tests, ML can prioritize high-risk modules, deep learning can support visual testing, and generative AI can create test cases, test data, automation scripts, and API payloads.',
+              bullets: [
+                'AI example: find all failed tests from yesterday and summarize the reasons.',
+                'ML example: learn that payment and login fail most often and run those tests first.',
+                'Deep learning example: compare screenshots and detect UI changes automatically.',
+                'Generative AI example: generate Playwright TypeScript test cases for user registration.'
+              ],
+              practice: 'List one QA use case each for AI, ML, deep learning, and generative AI.'
+            },
+            {
+              title: 'LLMs, Prompts, Embeddings, Fine Tuning, RAG & Agents in QA',
+              summary: 'LLMs can convert requirements into tests, prompts guide the output, embeddings support semantic search, fine tuning enforces team standards, RAG answers from internal repositories, and agents perform multi-step QA actions.',
+              bullets: [
+                'LLM example: convert "User should not login with expired password" into test cases, BDD, automation code, and defect reports.',
+                'Prompt example: generate negative test cases for password reset functionality.',
+                'Embeddings example: payment timeout also finds transaction delay, gateway timeout, or checkout stuck.',
+                'Fine tuning example: train on defect templates, naming conventions, coding standards, and framework structure.',
+                'RAG example: ask how login automation is implemented and answer from the internal repository.',
+                'Agent example: analyze failed Jenkins build #145, identify failures, create Jira defects, and email the report.'
+              ],
+              practice: 'Choose one failed build and describe how an AI agent could triage it safely.'
+            }
+          ]
+        },
         { title: 'AI for Manual Testing', topics: ['Requirement Analysis', 'Test Scenarios', 'Test Cases', 'Test Data', 'BDD Scenarios', 'Bug Reports', 'Exploratory Testing', 'Test Documentation'] },
         { title: 'AI for Selenium', topics: ['Generate Automation Scripts', 'Explain Existing Code', 'Debug Selenium Scripts', 'Self-Healing Concepts', 'Smart Locators', 'Framework Assistance'] },
         { title: 'AI for Playwright', topics: ['Generate Playwright Tests', 'Smart Locators', 'Complex Workflows', 'Code Explanation', 'Framework Support', 'Debugging'] },

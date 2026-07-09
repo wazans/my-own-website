@@ -47,7 +47,10 @@
         lesson('recap-summary-view', 'Recap - Summary View', [
           'AI is the broad field. ML learns from data. Deep learning uses layered neural networks. Generative AI creates new outputs.',
           'LLMs are language-focused generative models. Prompts guide the task. Embeddings support meaning-based retrieval.',
-          'Fine tuning adjusts behavior. RAG adds external knowledge. Agents combine models with tools and workflows.'
+          'Fine tuning adjusts behavior. RAG adds external knowledge. Agents combine models with tools and workflows.',
+          'Practical examples: AI is your phone grouping photos by faces, recommending apps, translating languages, and understanding voice commands. ML is a spam filter learning from thousands of emails instead of developers writing every spam rule manually. Deep learning is a self-driving car identifying roads, traffic signs, pedestrians, and vehicles from camera images.',
+          'Generative AI creates new content, such as an image from the prompt "Create a modern office with robots working alongside humans." An LLM is a language-focused model, such as ChatGPT writing a resignation email or generating automation test cases from requirements. A prompt is the instruction you give, such as "Generate Selenium Java test cases for OrangeHRM login with valid and invalid credentials."',
+          'Embeddings convert text into meaning-based numbers, so a company knowledge base search for "vacation policy" can also find "leave rules" or "annual leave." Fine tuning teaches a model your domain, such as a healthcare company training an LLM on medical terminology and internal procedures. RAG retrieves external knowledge before answering, such as fetching the company HR policy before answering a leave question. An AI agent can use tools and take actions, such as checking a calendar, scheduling a meeting, and sending the invite.'
         ], 'Explain each term in one sentence: AI, ML, deep learning, generative AI, LLM, prompt, embedding, fine tuning, RAG, agent.'),
         lesson('rag', 'Retrieval Augmented Generation (RAG)', [
           'RAG connects a model to external knowledge. The system retrieves relevant content, then asks the model to answer using that context.',
@@ -84,6 +87,15 @@
           'AI for QA turns model capabilities into usable testing workflows. The work includes prompting, test design support, automation assistance, evaluation, monitoring, and human review.',
           'A practical AI feature needs clear inputs, predictable outputs, error handling, privacy rules, and a way to measure quality.'
         ], 'Pick one AI testing feature and define its input, output, model, success criteria, and failure handling.'),
+        lesson('ai-concepts-qa-examples', 'AI Concepts in QA Examples', [
+          'AI in QA can summarize failed tests from yesterday execution and group the reasons by environment, data, application bug, or automation issue.',
+          'ML in QA can prioritize tests by learning that payment and login modules fail most often, so those tests run first. Deep learning appears in visual testing tools that compare screenshots and detect UI changes automatically.',
+          'Generative AI can create test cases, test data, automation scripts, and API payloads. Example prompt: "Generate Playwright TypeScript test cases for user registration."',
+          'An LLM can convert a requirement such as "User should not login with expired password" into test cases, BDD scenarios, automation code, and defect reports. A prompt can be as direct as "Generate negative test cases for password reset functionality."',
+          'Embeddings help semantic search: searching for "payment timeout" can also find transaction delay, gateway timeout, or checkout stuck because the meanings are similar.',
+          'Fine tuning can train a model on defect templates, naming conventions, coding standards, and framework structure so generated scripts follow team standards. RAG can search the internal repository and explain how login automation is implemented in the real framework.',
+          'An AI agent can analyze failed Jenkins build #145, read logs, identify failed tests, create Jira tickets for genuine failures, and email the report with little or no manual intervention.'
+        ], 'Choose one QA workflow and map how AI, ML, LLMs, prompts, embeddings, RAG, fine tuning, and agents could support it.'),
         lesson('model-apis', 'Working with Model APIs', [
           'Model APIs let applications send prompts, context, files, or structured data to an AI model and receive generated output.',
           'Production usage needs retries, timeouts, token limits, response validation, logging, and cost controls.'
