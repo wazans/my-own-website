@@ -176,11 +176,100 @@
           'TypeScript reduces some bugs, but tests are still needed for behavior, edge cases, and integrations.',
           'Test meaningful outcomes rather than implementation details.'
         ], 'Write test cases for a function that validates an email and phone number.'),
-        lesson('javascript-pdf-notes', 'JavaScript PDF Notes', [
-          'Use the JavaScript PDF as the downloadable companion for classroom notes, revision, and offline study.',
-          'Keep this reader for progress tracking, editable notes, and topic-by-topic practice. Use the PDF when learners need the full handout in one file.'
-        ], 'Open the PDF, skim the table of contents, and add three topics you want to revise into your editable notes.', [], [
-          { label: 'Open JavaScript PDF', url: 'Java script.pdf' }
+        lesson('javascript-introduction-engine', 'JavaScript Introduction & JS Engine', [
+          'JavaScript is a lightweight, interpreted, just-in-time compiled programming language used to add interactivity, behavior, and dynamic features to web pages.',
+          'It is prototype-based, multi-paradigm, event-driven, asynchronous, dynamically typed, and works across modern browsers. It is also used on the backend through Node.js.',
+          'A browser sends requests to a server, receives the response, and JavaScript makes the page dynamic after or during that process. In Chrome and Node.js, the V8 engine converts JavaScript code into machine code and executes it.'
+        ], 'List five real website features that need JavaScript, such as validation, dynamic content, events, or API calls.'),
+        lesson('javascript-variables-data-types', 'Variables, Naming Rules & Data Types', [
+          'Variables are containers used to store data. Use var only when reading older code, let for values that may change, and const for values that should not be reassigned.',
+          'var is function scoped and can be redeclared. let and const are block scoped. let can be updated but not redeclared in the same scope. const cannot be updated or redeclared.',
+          'Primitive data types include string, number, boolean, null, undefined, symbol, and bigint. Non-primitive types include object, array, and function. Arrays, objects, and functions return object/function style results with typeof because of JavaScript history.'
+        ], 'Create examples for string, number, boolean, null, undefined, symbol, bigint, object, array, and function.', [
+          {
+            title: 'Variables and typeof',
+            code: 'var oldName = "Legacy"\nlet score = 25\nconst isActive = true\n\nconsole.log(typeof "Hello")      // string\nconsole.log(typeof 25)           // number\nconsole.log(typeof true)         // boolean\nconsole.log(typeof null)         // object\nconsole.log(typeof undefined)    // undefined\nconsole.log(typeof [1, 2, 3])    // object\nconsole.log(typeof function(){})  // function'
+          }
+        ]),
+        lesson('javascript-operators-control-statements', 'Operators & Control Statements', [
+          'Arithmetic operators perform calculations: addition, subtraction, multiplication, division, modulus, exponentiation, increment, and decrement.',
+          'Comparison operators check equality and ordering. Use strict equality when possible because it compares both value and type. Logical operators combine conditions with AND, OR, and NOT.',
+          'Use if, else if, and else for conditional branches. Use switch when one fixed value has many possible cases. JavaScript also converts values into truthy and falsy form inside conditions.'
+        ], 'Write one example each for arithmetic, assignment, comparison, logical, ternary, if/else, and switch.', [
+          {
+            title: 'Control flow example',
+            code: 'let age = 18\nlet result = age >= 18 ? "Adult" : "Minor"\n\nswitch (result) {\n  case "Adult":\n    console.log("Allowed")\n    break\n  default:\n    console.log("Not allowed")\n}'
+          }
+        ]),
+        lesson('javascript-loops-functions', 'Loops & Functions', [
+          'Loops execute a block of code multiple times. Use for when the number of iterations is known, while when the condition controls repetition, and do...while when the block should run at least once.',
+          'break exits the loop completely. continue skips the current iteration and moves to the next one.',
+          'Functions group reusable logic. The notes cover function declaration, function expression, arrow function, default parameters, rest parameters, and return statements.'
+        ], 'Create a function that accepts any number of marks and returns the total and average.', [
+          {
+            title: 'Rest parameters and return',
+            code: 'function calculateMarks(...marks) {\n  let total = 0\n  for (let mark of marks) total += mark\n  return { total, average: total / marks.length }\n}\n\nconsole.log(calculateMarks(80, 90, 75))'
+          }
+        ]),
+        lesson('javascript-arrays-objects-detail', 'Arrays & Objects in Detail', [
+          'An array is a special variable that can hold more than one value. Common array methods include push, pop, shift, unshift, splice, slice, concat, indexOf, lastIndexOf, includes, join, reverse, sort, and length.',
+          'Array iteration can be done with for, for...of, forEach, map, and filter. Use map when transforming values and filter when selecting matching values.',
+          'Objects store key-value pairs. Access properties with dot notation or bracket notation, update properties by assignment, delete with delete, and use object methods when behavior belongs to the object.'
+        ], 'Create a learner object with name, age, city, skills array, and a greet method. Then use array methods on skills.', [
+          {
+            title: 'Array and object practice',
+            code: 'let skills = ["JS", "HTML"]\nskills.push("CSS")\nlet upper = skills.map(skill => skill.toUpperCase())\n\nlet learner = {\n  name: "Zara",\n  age: 20,\n  city: "Delhi",\n  skills,\n  greet() {\n    return "Hello, I am " + this.name\n  }\n}\n\nconsole.log(upper)\nconsole.log(learner.greet())'
+          }
+        ]),
+        lesson('javascript-strings-dom-detail', 'Strings & DOM Selection', [
+          'A string is a sequence of characters. Common string properties and methods include length, toUpperCase, toLowerCase, trim, slice, substring, substr, replace, includes, indexOf, split, charAt, concat, startsWith, endsWith, and repeat.',
+          'Template literals use backticks and allow embedded expressions with ${}. They are useful for readable dynamic text and multi-line strings.',
+          'The DOM represents an HTML document as a tree of objects. JavaScript can select and manipulate elements using getElementById, getElementsByClassName, getElementsByTagName, querySelector, and querySelectorAll.'
+        ], 'Build a small page script that selects an element, trims a name, and renders a template literal greeting.', [
+          {
+            title: 'String and DOM example',
+            code: 'let name = "  Zara  "\nlet message = `Welcome, ${name.trim()}!`\n\ndocument.querySelector("#welcome").textContent = message'
+          }
+        ]),
+        lesson('javascript-es6-features', 'ES6 Features', [
+          'ES6 introduced modern syntax that makes JavaScript cleaner and easier to maintain: let, const, arrow functions, template literals, destructuring, spread operator, rest operator, default parameters, and modules.',
+          'Destructuring extracts values from arrays or properties from objects into variables. Spread expands arrays or objects. Rest collects multiple values into a single array.',
+          'Modules split code into separate files using export and import, which helps keep large projects organized.'
+        ], 'Refactor older JavaScript into ES6 using const, arrow functions, template literals, destructuring, and spread.', [
+          {
+            title: 'ES6 quick example',
+            code: 'const user = { name: "Zara", age: 21, city: "Delhi" }\nconst { name, city } = user\nconst skills = ["JS", "HTML"]\nconst updatedSkills = [...skills, "CSS"]\nconst greet = (person = name) => `Hello ${person} from ${city}`\n\nconsole.log(greet())\nconsole.log(updatedSkills)'
+          }
+        ]),
+        lesson('javascript-async-promises-fetch-json', 'Asynchronous JavaScript, Promises, Fetch & JSON', [
+          'Asynchronous JavaScript lets tasks run in the background without blocking the rest of the code. Timers, callbacks, promises, async/await, API calls, and JSON handling are core async skills.',
+          'A callback is a function passed into another function and executed later. Callback hell happens when nested callbacks become difficult to read and maintain.',
+          'A promise represents the eventual completion or failure of an async operation. async/await makes promise-based code easier to read. fetch sends HTTP requests, and JSON.stringify / JSON.parse convert between objects and JSON strings.'
+        ], 'Fetch data from an API, handle loading and errors, parse JSON, and render a result.', [
+          {
+            title: 'Fetch with async/await',
+            code: 'async function loadUser() {\n  try {\n    const response = await fetch("/api/user")\n    if (!response.ok) throw new Error("Request failed")\n    const data = await response.json()\n    console.log(JSON.stringify(data))\n  } catch (error) {\n    console.error(error.message)\n  }\n}'
+          }
+        ]),
+        lesson('javascript-events-classes-errors', 'Events, Classes & Error Handling', [
+          'Events are actions or occurrences that happen in the system, such as click, dblclick, mouseover, keydown, submit, input, load, resize, scroll, and DOMContentLoaded.',
+          'Use addEventListener instead of inline HTML event attributes. The event object contains information about what happened and can be used for validation, prevention, and UI updates.',
+          'Classes provide a cleaner way to create objects and handle inheritance. try, catch, and finally help handle runtime errors and keep important code running safely.'
+        ], 'Create a button click handler, a small class, and a try/catch block for JSON parsing.', [
+          {
+            title: 'Event, class, and error example',
+            code: 'document.querySelector("#save").addEventListener("click", function(event) {\n  event.preventDefault()\n  console.log("Button clicked")\n})\n\nclass Person {\n  constructor(name) { this.name = name }\n  greet() { return `Hello, I am ${this.name}` }\n}\n\ntry {\n  JSON.parse(\"bad json\")\n} catch (error) {\n  console.log(\"Invalid JSON\")\n} finally {\n  console.log(\"Validation finished\")\n}'
+          }
+        ]),
+        lesson('javascript-array-methods-storage', 'Array Methods, Higher Order Functions & Web Storage', [
+          'Higher order functions either accept another function as an argument or return a function. Common examples include map, filter, reduce, forEach, find, and some.',
+          'map creates a new array by applying a function to each item. filter returns items that match a condition. reduce combines values into a single result. find returns the first matching item.',
+          'localStorage keeps data even after closing and reopening the browser. sessionStorage keeps data only for the current tab/session. Store structured values as JSON strings and parse them when reading.'
+        ], 'Store a list of completed topics in localStorage, read it back, and use map/filter/reduce on the list.', [
+          {
+            title: 'Higher order functions and storage',
+            code: 'const numbers = [1, 2, 3, 4]\nconst doubled = numbers.map(n => n * 2)\nconst even = numbers.filter(n => n % 2 === 0)\nconst total = numbers.reduce((sum, n) => sum + n, 0)\n\nlocalStorage.setItem("numbers", JSON.stringify(numbers))\nconst saved = JSON.parse(localStorage.getItem("numbers") || "[]")\n\nconsole.log({ doubled, even, total, saved })'
+          }
         ])
       ]
     },
@@ -243,12 +332,81 @@
             code: 'Summary:\n- Added login smoke test\n- Covered valid user flow\n\nTesting:\n- npx playwright test login.spec.ts\n\nNotes:\n- No data model changes'
           }
         ]),
-        lesson('git-github-pdf-notes', 'Git & GitHub PDF Notes', [
-          'Use the Git and GitHub PDF as the downloadable companion for commands, diagrams, classroom handouts, and revision.',
-          'Keep this reader for interactive progress and editable topic notes, then open the PDF when you want the complete reference file.'
-        ], 'Open the PDF and add five commands you want to memorize into your editable notes.', [], [
-          { label: 'Open Git & GitHub PDF', url: 'GIT and GIThub.pdf' }
-        ])
+        lesson('git-staging-workflow', 'Git Staging Area & Workflow', [
+          'The Git workflow has three important areas: working directory, staging area, and repository. The working directory contains changed files, the staging area holds selected changes, and the repository stores committed snapshots.',
+          'Use git add to move changes into staging, git status to inspect state, and git commit to save a snapshot with a message.',
+          'You do not always need git add before commit if you use git commit -am for already tracked files, but untracked files still need git add first.'
+        ], 'Change two files, stage only one, and explain what git status shows before and after staging.', [
+          {
+            title: 'Staging workflow',
+            code: 'git status\ngit add file-one.js\ngit status\ngit commit -m "Update selected file"'
+          }
+        ]),
+        lesson('git-stash-ignore-clean', 'Git Stash, Gitignore & Cleanup', [
+          'git stash temporarily saves uncommitted changes and clears the working directory. It is useful when you need to switch branches quickly without committing unfinished work.',
+          '.gitignore tells Git which files or folders to ignore, such as logs, build files, node_modules, environment files, and generated outputs.',
+          'Cleanup commands remove untracked files or directories. Use them carefully, because cleaning can delete files that are not committed.'
+        ], 'Create a .gitignore for node_modules, logs, build output, and .env files. Then stash and re-apply a local change.', [
+          {
+            title: 'Stash and ignore',
+            code: 'git stash\ngit stash list\ngit stash pop\n\n# .gitignore examples\nnode_modules/\ndist/\n*.log\n.env'
+          }
+        ]),
+        lesson('git-undoing-changes', 'Undoing Changes: Reset, Revert & Checkout', [
+          'git reset moves HEAD and can unstage or rewrite local history depending on the mode. Soft reset keeps changes staged, mixed reset unstages changes, and hard reset discards changes.',
+          'git revert creates a new commit that undoes an earlier commit. It is safer for shared branches because it does not rewrite public history.',
+          'git checkout or git restore can discard changes in a file or switch branches depending on the command style used.'
+        ], 'Explain when to use reset, revert, and restore for a committed bug versus an uncommitted local edit.', [
+          {
+            title: 'Undo command examples',
+            code: 'git reset --soft HEAD~1\ngit reset --mixed HEAD~1\ngit reset --hard HEAD~1\n\ngit revert <commit-id>\ngit restore file.js'
+          }
+        ]),
+        lesson('git-fetch-pull-remotes', 'Fetch, Pull & Remote Tracking Branches', [
+          'A remote is a hosted copy of a repository, usually on GitHub. origin is the default remote name, and origin/main is a remote-tracking branch representing the state of main on the remote.',
+          'git fetch downloads remote commits into remote-tracking branches but does not merge them into your current branch.',
+          'git pull performs fetch plus merge or rebase, updating your current branch automatically. Use fetch when you want to inspect remote changes before integrating them.'
+        ], 'Run fetch, compare local main with origin/main, then decide whether to merge, rebase, or pull.', [
+          {
+            title: 'Remote inspection',
+            code: 'git remote -v\ngit fetch origin\ngit log --oneline main..origin/main\ngit pull origin main'
+          }
+        ]),
+        lesson('git-merge-rebase-fast-forward', 'Merge, Rebase & Fast-Forward', [
+          'Merge combines histories and keeps non-linear commits. Rebase replays commits on top of another branch, producing a cleaner linear history.',
+          'A fast-forward merge happens when the target branch has no new commits and Git can simply move the branch pointer ahead without creating a merge commit.',
+          'For shared branches, avoid rebasing commits that others may already have based work on. For feature branches, rebase can keep history clean before opening a pull request.'
+        ], 'Create a short branch history diagram showing when merge, rebase, and fast-forward happen.'),
+        lesson('github-tags-releases-actions', 'GitHub Tags, Releases & Actions', [
+          'A tag is a label pointing to a specific commit. Lightweight tags are simple pointers. Annotated tags store metadata such as tagger, date, and message and are preferred for releases.',
+          'A release packages a tagged version with notes and assets. Teams use releases to communicate stable milestones.',
+          'GitHub Actions automates workflows inside GitHub. It can build, test, deploy, or run checks when events such as push or pull request happen.'
+        ], 'Create a tag naming plan for v1.0.0, v1.1.0, and a hotfix release.', [
+          {
+            title: 'Tags and actions commands',
+            code: 'git tag -a v1.0.0 -m "First release"\ngit push origin v1.0.0\n\n# GitHub Actions lives in:\n.github/workflows/'
+          }
+        ]),
+        lesson('github-flow-git-flow-large-files', 'GitHub Flow, Git Flow & Large Files', [
+          'GitHub Flow is a simple workflow: create a branch, commit changes, open a pull request, review, and merge into main.',
+          'Git Flow is more structured and commonly uses main, develop, feature, release, and hotfix branches.',
+          'Use Git LFS for large files such as images, videos, or datasets. Avoid committing unnecessary generated files or very large binaries into normal Git history.'
+        ], 'Compare GitHub Flow and Git Flow for a small QA project versus an enterprise release process.'),
+        lesson('github-cli-api-repo-management', 'GitHub CLI, API & Repository Management', [
+          'GitHub CLI lets you work with GitHub from the command line: create repositories, clone repositories, create pull requests, list pull requests, and create issues.',
+          'The GitHub API can be used with curl or automation tools to list repositories, create issues, or integrate GitHub into custom workflows.',
+          'Repository management includes checking status, viewing differences, blaming a file, searching history, archiving a project, and fetching the latest changes.'
+        ], 'Write three GitHub CLI commands and one API example that could help a QA automation team.', [
+          {
+            title: 'GitHub CLI and API examples',
+            code: 'gh repo create\ngh repo clone owner/repo\ngh pr create\ngh issue create\n\ncurl -H \"Authorization: token YOUR_TOKEN\" https://api.github.com/repos/OWNER/REPO/issues'
+          }
+        ]),
+        lesson('git-best-practices', 'Best Practices & Common Workflows', [
+          'Make frequent commits with descriptive messages. Keep each commit focused on one logical change so reviews and rollbacks are easier.',
+          'Create branches for features or bug fixes, pull regularly to avoid drift, resolve conflicts promptly, and review pull requests thoroughly before merging.',
+          'Keep branches clean, use hooks for formatting or checks, scan commits for secrets, avoid committing large generated files, and keep main deployable.'
+        ], 'Create a Git checklist for daily QA automation work: branch, pull, edit, test, commit, push, PR, review, merge.')
       ]
     },
     playwright: {
