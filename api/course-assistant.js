@@ -3,36 +3,13 @@ const fs = require('fs');
 const path = require('path');
 
 const KNOWLEDGE_DIR = path.join(process.cwd(), 'content', 'course-knowledge');
-const CACHE_FILE = path.join(KNOWLEDGE_DIR, 'embeddings-cache.json');
-const EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL || 'text-embedding-3-small';
-const CHAT_MODEL = process.env.OPENAI_CHAT_MODEL || 'gpt-4o-mini';
-const OPENAI_API_URL = 'https://api.openai.com/v1';
+const CACHE_FILE = path.join(KNOWLEDGE_DIR, 'ollama-embeddings-cache.json');
+const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'http://localhost:11434';
+const EMBEDDING_MODEL = process.env.OLLAMA_EMBEDDING_MODEL || 'nomic-embed-text';
+const CHAT_MODEL = process.env.OLLAMA_CHAT_MODEL || 'llama3.1';
 const FALLBACK_REPLY = 'I could not find this in TestNova course content yet.';
 const MAX_CHUNK_CHARS = 1200;
 const TOP_K = 3;
-
-function loadLocalEnv() {
-  if (process.env.OPENAI_API_KEY) return;
-
-  const envPath = path.join(process.cwd(), '.env');
-  if (!fs.existsSync(envPath)) return;
-
-  fs.readFileSync(envPath, 'utf8')
-    .split(/\r?\n/)
-    .forEach((line) => {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) return;
-
-      const separator = trimmed.indexOf('=');
-      if (separator === -1) return;
-
-      const key = trimmed.slice(0, separator).trim();
-      const value = trimmed.slice(separator + 1).trim().replace(/^["']|["']$/g, '');
-      if (key && !process.env[key]) {
-        process.env[key] = value;
-      }
-    });
-}
 
 function parseBody(body) {
   if (!body) return {};
@@ -142,42 +119,55 @@ function writeCache(cache) {
   try {
     fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
   } catch (error) {
-    // Some serverless hosts expose the project as read-only. Local development still persists this cache.
+    // Local runs persist this cache. Some hosted environments may expose project files as read-only.
   }
 }
 
-async function openAiRequest(endpoint, payload) {
-  loadLocalEnv();
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    throw new Error('OPENAI_API_KEY is missing. Add it to your environment before using the course assistant.');
+function ollamaErrorMessage(error) {
+  if (
+    error &&
+    (error.code === 'ECONNREFUSED' ||
+      error.code === 'ENOTFOUND' ||
+      (error.cause && error.cause.code === 'ECONNREFUSED'))
+  ) {
+    return 'Ollama is not running. Start Ollama locally and make sure http://localhost:11434 is reachable.';
   }
 
-  const response = await fetch(`${OPENAI_API_URL}${endpoint}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  });
+  return error && error.message ? error.message : 'Ollama request failed.';
+}
+
+async function ollamaRequest(endpoint, payload) {
+  let response;
+
+  try {
+    response = await fetch(`${OLLAMA_BASE_URL}${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (error) {
+    throw new Error(ollamaErrorMessage(error));
+  }
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const message = data.error && data.error.message ? data.error.message : 'OpenAI request failed.';
-    throw new Error(message);
+    throw new Error(data.error || `Ollama returned HTTP ${response.status}.`);
   }
 
   return data;
 }
 
-async function createEmbeddings(inputs) {
-  const data = await openAiRequest('/embeddings', {
+async function createEmbedding(input) {
+  const data = await ollamaRequest('/api/embeddings', {
     model: EMBEDDING_MODEL,
-    input: inputs
+    prompt: input
   });
 
-  return data.data.map((item) => item.embedding);
+  if (!Array.isArray(data.embedding)) {
+    throw new Error(`Ollama embedding model "${EMBEDDING_MODEL}" did not return an embedding.`);
+  }
+
+  return data.embedding;
 }
 
 async function getEmbeddedKnowledge() {
@@ -197,16 +187,19 @@ async function getEmbeddedKnowledge() {
     return cache.chunks;
   }
 
-  const embeddings = await createEmbeddings(chunks.map((chunk) => [
-    `Source: ${chunk.source}`,
-    `Topic: ${chunk.heading}`,
-    chunk.text
-  ].join('\n')));
+  const embeddedChunks = [];
+  for (const chunk of chunks) {
+    const embeddingText = [
+      `Source: ${chunk.source}`,
+      `Topic: ${chunk.heading}`,
+      chunk.text
+    ].join('\n');
 
-  const embeddedChunks = chunks.map((chunk, index) => ({
-    ...chunk,
-    embedding: embeddings[index]
-  }));
+    embeddedChunks.push({
+      ...chunk,
+      embedding: await createEmbedding(embeddingText)
+    });
+  }
 
   writeCache({
     version: 1,
@@ -236,7 +229,7 @@ function cosineSimilarity(a, b) {
 
 async function retrieveRelevantChunks(question) {
   const chunks = await getEmbeddedKnowledge();
-  const [questionEmbedding] = await createEmbeddings([question]);
+  const questionEmbedding = await createEmbedding(question);
 
   return chunks
     .map((chunk) => ({
@@ -257,43 +250,33 @@ function buildContext(chunks) {
 }
 
 async function answerFromContext(question, chunks) {
-  const context = buildContext(chunks);
-  const data = await openAiRequest('/chat/completions', {
+  const prompt = [
+    'You are TestNova AI Assistant.',
+    'Answer only from the provided TestNova course context.',
+    `If the context does not contain the answer, reply exactly: ${FALLBACK_REPLY}`,
+    'Keep the answer short, beginner-friendly, and practical.',
+    'Use this exact structure when content is available:',
+    'Simple explanation:',
+    'Practical steps:',
+    'Mini assignment:',
+    'Expected output:',
+    '',
+    `Question: ${question}`,
+    '',
+    'TestNova course context:',
+    buildContext(chunks)
+  ].join('\n');
+
+  const data = await ollamaRequest('/api/generate', {
     model: CHAT_MODEL,
-    temperature: 0.2,
-    messages: [
-      {
-        role: 'system',
-        content: [
-          'You are TestNova AI Assistant.',
-          'Answer only from the provided TestNova course context.',
-          `If the context does not contain the answer, reply exactly: ${FALLBACK_REPLY}`,
-          'Keep language beginner-friendly and practical.',
-          'Use this exact answer structure when content is available:',
-          'Simple explanation:',
-          'Practical steps:',
-          'Mini assignment:',
-          'Expected output:'
-        ].join('\n')
-      },
-      {
-        role: 'user',
-        content: [
-          `Question: ${question}`,
-          '',
-          'TestNova course context:',
-          context
-        ].join('\n')
-      }
-    ]
+    prompt,
+    stream: false,
+    options: {
+      temperature: 0.2
+    }
   });
 
-  return data.choices &&
-    data.choices[0] &&
-    data.choices[0].message &&
-    data.choices[0].message.content
-    ? data.choices[0].message.content.trim()
-    : FALLBACK_REPLY;
+  return data.response ? data.response.trim() : FALLBACK_REPLY;
 }
 
 function uniqueSources(chunks) {
@@ -330,6 +313,6 @@ module.exports = async function courseAssistantHandler(req, res) {
       sources: hasAnswer ? uniqueSources(relevantChunks) : ['Not available in course content']
     });
   } catch (error) {
-    return jsonError(res, 500, error.message || 'Assistant service failed. Please try again later.');
+    return jsonError(res, 500, ollamaErrorMessage(error));
   }
 };

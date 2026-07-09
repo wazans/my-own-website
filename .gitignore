@@ -1,2 +1,3 @@
 .env
 content/course-knowledge/embeddings-cache.json
+content/course-knowledge/ollama-embeddings-cache.json
