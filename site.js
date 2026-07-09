@@ -630,9 +630,27 @@
               bullets: [
                 'AI includes reasoning, planning, language understanding, perception, and decision support.',
                 'Machine learning improves from examples instead of relying only on hand-written rules.',
-                'Deep learning is especially strong for language, image, speech, and pattern-heavy tasks.'
+                'Deep learning is especially strong for language, image, speech, and pattern-heavy tasks.',
+                'Examples: phone face grouping is AI, spam filtering is ML, and self-driving camera recognition is deep learning.'
               ],
               practice: 'Map one real feature you use daily, such as search suggestions or spam detection, to AI, ML, and deep learning.'
+            },
+            {
+              title: 'AI Concepts with Practical Examples',
+              summary: 'A practical summary of the core AI vocabulary with real-world examples learners can remember quickly.',
+              bullets: [
+                'AI: phone photo grouping, app recommendations, translation, and voice commands.',
+                'ML: a spam filter learning from thousands of emails.',
+                'Deep learning: self-driving cars identifying roads, signs, pedestrians, and vehicles.',
+                'Generative AI: creating a modern office image with robots from a text prompt.',
+                'LLM: ChatGPT writing a resignation email or generating test cases from requirements.',
+                'Prompt: "Generate Selenium Java test cases for OrangeHRM login with valid and invalid credentials."',
+                'Embeddings: vacation policy search also finds leave rules or annual leave.',
+                'Fine tuning: training a model on healthcare terminology and internal procedures.',
+                'RAG: fetching the company HR document before answering a leave-policy question.',
+                'Agent: checking a calendar, scheduling a meeting, and emailing the invite.'
+              ],
+              practice: 'Create one practical example for each concept in your own words.'
             },
             {
               title: 'Generative AI - Recap',
@@ -640,7 +658,8 @@
               bullets: [
                 'Good use cases: first drafts, explanations, brainstorming, code assistance, test design, and documentation support.',
                 'Risk areas: hallucinated facts, missing context, biased data, outdated knowledge, and overconfident answers.',
-                'Best practice: provide context, specify the output format, verify important claims, and iterate.'
+                'Best practice: provide context, specify the output format, verify important claims, and iterate.',
+                'Example: creating an image from a text prompt is generative AI because it creates new content.'
               ],
               practice: 'Take a vague prompt and improve it by adding role, task, context, constraints, and output format.'
             },

@@ -12,12 +12,26 @@
         lesson('ai-ml-deep-learning', 'Artificial Intelligence, Machine Learning & Deep Learning', [
           'Artificial Intelligence is the broad field of making machines perform tasks that normally need human intelligence.',
           'Machine Learning is a major AI approach where systems learn useful patterns from data.',
-          'Deep Learning is a machine learning approach that uses neural networks with many layers, especially useful for language, images, speech, and pattern-heavy tasks.'
+          'Deep Learning is a machine learning approach that uses neural networks with many layers, especially useful for language, images, speech, and pattern-heavy tasks.',
+          'Example: AI is your phone grouping photos by faces and understanding voice commands. ML is a spam filter learning from many emails. Deep learning is a self-driving car recognizing roads, signs, pedestrians, and vehicles.'
         ], 'Write one example each for AI, ML, and deep learning from tools you already use.'),
+        lesson('ai-concepts-practical-examples', 'AI Concepts with Practical Examples', [
+          'Artificial Intelligence (AI): broad field of making machines intelligent. Practical example: your phone automatically groups photos by faces, recommends apps, translates languages, and understands voice commands.',
+          'Machine Learning (ML): systems learn patterns from data instead of explicit programming. Practical example: a spam filter learns from thousands of emails and starts detecting spam without developers writing rules for every spam message.',
+          'Deep Learning: multi-layer neural networks for complex tasks. Practical example: self-driving cars identify roads, traffic signs, pedestrians, and vehicles using camera images.',
+          'Generative AI: creates new content. Practical example: creating an image from the prompt "Create a modern office with robots working alongside humans."',
+          'Large Language Model (LLM): specialized generative AI for language tasks. Practical example: asking ChatGPT to write a resignation email or generate automation test cases from requirements.',
+          'Prompt: instruction given to an AI model. Practical example: "Generate Selenium Java test cases for OrangeHRM login with valid and invalid credentials."',
+          'Embeddings: convert text into numerical meaning representations. Practical example: searching "vacation policy" also returns "leave rules" or "annual leave" because the meaning is similar.',
+          'Fine Tuning: training an existing model on company-specific data. Practical example: a healthcare company trains an LLM on medical terminology and internal procedures.',
+          'RAG (Retrieval Augmented Generation): AI retrieves external data before answering. Practical example: when asked about leave policy, the AI first fetches the HR document and answers from that document instead of guessing.',
+          'AI Agent: AI that can use tools and perform actions. Practical example: schedule a meeting with John tomorrow at 3 PM, check calendar availability, create the meeting, and send the invite.'
+        ], 'Create your own practical example for each concept: AI, ML, deep learning, generative AI, LLM, prompt, embeddings, fine tuning, RAG, and agent.'),
         lesson('generative-ai-recap', 'Generative AI - Recap', [
           'Generative AI is strongest when the task needs drafting, rewriting, summarizing, explaining, brainstorming, or converting one format into another.',
           'It is not a perfect fact database. Important outputs still need review, testing, and source checking.',
-          'Better inputs usually produce better outputs: give role, goal, context, examples, constraints, and output format.'
+          'Better inputs usually produce better outputs: give role, goal, context, examples, constraints, and output format.',
+          'Example: image generation from "Create a modern office with robots working alongside humans" is generative AI because it creates new content instead of only analyzing existing content.'
         ], 'Improve a vague prompt by adding role, goal, context, constraints, and expected output format.'),
         lesson('chatgpt-features', 'Explore ChatGPT: Features & Capabilities - Introduction', [
           'ChatGPT can work as a learning assistant, writing partner, coding helper, research helper, planning assistant, and workflow support tool.',
@@ -27,22 +41,26 @@
         lesson('llm-large-language-model', 'LLM (Large Language Model)', [
           'A Large Language Model is trained on large amounts of text and code to predict and generate language.',
           'LLMs process input as tokens, which are chunks of text such as words, word pieces, punctuation, or symbols.',
-          'The context window controls how much information the model can consider in one interaction.'
+          'The context window controls how much information the model can consider in one interaction.',
+          'Example: asking ChatGPT to write a resignation email or generate automation test cases from requirements uses an LLM for language understanding and generation.'
         ], 'Give an LLM a short bug report and ask it to extract severity, steps, expected result, actual result, and missing details.'),
         lesson('prompt-engineering', 'Prompt Engineering', [
           'Prompt engineering is the practice of giving clear instructions and useful context so an AI model can produce the desired output.',
           'A strong prompt includes role, task, context, input data, constraints, examples, output format, and quality criteria.',
-          'Prompting is iterative: inspect the answer, identify what is missing, and refine the instruction.'
+          'Prompting is iterative: inspect the answer, identify what is missing, and refine the instruction.',
+          'Example prompt: "Generate Selenium Java test cases for OrangeHRM login with valid and invalid credentials."'
         ], 'Write a prompt that turns a user story into positive, negative, boundary, and edge test cases.'),
         lesson('embeddings', 'Embeddings', [
           'Embeddings convert text into numeric vectors that represent meaning.',
           'They make semantic search possible, where the system finds related ideas instead of only exact keyword matches.',
-          'Embeddings are used in search, recommendations, clustering, duplicate detection, and RAG systems.'
+          'Embeddings are used in search, recommendations, clustering, duplicate detection, and RAG systems.',
+          'Example: in a company knowledge base, searching for "vacation policy" can also return documents containing "leave rules" or "annual leave" even when the exact words do not match.'
         ], 'Compare keyword search and semantic search for: login fails, user cannot access account, authentication error.'),
         lesson('fine-tuning', 'Fine Tuning', [
           'Fine tuning adapts a model with additional examples so it follows a specific style, domain, or task pattern more reliably.',
           'Use fine tuning when repeated output behavior matters and prompting or retrieval is not enough.',
-          'Fine tuning changes behavior. RAG supplies external knowledge at answer time.'
+          'Fine tuning changes behavior. RAG supplies external knowledge at answer time.',
+          'Example: a healthcare company trains an LLM on medical terminology so it understands hospital abbreviations and internal procedures better.'
         ], 'List three cases where prompts are enough and one case where fine tuning may be justified.'),
         lesson('recap-summary-view', 'Recap - Summary View', [
           'AI is the broad field. ML learns from data. Deep learning uses layered neural networks. Generative AI creates new outputs.',
@@ -55,12 +73,14 @@
         lesson('rag', 'Retrieval Augmented Generation (RAG)', [
           'RAG connects a model to external knowledge. The system retrieves relevant content, then asks the model to answer using that context.',
           'A basic RAG flow is: user question, retrieve relevant chunks, pass chunks to the model, generate grounded answer.',
-          'RAG is useful for private notes, current documents, course material, policies, FAQs, and product knowledge.'
+          'RAG is useful for private notes, current documents, course material, policies, FAQs, and product knowledge.',
+          'Example: you ask "What is our leave policy?" The AI first fetches the company HR document and then answers using that document instead of guessing.'
         ], 'Design a simple RAG flow for a learning FAQ bot that answers from course notes.'),
         lesson('agentic-ai-chatbot', 'Agentic AI - Building Our Own Chat Bot', [
           'Agentic AI combines a model with tools, memory, planning, and workflow steps.',
           'A basic chatbot answers from model knowledge and supplied context. An agent can decide when to search, call an API, create a file, or ask for clarification.',
-          'Start simple: define purpose, knowledge source, allowed actions, guardrails, and fallback behavior.'
+          'Start simple: define purpose, knowledge source, allowed actions, guardrails, and fallback behavior.',
+          'Example: you say "Schedule a meeting with John tomorrow at 3 PM and email him the invite." The agent checks your calendar, finds availability, creates the meeting, and sends the email automatically.'
         ], 'Sketch a chatbot with a welcome message, knowledge source, three allowed actions, and one fallback when it is unsure.'),
         lesson('ai-tools-daily-use', 'AI Tools for Daily Use', [
           'Basic AI learning should focus on how to use AI tools clearly, safely, and productively before moving into specialized QA use cases.',
