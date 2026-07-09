@@ -7,6 +7,7 @@
  * - mobile sidebar toggle
  * - registration modal handling
  * - exit intent popup
+ * - course assistant widget
  */
 (function () {
   // Function to inject the floating register button
@@ -51,6 +52,160 @@
       '</svg>'
     ].join('');
     document.body.appendChild(link);
+  }
+
+  function isCourseAssistantPage() {
+    var page = currentPageName();
+    var learningPages = [
+      'learning-hub.html',
+      'qa-engineering.html',
+      'development-technologies.html',
+      'ai-emerging-technologies.html',
+      'ai-for-everyone.html',
+      'ai-engineers.html',
+      'ai-for-beginners.html',
+      'prompt-engineering.html',
+      'ai-agents-automation.html',
+      'js-typescript.html',
+      'playwright-reader.html',
+      'git-github-essentials.html',
+      'selenium.html',
+      'api.html',
+      'rest.html',
+      'cucumber.html',
+      'hybrid.html',
+      'jenkins.html',
+      'master.html',
+      'java-programming.html',
+      'python-automation.html',
+      'devops-fundamentals.html',
+      'cloud-platforms.html',
+      'sql-database-management.html',
+      'machine-learning-fundamentals.html',
+      'blockchain-web3-basics.html',
+      'iot-essentials.html'
+    ];
+
+    return document.body.classList.contains('learning-page') ||
+      document.body.classList.contains('course-page') ||
+      learningPages.indexOf(page) !== -1;
+  }
+
+  function createAssistantMessage(role, text) {
+    var message = document.createElement('div');
+    message.className = 'ai-assistant-message ai-assistant-message--' + role;
+    message.textContent = text;
+    return message;
+  }
+
+  function injectCourseAssistant() {
+    if (!isCourseAssistantPage() || document.querySelector('.ai-course-assistant')) return;
+
+    var shell = document.createElement('section');
+    shell.className = 'ai-course-assistant';
+    shell.setAttribute('aria-label', 'TestNova AI Assistant');
+    shell.innerHTML = [
+      '<button class="ai-assistant-toggle" type="button" aria-expanded="false" aria-controls="ai-assistant-panel">',
+      '<span aria-hidden="true">AI</span>',
+      '<span class="sr-only">Open TestNova AI Assistant</span>',
+      '</button>',
+      '<div class="ai-assistant-panel" id="ai-assistant-panel" aria-hidden="true">',
+      '<header class="ai-assistant-header">',
+      '<div>',
+      '<h2>TestNova AI Assistant</h2>',
+      '<p>Ask course-related questions</p>',
+      '</div>',
+      '<button class="ai-assistant-close" type="button" aria-label="Close TestNova AI Assistant">x</button>',
+      '</header>',
+      '<div class="ai-assistant-messages" role="log" aria-live="polite"></div>',
+      '<form class="ai-assistant-form">',
+      '<input class="ai-assistant-input" type="text" autocomplete="off" placeholder="Ask about this course..." aria-label="Ask a course question" />',
+      '<button class="ai-assistant-send" type="submit">Send</button>',
+      '</form>',
+      '</div>'
+    ].join('');
+
+    var toggle = shell.querySelector('.ai-assistant-toggle');
+    var close = shell.querySelector('.ai-assistant-close');
+    var panel = shell.querySelector('.ai-assistant-panel');
+    var messages = shell.querySelector('.ai-assistant-messages');
+    var form = shell.querySelector('.ai-assistant-form');
+    var input = shell.querySelector('.ai-assistant-input');
+    var send = shell.querySelector('.ai-assistant-send');
+
+    function setOpen(isOpen) {
+      shell.classList.toggle('is-open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      panel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+      if (isOpen) input.focus();
+    }
+
+    function scrollMessages() {
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    async function sendMessage(text) {
+      messages.appendChild(createAssistantMessage('user', text));
+      var loadingMessage = createAssistantMessage('assistant', 'Thinking...');
+      loadingMessage.classList.add('is-loading');
+      messages.appendChild(loadingMessage);
+      scrollMessages();
+
+      input.disabled = true;
+      send.disabled = true;
+
+      try {
+        // Future OpenAI/RAG integration will stay behind this backend route so API keys never reach the browser.
+        var response = await fetch('/api/course-assistant', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+
+        var data = await response.json().catch(function() { return {}; });
+        if (!response.ok) {
+          throw new Error(data.error || 'Assistant request failed.');
+        }
+
+        loadingMessage.textContent = data.reply || 'I can help with TestNova course topics. RAG integration will be added next.';
+      } catch (error) {
+        loadingMessage.textContent = 'I could not reach the assistant right now. Please try again in a moment.';
+      } finally {
+        loadingMessage.classList.remove('is-loading');
+        input.disabled = false;
+        send.disabled = false;
+        input.focus();
+        scrollMessages();
+      }
+    }
+
+    messages.appendChild(createAssistantMessage('assistant', 'I can help with TestNova course topics. RAG integration will be added next.'));
+
+    toggle.addEventListener('click', function() {
+      setOpen(!shell.classList.contains('is-open'));
+    });
+
+    close.addEventListener('click', function() {
+      setOpen(false);
+    });
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      sendMessage(text);
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && shell.classList.contains('is-open')) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    document.body.appendChild(shell);
   }
 
   // Function to set up mobile navigation toggle
@@ -1297,6 +1452,7 @@
     injectRegisterButton();
     setupContextualLeadActions();
     injectWhatsAppButton();
+    injectCourseAssistant();
     setupMobileNav();
     setupMobileSidebar();
     setupPageSidebarLinks();
