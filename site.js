@@ -735,22 +735,38 @@
         { title: 'Local AI', topics: ['Ollama', 'Llama', 'Gemma', 'Running AI Offline', 'Local Models', 'Privacy & Security'] },
         { title: 'Real Projects', topics: ['Personal Assistant', 'Resume Builder', 'Study Assistant', 'Content Generator', 'AI Chatbot', 'Business Assistant'] },
         {
-          title: 'Basic AI Testing Resource',
-          intro: 'External reference for learners who have completed the foundation topics and want to connect AI concepts to testing vocabulary.',
+          title: 'AI Tools & Daily Productivity',
+          intro: 'Use this module for basic, non-QA AI usage: daily tools, verification habits, and repeatable productivity workflows.',
           topics: [
             {
-              title: 'AI Testing Reference',
-              summary: 'A broader AI testing resource for connecting foundation concepts to practical quality work.',
+              title: 'AI Tools for Daily Use',
+              summary: 'Use AI assistants for explanation, summarization, comparison, brainstorming, rewriting, translation, planning, email drafting, presentation outlines, spreadsheet help, and document cleanup.',
               bullets: [
-                'Use after the Basic AI foundation topics.',
-                'Capture useful testing ideas in your editable notes.',
-                'Move to the AI for QA track when you are ready for a QA-specific roadmap.'
+                'Give role, goal, context, constraints, and expected output format.',
+                'Treat AI output as a draft that still needs human review.',
+                'Use AI to learn faster, organize information, and create first versions of routine work.'
               ],
-              practice: 'Open the reference and list three testing use cases you want to learn.',
-              resource: {
-                label: 'Open AI Testing Resource',
-                url: 'https://www.sreenidhirajakrishnan.com/ai-testing?utm_source=sp_auto_dm&utm_referrer=sp_auto_dm&fbclid=PAT01DUAS8GqJleHRuA2FlbQIxMABzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAadBnyklCpXS53mQFU_Ohb0tJXafmZpTYhYyatPbTUrmp8ac98fSZcJ5mmYqfA_aem_p_4bwH1DnhE2VkEGjB2g-g'
-              }
+              practice: 'Write one prompt for a daily task with role, goal, context, constraints, and output format.'
+            },
+            {
+              title: 'AI Output Quality & Verification',
+              summary: 'AI answers can be incomplete, outdated, biased, or confidently wrong, so important output must be checked before use.',
+              bullets: [
+                'Ask for assumptions, missing context, risks, and uncertainty.',
+                'Verify important claims with reliable sources.',
+                'Compare the answer with your original goal before using it.'
+              ],
+              practice: 'Review one AI answer and list what is useful, missing, risky, or unsupported.'
+            },
+            {
+              title: 'AI Productivity Workflows',
+              summary: 'A workflow turns messy input into useful output through repeated prompts and human review.',
+              bullets: [
+                'Examples: notes to summary, rough email to polished email, topic to study plan, data to table.',
+                'Keep human approval before publishing, sending, or relying on output.',
+                'Save reusable prompt patterns for repeated work.'
+              ],
+              practice: 'Design a three-step AI workflow for learning a new technology topic.'
             }
           ]
         }
@@ -776,21 +792,38 @@
         { title: 'End-to-End Projects', topics: ['OrangeHRM Automation', 'SauceDemo Automation', 'Playwright Framework', 'Selenium Framework', 'API Automation Framework', 'AI Powered Test Generator', 'CI/CD Project'] },
         {
           title: 'AI for QA Roadmap',
-          intro: 'External roadmap for learners who want the QA-specific path after learning Basic AI vocabulary.',
+          intro: 'Use this module for the QA-specific path: testing fundamentals plus AI-assisted analysis, test design, automation support, evaluation, and projects.',
           topics: [
             {
-              title: 'AI for QA Roadmap Reference',
-              summary: 'A QA-focused roadmap for applying AI to testing, automation support, evaluation, and practical project work.',
+              title: 'AI for QA Roadmap',
+              summary: 'Start with manual testing fundamentals, add AI basics and prompt patterns, then apply AI to requirements, test scenarios, test data, automation support, and evaluation.',
               bullets: [
-                'Use this for the QA learning sequence.',
-                'Separate foundation AI literacy from QA application.',
-                'Convert roadmap items into weekly practice tasks.'
+                'Week 1: AI basics, prompt structure, and QA use cases.',
+                'Week 2: requirement analysis, test scenarios, test cases, and test data.',
+                'Week 3: automation assistance for Selenium, Playwright, and API testing.',
+                'Week 4: evaluation, review, reporting, and end-to-end QA projects.'
               ],
-              practice: 'Open the roadmap and turn it into a 30-day checklist.',
-              resource: {
-                label: 'Open AI for QA Roadmap',
-                url: 'https://www.sreenidhirajakrishnan.com/ai-for-qa-roadmap?utm_source=sp_auto_dm&fbclid=PAT01DUAS8Gs9leHRuA2FlbQIxMABzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAacahLD_FaHL-p-itfYmqbaWDWvT_ZVw5zB5FnGN_0HZZnv-yisosNEPyCx5ng_aem_hlsFjZ3fb8CcoEALZg-n8A'
-              }
+              practice: 'Create a 30-day AI for QA roadmap with weekly goals.'
+            },
+            {
+              title: 'AI for Manual Testing Workflow',
+              summary: 'Use AI to break down requirements, identify assumptions, create scenario categories, draft test cases, and improve bug reports.',
+              bullets: [
+                'Ask for assumptions and missing questions before generating tests.',
+                'Separate positive, negative, boundary, edge, regression, and exploratory scenarios.',
+                'Review generated cases against the actual requirement before using them.'
+              ],
+              practice: 'Turn one user story into assumptions, scenarios, and test cases with AI support.'
+            },
+            {
+              title: 'AI for Automation Workflow',
+              summary: 'Use AI to explain code, draft automation steps, suggest locators, support page objects, debug failures, and improve framework utilities.',
+              bullets: [
+                'Provide tool stack, page details, expected behavior, existing code, and error logs.',
+                'Review generated locators, waits, assertions, and maintainability.',
+                'Never paste secrets, private credentials, or sensitive production data.'
+              ],
+              practice: 'Convert one manual login test into Selenium or Playwright automation steps and review the output.'
             }
           ]
         }

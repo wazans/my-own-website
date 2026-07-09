@@ -59,12 +59,21 @@
           'A basic chatbot answers from model knowledge and supplied context. An agent can decide when to search, call an API, create a file, or ask for clarification.',
           'Start simple: define purpose, knowledge source, allowed actions, guardrails, and fallback behavior.'
         ], 'Sketch a chatbot with a welcome message, knowledge source, three allowed actions, and one fallback when it is unsure.'),
-        lesson('basic-ai-testing-reference', 'Basic AI Testing Reference', [
-          'Use this external resource as the broader AI testing reference before moving into the QA-specific roadmap.',
-          'Read it after the foundation topics so terms such as prompts, LLMs, agents, evaluation, and hallucination are easier to connect to testing work.'
-        ], 'Open the AI testing reference and add three testing ideas to your editable notes.', [], [
-          { label: 'Open AI Testing Resource', url: 'https://www.sreenidhirajakrishnan.com/ai-testing?utm_source=sp_auto_dm&utm_referrer=sp_auto_dm&fbclid=PAT01DUAS8GqJleHRuA2FlbQIxMABzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAadBnyklCpXS53mQFU_Ohb0tJXafmZpTYhYyatPbTUrmp8ac98fSZcJ5mmYqfA_aem_p_4bwH1DnhE2VkEGjB2g-g' }
-        ])
+        lesson('ai-tools-daily-use', 'AI Tools for Daily Use', [
+          'Basic AI learning should focus on how to use AI tools clearly, safely, and productively before moving into specialized QA use cases.',
+          'Use AI assistants for explanation, summarization, comparison, brainstorming, rewriting, translation, planning, email drafting, presentation outlines, spreadsheet help, and document cleanup.',
+          'Good usage starts with context: tell the tool your goal, audience, current skill level, constraints, and preferred output format. Review the answer before using it in real work.'
+        ], 'Pick one daily task and write a prompt that includes role, goal, context, constraints, and output format.'),
+        lesson('ai-output-quality', 'AI Output Quality & Verification', [
+          'AI answers can be useful but may still be incomplete, outdated, biased, or confidently wrong. Treat output as a draft that needs human review.',
+          'Check important claims with reliable sources, compare answers across prompts when needed, and ask the model to list assumptions, missing context, risks, and uncertainty.',
+          'For learning, ask the AI to explain step by step, generate examples, quiz you, simplify hard terms, and then verify the explanation against trusted material.'
+        ], 'Take one AI answer and review it for missing context, assumptions, unsupported claims, and practical usefulness.'),
+        lesson('ai-productivity-workflows', 'AI Productivity Workflows', [
+          'A workflow is a repeated sequence of prompts and review steps that turns messy input into useful output. Examples include notes to summary, topic to study plan, rough email to polished email, and data to table.',
+          'Start with a small workflow: input, transformation, review, and final output. Keep human approval before publishing, sending, or relying on the result.',
+          'Useful beginner workflows include learning assistant, resume draft, meeting notes summary, content calendar, FAQ generation, presentation outline, and personal knowledge assistant.'
+        ], 'Design a three-step AI workflow for learning a new technology topic: collect notes, summarize, quiz yourself.')
       ]
     },
     engineers: {
@@ -104,12 +113,21 @@
           'Production AI needs guardrails, monitoring, privacy checks, prompt/version management, fallback paths, and cost visibility.',
           'The system should fail safely when the model is unsure or the source context is weak.'
         ], 'Create a release checklist for moving an AI chatbot from prototype to production.'),
-        lesson('ai-for-qa-roadmap-reference', 'AI for QA Roadmap Reference', [
-          'Use this external roadmap for the testing-focused path: AI-assisted test design, QA automation support, evaluation, and AI quality practices.',
-          'Keep it separate from the Basic AI track so learners can first build AI vocabulary, then apply it to QA workflows.'
-        ], 'Open the AI for QA roadmap and convert it into a personal 30-day study checklist.', [], [
-          { label: 'Open AI for QA Roadmap', url: 'https://www.sreenidhirajakrishnan.com/ai-for-qa-roadmap?utm_source=sp_auto_dm&fbclid=PAT01DUAS8Gs9leHRuA2FlbQIxMABzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAacahLD_FaHL-p-itfYmqbaWDWvT_ZVw5zB5FnGN_0HZZnv-yisosNEPyCx5ng_aem_hlsFjZ3fb8CcoEALZg-n8A' }
-        ])
+        lesson('ai-for-qa-roadmap', 'AI for QA Roadmap', [
+          'AI for QA starts with strong manual testing fundamentals, then adds AI literacy, prompt engineering, AI-assisted test design, automation support, and evaluation skills.',
+          'A practical roadmap is: learn AI basics, learn prompt patterns, use AI for requirements analysis, generate and review test scenarios, create test data, support automation code, evaluate output quality, and build small QA projects.',
+          'The goal is not to let AI replace QA judgment. The goal is to make QA work faster, broader, and more systematic while humans validate risk, coverage, and correctness.'
+        ], 'Create a 30-day AI for QA roadmap with weekly goals for prompts, test design, automation support, and evaluation.'),
+        lesson('ai-for-manual-testing-workflow', 'AI for Manual Testing Workflow', [
+          'Use AI to break down requirements, identify assumptions, create positive and negative scenarios, suggest boundary values, draft test cases, and improve bug reports.',
+          'Always review generated test cases against the actual requirement. AI may miss business rules, domain constraints, dependencies, or edge cases that a QA engineer must catch.',
+          'A strong workflow is: paste requirement, ask for assumptions, ask for scenario categories, generate test cases, review coverage, refine missing areas, and prepare final test documentation.'
+        ], 'Paste a sample user story and ask AI for assumptions, test scenarios, boundary cases, and missing questions.'),
+        lesson('ai-for-automation-workflow', 'AI for Automation Workflow', [
+          'AI can help explain existing automation code, suggest locators, draft page object methods, convert manual cases into automation steps, and debug common failures.',
+          'For Selenium, Playwright, API testing, and framework work, provide the tool stack, page details, expected behavior, existing code, error logs, and constraints.',
+          'Do not paste secrets or private credentials. Review generated code for flaky waits, weak locators, missing assertions, poor error handling, and maintainability before adding it to a framework.'
+        ], 'Ask AI to convert a manual login test into Playwright or Selenium steps, then review the locators and assertions.')
       ]
     },
     jsTs: {
