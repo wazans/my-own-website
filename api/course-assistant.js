@@ -11,6 +11,29 @@ const FALLBACK_REPLY = 'I could not find this in TestNova course content yet.';
 const MAX_CHUNK_CHARS = 1200;
 const TOP_K = 3;
 
+function loadLocalEnv() {
+  if (process.env.OPENAI_API_KEY) return;
+
+  const envPath = path.join(process.cwd(), '.env');
+  if (!fs.existsSync(envPath)) return;
+
+  fs.readFileSync(envPath, 'utf8')
+    .split(/\r?\n/)
+    .forEach((line) => {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) return;
+
+      const separator = trimmed.indexOf('=');
+      if (separator === -1) return;
+
+      const key = trimmed.slice(0, separator).trim();
+      const value = trimmed.slice(separator + 1).trim().replace(/^["']|["']$/g, '');
+      if (key && !process.env[key]) {
+        process.env[key] = value;
+      }
+    });
+}
+
 function parseBody(body) {
   if (!body) return {};
   if (typeof body === 'object') return body;
@@ -124,6 +147,7 @@ function writeCache(cache) {
 }
 
 async function openAiRequest(endpoint, payload) {
+  loadLocalEnv();
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     throw new Error('OPENAI_API_KEY is missing. Add it to your environment before using the course assistant.');
