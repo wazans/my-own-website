@@ -227,18 +227,45 @@
           'Test meaningful outcomes rather than implementation details.'
         ], 'Write test cases for a function that validates an email and phone number.'),
         lesson('javascript-introduction-engine', 'JavaScript Introduction & JS Engine', [
-          'JavaScript is a lightweight, interpreted, just-in-time compiled programming language used to add interactivity, behavior, and dynamic features to web pages.',
-          'It is prototype-based, multi-paradigm, event-driven, asynchronous, dynamically typed, and works across modern browsers. It is also used on the backend through Node.js.',
-          'A browser sends requests to a server, receives the response, and JavaScript makes the page dynamic after or during that process. In Chrome and Node.js, the V8 engine converts JavaScript code into machine code and executes it.'
-        ], 'List five real website features that need JavaScript, such as validation, dynamic content, events, or API calls.'),
+          'JavaScript is a versatile programming language used for interactive web applications. It works with HTML and CSS in the browser, and it can also run on servers or local machines through Node.js.',
+          'JavaScript is dynamically typed. The data type of a variable is decided at run time, so you do not explicitly declare the type before execution.',
+          'A JavaScript engine is the program inside a browser that reads, interprets, and executes JavaScript code. Chrome, Edge, Brave, Opera, and Samsung Internet use V8 through Chromium. Firefox uses SpiderMonkey. Safari uses JavaScriptCore, also called Nitro. Old Internet Explorer used Chakra.',
+          'Node.js is a free, open-source runtime environment that runs JavaScript outside the browser. It is powered by the V8 engine and supported by the npm package ecosystem.'
+        ], 'List five real website features that need JavaScript, then run one JavaScript file with Node.js.', [
+          {
+            title: 'Run JavaScript with Node.js',
+            code: 'node -v\nnpm -v\n\n// save as intro.js\nconsole.log("JavaScript is running outside the browser")\n\n// terminal\nnode intro.js'
+          }
+        ]),
         lesson('javascript-variables-data-types', 'Variables, Naming Rules & Data Types', [
-          'Variables are containers used to store data. Use var only when reading older code, let for values that may change, and const for values that should not be reassigned.',
-          'var is function scoped and can be redeclared. let and const are block scoped. let can be updated but not redeclared in the same scope. const cannot be updated or redeclared.',
-          'Primitive data types include string, number, boolean, null, undefined, symbol, and bigint. Non-primitive types include object, array, and function. Arrays, objects, and functions return object/function style results with typeof because of JavaScript history.'
-        ], 'Create examples for string, number, boolean, null, undefined, symbol, bigint, object, array, and function.', [
+          'Variables are containers used to store data. JavaScript has three common declaration keywords: var, let, and const.',
+          'var is the legacy declaration style from before ES6. It is function scoped, can be updated, and can be redeclared, which may cause accidental overwrites.',
+          'let is the modern block-scoped declaration. It can be updated, but it cannot be redeclared in the same block.',
+          'const is block scoped and must be initialized immediately. It cannot be reassigned or redeclared.',
+          'Common data types include number, string, boolean, undefined, null, object, array, and function. JavaScript decides these types at run time.'
+        ], 'Create examples for number, string, boolean, undefined, null, object, array, function, var, let, and const.', [
           {
             title: 'Variables and typeof',
             code: 'var oldName = "Legacy"\nlet score = 25\nconst isActive = true\n\nconsole.log(typeof "Hello")      // string\nconsole.log(typeof 25)           // number\nconsole.log(typeof true)         // boolean\nconsole.log(typeof null)         // object\nconsole.log(typeof undefined)    // undefined\nconsole.log(typeof [1, 2, 3])    // object\nconsole.log(typeof function(){})  // function'
+          },
+          {
+            title: 'var, let, and const',
+            code: 'var name = "Wasim"\nvar name = "Ansari"\nconsole.log(name) // Ansari\n\nlet age = 30\nage = 31\n// let age = 32 // SyntaxError: Identifier has already been declared\n\nconst role = "QA"\n// role = "Dev" // TypeError: Assignment to constant variable'
+          }
+        ]),
+        lesson('javascript-hoisting', 'Hoisting', [
+          'Hoisting is JavaScript behavior where declarations are processed before code runs. It can make variables and functions appear available earlier than where they are written.',
+          'var declarations are hoisted and initialized as undefined. This means reading a var variable before assignment gives undefined.',
+          'Function declarations are fully hoisted, so they can be called before the function appears in the file.',
+          'let and const are also hoisted, but they stay uninitialized until their line runs. Reading them early gives a ReferenceError.'
+        ], 'Write one example each for var hoisting, function hoisting, and let or const ReferenceError.', [
+          {
+            title: 'var hoisting',
+            code: 'console.log(name) // undefined\nvar name = "Wasim"\n\n// JavaScript behaves like this:\nvar name\nconsole.log(name) // undefined\nname = "Wasim"'
+          },
+          {
+            title: 'function, let, and const hoisting',
+            code: 'sayHello()\n\nfunction sayHello() {\n  console.log("Hello Wasim")\n}\n\n// console.log(city) // ReferenceError\nlet city = "Pune"\n\n// console.log(role) // ReferenceError\nconst role = "QA"'
           }
         ]),
         lesson('javascript-operators-control-statements', 'Operators & Control Statements', [
