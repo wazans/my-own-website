@@ -171,6 +171,24 @@
           'Start with variables, functions, conditions, loops, arrays, objects, and events.',
           'Modern JavaScript is also used outside the browser with runtimes such as Node.js.'
         ], 'Create a small script that reads a name from an input and displays a formatted greeting.'),
+        lesson('javascript-basics-practice-code', 'JavaScript Basics Practice Code', [
+          'Use this topic as a practical classroom-style walkthrough for JavaScript basics before moving deeper into TypeScript. It covers hello world, var, let, const, hoisting, primitive and non-primitive data types, functions, arithmetic, comparison, logical operators, ternary, string concatenation, and BODMAS.',
+          'The const reassignment line is intentionally shown as an error example. Keep it commented when running the full file, otherwise JavaScript stops execution with a TypeError.',
+          'These examples are useful before TypeScript because TypeScript builds on the same JavaScript runtime behavior while adding type checking.'
+        ], 'Run the safe version of this file in Node.js, then convert five variables into typed TypeScript declarations.', [
+          {
+            title: 'Hello world, variables, hoisting, and data types',
+            code: '// 1. Hello World\nconsole.log("Hello World !")\n\n// 2. Variables\nvar firstName = "John"\nvar firstName = "emll"\nconsole.log(firstName)\n\nlet lastName = "Smith"\nlastName = "Smith2"\n// let lastName = "Smith3" // SyntaxError: cannot re-declare in same scope\nconsole.log(lastName)\n\nconst occupation = "engineer"\n// occupation = "doctor" // TypeError: Assignment to constant variable\nconsole.log(occupation)\n\n// 3. Hoisting\nconsole.log(age) // undefined\nvar age = 5\nconsole.log(age) // 5\n\n// 4. Data types\nvar middleName = "David"      // string\nvar yearInService = 5         // number\nvar isHeMarried = false       // boolean\nvar yearInMarriage = null     // null\nvar numberOfCars = undefined  // undefined\n\nvar fruits = ["apple", "banana", "mango"]\nconsole.log(fruits[0], fruits[1], fruits[2])\n\nvar person = {\n  firstName: "John",\n  lastName: "Doe"\n}\nconsole.log(person)\n\nfunction greet(name) {\n  console.log("Hello " + name)\n}\ngreet("Alice")'
+          },
+          {
+            title: 'Operators, coercion, ternary, and BODMAS',
+            code: '// Arithmetic operators\nconsole.log(10 + 10)\nvar a = 10\nvar b = 10\nconsole.log(a + b)\n\nconsole.log(10 - 5)\nconsole.log(10 * 5)\nconsole.log(10 / 5)  // quotient: 2\nconsole.log(10 % 3)  // remainder: 1\nconsole.log(10 ** 3) // power: 1000\n\n// Comparison operators\nconsole.log(10 > 5)      // true\nconsole.log(10 < 5)      // false\nconsole.log(10 >= 5)     // true\nconsole.log(10 <= 5)     // false\nconsole.log(10 == "10")  // true: type coercion\nconsole.log(10 === "10") // false: strict comparison\nconsole.log(10 != 5)     // true\nconsole.log(10 !== 5)    // true\n\n// Logical operators\nconsole.log(true && false) // false\nconsole.log(true || false) // true\nconsole.log(!true)         // false\n\nlet isMarried = true\nlet isEmployed = false\nconsole.log(isMarried && isEmployed) // false\nconsole.log(isMarried || isEmployed) // true\n\n// Ternary operator\nvar userAge = 20\nvar isAdult = userAge >= 18 ? true : false\nconsole.log(isAdult)\n\n// String concatenation and coercion\nconsole.log(10 + 20 + "js")      // 30js\nconsole.log("js" + 10 + 20)      // js1020\nconsole.log("js" + (10 + 20))    // js30\nconsole.log(10 + 20 + "1" + 21)  // 30121\nconsole.log(10 + 20 + (1 + 1))   // 32\n\n// BODMAS / operator precedence\nconsole.log((10 + 20 * 2) / 2 - 1) // 24'
+          },
+          {
+            title: 'TypeScript version of selected variables',
+            code: 'let typedLastName: string = "Smith2"\nconst typedOccupation: string = "engineer"\nlet typedAge: number = 20\nlet typedIsMarried: boolean = true\nlet typedFruits: string[] = ["apple", "banana", "mango"]\n\ntype Person = {\n  firstName: string\n  lastName: string\n}\n\nconst typedPerson: Person = {\n  firstName: "John",\n  lastName: "Doe"\n}\n\nfunction typedGreet(name: string): void {\n  console.log("Hello " + name)\n}'
+          }
+        ]),
         lesson('dom-events', 'DOM & Events', [
           'The DOM is the browser representation of the HTML page. JavaScript can read, create, update, and remove DOM elements.',
           'Events let code respond to clicks, typing, form submissions, keyboard actions, and page changes.',
