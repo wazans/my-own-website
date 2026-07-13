@@ -297,10 +297,31 @@
           }
         ]),
         lesson('javascript-loops-functions', 'Loops & Functions', [
-          'Loops execute a block of code multiple times. Use for when the number of iterations is known, while when the condition controls repetition, and do...while when the block should run at least once.',
-          'break exits the loop completely. continue skips the current iteration and moves to the next one.',
+          'Loops execute a block of code multiple times. Use loops for repeated statements, such as sending an email to every user in a list or checking every test result in a report.',
+          'Use for when the number of iterations is fixed. Use while when the iteration count is not fixed and depends on a condition. Use do...while when the block should run at least once before checking the condition.',
+          'A wrong condition can make a loop run zero times, and an infinite loop can freeze a program. break exits the loop completely. continue skips the current iteration and moves to the next one.',
           'Functions group reusable logic. The notes cover function declaration, function expression, arrow function, default parameters, rest parameters, and return statements.'
         ], 'Create a function that accepts any number of marks and returns the total and average.', [
+          {
+            title: 'For loop with fixed iterations',
+            code: '// For repeated statements we use loops.\n// Example: sending email to everyone in a list.\n\nconsole.log("Start")\nfor (let i = 0; i < 5; i++) {\n  console.log(i)\n}\nconsole.log("End")\n\nfor (let i = 0; i <= 21; i++) {\n  console.log(i)\n}'
+          },
+          {
+            title: 'Failed condition and infinite loop warning',
+            code: '// This loop does not run because the condition is false at the start.\nfor (let i = 10; i <= 0; i++) {\n  console.log(i)\n}\n\n// Infinite loop warning: do not run this unless you have a safe stop condition.\n// for (;;) {\n//   console.log("PW")\n// }'
+          },
+          {
+            title: 'While loop when iteration count is not fixed',
+            code: 'console.log("Start while")\n\nlet whileCounter = 0\nwhile (whileCounter <= 5) {\n  console.log("Value of i " + whileCounter)\n  whileCounter++\n  // whileCounter = whileCounter + 1\n}\n\n// Infinite while loop warning:\n// while (true) {\n//   console.log("Hi")\n// }'
+          },
+          {
+            title: 'Do while loop runs at least once',
+            code: 'console.log("Start do while")\n\nlet doCounter = 1\ndo {\n  console.log("the value of i is " + doCounter)\n  doCounter++\n} while (doCounter <= 6)'
+          },
+          {
+            title: 'Even numbers and break',
+            code: 'for (let i = 1; i <= 100; i++) {\n  if (i % 2 === 0) {\n    console.log("Even number " + i)\n  }\n\n  if (i === 50) {\n    break\n  }\n}'
+          },
           {
             title: 'Rest parameters and return',
             code: 'function calculateMarks(...marks) {\n  let total = 0\n  for (let mark of marks) total += mark\n  return { total, average: total / marks.length }\n}\n\nconsole.log(calculateMarks(80, 90, 75))'
