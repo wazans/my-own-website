@@ -328,10 +328,32 @@
           }
         ]),
         lesson('javascript-arrays-objects-detail', 'Arrays & Objects in Detail', [
-          'An array is a special variable that can hold more than one value. Common array methods include push, pop, shift, unshift, splice, slice, concat, indexOf, lastIndexOf, includes, join, reverse, sort, and length.',
-          'Array iteration can be done with for, for...of, forEach, map, and filter. Use map when transforming values and filter when selecting matching values.',
+          'An array is a special variable that can hold more than one value. Arrays use zero-based indexes, so the first item is at index 0. If you read an index that does not exist, JavaScript returns undefined.',
+          'Arrays can store values of the same type or mixed data types. They can also store nested arrays, which are useful for table-like data such as subjects, marks, and pass status.',
+          'Common array methods include push, pop, shift, unshift, splice, slice, concat, indexOf, lastIndexOf, includes, join, reverse, sort, and length.',
+          'Array iteration can be done with a traditional for loop or for...of. Use a traditional for loop when you need index control or custom direction. Use for...of for simple forward iteration over iterable values.',
           'Objects store key-value pairs. Access properties with dot notation or bracket notation, update properties by assignment, delete with delete, and use object methods when behavior belongs to the object.'
         ], 'Create a learner object with name, age, city, skills array, and a greet method. Then use array methods on skills.', [
+          {
+            title: 'Store multiple values in one variable',
+            code: '// Store multiple values in a single variable\nlet arr = ["java", "playwright", "git", "github"]\nconsole.log(arr)\nconsole.log(arr[2]) // git\nconsole.log(arr[5]) // undefined, because index 5 does not exist\n\n// Array of different data types\nlet arr1 = ["Wasim", 32, true, null, "Noida"]\nconsole.log(arr1[2]) // true\nconsole.log(arr1[3]) // null'
+          },
+          {
+            title: 'Nested arrays',
+            code: 'console.log("Hello World!")\n\nlet subjects = [\n  ["Math", 65, true],\n  ["eng", 65, true]\n]\n\nconsole.log(subjects)\nconsole.log(subjects[0])    // ["Math", 65, true]\nconsole.log(subjects[0][0]) // Math\nconsole.log(subjects[1][1]) // 65'
+          },
+          {
+            title: 'Update, add, and remove array elements',
+            code: 'let fruits = ["Mango", "Orrange", "Apple"]\nconsole.log(fruits)\n\n// Update by index\nfruits[1] = "Banana"\nconsole.log(fruits)\n\n// Adding elements\nfruits.push("Guava")       // add at end\nconsole.log(fruits)\n\nfruits.unshift("Pineapple") // add at beginning\nconsole.log(fruits)\n\n// Removing elements\nfruits.pop()   // remove last\nconsole.log(fruits)\n\nfruits.shift() // remove first\nconsole.log(fruits)\n\nconsole.log(fruits.length) // number of items in array'
+          },
+          {
+            title: 'Traditional for loop and for...of',
+            code: 'var country = ["India", "UK", "USA", "Japan"]\n\n// Traditional for loop: use when customization or index control is required\nfor (let i = 0; i < country.length; i++) {\n  console.log(country[i])\n}\n\n// for...of: use for simple forward iteration over iterable objects\nfor (let value of country) {\n  console.log(value)\n}'
+          },
+          {
+            title: 'Break inside for...of',
+            code: 'var players = ["Virat", "Rohit", "Sachin", "Kallis", "Babar", "MSD"]\n\nfor (let value of players) {\n  console.log(value)\n\n  if (value === "Babar") {\n    break\n  }\n}'
+          },
           {
             title: 'Array and object practice',
             code: 'let skills = ["JS", "HTML"]\nskills.push("CSS")\nlet upper = skills.map(skill => skill.toUpperCase())\n\nlet learner = {\n  name: "Zara",\n  age: 20,\n  city: "Delhi",\n  skills,\n  greet() {\n    return "Hello, I am " + this.name\n  }\n}\n\nconsole.log(upper)\nconsole.log(learner.greet())'
