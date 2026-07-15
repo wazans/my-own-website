@@ -740,6 +740,7 @@
       description: 'Automation, API testing, BDD, CI, and framework skills for practical QA careers.',
       courses: [
         { title: 'Selenium Basics', url: 'selenium.html', difficulty: 'Beginner', summary: 'Browser automation, locators, waits, actions, tables, and Java examples.' },
+        { title: 'JavaScript & TypeScript', url: 'js-typescript.html', difficulty: 'Beginner', summary: 'HTML, CSS, JavaScript, TypeScript, frontend fundamentals, and practical project patterns in one combined reader.', openAccess: true },
         { title: 'Playwright with TypeScript', url: 'playwright-reader.html', difficulty: 'Intermediate', summary: 'Modern end-to-end testing with fixtures, selectors, assertions, and reports.', openAccess: true },
         { title: 'API Basics', url: 'api.html', difficulty: 'Beginner', summary: 'HTTP, requests, responses, status codes, JSON, and API testing foundations.' },
         { title: 'REST Assured', url: 'rest.html', difficulty: 'Intermediate', summary: 'Java API automation with request setup, extraction, validation, and assertions.' },
@@ -757,7 +758,6 @@
       courses: [
         { title: 'Java Programming', url: 'java-programming.html', difficulty: 'Beginner', summary: 'Core Java, OOP, collections, exceptions, and coding fundamentals.' },
         { title: 'Python for Automation', url: 'python-automation.html', difficulty: 'Beginner', summary: 'Python scripting, data handling, automation utilities, and practical workflows.' },
-        { title: 'JavaScript & TypeScript', url: 'js-typescript.html', difficulty: 'Beginner', summary: 'HTML, CSS, JavaScript, TypeScript, frontend fundamentals, and practical project patterns in one combined reader.', openAccess: true },
         { title: 'DevOps Fundamentals', url: 'devops-fundamentals.html', difficulty: 'Intermediate', summary: 'CI/CD, Docker, Kubernetes concepts, environments, and release workflows.' },
         { title: 'Cloud Platforms', url: 'cloud-platforms.html', difficulty: 'Intermediate', summary: 'AWS and Azure fundamentals for deployment, scaling, and operations.' },
         { title: 'SQL & Database Management', url: 'sql-database-management.html', difficulty: 'Beginner', summary: 'Queries, joins, constraints, and database concepts for real projects.' },
@@ -1076,17 +1076,12 @@
   }
 
   function openAccessUrls() {
-    var urls = [
-      'ai-emerging-technologies.html',
-      'ai-for-everyone.html',
-      'ai-engineers.html',
-      'js-typescript.html',
-      'playwright-reader.html',
-      'git-github-essentials.html'
-    ];
+    var urls = LEARNING_CATEGORIES.map(function(category) {
+      return category.url;
+    });
     LEARNING_CATEGORIES.forEach(function(category) {
       category.courses.forEach(function(course) {
-        if (course.openAccess && urls.indexOf(course.url) === -1) urls.push(course.url);
+        if (urls.indexOf(course.url) === -1) urls.push(course.url);
       });
     });
     return urls;
@@ -1099,12 +1094,7 @@
   }
 
   function isUnlockedAiCourseUrl(url) {
-    var category = aiEmergingCategory();
-    if (!category || !url) return false;
-    if (isOpenAccessUrl(url)) return true;
-    return category.courses.some(function(course) {
-      return course.url === url;
-    });
+    return isOpenAccessUrl(url);
   }
 
   function isAiEmergingPage() {
@@ -1139,11 +1129,9 @@
     });
   }
 
-  function courseCardHtml(course, unlocked) {
-    var accessBadge = unlocked ? '<span class="access-badge open-access-badge">Open Access</span>' : '<span class="access-badge">Access Required</span>';
-    var action = unlocked
-      ? '<a href="' + course.url + '" class="primary-btn">View Course</a>'
-      : '<a href="#registration-modal" class="primary-btn gated-action" data-course-interest="' + course.title + '" data-access-url="' + course.url + '">View Course</a>';
+  function courseCardHtml(course) {
+    var accessBadge = '<span class="access-badge open-access-badge">Open Access</span>';
+    var action = '<a href="' + course.url + '" class="primary-btn">View Course</a>';
 
     return [
       '<article class="glass-card course-discovery-card invite-card">',
@@ -1283,30 +1271,23 @@
       });
       if (!category) return;
 
-      var categoryUnlocked = category.id === 'ai-emerging-technologies';
       container.innerHTML = category.courses.map(function(course) {
-        return courseCardHtml(course, categoryUnlocked || !!course.openAccess || isOpenAccessUrl(course.url));
+        return courseCardHtml(course);
       }).join('');
     });
 
     var hubContainer = document.querySelector('[data-learning-hub-categories]');
     if (hubContainer) {
       hubContainer.innerHTML = LEARNING_CATEGORIES.map(function(category) {
-        var unlocked = category.id === 'ai-emerging-technologies';
-        var openCourseCount = category.courses.filter(function(course) {
-          return course.openAccess || isOpenAccessUrl(course.url);
-        }).length;
         return [
           '<article class="glass-card category-discovery-card invite-card">',
-          unlocked ? '<span class="access-badge open-access-badge">Open Access</span>' : (openCourseCount ? '<span class="access-badge open-access-badge">' + openCourseCount + ' Open Courses</span>' : '<span class="access-badge">Invite Only</span>'),
+          '<span class="access-badge open-access-badge">Open Access</span>',
           '<h3>' + category.title + '</h3>',
           '<p>' + category.description + '</p>',
           '<div class="pill-row">',
           category.courses.slice(0, 4).map(function(course) { return '<span class="topic-pill">' + course.title + '</span>'; }).join(''),
           '</div>',
-          unlocked
-            ? '<a class="primary-btn" href="' + category.url + '">Browse Topics</a>'
-            : '<a class="primary-btn gated-action" href="#registration-modal" data-form-type="learning" data-course-interest="' + category.title + '" data-access-url="' + category.url + '">Browse Topics</a>',
+          '<a class="primary-btn" href="' + category.url + '">Browse Topics</a>',
           '</article>'
         ].join('');
       }).join('');
@@ -1314,44 +1295,14 @@
   }
 
   function setupGatedActions() {
-    var links = document.querySelectorAll('a, button');
-    var hasAccess = sessionStorage.getItem('testnova-learning-access') === 'granted';
-
-    links.forEach(function(link) {
-      var directCourseUrl = link.matches('a') ? link.getAttribute('href') : '';
+    document.querySelectorAll('a, button').forEach(function(link) {
       var existingAccessUrl = link.getAttribute('data-access-url');
       var isExplicit = link.classList.contains('gated-action') || link.hasAttribute('data-access-url');
 
       if (!isExplicit) return;
-      if (isAiEmergingPage()) {
-        if (existingAccessUrl && link.matches('a')) link.setAttribute('href', existingAccessUrl);
-        link.classList.remove('gated-action');
-        link.removeAttribute('data-access-url');
-        return;
-      }
-      if (link.matches('a') && isUnlockedAiCourseUrl(directCourseUrl)) return;
-      if (existingAccessUrl && isUnlockedAiCourseUrl(existingAccessUrl)) {
-        if (link.matches('a')) link.setAttribute('href', existingAccessUrl);
-        link.classList.remove('gated-action');
-        link.removeAttribute('data-access-url');
-        return;
-      }
-
-      if (hasAccess && existingAccessUrl && link.matches('a')) {
-        link.setAttribute('href', existingAccessUrl);
-        link.classList.remove('gated-action');
-        return;
-      }
-
-      if (directCourseUrl && directCourseUrl !== '#registration-modal' && !directCourseUrl.startsWith('#')) {
-        link.setAttribute('data-access-url', directCourseUrl);
-      }
-
-      link.setAttribute('href', '#registration-modal');
-      link.classList.add('gated-action');
-      if (!link.getAttribute('data-course-interest')) {
-        link.setAttribute('data-course-interest', document.querySelector('h1') ? document.querySelector('h1').textContent.trim() : 'Learning Hub Access');
-      }
+      if (existingAccessUrl && link.matches('a')) link.setAttribute('href', existingAccessUrl);
+      link.classList.remove('gated-action');
+      link.removeAttribute('data-access-url');
     });
   }
 
@@ -1409,41 +1360,7 @@
   }
 
   function setupLearningContentGate() {
-    var gatedPages = LEARNING_CATEGORIES.reduce(function(list, category) {
-      category.courses.forEach(function(course) { list.push(course.url); });
-      return list;
-    }, []);
-    var page = currentPageName();
-    if (gatedPages.indexOf(page) === -1) return;
-    if (isUnlockedAiCourseUrl(page)) return;
-    if (sessionStorage.getItem('testnova-learning-access') === 'granted') return;
-
-    var main = document.querySelector('main');
-    var hero = main ? main.querySelector('.page-hero-section') : null;
-    if (!main || !hero) return;
-
-    document.body.classList.add('content-locked');
-    Array.prototype.slice.call(main.children).forEach(function(child) {
-      if (child !== hero) child.classList.add('locked-content-hidden');
-    });
-
-    var title = document.querySelector('h1') ? document.querySelector('h1').textContent.trim() : 'Selected Course';
-    var gate = document.createElement('section');
-    gate.className = 'nova-section gated-course-panel';
-    gate.innerHTML = [
-      '<div class="container">',
-      '<article class="glass-card access-required-panel">',
-      '<span class="access-badge">Access Required</span>',
-      '<h2>Unlock ' + title + '</h2>',
-      '<p>Submit the access form to view lessons, notes, and downloads.</p>',
-      '<div class="hero-actions">',
-      '<a href="#registration-modal" class="primary-btn gated-action" data-course-interest="' + title + '" data-access-url="' + page + '">Get Access</a>',
-      '<a href="learning-hub.html" class="secondary-btn">Browse Learning Hub</a>',
-      '</div>',
-      '</article>',
-      '</div>'
-    ].join('');
-    hero.insertAdjacentElement('afterend', gate);
+    return;
   }
 
   function removeDocumentationNavigation() {
