@@ -740,7 +740,7 @@
       description: 'Automation, API testing, BDD, CI, and framework skills for practical QA careers.',
       courses: [
         { title: 'Selenium Basics', url: 'selenium.html', difficulty: 'Beginner', summary: 'Browser automation, locators, waits, actions, tables, and Java examples.' },
-        { title: 'JavaScript & TypeScript', url: 'js-typescript.html', difficulty: 'Beginner', summary: 'HTML, CSS, JavaScript, TypeScript, frontend fundamentals, and practical project patterns in one combined reader.', openAccess: true },
+        { title: 'JavaScript & TypeScript', url: 'js-typescript.html', difficulty: 'Beginner', summary: 'Playwright-focused JavaScript and TypeScript fundamentals arranged from zero programming knowledge to framework-ready skills.', openAccess: true },
         { title: 'Playwright with TypeScript', url: 'playwright-reader.html', difficulty: 'Intermediate', summary: 'Modern end-to-end testing with fixtures, selectors, assertions, and reports.', openAccess: true },
         { title: 'API Basics', url: 'api.html', difficulty: 'Beginner', summary: 'HTTP, requests, responses, status codes, JSON, and API testing foundations.' },
         { title: 'REST Assured', url: 'rest.html', difficulty: 'Intermediate', summary: 'Java API automation with request setup, extraction, validation, and assertions.' },
