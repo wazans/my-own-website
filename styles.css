@@ -4327,6 +4327,112 @@ body.landing-page .text-link {
   background: rgba(16, 185, 129, 0.1);
 }
 
+.site-date-picker {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.site-date-picker .site-calendar-input {
+  min-width: 0;
+}
+
+.site-calendar-trigger,
+.site-calendar-nav {
+  min-height: 44px;
+  border: 1px solid rgba(56, 189, 248, 0.42);
+  border-radius: 10px;
+  background: rgba(8, 47, 73, 0.92);
+  color: #e0f2fe;
+  padding: 0.55rem 0.8rem;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.site-calendar-trigger:hover,
+.site-calendar-nav:hover {
+  border-color: rgba(125, 211, 252, 0.8);
+  background: rgba(14, 116, 144, 0.6);
+  color: #ffffff;
+}
+
+.site-calendar-popover {
+  position: absolute;
+  z-index: 80;
+  top: calc(100% + 0.45rem);
+  left: 0;
+  width: min(340px, calc(100vw - 2rem));
+  padding: 0.85rem;
+  border: 1px solid rgba(56, 189, 248, 0.34);
+  border-radius: 14px;
+  background: #0f172a;
+  box-shadow: 0 20px 48px rgba(2, 6, 23, 0.5);
+}
+
+.site-calendar-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.site-calendar-header strong {
+  color: #f8fafc;
+  text-align: center;
+}
+
+.site-calendar-weekdays,
+.site-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.32rem;
+}
+
+.site-calendar-weekdays span {
+  color: #93c5fd;
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-align: center;
+}
+
+.site-calendar-empty,
+.site-calendar-day {
+  min-height: 38px;
+  border-radius: 9px;
+}
+
+.site-calendar-day {
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(2, 6, 23, 0.64);
+  color: #dbeafe;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.site-calendar-day:hover {
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.16);
+  color: #ffffff;
+}
+
+.site-calendar-day.is-today {
+  border-color: rgba(34, 197, 94, 0.62);
+}
+
+.site-calendar-day.is-selected {
+  border-color: #facc15;
+  background: rgba(250, 204, 21, 0.2);
+  color: #fef9c3;
+}
+
+.site-calendar-day:disabled {
+  cursor: not-allowed;
+  opacity: 0.36;
+}
+
 @media (max-width: 1080px) {
   .ai-reader-shell {
     grid-template-columns: 1fr;
@@ -4429,6 +4535,16 @@ body.landing-page .text-link {
   .feature-card .secondary-btn,
   .hero-actions .primary-btn,
   .hero-actions .secondary-btn {
+    width: 100%;
+  }
+
+  .site-date-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .site-calendar-popover {
+    position: relative;
+    top: auto;
     width: 100%;
   }
 }

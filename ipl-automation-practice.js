@@ -23,7 +23,9 @@
     feedAutoLoads: 0,
     favourites: new Set(JSON.parse(localStorage.getItem('testnovaIplFavourites') || '[]')),
     quizIndex: 0,
-    quizAnswers: {}
+    quizAnswers: {},
+    calendarTarget: null,
+    calendarMonth: null
   };
 
   var leaderboardTabs = [
@@ -173,7 +175,11 @@
   }
 
   function datesHtml() {
-    return '<div class="form-grid">' + field('From date', '<input id="from-date" type="date" required data-testid="from-date">') + field('To date', '<input id="to-date" type="date" required data-testid="to-date">') + '<div class="button-row"><button class="compact-btn" type="button" data-preset="opening" data-testid="preset-opening-week">Opening Week</button><button class="compact-btn" type="button" data-preset="playoffs" data-testid="preset-playoff-period">Playoff Period</button><button class="compact-btn" type="button" data-preset="final" data-testid="preset-final-week">Final Week</button></div></div><div class="button-row"><button class="primary-btn" type="button" id="find-matches" data-testid="find-matches">Find Matches</button></div><div id="date-results" role="status" data-testid="date-results"></div>';
+    return '<div class="form-grid date-form-grid">' + field('From date', dateControl('from-date', 'From date')) + field('To date', dateControl('to-date', 'To date')) + '<div class="button-row"><button class="compact-btn" type="button" data-preset="opening" data-testid="preset-opening-week">Opening Week</button><button class="compact-btn" type="button" data-preset="playoffs" data-testid="preset-playoff-period">Playoff Period</button><button class="compact-btn" type="button" data-preset="final" data-testid="preset-final-week">Final Week</button></div></div><div id="ipl-calendar-popover" class="ipl-calendar" data-testid="ipl-calendar" hidden></div><div class="button-row"><button class="primary-btn" type="button" id="find-matches" data-testid="find-matches">Find Matches</button></div><div id="date-results" role="status" data-testid="date-results"></div>';
+  }
+
+  function dateControl(id, label) {
+    return '<div class="date-input-wrap"><input id="' + id + '" type="text" inputmode="numeric" placeholder="YYYY-MM-DD" autocomplete="off" required data-testid="' + id + '" aria-label="' + label + '"><button class="calendar-trigger" type="button" data-calendar-for="' + id + '" aria-label="Open ' + label + ' calendar">Calendar</button></div>';
   }
 
   function alertsHtml() {
@@ -292,6 +298,9 @@
     byId('report-form').addEventListener('submit', renderReport);
     byId('clear-report').addEventListener('click', function () { byId('report-form').reset(); byId('report-output').innerHTML = ''; });
     document.querySelectorAll('[data-preset]').forEach(function (btn) { btn.addEventListener('click', applyPreset); });
+    document.querySelectorAll('[data-calendar-for]').forEach(function (btn) { btn.addEventListener('click', openCalendar); });
+    ['from-date','to-date'].forEach(function (id) { byId(id).addEventListener('focus', openCalendar); });
+    document.addEventListener('click', closeCalendarOnOutside);
     byId('find-matches').addEventListener('click', findMatches);
     byId('show-record-alert').addEventListener('click', function () { alert('Record alert: Chris Gayle scored 175* in 2013.'); byId('alert-status').textContent = 'Alert accepted for the 175* batting record.'; });
     byId('reset-leaderboard').addEventListener('click', function () { if (confirm('Reset leaderboard tab to Most Runs?')) { state.leaderboardTab = 'runs'; renderLeaderboard(); byId('alert-status').textContent = 'Confirmation accepted. Leaderboard reset to Most Runs.'; } else { byId('alert-status').textContent = 'Confirmation cancelled. Leaderboard was not changed.'; } });
@@ -496,6 +505,55 @@
     var presets = { opening: ['2026-03-21','2026-03-28'], playoffs: ['2026-05-27','2026-05-31'], final: ['2026-05-31','2026-05-31'] };
     byId('from-date').value = presets[this.dataset.preset][0];
     byId('to-date').value = presets[this.dataset.preset][1];
+    closeCalendar();
+  }
+
+  function openCalendar(event) {
+    var targetId = event.currentTarget.dataset.calendarFor || event.currentTarget.id;
+    state.calendarTarget = byId(targetId);
+    state.calendarMonth = state.calendarTarget.value || latestMatchDate();
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    var popover = byId('ipl-calendar-popover');
+    if (!popover || !state.calendarTarget) return;
+    var monthDate = parseDate(state.calendarMonth) || parseDate(latestMatchDate());
+    monthDate.setDate(1);
+    var year = monthDate.getFullYear();
+    var month = monthDate.getMonth();
+    var available = new Set(state.data.matches.map(function (m) { return m.date; }));
+    var selected = state.calendarTarget.value;
+    var firstDay = new Date(year, month, 1).getDay();
+    var days = new Date(year, month + 1, 0).getDate();
+    var cells = [];
+    for (var blank = 0; blank < firstDay; blank++) cells.push('<span class="calendar-empty"></span>');
+    for (var day = 1; day <= days; day++) {
+      var iso = toIsoDate(new Date(year, month, day));
+      var hasMatch = available.has(iso);
+      cells.push('<button type="button" class="calendar-day' + (selected === iso ? ' is-selected' : '') + (hasMatch ? ' has-match' : '') + '" data-date="' + iso + '" data-testid="calendar-day-' + iso + '">' + day + '</button>');
+    }
+    popover.innerHTML = '<div class="calendar-header"><button class="compact-btn" type="button" data-calendar-move="-1" aria-label="Previous month">Prev</button><strong>' + monthDate.toLocaleString('en', { month: 'long', year: 'numeric' }) + '</strong><button class="compact-btn" type="button" data-calendar-move="1" aria-label="Next month">Next</button></div><div class="calendar-weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div><div class="calendar-grid">' + cells.join('') + '</div><p class="calendar-help">Highlighted dates have IPL match samples.</p>';
+    popover.hidden = false;
+    popover.querySelectorAll('[data-calendar-move]').forEach(function (btn) { btn.addEventListener('click', function () { monthDate.setMonth(monthDate.getMonth() + Number(this.dataset.calendarMove)); state.calendarMonth = toIsoDate(monthDate); renderCalendar(); }); });
+    popover.querySelectorAll('[data-date]').forEach(function (btn) { btn.addEventListener('click', function () { state.calendarTarget.value = this.dataset.date; closeCalendar(); }); });
+  }
+
+  function closeCalendarOnOutside(event) {
+    if (!event.target.closest('#date-picker-section')) closeCalendar();
+  }
+  function closeCalendar() {
+    var popover = byId('ipl-calendar-popover');
+    if (popover) popover.hidden = true;
+    state.calendarTarget = null;
+  }
+  function latestMatchDate() { return state.data.matches.slice().sort(function (a, b) { return b.date.localeCompare(a.date); })[0].date; }
+  function parseDate(value) {
+    var parts = String(value || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return parts ? new Date(Number(parts[1]), Number(parts[2]) - 1, Number(parts[3])) : null;
+  }
+  function toIsoDate(date) {
+    return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
   }
 
   function findMatches() {

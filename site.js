@@ -1422,6 +1422,187 @@
     });
   }
 
+  var activeSiteCalendar = null;
+  var siteCalendarObserverReady = false;
+
+  function padDatePart(value) {
+    return String(value).padStart(2, '0');
+  }
+
+  function formatSiteDate(date) {
+    return date.getFullYear() + '-' + padDatePart(date.getMonth() + 1) + '-' + padDatePart(date.getDate());
+  }
+
+  function parseSiteDate(value) {
+    var match = String(value || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return null;
+    return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  }
+
+  function baseCalendarDate(input) {
+    return parseSiteDate(input.value) || parseSiteDate(input.getAttribute('min')) || new Date();
+  }
+
+  function closeSiteCalendar() {
+    if (activeSiteCalendar && activeSiteCalendar.popover) {
+      activeSiteCalendar.popover.hidden = true;
+    }
+    activeSiteCalendar = null;
+  }
+
+  function renderSiteCalendar(input, monthDate) {
+    var wrapper = input.closest('[data-site-date-picker]');
+    var popover = wrapper ? wrapper.querySelector('[data-site-calendar-popover]') : null;
+    if (!wrapper || !popover) return;
+
+    var currentMonth = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
+    var year = currentMonth.getFullYear();
+    var month = currentMonth.getMonth();
+    var selected = input.value;
+    var min = parseSiteDate(input.getAttribute('min'));
+    var max = parseSiteDate(input.getAttribute('max'));
+    var cells = [];
+    var firstDay = new Date(year, month, 1).getDay();
+    var days = new Date(year, month + 1, 0).getDate();
+
+    for (var blank = 0; blank < firstDay; blank += 1) {
+      cells.push('<span class="site-calendar-empty"></span>');
+    }
+
+    for (var day = 1; day <= days; day += 1) {
+      var date = new Date(year, month, day);
+      var iso = formatSiteDate(date);
+      var disabled = (min && date < min) || (max && date > max);
+      cells.push(
+        '<button type="button" class="site-calendar-day' +
+        (selected === iso ? ' is-selected' : '') +
+        (formatSiteDate(new Date()) === iso ? ' is-today' : '') +
+        '" data-site-calendar-date="' + iso + '"' +
+        (disabled ? ' disabled aria-disabled="true"' : '') +
+        '>' + day + '</button>'
+      );
+    }
+
+    popover.innerHTML = [
+      '<div class="site-calendar-header">',
+      '<button class="site-calendar-nav" type="button" data-site-calendar-move="-1" aria-label="Previous month">Prev</button>',
+      '<strong>' + currentMonth.toLocaleString('en', { month: 'long', year: 'numeric' }) + '</strong>',
+      '<button class="site-calendar-nav" type="button" data-site-calendar-move="1" aria-label="Next month">Next</button>',
+      '</div>',
+      '<div class="site-calendar-weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>',
+      '<div class="site-calendar-grid">' + cells.join('') + '</div>'
+    ].join('');
+
+    popover.hidden = false;
+    activeSiteCalendar = { input: input, popover: popover, month: currentMonth };
+
+    popover.querySelectorAll('[data-site-calendar-move]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var nextMonth = new Date(activeSiteCalendar.month.getFullYear(), activeSiteCalendar.month.getMonth() + Number(this.dataset.siteCalendarMove), 1);
+        renderSiteCalendar(input, nextMonth);
+      });
+    });
+
+    popover.querySelectorAll('[data-site-calendar-date]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        input.value = this.dataset.siteCalendarDate;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        closeSiteCalendar();
+        input.focus();
+      });
+    });
+  }
+
+  function openSiteCalendar(input) {
+    renderSiteCalendar(input, baseCalendarDate(input));
+  }
+
+  function enhanceSiteDateInput(input) {
+    if (!input || input.dataset.siteCalendarReady === 'true') return;
+
+    if (!input.id) {
+      input.id = 'site-date-' + Math.random().toString(36).slice(2, 9);
+    }
+
+    if (input.type === 'date') {
+      input.setAttribute('data-original-type', 'date');
+      try {
+        input.type = 'text';
+      } catch (error) {
+        input.setAttribute('type', 'text');
+      }
+    }
+
+    input.dataset.siteCalendarReady = 'true';
+    input.classList.add('site-calendar-input');
+    input.setAttribute('inputmode', 'numeric');
+    input.setAttribute('autocomplete', 'off');
+    if (!input.getAttribute('placeholder')) input.setAttribute('placeholder', 'YYYY-MM-DD');
+
+    var wrapper = input.closest('[data-site-date-picker]');
+    if (!wrapper) {
+      wrapper = document.createElement('div');
+      wrapper.className = 'site-date-picker';
+      wrapper.setAttribute('data-site-date-picker', '');
+      input.parentNode.insertBefore(wrapper, input);
+      wrapper.appendChild(input);
+    }
+
+    var button = wrapper.querySelector('[data-site-calendar-trigger]');
+    if (!button) {
+      button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'site-calendar-trigger';
+      button.setAttribute('data-site-calendar-trigger', '');
+      button.setAttribute('aria-label', 'Open calendar');
+      button.textContent = 'Calendar';
+      input.insertAdjacentElement('afterend', button);
+    }
+
+    var popover = wrapper.querySelector('[data-site-calendar-popover]');
+    if (!popover) {
+      popover = document.createElement('div');
+      popover.className = 'site-calendar-popover';
+      popover.setAttribute('data-site-calendar-popover', '');
+      popover.hidden = true;
+      wrapper.appendChild(popover);
+    }
+
+    input.addEventListener('focus', function () {
+      openSiteCalendar(input);
+    });
+    button.addEventListener('click', function () {
+      openSiteCalendar(input);
+    });
+  }
+
+  function setupSiteDatePickers(root) {
+    var scope = root && root.querySelectorAll ? root : document;
+    if (scope.matches && (scope.matches('input[type="date"]') || scope.matches('[data-site-calendar-input]'))) {
+      enhanceSiteDateInput(scope);
+    }
+    scope.querySelectorAll('input[type="date"], [data-site-calendar-input]').forEach(enhanceSiteDateInput);
+
+    if (!siteCalendarObserverReady && window.MutationObserver) {
+      siteCalendarObserverReady = true;
+      new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+          mutation.addedNodes.forEach(function (node) {
+            if (node.nodeType === 1) setupSiteDatePickers(node);
+          });
+        });
+      }).observe(document.body, { childList: true, subtree: true });
+
+      document.addEventListener('click', function (event) {
+        if (!event.target.closest('[data-site-date-picker]')) closeSiteCalendar();
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') closeSiteCalendar();
+      });
+    }
+  }
+
   // Initialize all functions
   function init() {
     renderLearningNav();
@@ -1439,6 +1620,7 @@
     setupMobileNav();
     setupMobileSidebar();
     setupPageSidebarLinks();
+    setupSiteDatePickers();
     window.registrationModalHandlers = setupModal('registration-modal', 'main-registration', 'General Inquiry'); // Expose handlers if needed
     setupInviteOnlyCards();
     setupExitIntentPopup(); // New exit intent popup setup

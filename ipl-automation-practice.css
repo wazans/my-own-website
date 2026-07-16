@@ -30,6 +30,20 @@
 }
 .field input:focus, .field select:focus, button:focus-visible, .team-card:focus-within, .flip-card:focus-visible, .record-badge:focus-visible { outline: 3px solid rgba(56,189,248,.75); outline-offset: 3px; }
 .button-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-top: .9rem; }
+.date-form-grid { position: relative; }
+.date-input-wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .45rem; }
+.calendar-trigger { min-height: 44px; border: 1px solid rgba(56,189,248,.42); border-radius: 10px; background: rgba(8,47,73,.9); color: #e0f2fe; padding: .55rem .8rem; cursor: pointer; font-weight: 800; }
+.ipl-calendar { position: relative; z-index: 30; width: min(100%, 420px); margin: .9rem 0; padding: .85rem; border: 1px solid rgba(56,189,248,.34); border-radius: 14px; background: #0f172a; box-shadow: 0 18px 44px rgba(2,6,23,.45); }
+.calendar-header { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .7rem; align-items: center; margin-bottom: .75rem; }
+.calendar-header strong { text-align: center; color: #f8fafc; }
+.calendar-weekdays, .calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .35rem; }
+.calendar-weekdays span { text-align: center; color: #93c5fd; font-size: .78rem; font-weight: 900; }
+.calendar-empty, .calendar-day { min-height: 42px; border-radius: 10px; }
+.calendar-day { border: 1px solid rgba(148,163,184,.2); background: rgba(2,6,23,.62); color: #dbeafe; cursor: pointer; font-weight: 800; }
+.calendar-day:hover { border-color: #38bdf8; background: rgba(56,189,248,.16); color: #fff; }
+.calendar-day.has-match { border-color: rgba(34,197,94,.55); background: rgba(22,101,52,.3); }
+.calendar-day.is-selected { border-color: #facc15; background: rgba(250,204,21,.2); color: #fef9c3; }
+.calendar-help { margin: .75rem 0 0; color: #bfdbfe; font-size: .86rem; }
 .compact-btn, .icon-button {
   min-height: 40px; border: 1px solid rgba(148,163,184,.28); border-radius: 10px; background: rgba(15,23,42,.9); color: #e2e8f0; padding: .5rem .75rem; cursor: pointer;
 }
@@ -123,6 +137,7 @@ mark { background: rgba(245,158,11,.28); color: #fde68a; border-radius: 4px; pad
 }
 @media (max-width: 640px) {
   .ipl-hero-panel, .choice-grid { grid-template-columns: 1fr; }
+  .date-input-wrap { grid-template-columns: 1fr; }
   .desktop-comparison { display: none; }
   .mobile-comparison-cards { display: grid; gap: .75rem; }
   .leaderboard-item, .feed-item, .favourite-row, .suggestion-option, .match-row { flex-direction: column; }
