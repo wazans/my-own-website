@@ -3,6 +3,7 @@
  * - mobile navigation toggle
  * - sticky mobile register button
  * - floating WhatsApp button
+ * - floating IPL playground button
  * - footer year sync
  * - mobile sidebar toggle
  * - registration modal handling
@@ -50,6 +51,34 @@
       '<svg viewBox="0 0 24 24" aria-hidden="true">',
       '<path d="M20.5 3.5A11 11 0 0 0 3.36 16.8L2 22l5.35-1.33A11 11 0 1 0 20.5 3.5zm-8.54 16a9 9 0 0 1-4.58-1.25l-.33-.19-3.17.79.84-3.09-.21-.32a9 9 0 1 1 7.45 4.06zm4.93-6.72c-.27-.13-1.62-.8-1.87-.89-.25-.09-.43-.13-.61.14-.18.27-.7.89-.85 1.07-.16.18-.31.2-.58.07-.27-.13-1.14-.42-2.16-1.35-.8-.71-1.33-1.6-1.49-1.87-.16-.27-.02-.41.11-.54.12-.12.27-.31.4-.47.13-.16.18-.27.27-.45.09-.18.04-.34-.02-.47-.07-.13-.61-1.47-.83-2.01-.22-.54-.45-.47-.61-.48h-.52c-.18 0-.47.07-.72.34s-.94.92-.94 2.25.96 2.62 1.09 2.8c.13.18 1.88 2.87 4.55 4.02.64.28 1.14.45 1.53.57.64.2 1.22.17 1.68.11.51-.08 1.62-.66 1.85-1.3.22-.64.22-1.19.16-1.3-.07-.11-.25-.18-.52-.31z"></path>',
       '</svg>'
+    ].join('');
+    document.body.appendChild(link);
+  }
+
+  function injectIplPlaygroundButton() {
+    if (
+      document.querySelector('.floating-ipl-playground') ||
+      document.body.classList.contains('hide-floating-ipl-playground')
+    ) {
+      return;
+    }
+
+    var link = document.createElement('a');
+    link.className = 'floating-ipl-playground';
+    link.href = '/ipl-automation-practice.html';
+    link.setAttribute('aria-label', 'Open IPL Playground');
+    link.setAttribute('data-testid', 'floating-ipl-playground');
+    link.innerHTML = [
+      '<span class="ipl-click-icon" aria-hidden="true">',
+      '<span class="ipl-click-pointer"></span>',
+      '<span class="ipl-click-spark spark-one"></span>',
+      '<span class="ipl-click-spark spark-two"></span>',
+      '<span class="ipl-click-spark spark-three"></span>',
+      '</span>',
+      '<span class="ipl-playground-copy">',
+      '<strong>IPL Playground</strong>',
+      '<small>Practice here</small>',
+      '</span>'
     ].join('');
     document.body.appendChild(link);
   }
@@ -1614,6 +1643,7 @@
     setupLearningContentGate();
     setupAnchorLandingOffsets();
     injectRegisterButton();
+    injectIplPlaygroundButton();
     setupContextualLeadActions();
     injectWhatsAppButton();
     injectCourseAssistant();
