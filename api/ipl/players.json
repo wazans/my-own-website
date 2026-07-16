@@ -1,13 +1,14 @@
 {
   "success": true,
-  "count": 29,
-  "snapshotVersion": "2.0",
+  "count": 116,
+  "snapshotVersion": "2.1",
   "timestamp": "2026-06-02T00:00:00.000Z",
   "data": [
     {
       "id": "virat-kohli",
       "name": "Virat Kohli",
       "team": "Royal Challengers Bengaluru",
+      "role": "Batter",
       "runs": 8661,
       "wickets": 4
     },
@@ -15,6 +16,7 @@
       "id": "shikhar-dhawan",
       "name": "Shikhar Dhawan",
       "team": "Punjab Kings",
+      "role": "Batter",
       "runs": 6769,
       "wickets": 4
     },
@@ -22,6 +24,7 @@
       "id": "david-warner",
       "name": "David Warner",
       "team": "Delhi Capitals",
+      "role": "Batter",
       "runs": 6565,
       "wickets": 0
     },
@@ -29,6 +32,7 @@
       "id": "rohit-sharma",
       "name": "Rohit Sharma",
       "team": "Mumbai Indians",
+      "role": "Batter",
       "runs": 6628,
       "wickets": 15
     },
@@ -36,6 +40,7 @@
       "id": "suresh-raina",
       "name": "Suresh Raina",
       "team": "Chennai Super Kings",
+      "role": "Batter",
       "runs": 5528,
       "wickets": 25
     },
@@ -43,6 +48,7 @@
       "id": "ab-de-villiers",
       "name": "AB de Villiers",
       "team": "Royal Challengers Bengaluru",
+      "role": "Batter",
       "runs": 5162,
       "wickets": 0
     },
@@ -50,6 +56,7 @@
       "id": "ms-dhoni",
       "name": "MS Dhoni",
       "team": "Chennai Super Kings",
+      "role": "Wicketkeeper",
       "runs": 5243,
       "wickets": 0
     },
@@ -57,6 +64,7 @@
       "id": "chris-gayle",
       "name": "Chris Gayle",
       "team": "Punjab Kings",
+      "role": "Batter",
       "runs": 4965,
       "wickets": 18
     },
@@ -64,6 +72,7 @@
       "id": "kl-rahul",
       "name": "KL Rahul",
       "team": "Lucknow Super Giants",
+      "role": "Wicketkeeper",
       "runs": 4683,
       "wickets": 0
     },
@@ -71,6 +80,7 @@
       "id": "suryakumar-yadav",
       "name": "Suryakumar Yadav",
       "team": "Mumbai Indians",
+      "role": "Batter",
       "runs": 3594,
       "wickets": 0
     },
@@ -78,6 +88,7 @@
       "id": "shubman-gill",
       "name": "Shubman Gill",
       "team": "Gujarat Titans",
+      "role": "Batter",
       "runs": 3216,
       "wickets": 0
     },
@@ -85,6 +96,7 @@
       "id": "jos-buttler",
       "name": "Jos Buttler",
       "team": "Rajasthan Royals",
+      "role": "Wicketkeeper",
       "runs": 3582,
       "wickets": 0
     },
@@ -92,6 +104,7 @@
       "id": "yashasvi-jaiswal",
       "name": "Yashasvi Jaiswal",
       "team": "Rajasthan Royals",
+      "role": "Batter",
       "runs": 1607,
       "wickets": 0
     },
@@ -99,6 +112,7 @@
       "id": "ravindra-jadeja",
       "name": "Ravindra Jadeja",
       "team": "Chennai Super Kings",
+      "role": "All-rounder",
       "runs": 2959,
       "wickets": 160
     },
@@ -106,6 +120,7 @@
       "id": "hardik-pandya",
       "name": "Hardik Pandya",
       "team": "Mumbai Indians",
+      "role": "All-rounder",
       "runs": 2525,
       "wickets": 64
     },
@@ -113,6 +128,7 @@
       "id": "andre-russell",
       "name": "Andre Russell",
       "team": "Kolkata Knight Riders",
+      "role": "All-rounder",
       "runs": 2484,
       "wickets": 115
     },
@@ -120,6 +136,7 @@
       "id": "sunil-narine",
       "name": "Sunil Narine",
       "team": "Kolkata Knight Riders",
+      "role": "All-rounder",
       "runs": 1534,
       "wickets": 180
     },
@@ -127,6 +144,7 @@
       "id": "rashid-khan",
       "name": "Rashid Khan",
       "team": "Gujarat Titans",
+      "role": "Bowler",
       "runs": 545,
       "wickets": 149
     },
@@ -134,6 +152,7 @@
       "id": "yuzvendra-chahal",
       "name": "Yuzvendra Chahal",
       "team": "Rajasthan Royals",
+      "role": "Bowler",
       "runs": 37,
       "wickets": 205
     },
@@ -141,6 +160,7 @@
       "id": "lasith-malinga",
       "name": "Lasith Malinga",
       "team": "Mumbai Indians",
+      "role": "Bowler",
       "runs": 88,
       "wickets": 170
     },
@@ -148,6 +168,7 @@
       "id": "jasprit-bumrah",
       "name": "Jasprit Bumrah",
       "team": "Mumbai Indians",
+      "role": "Bowler",
       "runs": 69,
       "wickets": 165
     },
@@ -155,6 +176,7 @@
       "id": "bhuvneshwar-kumar",
       "name": "Bhuvneshwar Kumar",
       "team": "Sunrisers Hyderabad",
+      "role": "Bowler",
       "runs": 287,
       "wickets": 181
     },
@@ -162,6 +184,7 @@
       "id": "dwayne-bravo",
       "name": "Dwayne Bravo",
       "team": "Chennai Super Kings",
+      "role": "All-rounder",
       "runs": 1560,
       "wickets": 183
     },
@@ -169,6 +192,7 @@
       "id": "ravichandran-ashwin",
       "name": "Ravichandran Ashwin",
       "team": "Rajasthan Royals",
+      "role": "Bowler",
       "runs": 800,
       "wickets": 180
     },
@@ -176,6 +200,7 @@
       "id": "rishabh-pant",
       "name": "Rishabh Pant",
       "team": "Delhi Capitals",
+      "role": "Wicketkeeper",
       "runs": 3284,
       "wickets": 0
     },
@@ -183,6 +208,7 @@
       "id": "dinesh-karthik",
       "name": "Dinesh Karthik",
       "team": "Royal Challengers Bengaluru",
+      "role": "Wicketkeeper",
       "runs": 4842,
       "wickets": 0
     },
@@ -190,6 +216,7 @@
       "id": "phil-salt",
       "name": "Phil Salt",
       "team": "Royal Challengers Bengaluru",
+      "role": "Wicketkeeper",
       "runs": 1034,
       "wickets": 0
     },
@@ -197,6 +224,7 @@
       "id": "sanju-samson",
       "name": "Sanju Samson",
       "team": "Rajasthan Royals",
+      "role": "Wicketkeeper",
       "runs": 4419,
       "wickets": 0
     },
@@ -204,8 +232,705 @@
       "id": "mohammed-siraj",
       "name": "Mohammed Siraj",
       "team": "Royal Challengers Bengaluru",
+      "role": "Bowler",
       "runs": 109,
       "wickets": 93
+    },
+    {
+      "id": "adam-gilchrist",
+      "name": "Adam Gilchrist",
+      "team": "Deccan Chargers",
+      "role": "Wicketkeeper",
+      "runs": 2069,
+      "wickets": 0
+    },
+    {
+      "id": "sachin-tendulkar",
+      "name": "Sachin Tendulkar",
+      "team": "Mumbai Indians",
+      "role": "Batter",
+      "runs": 2334,
+      "wickets": 0
+    },
+    {
+      "id": "gautam-gambhir",
+      "name": "Gautam Gambhir",
+      "team": "Kolkata Knight Riders",
+      "role": "Batter",
+      "runs": 4217,
+      "wickets": 0
+    },
+    {
+      "id": "brendon-mccullum",
+      "name": "Brendon McCullum",
+      "team": "Kolkata Knight Riders",
+      "role": "Wicketkeeper",
+      "runs": 2880,
+      "wickets": 0
+    },
+    {
+      "id": "matthew-hayden",
+      "name": "Matthew Hayden",
+      "team": "Chennai Super Kings",
+      "role": "Batter",
+      "runs": 1107,
+      "wickets": 0
+    },
+    {
+      "id": "shaun-marsh",
+      "name": "Shaun Marsh",
+      "team": "Punjab Kings",
+      "role": "Batter",
+      "runs": 2477,
+      "wickets": 0
+    },
+    {
+      "id": "virender-sehwag",
+      "name": "Virender Sehwag",
+      "team": "Delhi Capitals",
+      "role": "Batter",
+      "runs": 2728,
+      "wickets": 6
+    },
+    {
+      "id": "yusuf-pathan",
+      "name": "Yusuf Pathan",
+      "team": "Kolkata Knight Riders",
+      "role": "All-rounder",
+      "runs": 3204,
+      "wickets": 42
+    },
+    {
+      "id": "robin-uthappa",
+      "name": "Robin Uthappa",
+      "team": "Chennai Super Kings",
+      "role": "Wicketkeeper",
+      "runs": 4952,
+      "wickets": 0
+    },
+    {
+      "id": "manish-pandey",
+      "name": "Manish Pandey",
+      "team": "Kolkata Knight Riders",
+      "role": "Batter",
+      "runs": 3808,
+      "wickets": 0
+    },
+    {
+      "id": "ajinkya-rahane",
+      "name": "Ajinkya Rahane",
+      "team": "Chennai Super Kings",
+      "role": "Batter",
+      "runs": 4642,
+      "wickets": 1
+    },
+    {
+      "id": "faf-du-plessis",
+      "name": "Faf du Plessis",
+      "team": "Royal Challengers Bengaluru",
+      "role": "Batter",
+      "runs": 4571,
+      "wickets": 0
+    },
+    {
+      "id": "glenn-maxwell",
+      "name": "Glenn Maxwell",
+      "team": "Royal Challengers Bengaluru",
+      "role": "All-rounder",
+      "runs": 2771,
+      "wickets": 37
+    },
+    {
+      "id": "kieron-pollard",
+      "name": "Kieron Pollard",
+      "team": "Mumbai Indians",
+      "role": "All-rounder",
+      "runs": 3412,
+      "wickets": 69
+    },
+    {
+      "id": "ambati-rayudu",
+      "name": "Ambati Rayudu",
+      "team": "Chennai Super Kings",
+      "role": "Batter",
+      "runs": 4348,
+      "wickets": 0
+    },
+    {
+      "id": "ishan-kishan",
+      "name": "Ishan Kishan",
+      "team": "Mumbai Indians",
+      "role": "Wicketkeeper",
+      "runs": 2644,
+      "wickets": 0
+    },
+    {
+      "id": "quinton-de-kock",
+      "name": "Quinton de Kock",
+      "team": "Lucknow Super Giants",
+      "role": "Wicketkeeper",
+      "runs": 3157,
+      "wickets": 0
+    },
+    {
+      "id": "nicholas-pooran",
+      "name": "Nicholas Pooran",
+      "team": "Lucknow Super Giants",
+      "role": "Wicketkeeper",
+      "runs": 1769,
+      "wickets": 0
+    },
+    {
+      "id": "heinrich-klaasen",
+      "name": "Heinrich Klaasen",
+      "team": "Sunrisers Hyderabad",
+      "role": "Wicketkeeper",
+      "runs": 1480,
+      "wickets": 0
+    },
+    {
+      "id": "wriddhiman-saha",
+      "name": "Wriddhiman Saha",
+      "team": "Gujarat Titans",
+      "role": "Wicketkeeper",
+      "runs": 2934,
+      "wickets": 0
+    },
+    {
+      "id": "parthiv-patel",
+      "name": "Parthiv Patel",
+      "team": "Royal Challengers Bengaluru",
+      "role": "Wicketkeeper",
+      "runs": 2848,
+      "wickets": 0
+    },
+    {
+      "id": "naman-ojha",
+      "name": "Naman Ojha",
+      "team": "Sunrisers Hyderabad",
+      "role": "Wicketkeeper",
+      "runs": 1554,
+      "wickets": 0
+    },
+    {
+      "id": "mandeep-singh",
+      "name": "Mandeep Singh",
+      "team": "Punjab Kings",
+      "role": "Batter",
+      "runs": 1706,
+      "wickets": 1
+    },
+    {
+      "id": "mayank-agarwal",
+      "name": "Mayank Agarwal",
+      "team": "Sunrisers Hyderabad",
+      "role": "Batter",
+      "runs": 2661,
+      "wickets": 0
+    },
+    {
+      "id": "ruturaj-gaikwad",
+      "name": "Ruturaj Gaikwad",
+      "team": "Chennai Super Kings",
+      "role": "Batter",
+      "runs": 2380,
+      "wickets": 0
+    },
+    {
+      "id": "devdutt-padikkal",
+      "name": "Devdutt Padikkal",
+      "team": "Royal Challengers Bengaluru",
+      "role": "Batter",
+      "runs": 1559,
+      "wickets": 0
+    },
+    {
+      "id": "rajat-patidar",
+      "name": "Rajat Patidar",
+      "team": "Royal Challengers Bengaluru",
+      "role": "Batter",
+      "runs": 1200,
+      "wickets": 0
+    },
+    {
+      "id": "sai-sudharsan",
+      "name": "Sai Sudharsan",
+      "team": "Gujarat Titans",
+      "role": "Batter",
+      "runs": 1410,
+      "wickets": 0
+    },
+    {
+      "id": "david-miller",
+      "name": "David Miller",
+      "team": "Gujarat Titans",
+      "role": "Batter",
+      "runs": 2924,
+      "wickets": 0
+    },
+    {
+      "id": "kane-williamson",
+      "name": "Kane Williamson",
+      "team": "Gujarat Titans",
+      "role": "Batter",
+      "runs": 2128,
+      "wickets": 0
+    },
+    {
+      "id": "steve-smith",
+      "name": "Steve Smith",
+      "team": "Rajasthan Royals",
+      "role": "Batter",
+      "runs": 2485,
+      "wickets": 0
+    },
+    {
+      "id": "shane-watson",
+      "name": "Shane Watson",
+      "team": "Chennai Super Kings",
+      "role": "All-rounder",
+      "runs": 3874,
+      "wickets": 92
+    },
+    {
+      "id": "albie-morkel",
+      "name": "Albie Morkel",
+      "team": "Chennai Super Kings",
+      "role": "All-rounder",
+      "runs": 974,
+      "wickets": 85
+    },
+    {
+      "id": "moeen-ali",
+      "name": "Moeen Ali",
+      "team": "Chennai Super Kings",
+      "role": "All-rounder",
+      "runs": 1162,
+      "wickets": 35
+    },
+    {
+      "id": "krunal-pandya",
+      "name": "Krunal Pandya",
+      "team": "Royal Challengers Bengaluru",
+      "role": "All-rounder",
+      "runs": 1647,
+      "wickets": 76
+    },
+    {
+      "id": "axar-patel",
+      "name": "Axar Patel",
+      "team": "Delhi Capitals",
+      "role": "All-rounder",
+      "runs": 1653,
+      "wickets": 123
+    },
+    {
+      "id": "washington-sundar",
+      "name": "Washington Sundar",
+      "team": "Sunrisers Hyderabad",
+      "role": "All-rounder",
+      "runs": 378,
+      "wickets": 37
+    },
+    {
+      "id": "rahul-tewatia",
+      "name": "Rahul Tewatia",
+      "team": "Gujarat Titans",
+      "role": "All-rounder",
+      "runs": 1013,
+      "wickets": 32
+    },
+    {
+      "id": "deepak-hooda",
+      "name": "Deepak Hooda",
+      "team": "Lucknow Super Giants",
+      "role": "All-rounder",
+      "runs": 1454,
+      "wickets": 10
+    },
+    {
+      "id": "sam-curran",
+      "name": "Sam Curran",
+      "team": "Punjab Kings",
+      "role": "All-rounder",
+      "runs": 883,
+      "wickets": 58
+    },
+    {
+      "id": "ben-stokes",
+      "name": "Ben Stokes",
+      "team": "Rising Pune Supergiant",
+      "role": "All-rounder",
+      "runs": 935,
+      "wickets": 28
+    },
+    {
+      "id": "mitchell-marsh",
+      "name": "Mitchell Marsh",
+      "team": "Delhi Capitals",
+      "role": "All-rounder",
+      "runs": 666,
+      "wickets": 37
+    },
+    {
+      "id": "marcus-stoinis",
+      "name": "Marcus Stoinis",
+      "team": "Lucknow Super Giants",
+      "role": "All-rounder",
+      "runs": 1866,
+      "wickets": 43
+    },
+    {
+      "id": "cameron-green",
+      "name": "Cameron Green",
+      "team": "Royal Challengers Bengaluru",
+      "role": "All-rounder",
+      "runs": 707,
+      "wickets": 16
+    },
+    {
+      "id": "anil-kumble",
+      "name": "Anil Kumble",
+      "team": "Royal Challengers Bengaluru",
+      "role": "Bowler",
+      "runs": 35,
+      "wickets": 45
+    },
+    {
+      "id": "harbhajan-singh",
+      "name": "Harbhajan Singh",
+      "team": "Mumbai Indians",
+      "role": "Bowler",
+      "runs": 833,
+      "wickets": 150
+    },
+    {
+      "id": "amit-mishra",
+      "name": "Amit Mishra",
+      "team": "Delhi Capitals",
+      "role": "Bowler",
+      "runs": 381,
+      "wickets": 174
+    },
+    {
+      "id": "piyush-chawla",
+      "name": "Piyush Chawla",
+      "team": "Mumbai Indians",
+      "role": "Bowler",
+      "runs": 609,
+      "wickets": 192
+    },
+    {
+      "id": "zaheer-khan",
+      "name": "Zaheer Khan",
+      "team": "Delhi Capitals",
+      "role": "Bowler",
+      "runs": 117,
+      "wickets": 102
+    },
+    {
+      "id": "umesh-yadav",
+      "name": "Umesh Yadav",
+      "team": "Kolkata Knight Riders",
+      "role": "Bowler",
+      "runs": 208,
+      "wickets": 144
+    },
+    {
+      "id": "mohammed-shami",
+      "name": "Mohammed Shami",
+      "team": "Gujarat Titans",
+      "role": "Bowler",
+      "runs": 74,
+      "wickets": 127
+    },
+    {
+      "id": "ishant-sharma",
+      "name": "Ishant Sharma",
+      "team": "Delhi Capitals",
+      "role": "Bowler",
+      "runs": 56,
+      "wickets": 92
+    },
+    {
+      "id": "sandeep-sharma",
+      "name": "Sandeep Sharma",
+      "team": "Rajasthan Royals",
+      "role": "Bowler",
+      "runs": 54,
+      "wickets": 137
+    },
+    {
+      "id": "t-natarajan",
+      "name": "T Natarajan",
+      "team": "Sunrisers Hyderabad",
+      "role": "Bowler",
+      "runs": 20,
+      "wickets": 67
+    },
+    {
+      "id": "arshdeep-singh",
+      "name": "Arshdeep Singh",
+      "team": "Punjab Kings",
+      "role": "Bowler",
+      "runs": 32,
+      "wickets": 76
+    },
+    {
+      "id": "kuldeep-yadav",
+      "name": "Kuldeep Yadav",
+      "team": "Delhi Capitals",
+      "role": "Bowler",
+      "runs": 183,
+      "wickets": 87
+    },
+    {
+      "id": "varun-chakravarthy",
+      "name": "Varun Chakravarthy",
+      "team": "Kolkata Knight Riders",
+      "role": "Bowler",
+      "runs": 25,
+      "wickets": 83
+    },
+    {
+      "id": "ravi-bishnoi",
+      "name": "Ravi Bishnoi",
+      "team": "Lucknow Super Giants",
+      "role": "Bowler",
+      "runs": 45,
+      "wickets": 63
+    },
+    {
+      "id": "rahul-chahar",
+      "name": "Rahul Chahar",
+      "team": "Punjab Kings",
+      "role": "Bowler",
+      "runs": 108,
+      "wickets": 75
+    },
+    {
+      "id": "kagiso-rabada",
+      "name": "Kagiso Rabada",
+      "team": "Gujarat Titans",
+      "role": "Bowler",
+      "runs": 186,
+      "wickets": 117
+    },
+    {
+      "id": "trent-boult",
+      "name": "Trent Boult",
+      "team": "Mumbai Indians",
+      "role": "Bowler",
+      "runs": 84,
+      "wickets": 121
+    },
+    {
+      "id": "pat-cummins",
+      "name": "Pat Cummins",
+      "team": "Sunrisers Hyderabad",
+      "role": "Bowler",
+      "runs": 515,
+      "wickets": 63
+    },
+    {
+      "id": "mitchell-starc",
+      "name": "Mitchell Starc",
+      "team": "Kolkata Knight Riders",
+      "role": "Bowler",
+      "runs": 105,
+      "wickets": 51
+    },
+    {
+      "id": "jofra-archer",
+      "name": "Jofra Archer",
+      "team": "Rajasthan Royals",
+      "role": "Bowler",
+      "runs": 195,
+      "wickets": 48
+    },
+    {
+      "id": "morne-morkel",
+      "name": "Morne Morkel",
+      "team": "Delhi Capitals",
+      "role": "Bowler",
+      "runs": 69,
+      "wickets": 77
+    },
+    {
+      "id": "sohail-tanvir",
+      "name": "Sohail Tanvir",
+      "team": "Rajasthan Royals",
+      "role": "Bowler",
+      "runs": 36,
+      "wickets": 22
+    },
+    {
+      "id": "alzarri-joseph",
+      "name": "Alzarri Joseph",
+      "team": "Mumbai Indians",
+      "role": "Bowler",
+      "runs": 42,
+      "wickets": 20
+    },
+    {
+      "id": "adam-zampa",
+      "name": "Adam Zampa",
+      "team": "Rajasthan Royals",
+      "role": "Bowler",
+      "runs": 15,
+      "wickets": 29
+    },
+    {
+      "id": "harshal-patel",
+      "name": "Harshal Patel",
+      "team": "Punjab Kings",
+      "role": "Bowler",
+      "runs": 236,
+      "wickets": 135
+    },
+    {
+      "id": "shardul-thakur",
+      "name": "Shardul Thakur",
+      "team": "Chennai Super Kings",
+      "role": "Bowler",
+      "runs": 307,
+      "wickets": 94
+    },
+    {
+      "id": "deepak-chahar",
+      "name": "Deepak Chahar",
+      "team": "Chennai Super Kings",
+      "role": "Bowler",
+      "runs": 80,
+      "wickets": 77
+    },
+    {
+      "id": "prasidh-krishna",
+      "name": "Prasidh Krishna",
+      "team": "Gujarat Titans",
+      "role": "Bowler",
+      "runs": 31,
+      "wickets": 74
+    },
+    {
+      "id": "mohit-sharma",
+      "name": "Mohit Sharma",
+      "team": "Gujarat Titans",
+      "role": "Bowler",
+      "runs": 127,
+      "wickets": 132
+    },
+    {
+      "id": "noor-ahmad",
+      "name": "Noor Ahmad",
+      "team": "Chennai Super Kings",
+      "role": "Bowler",
+      "runs": 31,
+      "wickets": 45
+    },
+    {
+      "id": "shreyas-iyer",
+      "name": "Shreyas Iyer",
+      "team": "Punjab Kings",
+      "role": "Batter",
+      "runs": 3127,
+      "wickets": 0
+    },
+    {
+      "id": "nitish-rana",
+      "name": "Nitish Rana",
+      "team": "Kolkata Knight Riders",
+      "role": "Batter",
+      "runs": 2636,
+      "wickets": 10
+    },
+    {
+      "id": "rahul-tripathi",
+      "name": "Rahul Tripathi",
+      "team": "Sunrisers Hyderabad",
+      "role": "Batter",
+      "runs": 2236,
+      "wickets": 0
+    },
+    {
+      "id": "prithvi-shaw",
+      "name": "Prithvi Shaw",
+      "team": "Delhi Capitals",
+      "role": "Batter",
+      "runs": 1892,
+      "wickets": 0
+    },
+    {
+      "id": "tilak-varma",
+      "name": "Tilak Varma",
+      "team": "Mumbai Indians",
+      "role": "Batter",
+      "runs": 1156,
+      "wickets": 1
+    },
+    {
+      "id": "tim-david",
+      "name": "Tim David",
+      "team": "Mumbai Indians",
+      "role": "Batter",
+      "runs": 750,
+      "wickets": 0
+    },
+    {
+      "id": "shimron-hetmyer",
+      "name": "Shimron Hetmyer",
+      "team": "Rajasthan Royals",
+      "role": "Batter",
+      "runs": 1243,
+      "wickets": 0
+    },
+    {
+      "id": "devon-conway",
+      "name": "Devon Conway",
+      "team": "Chennai Super Kings",
+      "role": "Wicketkeeper",
+      "runs": 924,
+      "wickets": 0
+    },
+    {
+      "id": "travis-head",
+      "name": "Travis Head",
+      "team": "Sunrisers Hyderabad",
+      "role": "Batter",
+      "runs": 772,
+      "wickets": 2
+    },
+    {
+      "id": "abhishek-sharma",
+      "name": "Abhishek Sharma",
+      "team": "Sunrisers Hyderabad",
+      "role": "All-rounder",
+      "runs": 1377,
+      "wickets": 11
+    },
+    {
+      "id": "vaibhav-sooryavanshi",
+      "name": "Vaibhav Sooryavanshi",
+      "team": "Rajasthan Royals",
+      "role": "Batter",
+      "runs": 776,
+      "wickets": 0
+    },
+    {
+      "id": "sai-kishore",
+      "name": "Sai Kishore",
+      "team": "Gujarat Titans",
+      "role": "Bowler",
+      "runs": 58,
+      "wickets": 35
+    },
+    {
+      "id": "glenn-phillips",
+      "name": "Glenn Phillips",
+      "team": "Gujarat Titans",
+      "role": "All-rounder",
+      "runs": 280,
+      "wickets": 8
     }
   ]
 }

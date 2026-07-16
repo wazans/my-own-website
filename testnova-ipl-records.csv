@@ -1,10 +1,81 @@
 recordType,playerOrTeam,value,season,description
-batting,Virat Kohli,8661 runs,2008-2026,Most career runs in snapshot
-batting,Chris Gayle,175*,2013,Highest individual score
-bowling,Yuzvendra Chahal,205 wickets,2013-2025,Most wickets in snapshot
-bowling,Alzarri Joseph,6/12,2019,Best bowling figures sample
-team,Mumbai Indians,5 titles,2013-2020,Joint-most titles
-team,Chennai Super Kings,5 titles,2010-2023,Joint-most titles
-team,Royal Challengers Bengaluru,2 titles,2025-2026,Back-to-back titles
-team,Gujarat Titans,"1 title, 3 finals",2022-2026,Champions in 2022 and finalists in 2023 and 2026
-fielding,Virat Kohli,114 catches,2008-2026,High catch tally
+batting,Virat Kohli,8661 runs,2008-2026,"Most career runs in this snapshot, updated through the 2026 final."
+batting,Chris Gayle,175*,2013,Highest individual score.
+batting,Virat Kohli,973 runs,2016,Most runs in a season.
+batting,Virat Kohli,8 centuries,2008-2026,Most career centuries.
+batting,David Warner,62 fifties,2009-2024,High count of IPL fifties.
+batting,Chris Gayle,357 sixes,2009-2021,Leading six-hitting benchmark in this dataset.
+batting,AB de Villiers,151.68 strike rate,2008-2021,High career strike rate among major batters.
+batting,KL Rahul,132*,2020,High score by an Indian batter.
+batting,Shubman Gill,890 runs,2023,Orange Cap season.
+batting,Jos Buttler,4 centuries,2022,Four hundreds in a single season.
+batting,Suresh Raina,5528 runs,2008-2021,Early career runs benchmark.
+batting,Rohit Sharma,6628 runs,2008-2025,Long career run tally.
+batting,Rishabh Pant,128*,2018,Delhi high score.
+batting,Brendon McCullum,158*,2008,Famous opening-night innings.
+batting,Quinton de Kock,140*,2022,High opening score.
+batting,AB de Villiers,133*,2015,Major Bengaluru innings.
+batting,KL Rahul,14-ball fifty,2018,Fast fifty example.
+batting,Yashasvi Jaiswal,13-ball fifty,2023,Fastest IPL fifty in this dataset.
+batting,Suryakumar Yadav,717 runs,2025,High 2025 run tally.
+batting,Sai Sudharsan,759 runs,2025,2025 top run scorer.
+batting,MS Dhoni,252 sixes,2008-2025,Finisher six count.
+batting,Andre Russell,174 strike rate,2012-2025,Power hitter career rate.
+batting,Sunil Narine,109,2024,All-rounder century.
+batting,David Warner,848 runs,2016,Title-winning Hyderabad season.
+batting,Gautam Gambhir,4217 runs,2008-2018,Kolkata leadership era batter.
+batting,Faf du Plessis,633 runs,2021,Chennai top-order season.
+batting,Ajinkya Rahane,105*,2019,Rajasthan century example.
+batting,Sanju Samson,119,2021,Rajasthan captain century.
+batting,Mayank Agarwal,106,2020,Punjab opener century.
+batting,Ruturaj Gaikwad,101*,2021,Chennai opener century.
+bowling,Yuzvendra Chahal,205 wickets,2013-2025,Most wickets in this snapshot.
+bowling,Alzarri Joseph,6/12,2019,Best bowling figures.
+bowling,Sohail Tanvir,6/14,2008,Early best-figures benchmark.
+bowling,Adam Zampa,6/19,2016,Six-wicket haul.
+bowling,Anil Kumble,5/5,2009,Five wickets for five runs.
+bowling,Jasprit Bumrah,5/10,2022,Mumbai five-wicket haul.
+bowling,Akash Madhwal,5/5,2023,Playoff five-wicket haul.
+bowling,Bhuvneshwar Kumar,"Purple Caps 2016, 2017",2016-2017,Back-to-back Purple Caps.
+bowling,Dwayne Bravo,32 wickets,2013,High season wicket tally.
+bowling,Harshal Patel,32 wickets,2021,Matched major season tally.
+bowling,Kagiso Rabada,30 wickets,2020,Delhi pace season.
+bowling,Lasith Malinga,170 wickets,2009-2019,Mumbai pace record.
+bowling,Sunil Narine,180 wickets,2012-2025,Kolkata spin record.
+bowling,Rashid Khan,149 wickets,2017-2025,Leg-spin consistency.
+bowling,Mohit Sharma,27 wickets,2023,Gujarat death bowling season.
+bowling,Prasidh Krishna,25 wickets,2025,2025 leading wicket tally.
+bowling,Noor Ahmad,24 wickets,2025,2025 spin wicket tally.
+bowling,Trent Boult,22 wickets,2025,Left-arm pace record sample.
+bowling,Amit Mishra,Three hat-tricks,2008-2013,Hat-trick record sample.
+bowling,Jaydev Unadkat,5/25,2013,Pace five-wicket haul.
+team,Mumbai Indians,5 titles,2013-2020,Joint-most titles.
+team,Chennai Super Kings,5 titles,2010-2023,Joint-most titles.
+team,Kolkata Knight Riders,3 titles,2012-2024,Three-time champion.
+team,Royal Challengers Bengaluru,2 titles,2025-2026,Back-to-back champions in 2025 and 2026.
+team,Sunrisers Hyderabad,287/3,2024,Highest team total example.
+team,Royal Challengers Bengaluru,49 all out,2017,Lowest team total example.
+team,Punjab Kings,265 chase,2024,Highest successful chase example.
+team,Gujarat Titans,Debut champions,2022,Won title in first season.
+team,Rajasthan Royals,Inaugural champions,2008,First IPL winner.
+team,Delhi Capitals,Runner-up,2020,First final appearance.
+fielding,Virat Kohli,114 catches,2008-2025,Leading fielding sample.
+fielding,Suresh Raina,109 catches,2008-2021,High catch tally.
+fielding,Rohit Sharma,104 catches,2008-2025,High catch tally.
+fielding,Ravindra Jadeja,104 catches,2008-2025,All-round fielding value.
+fielding,MS Dhoni,152 catches,2008-2025,Wicketkeeper dismissal sample.
+fielding,Dinesh Karthik,145 catches,2008-2024,Wicketkeeper sample.
+fielding,AB de Villiers,90 catches,2008-2021,Athletic outfielder sample.
+fielding,David Warner,87 catches,2009-2024,Overseas fielding sample.
+fielding,Dwayne Bravo,80 catches,2008-2022,All-rounder catches.
+fielding,Rishabh Pant,75 catches,2016-2025,Wicketkeeper-batter sample.
+team,Gujarat Titans,"1 title, 3 finals",2022-2026,Champions in 2022 and runners-up in 2023 and 2026.
+team,Royal Challengers Bengaluru,Back-to-back titles,2025-2026,RCB won consecutive IPL titles in 2025 and 2026.
+batting,Virat Kohli,75* in final,2026,Player of the Match in the IPL 2026 final.
+batting,Shubman Gill,732 runs,2026,Gujarat captain and second-highest run-scorer of IPL 2026.
+batting,Vaibhav Sooryavanshi,776 runs,2026,Orange Cap winner in IPL 2026.
+batting,Adam Gilchrist,109*,2008-2013,Legacy wicketkeeper opener search sample.
+batting,Sachin Tendulkar,Orange Cap,2010,Mumbai batting record sample.
+bowling,Harbhajan Singh,150 wickets,2008-2021,Spin bowling sample.
+fielding,Robin Uthappa,92 catches,2008-2022,Wicketkeeper and outfield catching sample.
+team,Deccan Chargers,1 title,2009,Legacy team title record.

@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 3,
-  "snapshotVersion": "2.0",
+  "count": 35,
+  "snapshotVersion": "2.1",
   "timestamp": "2026-06-02T00:00:00.000Z",
   "data": [
     {
@@ -19,8 +19,200 @@
     {
       "recordType": "batting",
       "playerOrTeam": "Virat Kohli",
+      "value": "973 runs",
+      "season": "2016"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Virat Kohli",
+      "value": "8 centuries",
+      "season": "2008-2026"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "David Warner",
+      "value": "62 fifties",
+      "season": "2009-2024"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Chris Gayle",
+      "value": "357 sixes",
+      "season": "2009-2021"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "AB de Villiers",
+      "value": "151.68 strike rate",
+      "season": "2008-2021"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "KL Rahul",
+      "value": "132*",
+      "season": "2020"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Shubman Gill",
+      "value": "890 runs",
+      "season": "2023"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Jos Buttler",
+      "value": "4 centuries",
+      "season": "2022"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Suresh Raina",
+      "value": "5528 runs",
+      "season": "2008-2021"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Rohit Sharma",
+      "value": "6628 runs",
+      "season": "2008-2025"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Rishabh Pant",
+      "value": "128*",
+      "season": "2018"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Brendon McCullum",
+      "value": "158*",
+      "season": "2008"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Quinton de Kock",
+      "value": "140*",
+      "season": "2022"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "AB de Villiers",
+      "value": "133*",
+      "season": "2015"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "KL Rahul",
+      "value": "14-ball fifty",
+      "season": "2018"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Yashasvi Jaiswal",
+      "value": "13-ball fifty",
+      "season": "2023"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Suryakumar Yadav",
+      "value": "717 runs",
+      "season": "2025"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Sai Sudharsan",
+      "value": "759 runs",
+      "season": "2025"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "MS Dhoni",
+      "value": "252 sixes",
+      "season": "2008-2025"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Andre Russell",
+      "value": "174 strike rate",
+      "season": "2012-2025"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Sunil Narine",
+      "value": "109",
+      "season": "2024"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "David Warner",
+      "value": "848 runs",
+      "season": "2016"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Gautam Gambhir",
+      "value": "4217 runs",
+      "season": "2008-2018"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Faf du Plessis",
+      "value": "633 runs",
+      "season": "2021"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Ajinkya Rahane",
+      "value": "105*",
+      "season": "2019"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Sanju Samson",
+      "value": "119",
+      "season": "2021"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Mayank Agarwal",
+      "value": "106",
+      "season": "2020"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Ruturaj Gaikwad",
+      "value": "101*",
+      "season": "2021"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Virat Kohli",
       "value": "75* in final",
       "season": "2026"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Shubman Gill",
+      "value": "732 runs",
+      "season": "2026"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Vaibhav Sooryavanshi",
+      "value": "776 runs",
+      "season": "2026"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Adam Gilchrist",
+      "value": "109*",
+      "season": "2008-2013"
+    },
+    {
+      "recordType": "batting",
+      "playerOrTeam": "Sachin Tendulkar",
+      "value": "Orange Cap",
+      "season": "2010"
     }
   ]
 }

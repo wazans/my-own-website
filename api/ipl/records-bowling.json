@@ -1,7 +1,7 @@
 {
   "success": true,
-  "count": 2,
-  "snapshotVersion": "2.0",
+  "count": 21,
+  "snapshotVersion": "2.1",
   "timestamp": "2026-06-02T00:00:00.000Z",
   "data": [
     {
@@ -15,6 +15,120 @@
       "playerOrTeam": "Alzarri Joseph",
       "value": "6/12",
       "season": "2019"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Sohail Tanvir",
+      "value": "6/14",
+      "season": "2008"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Adam Zampa",
+      "value": "6/19",
+      "season": "2016"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Anil Kumble",
+      "value": "5/5",
+      "season": "2009"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Jasprit Bumrah",
+      "value": "5/10",
+      "season": "2022"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Akash Madhwal",
+      "value": "5/5",
+      "season": "2023"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Bhuvneshwar Kumar",
+      "value": "Purple Caps 2016, 2017",
+      "season": "2016-2017"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Dwayne Bravo",
+      "value": "32 wickets",
+      "season": "2013"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Harshal Patel",
+      "value": "32 wickets",
+      "season": "2021"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Kagiso Rabada",
+      "value": "30 wickets",
+      "season": "2020"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Lasith Malinga",
+      "value": "170 wickets",
+      "season": "2009-2019"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Sunil Narine",
+      "value": "180 wickets",
+      "season": "2012-2025"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Rashid Khan",
+      "value": "149 wickets",
+      "season": "2017-2025"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Mohit Sharma",
+      "value": "27 wickets",
+      "season": "2023"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Prasidh Krishna",
+      "value": "25 wickets",
+      "season": "2025"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Noor Ahmad",
+      "value": "24 wickets",
+      "season": "2025"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Trent Boult",
+      "value": "22 wickets",
+      "season": "2025"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Amit Mishra",
+      "value": "Three hat-tricks",
+      "season": "2008-2013"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Jaydev Unadkat",
+      "value": "5/25",
+      "season": "2013"
+    },
+    {
+      "recordType": "bowling",
+      "playerOrTeam": "Harbhajan Singh",
+      "value": "150 wickets",
+      "season": "2008-2021"
     }
   ]
 }

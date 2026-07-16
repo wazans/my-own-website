@@ -331,14 +331,14 @@
     var minRuns = Number(byId('min-runs').value || 0);
     var minWickets = Number(byId('min-wickets').value || 0);
     state.playerResults = state.data.players.filter(function (p) {
-      return (!name || normalizeSearch([p.name, p.team, p.teamCode, p.role].join(' ')).includes(name)) && (!team || p.team === team) && (!role || normalizeRole(p.role) === role) && (!nationality || normalizeSearch(p.nationality).includes(nationality)) && p.runs >= minRuns && p.wickets >= minWickets;
+      return (!name || normalizeSearch([p.name, p.team, p.teamCode, p.role, (p.aliases || []).join(' ')].join(' ')).includes(name)) && (!team || p.team === team) && (!role || normalizeRole(p.role) === role) && (!nationality || normalizeSearch(p.nationality).includes(nationality)) && p.runs >= minRuns && p.wickets >= minWickets;
     });
     status.innerHTML = '<p class="result-count" data-testid="player-result-count">' + state.playerResults.length + ' result(s)</p>';
     renderPlayerResults();
   }
 
   function normalizeSearch(value) {
-    return String(value || '').toLowerCase().replace(/bengaluru/g, 'bangalore').replace(/royal challengers/g, 'rcb royal challengers').replace(/\s+/g, ' ').trim();
+    return String(value || '').toLowerCase().replace(/bengaluru/g, 'bangalore').replace(/ghilcrist|gilcrist|gillchrist/g, 'gilchrist').replace(/royal challengers/g, 'rcb royal challengers').replace(/\s+/g, ' ').trim();
   }
 
   function normalizeRole(value) {
@@ -443,7 +443,7 @@
     state.suggestIndex = -1;
     if (q.length < 2) { closeSuggestions(); return; }
     var items = [];
-    state.data.players.forEach(function (p) { if (p.name.toLowerCase().includes(q)) items.push({ type: 'player', label: p.name }); });
+    state.data.players.forEach(function (p) { if (normalizeSearch([p.name, (p.aliases || []).join(' ')].join(' ')).includes(normalizeSearch(q))) items.push({ type: 'player', label: p.name }); });
     state.data.teams.forEach(function (t) { if (t.name.toLowerCase().includes(q) || t.code.toLowerCase().includes(q)) items.push({ type: 'team', label: t.name }); });
     state.data.seasons.forEach(function (s) { if (String(s.season).includes(q)) items.push({ type: 'season', label: String(s.season) + ' - ' + s.winner }); });
     list.hidden = false;
@@ -694,7 +694,7 @@
 
   function renderFavourites() {
     var only = byId('show-favs-only') && byId('show-favs-only').checked;
-    var items = state.data.players.slice(0, 10).concat(state.data.teams.slice(0, 10).map(function (t) { return { id: 'team-' + t.id, name: t.name, team: 'Team record', role: t.titles + ' titles' }; }));
+    var items = state.data.players.concat(state.data.teams.map(function (t) { return { id: 'team-' + t.id, name: t.name, team: 'Team record', role: t.titles + ' titles' }; }));
     if (only) items = items.filter(function (x) { return state.favourites.has(x.id); });
     byId('fav-count').textContent = 'Favourite count: ' + state.favourites.size;
     byId('favourites-list').innerHTML = items.map(function (x) {
