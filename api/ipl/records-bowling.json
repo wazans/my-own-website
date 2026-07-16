@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "count": 2,
+  "snapshotVersion": "1.0",
+  "timestamp": "2025-06-04T00:00:00.000Z",
+  "data": [
+    {"recordType":"bowling","playerOrTeam":"Yuzvendra Chahal","value":"205 wickets","season":"2013-2025"},
+    {"recordType":"bowling","playerOrTeam":"Alzarri Joseph","value":"6/12","season":"2019"}
+  ]
+}

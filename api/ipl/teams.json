@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "count": 10,
+  "snapshotVersion": "1.0",
+  "timestamp": "2025-06-04T00:00:00.000Z",
+  "data": [
+    {"id":"csk","name":"Chennai Super Kings","code":"CSK","titles":5},
+    {"id":"mi","name":"Mumbai Indians","code":"MI","titles":5},
+    {"id":"rcb","name":"Royal Challengers Bengaluru","code":"RCB","titles":1},
+    {"id":"kkr","name":"Kolkata Knight Riders","code":"KKR","titles":3},
+    {"id":"rr","name":"Rajasthan Royals","code":"RR","titles":1},
+    {"id":"srh","name":"Sunrisers Hyderabad","code":"SRH","titles":1},
+    {"id":"dc","name":"Delhi Capitals","code":"DC","titles":0},
+    {"id":"pbks","name":"Punjab Kings","code":"PBKS","titles":0},
+    {"id":"gt","name":"Gujarat Titans","code":"GT","titles":1},
+    {"id":"lsg","name":"Lucknow Super Giants","code":"LSG","titles":0}
+  ]
+}

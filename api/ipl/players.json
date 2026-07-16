@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "count": 25,
+  "snapshotVersion": "1.0",
+  "timestamp": "2025-06-04T00:00:00.000Z",
+  "data": [
+    {"id":"virat-kohli","name":"Virat Kohli","team":"Royal Challengers Bengaluru","runs":8661,"wickets":4},
+    {"id":"shikhar-dhawan","name":"Shikhar Dhawan","team":"Punjab Kings","runs":6769,"wickets":4},
+    {"id":"david-warner","name":"David Warner","team":"Delhi Capitals","runs":6565,"wickets":0},
+    {"id":"rohit-sharma","name":"Rohit Sharma","team":"Mumbai Indians","runs":6628,"wickets":15},
+    {"id":"suresh-raina","name":"Suresh Raina","team":"Chennai Super Kings","runs":5528,"wickets":25},
+    {"id":"ab-de-villiers","name":"AB de Villiers","team":"Royal Challengers Bengaluru","runs":5162,"wickets":0},
+    {"id":"ms-dhoni","name":"MS Dhoni","team":"Chennai Super Kings","runs":5243,"wickets":0},
+    {"id":"chris-gayle","name":"Chris Gayle","team":"Punjab Kings","runs":4965,"wickets":18},
+    {"id":"kl-rahul","name":"KL Rahul","team":"Lucknow Super Giants","runs":4683,"wickets":0},
+    {"id":"suryakumar-yadav","name":"Suryakumar Yadav","team":"Mumbai Indians","runs":3594,"wickets":0},
+    {"id":"shubman-gill","name":"Shubman Gill","team":"Gujarat Titans","runs":3216,"wickets":0},
+    {"id":"jos-buttler","name":"Jos Buttler","team":"Rajasthan Royals","runs":3582,"wickets":0},
+    {"id":"yashasvi-jaiswal","name":"Yashasvi Jaiswal","team":"Rajasthan Royals","runs":1607,"wickets":0},
+    {"id":"ravindra-jadeja","name":"Ravindra Jadeja","team":"Chennai Super Kings","runs":2959,"wickets":160},
+    {"id":"hardik-pandya","name":"Hardik Pandya","team":"Mumbai Indians","runs":2525,"wickets":64},
+    {"id":"andre-russell","name":"Andre Russell","team":"Kolkata Knight Riders","runs":2484,"wickets":115},
+    {"id":"sunil-narine","name":"Sunil Narine","team":"Kolkata Knight Riders","runs":1534,"wickets":180},
+    {"id":"rashid-khan","name":"Rashid Khan","team":"Gujarat Titans","runs":545,"wickets":149},
+    {"id":"yuzvendra-chahal","name":"Yuzvendra Chahal","team":"Rajasthan Royals","runs":37,"wickets":205},
+    {"id":"lasith-malinga","name":"Lasith Malinga","team":"Mumbai Indians","runs":88,"wickets":170},
+    {"id":"jasprit-bumrah","name":"Jasprit Bumrah","team":"Mumbai Indians","runs":69,"wickets":165},
+    {"id":"bhuvneshwar-kumar","name":"Bhuvneshwar Kumar","team":"Sunrisers Hyderabad","runs":287,"wickets":181},
+    {"id":"dwayne-bravo","name":"Dwayne Bravo","team":"Chennai Super Kings","runs":1560,"wickets":183},
+    {"id":"ravichandran-ashwin","name":"Ravichandran Ashwin","team":"Rajasthan Royals","runs":800,"wickets":180},
+    {"id":"rishabh-pant","name":"Rishabh Pant","team":"Delhi Capitals","runs":3284,"wickets":0}
+  ]
+}

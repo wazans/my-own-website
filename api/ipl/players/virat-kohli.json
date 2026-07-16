@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "count": 1,
+  "snapshotVersion": "1.0",
+  "timestamp": "2025-06-04T00:00:00.000Z",
+  "data": {"id":"virat-kohli","name":"Virat Kohli","team":"Royal Challengers Bengaluru","role":"Batter","runs":8661,"highestScore":"113*","centuries":8}
+}

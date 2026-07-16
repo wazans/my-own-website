@@ -69,6 +69,7 @@
       'js-typescript.html',
       'playwright-reader.html',
       'git-github-essentials.html',
+      'ipl-automation-practice.html',
       'selenium.html',
       'api.html',
       'rest.html',
@@ -1106,7 +1107,7 @@
     if (!siteNavs.length) return;
 
     var page = currentPageName();
-    var isLearning = ['learning-hub.html', 'qa-engineering.html', 'development-technologies.html', 'ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'js-typescript.html', 'playwright-reader.html', 'git-github-essentials.html', 'tech-courses.html', 'ai-courses.html'].indexOf(page) !== -1 || document.body.classList.contains('learning-page');
+    var isLearning = ['learning-hub.html', 'qa-engineering.html', 'development-technologies.html', 'ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'js-typescript.html', 'playwright-reader.html', 'git-github-essentials.html', 'ipl-automation-practice.html', 'tech-courses.html', 'ai-courses.html'].indexOf(page) !== -1 || document.body.classList.contains('learning-page');
     var navHtml = [
       '<a' + (page === 'index.html' ? ' class="active"' : '') + ' href="/index.html">Home</a>',
       '<div class="has-mega-menu learning-dropdown">',
@@ -1115,6 +1116,7 @@
       '<a href="/qa-engineering.html">QA Engineering</a>',
       '<a href="/development-technologies.html">Development Technologies</a>',
       '<a href="/ai-emerging-technologies.html">AI Learning Hub</a>',
+      '<a href="/ipl-automation-practice.html">IPL Practice</a>',
       '</div>',
       '</div>',
       '<a' + (page === 'career-services.html' ? ' class="active"' : '') + ' href="/career-services.html">Career Services</a>',
@@ -1290,7 +1292,20 @@
           '<a class="primary-btn" href="' + category.url + '">Browse Topics</a>',
           '</article>'
         ].join('');
-      }).join('');
+      }).join('') + [
+        '<article class="glass-card category-discovery-card invite-card" data-testid="ipl-practice-hub-card">',
+        '<span class="access-badge open-access-badge">Open Access</span>',
+        '<h3>IPL Automation Practice</h3>',
+        '<p>Practice tables, filters, waits, API testing, iframes, Shadow DOM and more using IPL records.</p>',
+        '<div class="pill-row">',
+        '<span class="topic-pill">Playwright</span>',
+        '<span class="topic-pill">Selenium</span>',
+        '<span class="topic-pill">Cypress</span>',
+        '<span class="topic-pill">API Fixtures</span>',
+        '</div>',
+        '<a class="primary-btn" href="ipl-automation-practice.html">Start Practising</a>',
+        '</article>'
+      ].join('');
     }
   }
 

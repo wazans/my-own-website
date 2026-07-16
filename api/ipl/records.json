@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "count": 7,
+  "snapshotVersion": "1.0",
+  "timestamp": "2025-06-04T00:00:00.000Z",
+  "data": [
+    {"recordType":"batting","playerOrTeam":"Virat Kohli","value":"8661 runs","season":"2008-2025"},
+    {"recordType":"batting","playerOrTeam":"Chris Gayle","value":"175*","season":"2013"},
+    {"recordType":"bowling","playerOrTeam":"Yuzvendra Chahal","value":"205 wickets","season":"2013-2025"},
+    {"recordType":"bowling","playerOrTeam":"Alzarri Joseph","value":"6/12","season":"2019"},
+    {"recordType":"team","playerOrTeam":"Mumbai Indians","value":"5 titles","season":"2013-2020"},
+    {"recordType":"team","playerOrTeam":"Chennai Super Kings","value":"5 titles","season":"2010-2023"},
+    {"recordType":"fielding","playerOrTeam":"Virat Kohli","value":"114 catches","season":"2008-2025"}
+  ]
+}

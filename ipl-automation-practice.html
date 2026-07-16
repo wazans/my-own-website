@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPL Automation Practice Playground | TestNova</title>
+  <meta name="description" content="Practice Playwright, Selenium, Cypress and WebdriverIO with IPL-themed tables, filters, modals, iframes, Shadow DOM, downloads and API fixtures." />
+  <link rel="canonical" href="https://www.testnova.in/ipl-automation-practice.html" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="ipl-automation-practice.css" />
+</head>
+<body class="learning-page ipl-practice-page">
+  <header class="topbar">
+    <div class="container nav-container">
+      <a class="brand" href="index.html">TestNova</a>
+      <nav class="site-nav" aria-label="Primary navigation"></nav>
+    </div>
+  </header>
+
+  <main id="ipl-practice-main">
+    <section class="page-hero-section ipl-hero" aria-labelledby="ipl-page-title">
+      <div class="container ipl-hero-grid">
+        <div class="page-header">
+          <span class="section-tag">Free automation playground</span>
+          <h1 id="ipl-page-title">IPL Automation Practice Playground</h1>
+          <p>Practice Playwright, Selenium and Cypress using realistic IPL records, tables, filters and dynamic UI challenges.</p>
+          <div class="hero-actions">
+            <button class="primary-btn" type="button" id="start-practising" data-testid="start-practising" aria-label="Start practising IPL automation sections">Start Practising</button>
+            <button class="secondary-btn" type="button" id="view-challenges" data-testid="view-automation-challenges" aria-label="View automation challenges">View Automation Challenges</button>
+          </div>
+        </div>
+        <div class="ipl-hero-panel" aria-label="Playground summary">
+          <div class="cricket-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="summary-card" data-testid="summary-practice-sections"><strong>30+</strong><span>Multiple Practice Sections</span></div>
+          <div class="summary-card" data-testid="summary-cricket-data"><strong>Real</strong><span>Realistic Cricket Data</span></div>
+          <div class="summary-card" data-testid="summary-levels"><strong>A-Z</strong><span>Beginner to Advanced</span></div>
+          <div class="summary-card" data-testid="summary-free"><strong>Free</strong><span>Free to Practice</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nova-section ipl-section" id="practice-sections">
+      <div class="container section-stack">
+        <div class="section-heading">
+          <span class="section-tag">Interactive lab</span>
+          <h2>Automation Practice Components</h2>
+          <p>Every component exposes practical labels, IDs and data-testid attributes. Sections marked unstable are intentionally challenging.</p>
+        </div>
+        <div id="ipl-playground-root" data-testid="ipl-playground-root" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="nova-section ipl-section section-alt" id="automation-challenges">
+      <div class="container section-stack">
+        <div class="section-heading">
+          <span class="section-tag">Guided practice</span>
+          <h2>Practice Challenges</h2>
+          <p>Hints suggest locator strategy and wait approach without giving full test solutions.</p>
+        </div>
+        <div id="challenge-grid" class="challenge-grid" data-testid="practice-challenge-grid"></div>
+      </div>
+    </section>
+
+    <section class="nova-section ipl-section" id="playwright-starter">
+      <div class="container">
+        <article class="glass-card starter-panel">
+          <div>
+            <span class="section-tag">Try These with Playwright</span>
+            <h2>Starter tasks</h2>
+            <ul class="plain-task-list">
+              <li>Open the page</li>
+              <li>Search a player</li>
+              <li>Select a team</li>
+              <li>Sort a table</li>
+              <li>Handle a modal</li>
+              <li>Download a CSV</li>
+              <li>Interact with an iframe</li>
+              <li>Verify an API response</li>
+            </ul>
+          </div>
+          <div class="copy-url-box">
+            <label for="base-url-output">Dynamic base URL</label>
+            <output id="base-url-output" data-testid="base-url-output"></output>
+            <button class="secondary-btn" type="button" id="copy-base-url" data-testid="copy-base-url" aria-label="Copy current practice page URL">Copy Base URL</button>
+            <p id="copy-url-status" class="status-text" role="status" aria-live="polite"></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="nova-section ipl-section source-section">
+      <div class="container">
+        <p class="source-note">
+          IPL statistics used for educational automation practice. Source:
+          <a href="https://en.wikipedia.org/wiki/List_of_Indian_Premier_League_records_and_statistics" target="_blank" rel="noopener noreferrer">Wikipedia contributors</a>.
+          Data snapshot may not represent the latest live records.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <div class="ipl-modal" id="player-detail-modal" role="dialog" aria-modal="true" aria-labelledby="player-modal-title" aria-hidden="true" data-testid="player-details-modal">
+    <div class="ipl-modal__overlay" data-testid="player-modal-overlay"></div>
+    <div class="ipl-modal__panel" role="document">
+      <header class="ipl-modal__header">
+        <h2 id="player-modal-title">Player details</h2>
+        <button type="button" class="icon-button" id="player-modal-close" data-testid="player-modal-close" aria-label="Close player details">×</button>
+      </header>
+      <div class="ipl-modal__body" id="player-modal-body" data-testid="player-modal-body"></div>
+      <footer class="ipl-modal__footer">
+        <button type="button" class="secondary-btn" id="previous-player" data-testid="previous-player" aria-label="Show previous player">Previous Player</button>
+        <button type="button" class="primary-btn" id="next-player" data-testid="next-player" aria-label="Show next player">Next Player</button>
+      </footer>
+    </div>
+  </div>
+
+  <div id="toast-region" class="toast-region" role="status" aria-live="polite" data-testid="toast-region"></div>
+
+  <footer class="site-footer premium-footer">
+    <div class="container footer-bottom">
+      <p>&copy; <span data-year></span> TestNova. <a href="learning-hub.html">Learning Hub</a></p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+  <script src="ipl-automation-practice.js"></script>
+</body>
+</html>
