@@ -31,6 +31,36 @@
     ['sixes', 'Most Sixes'], ['bowling', 'Best Bowling Figures'], ['catches', 'Most Catches']
   ];
 
+  var practiceSections = [
+    ['player-search-section', 'Player Search', searchHtml, true],
+    ['records-table-section', 'Sortable Player Records Table', tableHtml, true],
+    ['team-filter-section', 'Team Filtering', function () { return '<div id="team-filter-root"></div>'; }, true],
+    ['season-results-section', 'Season Results Table', seasonHtml, true],
+    ['leaderboard-section', 'Dynamic Leaderboard', function () { return '<div id="leaderboard-root"></div>'; }],
+    ['autosuggest-section', 'Dropdown and Auto-suggest', autosuggestHtml],
+    ['report-builder-section', 'Build Your IPL Report', reportHtml],
+    ['date-picker-section', 'Find Matches by Date', datesHtml],
+    ['alerts-section', 'Alerts and Confirmation', alertsHtml],
+    ['iframe-section', 'Iframe Scorecard', iframeHtml],
+    ['shadow-dom-section', 'Shadow DOM Player Card', function () { return '<div class="shadow-host-wrap"><ipl-record-card data-testid="shadow-host-card"></ipl-record-card></div>'; }],
+    ['drag-drop-section', 'Build Your Playing XI', dragHtml, true],
+    ['tooltip-section', 'Hover and Tooltip', tooltipHtml],
+    ['download-section', 'File Download', downloadHtml],
+    ['upload-section', 'File Upload', uploadHtml],
+    ['windows-section', 'Multiple Windows', windowsHtml],
+    ['network-section', 'Network Delay Simulation', networkHtml],
+    ['dynamic-element-section', 'Dynamic Element', dynamicHtml],
+    ['hidden-delay-section', 'Hidden and Delayed Elements', hiddenHtml],
+    ['feed-section', 'Infinite Scroll / Load More', feedHtml, true],
+    ['comparison-section', 'Responsive Table', comparisonHtml, true],
+    ['flip-card-section', 'Flip Card', flipHtml, true],
+    ['quiz-section', 'Quiz', function () { return '<div id="quiz-root"></div>'; }],
+    ['favourites-section', 'Saved Favourites', favouritesHtml, true],
+    ['api-practice-section', 'API Practice', apiHtml, true],
+    ['unstable-locator-section', 'Unstable Locator Challenge', unstableHtml],
+    ['dom-comparison-section', 'Flat vs Complex DOM', domCompareHtml]
+  ];
+
   var challenges = [
     ['Beginner','Search for a player and verify the result.','The requested player appears in the results.','Player Search','Use the player search input and assert visible text plus result count.'],
     ['Beginner','Sort players by runs in descending order.','Runs are ordered from highest to lowest.','Sortable Player Records Table','Click the Runs header until it announces descending.'],
@@ -86,35 +116,27 @@
   }
 
   function renderShell() {
-    root.innerHTML = '<div class="ipl-grid">' +
-      section('player-search-section', '1. Player Search', searchHtml(), true) +
-      section('records-table-section', '2. Sortable Player Records Table', tableHtml(), true) +
-      section('team-filter-section', '3. Team Filtering', '<div id="team-filter-root"></div>', true) +
-      section('season-results-section', '4. Season Results Table', seasonHtml(), true) +
-      section('leaderboard-section', '6. Dynamic Leaderboard', '<div id="leaderboard-root"></div>') +
-      section('autosuggest-section', '7. Dropdown and Auto-suggest', autosuggestHtml()) +
-      section('report-builder-section', '8. Build Your IPL Report', reportHtml()) +
-      section('date-picker-section', '9. Find Matches by Date', datesHtml()) +
-      section('alerts-section', '10. Alerts and Confirmation', alertsHtml()) +
-      section('iframe-section', '11. Iframe Scorecard', iframeHtml()) +
-      section('shadow-dom-section', '12. Shadow DOM Player Card', '<div class="shadow-host-wrap"><ipl-record-card data-testid="shadow-host-card"></ipl-record-card></div>') +
-      section('drag-drop-section', '13. Build Your Playing XI', dragHtml(), true) +
-      section('tooltip-section', '14. Hover and Tooltip', tooltipHtml()) +
-      section('download-section', '15. File Download', downloadHtml()) +
-      section('upload-section', '16. File Upload', uploadHtml()) +
-      section('windows-section', '17. Multiple Windows', windowsHtml()) +
-      section('network-section', '18. Network Delay Simulation', networkHtml()) +
-      section('dynamic-element-section', '19. Dynamic Element', dynamicHtml()) +
-      section('hidden-delay-section', '20. Hidden and Delayed Elements', hiddenHtml()) +
-      section('feed-section', '21. Infinite Scroll / Load More', feedHtml(), true) +
-      section('comparison-section', '22. Responsive Table', comparisonHtml(), true) +
-      section('flip-card-section', '23. Flip Card', flipHtml(), true) +
-      section('quiz-section', '24. Quiz', '<div id="quiz-root"></div>') +
-      section('favourites-section', '25. Saved Favourites', favouritesHtml(), true) +
-      section('api-practice-section', '26. API Practice', apiHtml(), true) +
-      section('unstable-locator-section', '27. Unstable Locator Challenge', unstableHtml()) +
-      section('dom-comparison-section', '28. Flat vs Complex DOM', domCompareHtml()) +
-      '</div>';
+    root.innerHTML = '<div class="ipl-grid">' + practiceSections.map(function (item) {
+      return section(item[0], item[1], item[2](), item[3]);
+    }).join('') + '</div>';
+    renderTopicNav();
+  }
+
+  function renderTopicNav() {
+    var nav = byId('ipl-topic-nav');
+    if (!nav) return;
+    nav.innerHTML = practiceSections.map(function (item) {
+      return '<a href="#' + item[0] + '" data-ipl-topic-link="' + item[0] + '"><strong>' + escapeHtml(item[1]) + '</strong></a>';
+    }).join('');
+    nav.querySelectorAll('[data-ipl-topic-link]').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        var target = byId(this.getAttribute('data-ipl-topic-link'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        nav.querySelectorAll('a').forEach(function (a) { a.classList.remove('active'); });
+        this.classList.add('active');
+      });
+    });
   }
 
   function searchHtml() {

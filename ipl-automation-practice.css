@@ -12,6 +12,11 @@
 .cricket-orbit span:nth-child(2) { top: 95px; right: 10px; }
 .cricket-orbit span:nth-child(3) { bottom: 18px; left: 38px; }
 .ipl-section { padding: clamp(2.5rem, 5vw, 4rem) 0; }
+.ipl-reader-layout { display: grid; grid-template-columns: minmax(270px, 330px) minmax(0, 1fr); gap: clamp(1rem, 2.4vw, 2rem); align-items: start; }
+.ipl-topic-sidebar { top: 88px; }
+.ipl-topic-nav a { grid-template-columns: minmax(0, 1fr); text-decoration: none; }
+.ipl-topic-nav strong { font-size: .92rem; }
+.ipl-reader-main { min-width: 0; display: grid; gap: 1.2rem; }
 .ipl-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
 .ipl-card { padding: 1.25rem; border-radius: 18px; }
 .ipl-card--wide { grid-column: 1 / -1; }
@@ -111,8 +116,10 @@ mark { background: rgba(245,158,11,.28); color: #fde68a; border-radius: 4px; pad
 .toast { padding: .8rem 1rem; border-radius: 12px; background: #0f172a; border: 1px solid rgba(56,189,248,.4); color: #e0f2fe; box-shadow: var(--tn-shadow); }
 .mobile-comparison-cards { display: none; }
 @media (max-width: 900px) {
-  .ipl-hero-grid, .ipl-grid, .form-grid, .drag-layout, .starter-panel, .compare-cards { grid-template-columns: 1fr; }
+  .ipl-hero-grid, .ipl-reader-layout, .ipl-grid, .form-grid, .drag-layout, .starter-panel, .compare-cards { grid-template-columns: 1fr; }
   .ipl-hero-panel { grid-template-columns: 1fr 1fr; }
+  .ipl-topic-sidebar { position: static; max-height: none; }
+  .ipl-topic-nav { max-height: 360px; overflow: auto; }
 }
 @media (max-width: 640px) {
   .ipl-hero-panel, .choice-grid { grid-template-columns: 1fr; }
