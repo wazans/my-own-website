@@ -255,11 +255,34 @@
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
 
+    siteNav.querySelectorAll('.learning-dropdown > a').forEach(function(dropdownLink) {
+      dropdownLink.setAttribute('aria-expanded', 'false');
+      dropdownLink.addEventListener('click', function(event) {
+        if (!window.matchMedia('(max-width: 780px)').matches) return;
+
+        event.preventDefault();
+        var dropdown = dropdownLink.closest('.learning-dropdown');
+        if (!dropdown) return;
+
+        var open = dropdown.classList.toggle('is-open');
+        dropdownLink.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
+
     siteNav.addEventListener('click', function (event) {
       var target = event.target;
+      if (target && target.tagName === 'A' && target.closest('.learning-dropdown') && target.parentElement === target.closest('.learning-dropdown')) {
+        return;
+      }
+
       if (target && target.tagName === 'A' && siteNav.classList.contains('open')) {
         siteNav.classList.remove('open');
         btn.setAttribute('aria-expanded', 'false');
+        siteNav.querySelectorAll('.learning-dropdown.is-open').forEach(function(dropdown) {
+          dropdown.classList.remove('is-open');
+          var link = dropdown.querySelector(':scope > a');
+          if (link) link.setAttribute('aria-expanded', 'false');
+        });
       }
     });
 
@@ -269,6 +292,11 @@
 
       siteNav.classList.remove('open');
       btn.setAttribute('aria-expanded', 'false');
+      siteNav.querySelectorAll('.learning-dropdown.is-open').forEach(function(dropdown) {
+        dropdown.classList.remove('is-open');
+        var link = dropdown.querySelector(':scope > a');
+        if (link) link.setAttribute('aria-expanded', 'false');
+      });
     });
   }
 
@@ -1117,6 +1145,7 @@
       '<a href="/development-technologies.html">Development Technologies</a>',
       '<a href="/ai-emerging-technologies.html">AI Learning Hub</a>',
       '<a href="/ipl-automation-practice.html">IPL Practice</a>',
+      '<a class="mobile-learning-overview" href="/learning-hub.html">Learning Hub Overview</a>',
       '</div>',
       '</div>',
       '<a' + (page === 'career-services.html' ? ' class="active"' : '') + ' href="/career-services.html">Career Services</a>',

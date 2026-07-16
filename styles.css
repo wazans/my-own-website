@@ -397,6 +397,10 @@ a {
   background: rgba(6, 182, 212, 0.12);
 }
 
+.site-nav .compact-learning-menu .mobile-learning-overview {
+  display: none;
+}
+
 /* Search Box */
 .nav-right-items {
   display: flex;
@@ -2706,7 +2710,7 @@ body.content-locked .page-header::after {
   }
   .site-nav .compact-learning-menu {
     position: static;
-    display: flex;
+    display: none;
     width: 100%;
     opacity: 1;
     visibility: visible;
@@ -2714,6 +2718,15 @@ body.content-locked .page-header::after {
     box-shadow: none;
     margin-top: 0.25rem;
     background: rgba(255, 255, 255, 0.04);
+  }
+  .site-nav .learning-dropdown.is-open .compact-learning-menu {
+    display: flex;
+  }
+  .site-nav .learning-dropdown.is-open .compact-learning-menu .mobile-learning-overview {
+    display: flex;
+  }
+  .site-nav .learning-dropdown.is-open > a::after {
+    transform: rotate(225deg) translateY(-2px);
   }
 
   .hero-shell, .text-grid { grid-template-columns: 1fr; }
