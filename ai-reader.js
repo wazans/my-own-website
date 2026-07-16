@@ -551,8 +551,10 @@
     },
     playwright: {
       storageKey: 'testnova-reader-playwright-v2',
+      contentVersion: 3,
       title: 'Playwright',
-      topics: [
+      topics: buildPlaywrightPdfNotesTopics(),
+      legacyTopics: [
         lesson('development-environment-nodejs', 'Configuration of Development Environment - Node JS', [
           'Node.js is the runtime environment that allows JavaScript and TypeScript to run outside the browser. JavaScript was originally designed to execute inside the browser, but Node.js made it possible to run JavaScript on a local computer, server, command line, build pipeline, and automation framework.',
           'Playwright supports JavaScript and TypeScript. To run Playwright tests on your machine, Node.js is required because Playwright projects use Node-based tooling, npm packages, test runners, and command-line scripts.',
@@ -817,6 +819,336 @@
       ]
     }
   };
+
+  function buildPlaywrightPdfNotesTopics() {
+    var items = [
+      ['playwright-notes-01', '01. What is Playwright?', 'PDF page 1', [
+        'Playwright is an open-source end-to-end testing framework by Microsoft for automating modern web applications reliably and efficiently.',
+        'It supports multiple browsers, parallel execution, strong locators, debugging, and test execution features.',
+        'Key highlights: fast and reliable execution, cross-browser testing, auto-wait, web-first assertions, easy test maintenance, parallel execution, Trace Viewer, built-in API testing, headed/headless mode, and Codegen.'
+      ]],
+      ['playwright-notes-02', '02. Why Playwright?', 'PDF page 1', [
+        'Playwright is designed for modern web automation, stable tests, and reduced flaky waits.',
+        'It supports multiple browsers out of the box, parallel execution, powerful locators, screenshots, videos, traces, and CI/CD integration.'
+      ]],
+      ['playwright-notes-03', '03. Playwright vs Selenium', 'PDF page 1', [
+        'Developer: Playwright is by Microsoft; Selenium is maintained by the Selenium project.',
+        'Browsers: Playwright supports Chromium, Firefox, and WebKit directly; Selenium often needs separate browser drivers.',
+        'Playwright has built-in auto-wait, faster execution, easier parallel setup, mobile emulation, and built-in API testing; Selenium usually needs more manual setup for these areas.'
+      ]],
+      ['playwright-notes-04', '04. Playwright Architecture', 'PDF page 1', [
+        'Flow: Test Script running on Node.js calls the Playwright library.',
+        'Playwright creates isolated browser contexts and drives Chromium, Firefox, and WebKit through browser protocols.',
+        'Each test can run in its own Browser Context, giving strong isolation for cookies, local storage, sessions, cache, and permissions.'
+      ]],
+      ['playwright-notes-05', '05. Supported Browsers', 'PDF page 1', [
+        'Supported engines: Chromium for Chrome, Edge, Brave and similar browsers; Firefox; WebKit for Safari-like coverage.',
+        'Tests can run in headless mode for automation pipelines or headed mode for visible debugging.'
+      ]],
+      ['playwright-notes-06', '06. Amazing Features', 'PDF page 1', [
+        'Auto-waiting waits for elements to be ready before actions.',
+        'Web-first assertions are designed for modern web apps.',
+        'Cross-browser execution runs on Chromium, Firefox, and WebKit.',
+        'Parallel execution runs multiple tests simultaneously.',
+        'Trace Viewer records and inspects test execution step by step.',
+        'Codegen generates tests by recording browser actions.'
+      ]],
+      ['playwright-notes-07', '07. Installation Prerequisites', 'PDF page 2', [
+        'Node.js version 18 or higher is recommended.',
+        'npm is installed with Node.js.',
+        'A code editor such as VS Code is recommended.',
+        'Basic JavaScript or TypeScript understanding is required before writing useful tests.'
+      ]],
+      ['playwright-notes-08', '08. Install Playwright', 'PDF page 2', [
+        'Create a new project folder, open it in terminal, and initialize a Playwright project.',
+        'Install Playwright test package and browser binaries.',
+        'Common commands shown in the notes include npm init, npm install -D @playwright/test, and npx playwright install.'
+      ], [{ title: 'Install commands', code: 'mkdir playwright-course\ncd playwright-course\nnpm init -y\nnpm install -D @playwright/test\nnpx playwright install' }]],
+      ['playwright-notes-09', '09. Verify Installation', 'PDF page 2', [
+        'Verify Playwright from terminal with the version command.',
+        'If the version displays, installation is successful.'
+      ], [{ title: 'Verify command', code: 'npx playwright test --version' }]],
+      ['playwright-notes-10', '10. Folder Structure', 'PDF page 2', [
+        'Important folders and files include tests, pages, utils, test-data, playwright.config.ts, package.json, tsconfig.json, and README.md.',
+        'tests stores test cases, pages stores Page Object classes, utils stores common helpers, and test-data stores fixtures such as JSON or CSV data.'
+      ]],
+      ['playwright-notes-11', '11. package.json Scripts', 'PDF page 2', [
+        'package.json stores project metadata, dependencies, devDependencies, and useful scripts.',
+        'Scripts can run tests in normal mode, UI mode, headed mode, and report viewing mode.'
+      ], [{ title: 'Useful scripts', code: '"scripts": {\n  "test": "playwright test",\n  "test:ui": "playwright test --ui",\n  "test:headed": "playwright test --headed",\n  "report": "playwright show-report"\n}' }]],
+      ['playwright-notes-12', '12. Run First Sample Test and Basic Commands', 'PDF page 2', [
+        'The first sample test opens a browser and helps confirm that Playwright can generate and run tests successfully.',
+        'Basic execution commands include run all tests, run headed, run UI mode, debug, and show report.'
+      ], [{ title: 'Basic commands', code: 'npx playwright test\nnpx playwright test --headed\nnpx playwright test --ui\nnpx playwright test --debug\nnpx playwright show-report' }]],
+      ['playwright-notes-13', '13. playwright.config.ts', 'PDF page 3', [
+        'playwright.config.ts is the main configuration file and controls browsers, reporters, timeouts, retries, and project behavior.',
+        'Common properties include testDir, timeout, expect timeout, retries, workers, fullyParallel, reporter, use, projects, globalSetup, and globalTeardown.'
+      ]],
+      ['playwright-notes-14', '14. Config Properties and Project Order', 'PDF page 3', [
+        'Projects define multiple browser/device runs such as Desktop Chrome, Desktop Firefox, and Desktop Safari.',
+        'Precedence order from highest to lowest: CLI options, environment variables, playwright.config.ts use block, playwright.config.ts top level, and Playwright defaults.',
+        'Keep config clean and environment-specific values in environment variables.'
+      ]],
+      ['playwright-notes-15', '15. Test Creation Basics', 'PDF page 4', [
+        'A Playwright test is a small piece of code that verifies a specific functionality.',
+        'Basic imports usually come from @playwright/test and include test and expect.',
+        'A test contains navigation, actions, and assertions.'
+      ], [{ title: 'Basic test structure', code: "import { test, expect } from '@playwright/test';\n\ntest('basic test', async ({ page }) => {\n  await page.goto('https://example.com');\n  await expect(page).toHaveTitle(/Example/);\n});" }]],
+      ['playwright-notes-16', '16. test.describe, Hooks, Steps and Annotations', 'PDF page 4', [
+        'test.describe groups related tests together.',
+        'Hooks include beforeAll, beforeEach, afterEach, and afterAll.',
+        'test.step improves reporting by splitting a test into readable steps.',
+        'Annotations and metadata include skip, only, slow, fail, tag, and timeout adjustments.'
+      ]],
+      ['playwright-notes-17', '17. Test Lifecycle and Running Specific Tests', 'PDF page 4', [
+        'Lifecycle flow includes beforeAll, beforeEach, test body, afterEach, and afterAll.',
+        'Specific tests can be run by file, by line, by title using grep, by project, in headed mode, in debug mode, or in UI mode.'
+      ]],
+      ['playwright-notes-18', '18. Locators - Heart of Playwright', 'PDF page 5', [
+        'A locator is Playwright way of finding elements on the page.',
+        'Locators are lazy, auto-waiting, resilient, and readable.',
+        'Prefer user-facing locators such as role, label, placeholder, text, alt text, title, and test id before CSS or XPath.'
+      ]],
+      ['playwright-notes-19', '19. Built-in Locators and Chaining', 'PDF pages 5, 11, 19', [
+        'Built-in locators include getByRole, getByText, getByLabel, getByPlaceholder, getByAltText, getByTitle, getByTestId, and locator.',
+        'Locator chaining narrows a search by combining parent and child locators.',
+        'Use first, last, nth, filter, has, hasText, and chained locators to make selectors precise.'
+      ]],
+      ['playwright-notes-20', '20. Actions in Playwright', 'PDF pages 6, 22', [
+        'Actions perform operations on web elements like click, double click, fill, type, press, check, uncheck, selectOption, hover, focus, blur, dragTo, and upload.',
+        'Actions auto-wait for elements to be attached, visible, stable, enabled, and ready to receive events.'
+      ]],
+      ['playwright-notes-21', '21. Assertions in Playwright', 'PDF pages 6, 10, 31-40', [
+        'Assertions verify the expected state of the application.',
+        'Common assertions include toBeVisible, toBeHidden, toHaveText, toContainText, toHaveAttribute, toHaveURL, toHaveTitle, toHaveCount, toBeChecked, toBeEnabled, and toHaveScreenshot.',
+        'Good assertions make tests meaningful and reliable.'
+      ]],
+      ['playwright-notes-22', '22. Page Object Model (POM)', 'PDF page 7', [
+        'POM creates an object repository for page elements and actions.',
+        'Benefits include reusable code, clean maintenance, better organization, and reduced duplication.',
+        'Common structure: tests, pages, base, utils, and test data.'
+      ]],
+      ['playwright-notes-23', '23. POM Structure and Page Classes', 'PDF page 7', [
+        'A BasePage can hold shared behavior such as navigation and common waits.',
+        'Page classes contain locators and page actions for a specific screen, such as LoginPage or DashboardPage.',
+        'Tests should use page methods instead of directly repeating locator logic everywhere.'
+      ]],
+      ['playwright-notes-24', '24. Fixtures in Playwright', 'PDF page 8', [
+        'Fixtures provide reusable setup and teardown for tests.',
+        'Built-in fixtures include browser, context, page, request, browserName, workerInfo, testInfo, playwright, and baseURL.',
+        'Fixtures can be extended to add custom objects such as logged-in pages, test users, or API clients.'
+      ]],
+      ['playwright-notes-25', '25. Worker Fixtures and Fixture Execution Order', 'PDF page 8', [
+        'Worker fixtures run once per worker and are useful for expensive setup.',
+        'Fixture execution follows dependency order: global setup, worker fixtures, test fixtures, test body, and teardown.',
+        'Best practice: keep fixtures small, focused, reusable, and independent.'
+      ]],
+      ['playwright-notes-26', '26. Test Data and Data Driven Testing', 'PDF page 9', [
+        'Test data is input used to validate application behavior.',
+        'Types include valid, invalid, boundary, random, and special data.',
+        'Data-driven testing runs the same test with multiple sets of data to improve coverage and reduce duplicate code.'
+      ]],
+      ['playwright-notes-27', '27. Data Sources and Data Driven Flow', 'PDF page 9', [
+        'Data sources include Excel, CSV, JSON, database, and TypeScript or JavaScript arrays.',
+        'A typical flow is: read data, loop through each row, run test with current data, generate result, verify expected output, and continue.',
+        'Best practices: keep data separate from test code, use meaningful names, avoid hardcoding, validate data, and keep it readable.'
+      ]],
+      ['playwright-notes-28', '28. Assertion Best Practices and Scalability', 'PDF page 10', [
+        'Use web-first assertions, prefer locator-based assertions, use expect.poll for dynamic data, avoid hard waits, use meaningful messages, and assert user-visible behavior.',
+        'Scalability patterns include Page Object Model, reusable components, test data handling, environment configs, parallel execution, reports, retry strategy, tagging, visual testing, and mobile testing.'
+      ]],
+      ['playwright-notes-29', '29. Handling Dynamic Elements', 'PDF page 12', [
+        'Dynamic elements have attributes, text, visibility, or presence that changes over time.',
+        'Common challenges: elements not visible immediately, loaded after API calls, stale elements, and animations.',
+        'Prefer auto-waiting, web-first assertions, explicit waits only when necessary, and network/load waits for API-driven screens.'
+      ]],
+      ['playwright-notes-30', '30. Frames and iFrames', 'PDF page 13', [
+        'An iframe embeds another HTML document inside the current page.',
+        'Use frameLocator for stable access to elements inside frames.',
+        'Handle nested frames, switch back to default page content, verify frame content, and avoid using contentDocument/contentWindow directly.'
+      ]],
+      ['playwright-notes-31', '31. Dialogs, Alerts, Confirmations and Prompts', 'PDF pages 14, 39', [
+        'Dialog types include alert, confirm, prompt, and beforeunload.',
+        'Use page.on("dialog") to handle dialogs, read message, accept, dismiss, or enter prompt text.',
+        'Dialogs must be handled before the triggering action, otherwise tests can hang.'
+      ]],
+      ['playwright-notes-32', '32. Browser in Playwright', 'PDF page 15', [
+        'Browser is the entry point for test automation and represents Chromium, Firefox, or WebKit.',
+        'Launch options include headless, channel, slowMo, args, timeout, downloadsPath, proxy, devtools, and ignoreHTTPSErrors.',
+        'Close or disconnect browser instances cleanly and use CI-friendly headless execution.'
+      ]],
+      ['playwright-notes-33', '33. Browser Context', 'PDF page 16', [
+        'BrowserContext is an isolated browser session similar to a separate browser profile.',
+        'Contexts isolate cookies, localStorage, sessionStorage, cache, permissions, viewport, geolocation, and user agent.',
+        'Use multiple contexts for isolated users and parallel scenarios.'
+      ]],
+      ['playwright-notes-34', '34. Page Object (Page) in Playwright', 'PDF page 17', [
+        'A Page represents a single tab or popup inside a BrowserContext.',
+        'Pages provide APIs for navigation, actions, locators, events, dialogs, downloads, screenshots, and evaluation.',
+        'Page properties and methods include url, title, locator, context, mainFrame, goto, click, fill, waitForURL, and close.'
+      ]],
+      ['playwright-notes-35', '35. Navigation APIs', 'PDF page 18', [
+        'Navigation APIs move the page to new URLs and control loading.',
+        'Important APIs include goto, goBack, goForward, reload, waitForURL, waitForLoadState, and URL checks.',
+        'Load states include domcontentloaded, load, and networkidle. Choose the correct wait based on the application behavior.'
+      ]],
+      ['playwright-notes-36', '36. Locator Basics and Strategies', 'PDF page 19', [
+        'Locators find elements on the page and perform actions or assertions on them.',
+        'Recommended strategy order: role, text, label, placeholder, test id, then CSS/XPath when needed.',
+        'Good locators are stable, accessible, readable, and maintainable.'
+      ]],
+      ['playwright-notes-37', '37. Advanced Locators', 'PDF page 20', [
+        'Advanced locators handle dynamic lists, nested elements, repeated elements, text matching, and conditional matching.',
+        'Use filter, has, hasText, nth, first, last, chaining, text selectors, CSS, XPath, and regular expressions carefully.',
+        'Bad locators include brittle absolute paths, changing dynamic ids, and selectors tied to visual layout.'
+      ]],
+      ['playwright-notes-38', '38. Locator Practical Examples', 'PDF pages 21, 27', [
+        'Practical locator examples cover buttons, inputs, labels, placeholders, links, images, titles, test ids, tables, dynamic rows, cards, filters, and search results.',
+        'Include positive and negative locator patterns, multi-matching handling, locator chaining, and quick locator cheat sheets.'
+      ]],
+      ['playwright-notes-39', '39. Keyboard Actions', 'PDF page 23', [
+        'Keyboard actions simulate real keyboard input.',
+        'Common APIs include press, type, fill, keyboard.press, keyboard.type, keyboard.down, keyboard.up, keyboard.insertText, and keyboard shortcuts.',
+        'Use keyboard actions for shortcuts, navigation, forms, editing flows, and special key scenarios.'
+      ]],
+      ['playwright-notes-40', '40. File Upload and Download', 'PDF page 24', [
+        'File upload uses setInputFiles and supports single file, multiple files, and clearing selected files.',
+        'Downloads use page.waitForEvent("download") and download.saveAs.',
+        'Best practice: store test files in fixtures, wait for download events before clicking, and validate file name or contents when needed.'
+      ]],
+      ['playwright-notes-41', '41. Mouse Actions', 'PDF page 25', [
+        'Mouse actions simulate user behavior such as click, double click, right click, hover, move, down, up, wheel, and drag and drop.',
+        'Useful for menus, tooltips, sliders, canvas interactions, drag-drop widgets, and hover-based UI.'
+      ]],
+      ['playwright-notes-42', '42. Windows and Tabs', 'PDF page 26', [
+        'Tabs and windows are new Page objects inside the same BrowserContext.',
+        'Use context.waitForEvent("page") or page.waitForEvent("popup") before the click that opens a tab.',
+        'Handle multiple tabs, switch between tabs, close tabs, and validate the active page.'
+      ]],
+      ['playwright-notes-43', '43. Popups', 'PDF page 28', [
+        'A popup is a new page created by actions such as clicking links with target blank or window.open.',
+        'Handle simple popups, popups with links, JavaScript popups, multiple popups, popup close scenarios, and login popups.',
+        'Always wait for the popup event before performing the action that opens it.'
+      ]],
+      ['playwright-notes-44', '44. Screenshots', 'PDF page 30', [
+        'Screenshots capture page or element state and help debugging.',
+        'Types include full-page screenshots, element screenshots, viewport screenshots, clipped screenshots, screenshots with masks, and screenshots during failures.',
+        'Best practice: store screenshots in organized folders and use them for debugging, reports, and visual evidence.'
+      ]],
+      ['playwright-notes-45', '45. Videos and Trace', 'PDF page 31', [
+        'Videos record browser execution and help debug failures visually.',
+        'Trace records actions, snapshots, network, console, errors, and test steps.',
+        'Use trace viewer to inspect what happened before, during, and after a failure.'
+      ]],
+      ['playwright-notes-46', '46. Inspector and Codegen', 'PDF page 32', [
+        'Playwright Inspector helps debug tests, inspect locators, pause execution, and step through actions.',
+        'Codegen records user actions and generates starter test code.',
+        'Best practice: use Codegen as a starting point, then refactor locators and assertions for maintainability.'
+      ]],
+      ['playwright-notes-47', '47. Introduction to expect', 'PDF page 33', [
+        'expect is Playwright assertion API for validating expected behavior.',
+        'Use locator assertions, page assertions, API assertions, and generic value assertions.',
+        'Assertions auto-retry when used with web-first locator expectations.'
+      ]],
+      ['playwright-notes-48', '48. Locator Assertions - Part 1', 'PDF page 34', [
+        'Locator assertions verify element visibility, hidden state, enabled/disabled state, checked state, text, value, and count.',
+        'Use toBeVisible, toBeHidden, toBeEnabled, toBeDisabled, toBeChecked, toHaveText, toContainText, toHaveValue, and toHaveCount.'
+      ]],
+      ['playwright-notes-49', '49. Locator Assertions - Part 2', 'PDF page 35', [
+        'Additional locator assertions verify attributes, CSS, classes, focus, viewport visibility, editable state, empty state, JS properties, and screenshots.',
+        'Use locator assertions to validate UI state without manual sleeps.'
+      ]],
+      ['playwright-notes-50', '50. Locator Assertions - Part 3', 'PDF page 36', [
+        'Advanced locator assertions include screenshot comparisons, negative assertions, soft assertions, timeout customization, and combining checks with good messages.',
+        'Keep assertions user-focused and avoid asserting implementation details unless necessary.'
+      ]],
+      ['playwright-notes-51', '51. Page Assertions', 'PDF page 37', [
+        'Page assertions verify URL, title, screenshots, and page-level state.',
+        'Use toHaveURL, toHaveTitle, toHaveScreenshot, and page-level validations for navigation and whole-page behavior.',
+        'Combine page assertions with locator assertions for complete coverage.'
+      ]],
+      ['playwright-notes-52', '52. API Assertions', 'PDF page 38', [
+        'API assertions validate HTTP responses, status codes, headers, JSON body, text body, and response timing.',
+        'Use request fixtures for API calls and expect assertions to validate response behavior.',
+        'Common checks include status, ok response, JSON fields, arrays, nested objects, and error responses.'
+      ]],
+      ['playwright-notes-53', '53. Soft Assertions and Poll Assertions', 'PDF page 40', [
+        'Soft assertions collect failures and continue execution so multiple issues can be reported together.',
+        'expect.poll repeatedly calls a function until an expected condition is met or timeout occurs.',
+        'Use poll assertions for eventually consistent values such as status updates or async backend results.'
+      ]],
+      ['playwright-notes-54', '54. Custom Assertions', 'PDF page 41', [
+        'Custom assertions make repeated validation readable and reusable.',
+        'Create custom matcher/helper functions for common checks such as menu visibility, dashboard state, table rows, or API contract validation.',
+        'Custom assertions improve framework readability when used consistently.'
+      ]],
+      ['playwright-notes-55', '55. Assertion Patterns and Best Practices', 'PDF page 42', [
+        'Common patterns include existence/visibility, text/content, attributes/properties, count/list, navigation/URL, and API assertions.',
+        'Best practices: assert what matters, keep assertions focused, avoid hard waits, use meaningful messages, and keep tests independent.',
+        'Avoid over-assertion, hardcoded sleeps, testing implementation details, and weak assertions.'
+      ]],
+      ['playwright-notes-56', '56. Ultimate Assertion Cheat Sheet', 'PDF page 43', [
+        'The cheat sheet groups locator assertions, API/response assertions, and general assertions in one quick reference.',
+        'It includes visibility, text, value, count, attributes, CSS, screenshots, status, headers, JSON, arrays, objects, and generic value checks.'
+      ]],
+      ['playwright-notes-57', '57. defineConfig()', 'PDF page 45', [
+        'defineConfig is a helper function for writing clean typed Playwright configuration.',
+        'It provides type safety, autocomplete, centralized settings, project management, reporter setup, and readable configuration.',
+        'Use defineConfig in playwright.config.ts and keep config modular for larger projects.'
+      ]],
+      ['playwright-notes-58', '58. testDir, testMatch, testIgnore, outputDir, snapshotDir', 'PDF page 46', [
+        'testDir tells Playwright where test files are located.',
+        'testMatch includes test files by pattern and testIgnore excludes files or folders.',
+        'outputDir stores artifacts such as screenshots, videos, and traces.',
+        'snapshotDir controls where expected snapshots are stored.'
+      ]],
+      ['playwright-notes-59', '59. Timeouts', 'PDF page 47', [
+        'Timeouts prevent tests from hanging forever and control how long Playwright waits for operations.',
+        'Timeout types include test timeout, expect timeout, action timeout, navigation timeout, fixture timeout, hook timeout, and global timeout.',
+        'Tune timeouts based on app behavior and avoid hiding performance problems with very large values.'
+      ]],
+      ['playwright-notes-60', '60. Retries and Workers', 'PDF page 48', [
+        'Retries rerun failed tests to reduce temporary failure impact, especially in CI.',
+        'Workers control parallel execution and speed.',
+        'Use retries carefully, keep tests independent, avoid shared state, and choose worker count based on machine capacity.'
+      ]],
+      ['playwright-notes-61', '61. use Properties - Part 1 and Part 2', 'PDF pages 49-50', [
+        'The use block defines shared context and browser behavior for tests.',
+        'Important properties include browserName, headless, channel, viewport, locale, timezoneId, geolocation, permissions, colorScheme, storageState, baseURL, ignoreHTTPSErrors, proxy, extraHTTPHeaders, userAgent, video, screenshot, trace, launchOptions, contextOptions, and action/navigation timeouts.',
+        'Use properties should be organized, environment-aware, and easy to override per project.'
+      ]],
+      ['playwright-notes-62', '62. Reporter Configuration', 'PDF page 51', [
+        'Reporters explain test results in different formats.',
+        'Common reporters include list, line, dot, HTML, JSON, JUnit, GitHub, blob, and Allure-style reporting integrations.',
+        'Configure reporters based on local debugging, CI output, dashboards, and team reporting needs.'
+      ]],
+      ['playwright-notes-63', '63. Projects - Run Tests Across Browsers, Devices and Environments', 'PDF page 52', [
+        'Projects allow the same tests to run on multiple browsers, devices, viewports, and environments.',
+        'Use projects for Chromium, Firefox, WebKit, mobile emulation, tablet layouts, branded browsers, smoke/regression groups, and environment-specific setups.',
+        'Projects improve coverage and make browser/device execution explicit.'
+      ]],
+      ['playwright-notes-64', '64. Global Setup and Global Teardown', 'PDF page 53', [
+        'Global setup runs once before all tests and global teardown runs once after all tests.',
+        'Use global setup for login state creation, database seeding, environment preparation, and shared test prerequisites.',
+        'Use global teardown for cleanup, deleting test data, closing external resources, and final reports.'
+      ]],
+      ['playwright-notes-65', '65. CI/CD Integration', 'PDF page 54', [
+        'CI/CD runs Playwright tests automatically on every change or scheduled pipeline.',
+        'The notes cover common CI systems such as GitHub Actions, Jenkins, Azure DevOps, GitLab CI, Bitbucket, CircleCI, Travis CI, TeamCity, Bamboo, and Docker-based runs.',
+        'Best practice: install dependencies, install browsers, run tests, upload reports/artifacts, keep pipelines reliable, and fail builds on real test failures.'
+      ]]
+    ];
+
+    return items.map(function(item) {
+      return lesson(
+        item[0],
+        item[1],
+        ['Source: ' + item[2]].concat(item[3]),
+        'Practice: Convert this note into one runnable Playwright test, helper, config change, or checklist item.',
+        item[4] || []
+      );
+    });
+  }
 
   function buildPlaywrightJsTsTopics() {
     function code(lines) {
