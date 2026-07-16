@@ -66,12 +66,20 @@ mark { background: rgba(245,158,11,.28); color: #fde68a; border-radius: 4px; pad
 .drag-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .player-pool, .playing-xi { min-height: 260px; padding: .75rem; border: 1px dashed rgba(148,163,184,.3); border-radius: 14px; background: rgba(2,6,23,.32); }
 .draggable-player { display: flex; justify-content: space-between; align-items: center; gap: .6rem; margin: .45rem 0; padding: .6rem; border: 1px solid rgba(148,163,184,.18); border-radius: 10px; background: rgba(15,23,42,.8); cursor: grab; }
+.draggable-player span { display: grid; gap: .15rem; }
+.draggable-player small { color: #bfdbfe; font-weight: 800; }
+.selected-xi-player { cursor: default; }
+.captain-choice { display: inline-flex; align-items: center; gap: .35rem; color: #fde68a; font-size: .88rem; font-weight: 800; white-space: nowrap; }
 .tooltip-wrap { display: flex; flex-wrap: wrap; gap: .75rem; }
 .record-badge { position: relative; border: 1px solid rgba(245,158,11,.4); border-radius: 999px; background: rgba(245,158,11,.12); color: #fde68a; padding: .6rem .85rem; cursor: help; }
 .record-badge [role="tooltip"] { position: absolute; left: 0; top: calc(100% + .45rem); width: 240px; padding: .65rem; border-radius: 10px; background: #020617; color: #e2e8f0; border: 1px solid rgba(148,163,184,.3); visibility: hidden; opacity: 0; transition: opacity .15s; z-index: 20; }
 .record-badge:hover [role="tooltip"], .record-badge:focus [role="tooltip"] { visibility: visible; opacity: 1; }
 .upload-zone { border: 1px dashed rgba(56,189,248,.55); border-radius: 14px; padding: 1rem; background: rgba(56,189,248,.06); }
 .api-response { max-height: 360px; overflow: auto; padding: .85rem; border-radius: 12px; background: #020617; color: #c4b5fd; white-space: pre-wrap; }
+.report-panel { display: grid; gap: .85rem; padding: .85rem; border: 1px solid rgba(34,197,94,.28); border-radius: 14px; background: rgba(6,78,59,.14); }
+.report-panel h4 { margin: 0; color: #dcfce7; }
+.report-table { min-width: 620px; }
+.report-list { display: grid; gap: .55rem; }
 .unstable-box { border: 1px solid rgba(239,68,68,.45); background: rgba(127,29,29,.16); }
 .nested-box div { padding: .2rem; border: 1px solid rgba(148,163,184,.1); border-radius: 8px; }
 .compare-cards { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
@@ -111,6 +119,8 @@ mark { background: rgba(245,158,11,.28); color: #fde68a; border-radius: 4px; pad
   .desktop-comparison { display: none; }
   .mobile-comparison-cards { display: grid; gap: .75rem; }
   .leaderboard-item, .feed-item, .favourite-row, .suggestion-option, .match-row { flex-direction: column; }
+  .draggable-player { align-items: flex-start; flex-direction: column; }
+  .captain-choice { white-space: normal; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }

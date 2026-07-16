@@ -1,6 +1,6 @@
 {
   "success": true,
-  "count": 25,
+  "count": 29,
   "snapshotVersion": "1.0",
   "timestamp": "2025-06-04T00:00:00.000Z",
   "data": [
@@ -28,6 +28,10 @@
     {"id":"bhuvneshwar-kumar","name":"Bhuvneshwar Kumar","team":"Sunrisers Hyderabad","runs":287,"wickets":181},
     {"id":"dwayne-bravo","name":"Dwayne Bravo","team":"Chennai Super Kings","runs":1560,"wickets":183},
     {"id":"ravichandran-ashwin","name":"Ravichandran Ashwin","team":"Rajasthan Royals","runs":800,"wickets":180},
-    {"id":"rishabh-pant","name":"Rishabh Pant","team":"Delhi Capitals","runs":3284,"wickets":0}
+    {"id":"rishabh-pant","name":"Rishabh Pant","team":"Delhi Capitals","runs":3284,"wickets":0},
+    {"id":"dinesh-karthik","name":"Dinesh Karthik","team":"Royal Challengers Bengaluru","runs":4842,"wickets":0},
+    {"id":"phil-salt","name":"Phil Salt","team":"Royal Challengers Bengaluru","runs":1034,"wickets":0},
+    {"id":"sanju-samson","name":"Sanju Samson","team":"Rajasthan Royals","runs":4419,"wickets":0},
+    {"id":"mohammed-siraj","name":"Mohammed Siraj","team":"Royal Challengers Bengaluru","runs":109,"wickets":93}
   ]
 }

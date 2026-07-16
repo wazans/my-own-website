@@ -119,10 +119,10 @@
 
   function searchHtml() {
     return '<form id="player-search-form" class="form-grid" data-testid="player-search-form">' +
-      field('Player name', '<input id="player-name" name="playerName" data-testid="player-search-input" aria-label="Player name" autocomplete="off">') +
+      field('Player name', '<input id="player-name" name="playerName" placeholder="Example: Virat, Dhoni, Gayle" data-testid="player-search-input" aria-label="Player name" autocomplete="off">') +
       field('Team', '<select id="team-filter" name="team" data-testid="team-filter" aria-label="Team filter"><option value="">Any team</option></select>') +
-      field('Player role', '<select id="role-filter" name="role" data-testid="role-filter" aria-label="Player role"><option value="">Any role</option><option>Batter</option><option>Bowler</option><option>All-rounder</option><option>Wicketkeeper</option></select>') +
-      field('Nationality', '<input id="nationality-filter" name="nationality" data-testid="nationality-filter" aria-label="Nationality">') +
+      field('Player role', '<select id="role-filter" name="role" data-testid="role-filter" aria-label="Player role"><option value="">Any role</option><option value="Batter">Batter</option><option value="Bowler">Bowler</option><option value="All-rounder">All-rounder</option><option value="Wicketkeeper">Wicketkeeper / WK</option></select>') +
+      field('Nationality', '<input id="nationality-filter" name="nationality" placeholder="Example: India, Australia" data-testid="nationality-filter" aria-label="Nationality">') +
       field('Minimum runs', '<input id="min-runs" name="minRuns" type="number" min="0" data-testid="minimum-runs-input" aria-label="Minimum runs">') +
       field('Minimum wickets', '<input id="min-wickets" name="minWickets" type="number" min="0" data-testid="minimum-wickets-input" aria-label="Minimum wickets">') +
       '<div class="button-row"><button class="primary-btn" type="submit" id="search-players" data-testid="search-players">Search</button><button class="secondary-btn" type="button" id="clear-player-filters" data-testid="clear-player-filters">Clear Filters</button></div>' +
@@ -147,7 +147,7 @@
   }
 
   function reportHtml() {
-    return '<form id="report-form" data-testid="report-form"><div class="choice-grid">' + ['Batting records','Bowling records','Team records','Season results','Fielding records'].map(function (x) { return '<label class="choice-label"><input type="checkbox" name="reportSections" value="' + x + '" data-testid="report-checkbox-' + x.toLowerCase().replaceAll(' ', '-') + '"> ' + x + '</label>'; }).join('') + '</div><div class="choice-grid" role="radiogroup" aria-label="Report type">' + ['Summary report','Detailed report','Comparison report'].map(function (x, i) { return '<label class="choice-label"><input type="radio" name="reportType" value="' + x + '" ' + (i === 0 ? 'checked' : '') + ' data-testid="report-radio-' + i + '"> ' + x + '</label>'; }).join('') + '</div><button class="primary-btn" type="submit" data-testid="generate-report">Generate Report</button></form><div id="report-output" data-testid="report-output" role="status"></div>';
+    return '<form id="report-form" data-testid="report-form"><div class="choice-grid">' + ['Batting records','Bowling records','Team records','Season results','Fielding records'].map(function (x, i) { return '<label class="choice-label"><input type="checkbox" name="reportSections" value="' + x + '" ' + (i < 3 ? 'checked' : '') + ' data-testid="report-checkbox-' + x.toLowerCase().replaceAll(' ', '-') + '"> ' + x + '</label>'; }).join('') + '</div><div class="choice-grid" role="radiogroup" aria-label="Report type">' + ['Summary report','Detailed report','Comparison report'].map(function (x, i) { return '<label class="choice-label"><input type="radio" name="reportType" value="' + x + '" ' + (i === 0 ? 'checked' : '') + ' data-testid="report-radio-' + i + '"> ' + x + '</label>'; }).join('') + '</div><div class="button-row"><button class="primary-btn" type="submit" data-testid="generate-report">Build IPL Report</button><button class="secondary-btn" type="button" id="clear-report" data-testid="clear-report">Clear Report</button></div></form><div id="report-output" data-testid="report-output" role="status"></div>';
   }
 
   function datesHtml() {
@@ -155,7 +155,7 @@
   }
 
   function alertsHtml() {
-    return '<div class="button-row"><button class="primary-btn" type="button" id="show-record-alert" data-testid="show-record-alert">Show Record Alert</button><button class="secondary-btn" type="button" id="reset-leaderboard" data-testid="reset-leaderboard">Reset Leaderboard</button><button class="compact-btn" type="button" id="delete-saved-report" data-testid="delete-saved-report">Delete Saved Report</button></div>';
+    return '<div class="button-row"><button class="primary-btn" type="button" id="show-record-alert" data-testid="show-record-alert">Show Record Alert</button><button class="secondary-btn" type="button" id="reset-leaderboard" data-testid="reset-leaderboard">Reset Leaderboard</button><button class="compact-btn" type="button" id="delete-saved-report" data-testid="delete-saved-report">Delete Saved Report</button></div><p id="alert-status" class="status-text" role="status" data-testid="alert-status">Use these buttons to practice alert, confirmation and toast handling.</p>';
   }
 
   function iframeHtml() {
@@ -163,7 +163,7 @@
   }
 
   function dragHtml() {
-    return '<p id="xi-count" class="selected-count" data-testid="playing-xi-count">Selected players: 0 / 11</p><div class="drag-layout"><div><h4>Player pool</h4><div class="player-pool" id="player-pool" data-testid="player-pool"></div></div><div><h4>Playing XI</h4><div class="playing-xi" id="playing-xi" data-testid="playing-xi" aria-label="Selected Playing XI"></div></div></div><div class="button-row"><button class="secondary-btn" type="button" id="reset-xi" data-testid="reset-playing-xi">Reset Team</button><span id="xi-message" class="status-text" role="status"></span></div>';
+    return '<p id="xi-count" class="selected-count" data-testid="playing-xi-count">Selected players: 0 / 11</p><div class="drag-layout"><div><h4>Player pool</h4><p class="status-text">Add 11 players, then choose a captain. At least one wicketkeeper is mandatory.</p><div class="player-pool" id="player-pool" data-testid="player-pool"></div></div><div><h4>Playing XI</h4><div class="playing-xi" id="playing-xi" data-testid="playing-xi" aria-label="Selected Playing XI"></div></div></div><div class="button-row"><button class="primary-btn" type="button" id="submit-xi" data-testid="submit-playing-xi">Submit Playing XI</button><button class="secondary-btn" type="button" id="reset-xi" data-testid="reset-playing-xi">Reset Team</button><span id="xi-message" class="status-text" role="status" data-testid="playing-xi-message"></span></div>';
   }
 
   function tooltipHtml() {
@@ -268,11 +268,13 @@
     byId('global-autosuggest').addEventListener('keydown', handleSuggestKeys);
     document.addEventListener('click', function (event) { if (!event.target.closest('.autosuggest')) closeSuggestions(); });
     byId('report-form').addEventListener('submit', renderReport);
+    byId('clear-report').addEventListener('click', function () { byId('report-form').reset(); byId('report-output').innerHTML = ''; });
     document.querySelectorAll('[data-preset]').forEach(function (btn) { btn.addEventListener('click', applyPreset); });
     byId('find-matches').addEventListener('click', findMatches);
-    byId('show-record-alert').addEventListener('click', function () { alert('Record alert: Chris Gayle scored 175* in 2013.'); });
-    byId('reset-leaderboard').addEventListener('click', function () { if (confirm('Reset leaderboard tab to Most Runs?')) { state.leaderboardTab = 'runs'; renderLeaderboard(); } });
-    byId('delete-saved-report').addEventListener('click', function () { showToast('Saved report deleted for practice.'); });
+    byId('show-record-alert').addEventListener('click', function () { alert('Record alert: Chris Gayle scored 175* in 2013.'); byId('alert-status').textContent = 'Alert accepted for the 175* batting record.'; });
+    byId('reset-leaderboard').addEventListener('click', function () { if (confirm('Reset leaderboard tab to Most Runs?')) { state.leaderboardTab = 'runs'; renderLeaderboard(); byId('alert-status').textContent = 'Confirmation accepted. Leaderboard reset to Most Runs.'; } else { byId('alert-status').textContent = 'Confirmation cancelled. Leaderboard was not changed.'; } });
+    byId('delete-saved-report').addEventListener('click', function () { showToast('Saved report deleted for practice.'); byId('alert-status').textContent = 'Toast shown for saved report deletion.'; });
+    byId('submit-xi').addEventListener('click', validatePlayingXi);
     byId('reset-xi').addEventListener('click', resetXi);
     byId('playing-xi').addEventListener('dragover', function (e) { e.preventDefault(); });
     byId('playing-xi').addEventListener('drop', handleDrop);
@@ -300,17 +302,30 @@
     var status = byId('player-search-status');
     status.innerHTML = '<span class="loading-spinner" data-testid="player-search-loading">Searching records...</span>';
     await delay(700 + Math.floor(Math.random() * 501));
-    var name = byId('player-name').value.toLowerCase();
+    var name = normalizeSearch(byId('player-name').value);
     var team = byId('team-filter').value;
-    var role = byId('role-filter').value;
-    var nationality = byId('nationality-filter').value.toLowerCase();
+    var role = normalizeRole(byId('role-filter').value);
+    var nationality = normalizeSearch(byId('nationality-filter').value);
     var minRuns = Number(byId('min-runs').value || 0);
     var minWickets = Number(byId('min-wickets').value || 0);
     state.playerResults = state.data.players.filter(function (p) {
-      return (!name || p.name.toLowerCase().includes(name)) && (!team || p.team === team) && (!role || p.role === role) && (!nationality || p.nationality.toLowerCase().includes(nationality)) && p.runs >= minRuns && p.wickets >= minWickets;
+      return (!name || normalizeSearch([p.name, p.team, p.teamCode, p.role].join(' ')).includes(name)) && (!team || p.team === team) && (!role || normalizeRole(p.role) === role) && (!nationality || normalizeSearch(p.nationality).includes(nationality)) && p.runs >= minRuns && p.wickets >= minWickets;
     });
     status.innerHTML = '<p class="result-count" data-testid="player-result-count">' + state.playerResults.length + ' result(s)</p>';
     renderPlayerResults();
+  }
+
+  function normalizeSearch(value) {
+    return String(value || '').toLowerCase().replace(/bengaluru/g, 'bangalore').replace(/royal challengers/g, 'rcb royal challengers').replace(/\s+/g, ' ').trim();
+  }
+
+  function normalizeRole(value) {
+    var role = normalizeSearch(value).replace(/wiket/g, 'wicket').replace(/keeper/g, 'keeper').replace(/\bwk\b/g, 'wicketkeeper').replace(/wicket keeper/g, 'wicketkeeper');
+    if (role.indexOf('wicketkeeper') !== -1) return 'wicketkeeper';
+    if (role.indexOf('all-rounder') !== -1 || role.indexOf('all rounder') !== -1) return 'all-rounder';
+    if (role.indexOf('batter') !== -1 || role.indexOf('batsman') !== -1) return 'batter';
+    if (role.indexOf('bowler') !== -1) return 'bowler';
+    return role;
   }
 
   function clearPlayerFilters() {
@@ -324,7 +339,7 @@
     var box = byId('player-results');
     if (!state.playerResults.length) { box.innerHTML = '<p class="error-text" data-testid="no-player-found">No player found</p>'; return; }
     box.innerHTML = state.playerResults.slice(0, 8).map(function (p) {
-      return '<article class="feed-item" data-testid="player-result-' + p.id + '"><strong>' + escapeHtml(p.name) + '</strong><span>' + escapeHtml(p.teamCode) + ' • ' + escapeHtml(p.role) + ' • Runs ' + p.runs + ' • Wickets ' + p.wickets + '</span></article>';
+      return '<article class="feed-item" data-testid="player-result-' + p.id + '"><strong>' + escapeHtml(p.name) + '</strong><span>' + escapeHtml(p.teamCode) + ' | ' + escapeHtml(p.role) + ' | Runs ' + p.runs + ' | Wickets ' + p.wickets + '</span></article>';
     }).join('');
   }
 
@@ -346,7 +361,7 @@
       return '<tr data-testid="player-table-row-' + p.id + '"><td>' + p.rank + '</td><td>' + escapeHtml(p.name) + '</td><td>' + p.teamCode + '</td><td>' + p.matches + '</td><td>' + p.runs + '</td><td>' + p.highestScore + '</td><td>' + p.average + '</td><td>' + p.strikeRate + '</td><td>' + p.centuries + '</td><td>' + p.fifties + '</td><td><button class="compact-btn" type="button" data-player-index="' + state.data.players.findIndex(function (x) { return x.id === p.id; }) + '" data-testid="view-player-details-' + p.id + '">View Details</button></td></tr>';
     }).join('');
     byId('player-table-body').querySelectorAll('[data-player-index]').forEach(function (btn) { btn.addEventListener('click', function () { openPlayerModal(Number(this.dataset.playerIndex), this); }); });
-    byId('table-page-status').textContent = 'Page ' + state.page + ' of ' + pages + ' • ' + sorted.length + ' total results';
+    byId('table-page-status').textContent = 'Page ' + state.page + ' of ' + pages + ' | ' + sorted.length + ' total results';
     byId('prev-page').disabled = state.page === 1;
     byId('next-page').disabled = state.page === pages;
   }
@@ -359,11 +374,12 @@
   }
 
   function renderTeams() {
-    byId('team-filter-root').innerHTML = '<p class="selected-count" data-testid="selected-team-count">Selected teams: ' + state.selectedTeams.size + '</p><div class="button-row"><button class="secondary-btn" type="button" id="select-all-teams" data-testid="select-all-teams">Select All</button><button class="secondary-btn" type="button" id="clear-all-teams" data-testid="clear-all-teams">Clear All</button></div><div class="team-grid">' + state.data.teams.map(function (t) {
+    byId('team-filter-root').innerHTML = '<p class="selected-count" data-testid="selected-team-count">Selected teams: ' + state.selectedTeams.size + '</p><div class="button-row"><button class="primary-btn" type="button" id="apply-team-check" data-testid="apply-team-check">Apply Team Check</button><button class="secondary-btn" type="button" id="select-all-teams" data-testid="select-all-teams">Select All</button><button class="secondary-btn" type="button" id="clear-all-teams" data-testid="clear-all-teams">Clear All</button></div><p id="team-check-status" class="status-text" role="status" data-testid="team-check-status"></p><div class="team-grid">' + state.data.teams.map(function (t) {
       var checked = state.selectedTeams.has(t.id);
-      return '<label class="team-card' + (checked ? ' is-selected' : '') + '" data-testid="team-card-' + t.id + '"><input type="checkbox" name="teams" value="' + t.id + '" ' + (checked ? 'checked' : '') + ' aria-label="Select ' + escapeHtml(t.name) + '"><span class="team-code">' + t.code + '</span><span><strong>' + escapeHtml(t.name) + '</strong><br><small>' + t.titles + ' title(s) • Seasons ' + escapeHtml(t.seasonsPlayed) + '</small></span></label>';
+      return '<label class="team-card' + (checked ? ' is-selected' : '') + '" data-testid="team-card-' + t.id + '"><input type="checkbox" name="teams" value="' + t.id + '" ' + (checked ? 'checked' : '') + ' aria-label="Select ' + escapeHtml(t.name) + '"><span class="team-code">' + t.code + '</span><span><strong>' + escapeHtml(t.name) + '</strong><br><small>' + t.titles + ' title(s) | Seasons ' + escapeHtml(t.seasonsPlayed) + '</small></span></label>';
     }).join('') + '</div>';
     byId('team-filter-root').querySelectorAll('input[name="teams"]').forEach(function (cb) { cb.addEventListener('change', function () { this.checked ? state.selectedTeams.add(this.value) : state.selectedTeams.delete(this.value); renderTeams(); }); });
+    byId('apply-team-check').addEventListener('click', function () { byId('team-check-status').textContent = state.selectedTeams.size ? state.selectedTeams.size + ' team checkbox selection(s) applied.' : 'Select at least one team before applying.'; });
     byId('select-all-teams').addEventListener('click', function () { state.data.teams.forEach(function (t) { state.selectedTeams.add(t.id); }); renderTeams(); });
     byId('clear-all-teams').addEventListener('click', function () { state.selectedTeams.clear(); renderTeams(); });
   }
@@ -437,7 +453,21 @@
     event.preventDefault();
     var sections = Array.from(document.querySelectorAll('input[name="reportSections"]:checked')).map(function (x) { return x.value; });
     var type = document.querySelector('input[name="reportType"]:checked').value;
-    byId('report-output').innerHTML = '<article class="leaderboard-item"><strong>' + escapeHtml(type) + '</strong><span>' + (sections.length ? escapeHtml(sections.join(', ')) : 'No sections selected') + '</span></article>';
+    if (!sections.length) {
+      byId('report-output').innerHTML = '<p class="error-text">Select at least one section before building the IPL report.</p>';
+      return;
+    }
+    var recordRows = [];
+    if (sections.indexOf('Batting records') !== -1) recordRows = recordRows.concat(state.data.records.filter(function (r) { return r.recordType === 'batting'; }).slice(0, 4));
+    if (sections.indexOf('Bowling records') !== -1) recordRows = recordRows.concat(state.data.records.filter(function (r) { return r.recordType === 'bowling'; }).slice(0, 4));
+    if (sections.indexOf('Team records') !== -1) recordRows = recordRows.concat(state.data.records.filter(function (r) { return r.recordType === 'team'; }).slice(0, 4));
+    if (sections.indexOf('Fielding records') !== -1) recordRows = recordRows.concat(state.data.records.filter(function (r) { return r.recordType === 'fielding'; }).slice(0, 4));
+    var seasonRows = sections.indexOf('Season results') !== -1 ? state.data.seasons.slice(-5).reverse() : [];
+    byId('report-output').innerHTML =
+      '<article class="report-panel" data-testid="generated-report-card"><h4>' + escapeHtml(type) + '</h4><p>Included sections: ' + escapeHtml(sections.join(', ')) + '</p>' +
+      (recordRows.length ? '<div class="table-wrap"><table class="ipl-table report-table" data-testid="report-record-table"><thead><tr><th>Type</th><th>Player / Team</th><th>Value</th><th>Season</th></tr></thead><tbody>' + recordRows.map(function (r) { return '<tr><td>' + escapeHtml(r.recordType) + '</td><td>' + escapeHtml(r.playerOrTeam) + '</td><td>' + escapeHtml(r.value) + '</td><td>' + escapeHtml(r.season) + '</td></tr>'; }).join('') + '</tbody></table></div>' : '') +
+      (seasonRows.length ? '<div class="report-list" data-testid="report-season-list">' + seasonRows.map(function (s) { return '<div class="leaderboard-item"><strong>' + s.season + ' - ' + escapeHtml(s.winner) + '</strong><span>Runner-up: ' + escapeHtml(s.runnerUp) + ' | ' + escapeHtml(s.margin) + '</span></div>'; }).join('') + '</div>' : '') +
+      '</article>';
   }
 
   function applyPreset() {
@@ -475,7 +505,7 @@
   function updateModal() {
     var p = state.data.players[state.modalIndex];
     byId('player-modal-title').textContent = p.name;
-    byId('player-modal-body').innerHTML = '<p><strong>Team:</strong> ' + escapeHtml(p.team) + '</p><p><strong>Role:</strong> ' + p.role + '</p><p><strong>Matches:</strong> ' + p.matches + ' • <strong>Runs:</strong> ' + p.runs + ' • <strong>Wickets:</strong> ' + p.wickets + '</p><p><strong>Major records:</strong> ' + escapeHtml(p.records.join(', ')) + '</p><p>' + escapeHtml(p.description) + '</p>';
+    byId('player-modal-body').innerHTML = '<p><strong>Team:</strong> ' + escapeHtml(p.team) + '</p><p><strong>Role:</strong> ' + p.role + '</p><p><strong>Matches:</strong> ' + p.matches + ' | <strong>Runs:</strong> ' + p.runs + ' | <strong>Wickets:</strong> ' + p.wickets + '</p><p><strong>Major records:</strong> ' + escapeHtml(p.records.join(', ')) + '</p><p>' + escapeHtml(p.description) + '</p>';
   }
 
   function modalKeyHandler(event) {
@@ -515,8 +545,8 @@
 
   function renderDragPool() {
     var chosen = new Set(Array.from(byId('playing-xi').querySelectorAll('[data-player-id]')).map(function (x) { return x.dataset.playerId; }));
-    byId('player-pool').innerHTML = state.data.players.slice(0, 16).map(function (p) {
-      return '<div class="draggable-player" draggable="true" data-player-id="' + p.id + '" data-player-name="' + escapeHtml(p.name) + '" data-testid="drag-player-' + p.id + '"><span>' + escapeHtml(p.name) + '</span><button class="compact-btn" type="button" data-add-player="' + p.id + '" ' + (chosen.has(p.id) ? 'disabled' : '') + '>Add</button></div>';
+    byId('player-pool').innerHTML = state.data.players.map(function (p) {
+      return '<div class="draggable-player" draggable="true" data-player-id="' + p.id + '" data-player-name="' + escapeHtml(p.name) + '" data-testid="drag-player-' + p.id + '"><span><strong>' + escapeHtml(p.name) + '</strong><small>' + escapeHtml(p.teamCode + ' | ' + p.role) + '</small></span><button class="compact-btn" type="button" data-add-player="' + p.id + '" ' + (chosen.has(p.id) ? 'disabled' : '') + '>Add</button></div>';
     }).join('');
     byId('player-pool').querySelectorAll('.draggable-player').forEach(function (el) { el.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', this.dataset.playerId); }); });
     byId('player-pool').querySelectorAll('[data-add-player]').forEach(function (btn) { btn.addEventListener('click', function () { addPlayerToXi(this.dataset.addPlayer); }); });
@@ -529,13 +559,31 @@
     if (area.querySelector('[data-player-id="' + id + '"]')) { byId('xi-message').textContent = 'Duplicate players are prevented.'; return; }
     if (area.querySelectorAll('[data-player-id]').length >= 11) { byId('xi-message').textContent = 'Maximum 11 players allowed.'; return; }
     var p = state.data.players.find(function (x) { return x.id === id; });
-    area.insertAdjacentHTML('beforeend', '<div class="draggable-player" data-player-id="' + p.id + '" data-testid="selected-xi-player-' + p.id + '"><span>' + escapeHtml(p.name) + '</span><button class="compact-btn" type="button" aria-label="Remove ' + escapeHtml(p.name) + '">Remove</button></div>');
+    area.insertAdjacentHTML('beforeend', '<div class="draggable-player selected-xi-player" data-player-id="' + p.id + '" data-player-role="' + escapeHtml(p.role) + '" data-testid="selected-xi-player-' + p.id + '"><span><strong>' + escapeHtml(p.name) + '</strong><small>' + escapeHtml(p.teamCode + ' | ' + p.role) + '</small></span><label class="captain-choice"><input type="radio" name="xiCaptain" value="' + p.id + '" data-testid="captain-' + p.id + '"> Captain</label><button class="compact-btn" type="button" aria-label="Remove ' + escapeHtml(p.name) + '">Remove</button></div>');
     area.lastElementChild.querySelector('button').addEventListener('click', function () { this.closest('[data-player-id]').remove(); renderDragPool(); });
     byId('xi-message').textContent = '';
     renderDragPool();
   }
   function resetXi() { byId('playing-xi').innerHTML = ''; byId('xi-message').textContent = ''; renderDragPool(); }
   function updateXiCount() { byId('xi-count').textContent = 'Selected players: ' + byId('playing-xi').querySelectorAll('[data-player-id]').length + ' / 11'; }
+
+  function validatePlayingXi() {
+    var selected = Array.from(byId('playing-xi').querySelectorAll('[data-player-id]'));
+    var captain = byId('playing-xi').querySelector('input[name="xiCaptain"]:checked');
+    var hasWicketkeeper = selected.some(function (row) { return normalizeRole(row.dataset.playerRole) === 'wicketkeeper'; });
+    var hasBowler = selected.some(function (row) { return normalizeRole(row.dataset.playerRole) === 'bowler'; });
+    var errors = [];
+    if (selected.length !== 11) errors.push('Select exactly 11 players.');
+    if (!captain) errors.push('Select one captain.');
+    if (!hasWicketkeeper) errors.push('Select at least one wicketkeeper.');
+    if (!hasBowler) errors.push('Select at least one bowler.');
+    if (errors.length) {
+      byId('xi-message').innerHTML = '<span class="error-text">' + errors.map(escapeHtml).join(' ') + '</span>';
+      return;
+    }
+    var captainName = state.data.players.find(function (p) { return p.id === captain.value; }).name;
+    byId('xi-message').innerHTML = '<span class="success-text" data-testid="playing-xi-success">Playing XI submitted. Captain: ' + escapeHtml(captainName) + '. Wicketkeeper requirement passed.</span>';
+  }
 
   function validateUpload() {
     var file = this.files[0];
@@ -578,7 +626,7 @@
 
   function renderFeed() {
     var records = state.data.records.slice(0, state.feedCount);
-    byId('records-feed').innerHTML = records.map(function (r, i) { return '<article class="feed-item" data-testid="feed-record-' + i + '"><strong>' + escapeHtml(r.playerOrTeam) + '</strong><span>' + escapeHtml(r.recordType + ' • ' + r.value + ' • ' + r.season) + '</span></article>'; }).join('');
+    byId('records-feed').innerHTML = records.map(function (r, i) { return '<article class="feed-item" data-testid="feed-record-' + i + '"><strong>' + escapeHtml(r.playerOrTeam) + '</strong><span>' + escapeHtml(r.recordType + ' | ' + r.value + ' | ' + r.season) + '</span></article>'; }).join('');
     var done = state.feedCount >= state.data.records.length;
     byId('load-more-records').disabled = done;
     byId('feed-status').textContent = done ? 'All records loaded' : records.length + ' records loaded';
@@ -629,7 +677,7 @@
     byId('fav-count').textContent = 'Favourite count: ' + state.favourites.size;
     byId('favourites-list').innerHTML = items.map(function (x) {
       var fav = state.favourites.has(x.id);
-      return '<div class="favourite-row" data-testid="favourite-row-' + x.id + '"><strong>' + escapeHtml(x.name) + '</strong><span>' + escapeHtml((x.team || '') + ' • ' + (x.role || '')) + '</span><button class="compact-btn" type="button" data-fav-id="' + x.id + '" aria-pressed="' + fav + '" data-testid="favourite-toggle-' + x.id + '">' + (fav ? 'Unfavourite' : 'Favourite') + '</button></div>';
+      return '<div class="favourite-row" data-testid="favourite-row-' + x.id + '"><strong>' + escapeHtml(x.name) + '</strong><span>' + escapeHtml((x.team || '') + ' | ' + (x.role || '')) + '</span><button class="compact-btn" type="button" data-fav-id="' + x.id + '" aria-pressed="' + fav + '" data-testid="favourite-toggle-' + x.id + '">' + (fav ? 'Unfavourite' : 'Favourite') + '</button></div>';
     }).join('') || '<p>No favourites found.</p>';
     byId('favourites-list').querySelectorAll('[data-fav-id]').forEach(function (btn) { btn.addEventListener('click', function () { state.favourites.has(this.dataset.favId) ? state.favourites.delete(this.dataset.favId) : state.favourites.add(this.dataset.favId); saveFavs(); renderFavourites(); }); });
   }
