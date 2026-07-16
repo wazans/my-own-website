@@ -1,26 +1,103 @@
 {
   "success": true,
-  "count": 18,
-  "snapshotVersion": "1.0",
-  "timestamp": "2025-06-04T00:00:00.000Z",
+  "count": 19,
+  "snapshotVersion": "2.0",
+  "timestamp": "2026-06-02T00:00:00.000Z",
   "data": [
-    {"season":2008,"winner":"Rajasthan Royals","runnerUp":"Chennai Super Kings"},
-    {"season":2009,"winner":"Deccan Chargers","runnerUp":"Royal Challengers Bengaluru"},
-    {"season":2010,"winner":"Chennai Super Kings","runnerUp":"Mumbai Indians"},
-    {"season":2011,"winner":"Chennai Super Kings","runnerUp":"Royal Challengers Bengaluru"},
-    {"season":2012,"winner":"Kolkata Knight Riders","runnerUp":"Chennai Super Kings"},
-    {"season":2013,"winner":"Mumbai Indians","runnerUp":"Chennai Super Kings"},
-    {"season":2014,"winner":"Kolkata Knight Riders","runnerUp":"Punjab Kings"},
-    {"season":2015,"winner":"Mumbai Indians","runnerUp":"Chennai Super Kings"},
-    {"season":2016,"winner":"Sunrisers Hyderabad","runnerUp":"Royal Challengers Bengaluru"},
-    {"season":2017,"winner":"Mumbai Indians","runnerUp":"Rising Pune Supergiant"},
-    {"season":2018,"winner":"Chennai Super Kings","runnerUp":"Sunrisers Hyderabad"},
-    {"season":2019,"winner":"Mumbai Indians","runnerUp":"Chennai Super Kings"},
-    {"season":2020,"winner":"Mumbai Indians","runnerUp":"Delhi Capitals"},
-    {"season":2021,"winner":"Chennai Super Kings","runnerUp":"Kolkata Knight Riders"},
-    {"season":2022,"winner":"Gujarat Titans","runnerUp":"Rajasthan Royals"},
-    {"season":2023,"winner":"Chennai Super Kings","runnerUp":"Gujarat Titans"},
-    {"season":2024,"winner":"Kolkata Knight Riders","runnerUp":"Sunrisers Hyderabad"},
-    {"season":2025,"winner":"Royal Challengers Bengaluru","runnerUp":"Punjab Kings"}
+    {
+      "season": 2008,
+      "winner": "Rajasthan Royals",
+      "runnerUp": "Chennai Super Kings"
+    },
+    {
+      "season": 2009,
+      "winner": "Deccan Chargers",
+      "runnerUp": "Royal Challengers Bengaluru"
+    },
+    {
+      "season": 2010,
+      "winner": "Chennai Super Kings",
+      "runnerUp": "Mumbai Indians"
+    },
+    {
+      "season": 2011,
+      "winner": "Chennai Super Kings",
+      "runnerUp": "Royal Challengers Bengaluru"
+    },
+    {
+      "season": 2012,
+      "winner": "Kolkata Knight Riders",
+      "runnerUp": "Chennai Super Kings"
+    },
+    {
+      "season": 2013,
+      "winner": "Mumbai Indians",
+      "runnerUp": "Chennai Super Kings"
+    },
+    {
+      "season": 2014,
+      "winner": "Kolkata Knight Riders",
+      "runnerUp": "Punjab Kings"
+    },
+    {
+      "season": 2015,
+      "winner": "Mumbai Indians",
+      "runnerUp": "Chennai Super Kings"
+    },
+    {
+      "season": 2016,
+      "winner": "Sunrisers Hyderabad",
+      "runnerUp": "Royal Challengers Bengaluru"
+    },
+    {
+      "season": 2017,
+      "winner": "Mumbai Indians",
+      "runnerUp": "Rising Pune Supergiant"
+    },
+    {
+      "season": 2018,
+      "winner": "Chennai Super Kings",
+      "runnerUp": "Sunrisers Hyderabad"
+    },
+    {
+      "season": 2019,
+      "winner": "Mumbai Indians",
+      "runnerUp": "Chennai Super Kings"
+    },
+    {
+      "season": 2020,
+      "winner": "Mumbai Indians",
+      "runnerUp": "Delhi Capitals"
+    },
+    {
+      "season": 2021,
+      "winner": "Chennai Super Kings",
+      "runnerUp": "Kolkata Knight Riders"
+    },
+    {
+      "season": 2022,
+      "winner": "Gujarat Titans",
+      "runnerUp": "Rajasthan Royals"
+    },
+    {
+      "season": 2023,
+      "winner": "Chennai Super Kings",
+      "runnerUp": "Gujarat Titans"
+    },
+    {
+      "season": 2024,
+      "winner": "Kolkata Knight Riders",
+      "runnerUp": "Sunrisers Hyderabad"
+    },
+    {
+      "season": 2025,
+      "winner": "Royal Challengers Bengaluru",
+      "runnerUp": "Punjab Kings"
+    },
+    {
+      "season": 2026,
+      "winner": "Royal Challengers Bengaluru",
+      "runnerUp": "Gujarat Titans"
+    }
   ]
 }

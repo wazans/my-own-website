@@ -161,7 +161,7 @@
   }
 
   function seasonHtml() {
-    return '<div class="form-grid">' + field('From season', '<input id="season-from" type="number" value="2008" min="2008" max="2025" data-testid="season-from">') + field('To season', '<input id="season-to" type="number" value="2025" min="2008" max="2025" data-testid="season-to">') + field('Winner or runner-up', '<input id="season-search" data-testid="season-search" aria-label="Search winner or runner-up">') + '</div><div class="button-row"><button class="secondary-btn" type="button" id="season-sort" data-testid="season-sort" aria-label="Sort season results">Newest to Oldest</button></div><div class="table-wrap"><table class="ipl-table" data-testid="season-table"><thead><tr><th>Season</th><th>Winner</th><th>Runner-up</th><th>Final venue</th><th>Winning margin</th><th>Player of the season</th><th>Details</th></tr></thead><tbody id="season-table-body"></tbody></table></div>';
+    return '<div class="form-grid">' + field('From season', '<input id="season-from" type="number" value="2008" min="2008" max="2026" data-testid="season-from">') + field('To season', '<input id="season-to" type="number" value="2026" min="2008" max="2026" data-testid="season-to">') + field('Winner or runner-up', '<input id="season-search" data-testid="season-search" aria-label="Search winner or runner-up">') + '</div><div class="button-row"><button class="secondary-btn" type="button" id="season-sort" data-testid="season-sort" aria-label="Sort season results">Newest to Oldest</button></div><div class="table-wrap"><table class="ipl-table" data-testid="season-table"><thead><tr><th>Season</th><th>Winner</th><th>Runner-up</th><th>Final venue</th><th>Winning margin</th><th>Player of the season</th><th>Details</th></tr></thead><tbody id="season-table-body"></tbody></table></div>';
   }
 
   function autosuggestHtml() {
@@ -218,7 +218,7 @@
   }
 
   function hiddenHtml() {
-    return '<div class="button-row"><button class="primary-btn" type="button" id="reveal-record" data-testid="reveal-record">Reveal Record</button><button class="secondary-btn" type="button" id="show-delayed" data-testid="show-record-after-delay">Show Record After Delay</button><button class="compact-btn" type="button" id="cancel-delayed" data-testid="cancel-delayed-record">Cancel</button></div><p id="hidden-record" hidden data-testid="hidden-record">Hidden record: Gujarat Titans won the title in their debut season.</p><p id="delayed-record" hidden data-testid="delayed-record">Delayed record: Royal Challengers Bengaluru won the 2025 final by 6 runs.</p><p id="delay-status" role="status"></p>';
+    return '<div class="button-row"><button class="primary-btn" type="button" id="reveal-record" data-testid="reveal-record">Reveal Record</button><button class="secondary-btn" type="button" id="show-delayed" data-testid="show-record-after-delay">Show Record After Delay</button><button class="compact-btn" type="button" id="cancel-delayed" data-testid="cancel-delayed-record">Cancel</button></div><p id="hidden-record" hidden data-testid="hidden-record">Hidden record: Gujarat Titans won the title in their debut season and reached the final again in 2023 and 2026.</p><p id="delayed-record" hidden data-testid="delayed-record">Delayed record: Royal Challengers Bengaluru won back-to-back titles in 2025 and 2026.</p><p id="delay-status" role="status"></p>';
   }
 
   function feedHtml() {
@@ -408,7 +408,7 @@
 
   function renderSeasons() {
     var from = Number(byId('season-from').value || 2008);
-    var to = Number(byId('season-to').value || 2025);
+    var to = Number(byId('season-to').value || 2026);
     var query = byId('season-search').value.toLowerCase();
     var oldest = byId('season-sort').dataset.oldest === 'true';
     var rows = state.data.seasons.filter(function (s) { return s.season >= from && s.season <= to && (!query || (s.winner + ' ' + s.runnerUp).toLowerCase().includes(query)); }).sort(function (a, b) { return oldest ? a.season - b.season : b.season - a.season; });
@@ -493,7 +493,7 @@
   }
 
   function applyPreset() {
-    var presets = { opening: ['2025-03-22','2025-03-29'], playoffs: ['2025-05-29','2025-06-03'], final: ['2025-06-01','2025-06-04'] };
+    var presets = { opening: ['2026-03-21','2026-03-28'], playoffs: ['2026-05-27','2026-05-31'], final: ['2026-05-31','2026-05-31'] };
     byId('from-date').value = presets[this.dataset.preset][0];
     byId('to-date').value = presets[this.dataset.preset][1];
   }
@@ -674,9 +674,9 @@
 
   function renderQuiz() {
     var quiz = [
-      { type: 'single', q: 'Who won the 2025 IPL in this dataset?', options: ['Royal Challengers Bengaluru','Punjab Kings','Kolkata Knight Riders'], answer: ['Royal Challengers Bengaluru'], why: 'The 2025 season row lists Bengaluru as winner.' },
+      { type: 'single', q: 'Who won the 2026 IPL in this dataset?', options: ['Royal Challengers Bengaluru','Gujarat Titans','Kolkata Knight Riders'], answer: ['Royal Challengers Bengaluru'], why: 'The 2026 season row lists Bengaluru as winner over Gujarat Titans.' },
       { type: 'multi', q: 'Select teams with five titles in this dataset.', options: ['Chennai Super Kings','Mumbai Indians','Kolkata Knight Riders'], answer: ['Chennai Super Kings','Mumbai Indians'], why: 'CSK and MI are listed with five titles.' },
-      { type: 'true', q: 'Gujarat Titans won the title in their debut season.', options: ['True','False'], answer: ['True'], why: 'The 2022 season summary marks Gujarat as debut champions.' },
+      { type: 'true', q: 'Gujarat Titans have one title and three final appearances in this dataset.', options: ['True','False'], answer: ['True'], why: 'Gujarat won in 2022 and finished runner-up in 2023 and 2026.' },
       { type: 'single', q: 'Which player has the 175* batting record?', options: ['Chris Gayle','Virat Kohli','AB de Villiers'], answer: ['Chris Gayle'], why: 'The batting records include Chris Gayle 175*.' },
       { type: 'multi', q: 'Select record types available in the local dataset.', options: ['batting','bowling','fielding'], answer: ['batting','bowling','fielding'], why: 'All three record types are present.' }
     ];
