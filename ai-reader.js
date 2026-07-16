@@ -551,7 +551,7 @@
     },
     playwright: {
       storageKey: 'testnova-reader-playwright-v2',
-      contentVersion: 4,
+      contentVersion: 5,
       title: 'Playwright',
       topics: buildPlaywrightPdfNotesTopics(),
       legacyTopics: [
@@ -821,30 +821,6 @@
   };
 
   function buildPlaywrightPdfNotesTopics() {
-    function topicImagePages(source) {
-      var seen = {};
-      var pages = [];
-      String(source || '').replace(/\d+(?:-\d+)?/g, function(token) {
-        var parts = token.split('-').map(function(part) { return parseInt(part, 10); });
-        var start = parts[0];
-        var end = parts[1] || start;
-        for (var page = start; page <= end; page++) {
-          if (!seen[page]) {
-            seen[page] = true;
-            pages.push(page);
-          }
-        }
-      });
-      return pages.map(function(page) {
-        var pageLabel = String(page).padStart(2, '0');
-        return {
-          src: 'content/playwright-notes/page-' + pageLabel + '.jpg',
-          alt: 'Playwright notebook page ' + page,
-          caption: 'Notebook page ' + page
-        };
-      });
-    }
-
     var items = [
       ['playwright-notes-01', '01. What is Playwright?', 'PDF page 1', [
         'Playwright is an open-source end-to-end testing framework by Microsoft for automating modern web applications reliably and efficiently.',
@@ -1115,10 +1091,6 @@
         'The cheat sheet groups locator assertions, API/response assertions, and general assertions in one quick reference.',
         'It includes visibility, text, value, count, attributes, CSS, screenshots, status, headers, JSON, arrays, objects, and generic value checks.'
       ]],
-      ['playwright-notes-visual-continue', 'Course Continuation Visual', 'PDF page 44', [
-        'Visual course note included from the Playwright notebook material.',
-        'Use this as a reminder to keep learning, building, sharing, and growing while progressing through the Playwright course.'
-      ]],
       ['playwright-notes-57', '57. defineConfig()', 'PDF page 45', [
         'defineConfig is a helper function for writing clean typed Playwright configuration.',
         'It provides type safety, autocomplete, centralized settings, project management, reporter setup, and readable configuration.',
@@ -1175,9 +1147,209 @@
         'Practice: Convert this note into one runnable Playwright test, helper, config change, or checklist item.',
         item[4] || []
       );
-      topic.images = topicImagePages(item[2]);
-      return topic;
+      return enrichPlaywrightTopic(topic);
     });
+  }
+
+  function enrichPlaywrightTopic(topic) {
+    var ui = {
+      'playwright-notes-03': [
+        tableBlock('Playwright vs Selenium', ['Feature', 'Playwright', 'Selenium'], [
+          ['Developer', 'Microsoft', 'Selenium Project'],
+          ['Browsers', 'Chromium, Firefox, WebKit', 'Often needs separate drivers'],
+          ['Auto-wait', 'Built in', 'Manual waits often required'],
+          ['Parallel execution', 'Built in', 'More setup'],
+          ['API testing', 'Built in request support', 'Not built in']
+        ])
+      ],
+      'playwright-notes-04': [
+        flowBlock('Architecture Flow', ['Test Script (Node.js)', 'Playwright Library', 'Browser Context', 'Chromium / Firefox / WebKit'])
+      ],
+      'playwright-notes-05': [
+        tableBlock('Browser Support', ['Engine', 'Examples', 'Use'], [
+          ['Chromium', 'Chrome, Edge, Brave', 'Primary modern browser coverage'],
+          ['Firefox', 'Mozilla Firefox', 'Cross-browser validation'],
+          ['WebKit', 'Safari-like engine', 'Safari and iOS-style coverage']
+        ])
+      ],
+      'playwright-notes-10': [
+        tableBlock('Project Structure', ['Path', 'Purpose'], [
+          ['tests/', 'Spec files and test cases'],
+          ['pages/', 'Page Object Model classes'],
+          ['utils/', 'Reusable helper functions'],
+          ['test-data/', 'JSON, CSV, and test fixture data'],
+          ['playwright.config.ts', 'Main Playwright configuration']
+        ])
+      ],
+      'playwright-notes-11': [
+        tableBlock('Useful package.json Scripts', ['Script', 'Command', 'Purpose'], [
+          ['test', 'playwright test', 'Run all tests'],
+          ['test:ui', 'playwright test --ui', 'Open UI mode'],
+          ['test:headed', 'playwright test --headed', 'Run visible browser'],
+          ['report', 'playwright show-report', 'Open HTML report']
+        ])
+      ],
+      'playwright-notes-13': [
+        tableBlock('Core Config Properties', ['Property', 'Purpose'], [
+          ['testDir', 'Folder where test files are located'],
+          ['timeout', 'Maximum time for a test'],
+          ['expect.timeout', 'Maximum wait for assertions'],
+          ['retries', 'Retry failed tests'],
+          ['workers', 'Parallel worker count'],
+          ['reporter', 'Result output format'],
+          ['use', 'Shared browser/context options'],
+          ['projects', 'Browser/device/env combinations']
+        ])
+      ],
+      'playwright-notes-17': [
+        flowBlock('Test Lifecycle', ['beforeAll', 'beforeEach', 'test body', 'afterEach', 'afterAll'])
+      ],
+      'playwright-notes-18': [
+        tableBlock('Locator Priority', ['Priority', 'Locator', 'Why'], [
+          ['1', 'getByRole', 'Accessible and close to user behavior'],
+          ['2', 'getByLabel', 'Best for forms'],
+          ['3', 'getByText', 'Readable content checks'],
+          ['4', 'getByPlaceholder', 'Useful for inputs'],
+          ['5', 'getByTestId', 'Stable test-specific selector'],
+          ['6', 'CSS/XPath', 'Use only when user-facing locators are not enough']
+        ])
+      ],
+      'playwright-notes-20': [
+        tableBlock('Common Actions', ['Action', 'Purpose'], [
+          ['click / dblclick', 'Mouse click interactions'],
+          ['fill / type / press', 'Input and keyboard behavior'],
+          ['check / uncheck', 'Checkbox and radio controls'],
+          ['selectOption', 'Dropdown selection'],
+          ['hover / focus / blur', 'State-based UI behavior'],
+          ['dragTo', 'Drag and drop workflows'],
+          ['setInputFiles', 'File upload']
+        ])
+      ],
+      'playwright-notes-21': [
+        tableBlock('Common Assertions', ['Assertion', 'Use'], [
+          ['toBeVisible / toBeHidden', 'Element visibility'],
+          ['toHaveText / toContainText', 'Text validation'],
+          ['toHaveURL / toHaveTitle', 'Navigation validation'],
+          ['toHaveCount', 'List/table count'],
+          ['toBeEnabled / toBeDisabled', 'Control state'],
+          ['toHaveScreenshot', 'Visual comparison']
+        ])
+      ],
+      'playwright-notes-22': [
+        flowBlock('POM Structure', ['Test spec', 'Page class', 'Locators', 'Page actions', 'Assertions'])
+      ],
+      'playwright-notes-25': [
+        flowBlock('Fixture Execution', ['Global setup', 'Worker fixture', 'Test fixture', 'Test body', 'Teardown'])
+      ],
+      'playwright-notes-27': [
+        flowBlock('Data Driven Flow', ['Read data', 'Loop each row', 'Run test', 'Generate result', 'Verify output'])
+      ],
+      'playwright-notes-30': [
+        flowBlock('Frame Model', ['Parent page', 'iframe', 'frameLocator()', 'element inside frame'])
+      ],
+      'playwright-notes-31': [
+        tableBlock('Dialog Types', ['Type', 'User experience', 'Handling'], [
+          ['alert', 'Message with OK', 'dialog.accept()'],
+          ['confirm', 'OK or Cancel', 'dialog.accept() / dialog.dismiss()'],
+          ['prompt', 'Input box', 'dialog.accept("value")'],
+          ['beforeunload', 'Leave page warning', 'Register handler before action']
+        ])
+      ],
+      'playwright-notes-33': [
+        tableBlock('Browser Context Isolation', ['Data', 'Isolated per context'], [
+          ['Cookies', 'Yes'],
+          ['localStorage/sessionStorage', 'Yes'],
+          ['Cache', 'Yes'],
+          ['Permissions', 'Yes'],
+          ['Viewport/geolocation/user agent', 'Yes']
+        ])
+      ],
+      'playwright-notes-35': [
+        tableBlock('Navigation APIs', ['API', 'Purpose'], [
+          ['goto()', 'Open URL'],
+          ['goBack() / goForward()', 'Browser history movement'],
+          ['reload()', 'Reload current page'],
+          ['waitForURL()', 'Wait until URL matches'],
+          ['waitForLoadState()', 'Wait for DOM/load/network state']
+        ])
+      ],
+      'playwright-notes-40': [
+        flowBlock('Upload and Download Flow', ['Choose file', 'setInputFiles()', 'Trigger download', 'waitForEvent("download")', 'saveAs()'])
+      ],
+      'playwright-notes-45': [
+        tableBlock('Debug Artifacts', ['Artifact', 'What it captures'], [
+          ['Screenshot', 'Page or element visual state'],
+          ['Video', 'Full test execution recording'],
+          ['Trace', 'Actions, snapshots, network, console and errors'],
+          ['HTML report', 'Readable run summary']
+        ])
+      ],
+      'playwright-notes-57': [
+        checklistBlock('defineConfig Benefits', ['Type safety', 'Autocomplete', 'Centralized settings', 'Multiple browser projects', 'Reporter setup', 'Cleaner framework structure'])
+      ],
+      'playwright-notes-58': [
+        tableBlock('Test File Organization', ['Property', 'Meaning'], [
+          ['testDir', 'Where Playwright searches for tests'],
+          ['testMatch', 'Patterns to include test files'],
+          ['testIgnore', 'Patterns to exclude files'],
+          ['outputDir', 'Artifacts generated during test runs'],
+          ['snapshotDir', 'Expected screenshots/snapshots']
+        ])
+      ],
+      'playwright-notes-60': [
+        tableBlock('Retries and Workers', ['Setting', 'Meaning', 'Best use'], [
+          ['retries', 'Rerun failed tests', 'Use carefully for CI stability'],
+          ['workers', 'Parallel processes', 'Tune based on machine capacity'],
+          ['fullyParallel', 'Run tests in parallel', 'Use when tests are independent']
+        ])
+      ],
+      'playwright-notes-61': [
+        tableBlock('Important use Properties', ['Property', 'Example use'], [
+          ['baseURL', 'Shorter page.goto paths'],
+          ['browserName / channel', 'Browser selection'],
+          ['headless', 'CI or visible debug mode'],
+          ['viewport', 'Responsive testing'],
+          ['storageState', 'Reuse authenticated state'],
+          ['trace / video / screenshot', 'Debug artifacts'],
+          ['extraHTTPHeaders', 'API or app headers'],
+          ['geolocation / permissions', 'Location-aware apps']
+        ])
+      ],
+      'playwright-notes-62': [
+        tableBlock('Reporter Options', ['Reporter', 'Use'], [
+          ['list / line / dot', 'Terminal output'],
+          ['html', 'Interactive local report'],
+          ['json', 'Machine-readable report'],
+          ['junit', 'CI test result publishing'],
+          ['github', 'GitHub Actions annotations'],
+          ['blob', 'Merge reports from shards']
+        ])
+      ],
+      'playwright-notes-63': [
+        flowBlock('Project Matrix', ['Chromium', 'Firefox', 'WebKit', 'Mobile Chrome', 'Mobile Safari', 'Environment-specific projects'])
+      ],
+      'playwright-notes-64': [
+        flowBlock('Global Setup and Teardown', ['Prepare environment', 'Create auth state/test data', 'Run tests', 'Clean external resources', 'Publish final artifacts'])
+      ],
+      'playwright-notes-65': [
+        flowBlock('CI/CD Pipeline', ['Checkout code', 'Install dependencies', 'Install browsers', 'Run tests', 'Upload report/artifacts', 'Fail on real failures'])
+      ]
+    };
+
+    if (ui[topic.id]) topic.ui = ui[topic.id];
+    return topic;
+  }
+
+  function tableBlock(title, headers, rows) {
+    return { type: 'table', title: title, headers: headers, rows: rows };
+  }
+
+  function flowBlock(title, steps) {
+    return { type: 'flow', title: title, steps: steps };
+  }
+
+  function checklistBlock(title, items) {
+    return { type: 'checklist', title: title, items: items };
   }
 
   function buildPlaywrightJsTsTopics() {
@@ -1623,6 +1795,48 @@
     return String(topic && topic.title ? topic.title : '').replace(/^\d+\.\s*/, '');
   }
 
+  function renderTopicUi(topic) {
+    if (!topic.ui || !topic.ui.length) return '';
+    return topic.ui.map(function(block) {
+      if (block.type === 'table') {
+        return [
+          '<section class="ai-ui-block">',
+          '<h3>' + escapeHtml(block.title) + '</h3>',
+          '<div class="ai-ui-table-wrap"><table class="ai-ui-table">',
+          '<thead><tr>' + block.headers.map(function(header) { return '<th>' + escapeHtml(header) + '</th>'; }).join('') + '</tr></thead>',
+          '<tbody>' + block.rows.map(function(row) {
+            return '<tr>' + row.map(function(cell) { return '<td>' + escapeHtml(cell) + '</td>'; }).join('') + '</tr>';
+          }).join('') + '</tbody>',
+          '</table></div>',
+          '</section>'
+        ].join('');
+      }
+      if (block.type === 'flow') {
+        return [
+          '<section class="ai-ui-block">',
+          '<h3>' + escapeHtml(block.title) + '</h3>',
+          '<div class="ai-ui-flow">',
+          block.steps.map(function(step, index) {
+            return '<span>' + escapeHtml(step) + '</span>' + (index < block.steps.length - 1 ? '<i aria-hidden="true">&rarr;</i>' : '');
+          }).join(''),
+          '</div>',
+          '</section>'
+        ].join('');
+      }
+      if (block.type === 'checklist') {
+        return [
+          '<section class="ai-ui-block">',
+          '<h3>' + escapeHtml(block.title) + '</h3>',
+          '<ul class="ai-ui-checklist">',
+          block.items.map(function(item) { return '<li>' + escapeHtml(item) + '</li>'; }).join(''),
+          '</ul>',
+          '</section>'
+        ].join('');
+      }
+      return '';
+    }).join('');
+  }
+
   function loadJson(key) {
     try { return JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) { return {}; }
   }
@@ -1763,20 +1977,7 @@
           '</div>'
         ].join('');
       }).join('') : '',
-      topic.images && topic.images.length ? [
-        '<div class="ai-note-image-grid">',
-        topic.images.map(function (image) {
-          return [
-            '<figure class="ai-note-image-card">',
-            '<a href="' + escapeHtml(image.src) + '" target="_blank" rel="noopener noreferrer">',
-            '<img src="' + escapeHtml(image.src) + '" alt="' + escapeHtml(image.alt || image.caption || topic.title) + '" loading="lazy" />',
-            '</a>',
-            image.caption ? '<figcaption>' + escapeHtml(image.caption) + '</figcaption>' : '',
-            '</figure>'
-          ].join('');
-        }).join(''),
-        '</div>'
-      ].join('') : '',
+      renderTopicUi(topic),
       topic.resources && topic.resources.length ? [
         '<div class="ai-resource-row">',
         topic.resources.map(function (resource) {
@@ -1843,7 +2044,11 @@
       }
       var editBody = content.querySelector('[data-topic-edit]');
       if (!editBody) return;
-      localStorage.setItem(track.storageKey + ':content:' + editBody.getAttribute('data-topic-edit'), editBody.innerHTML);
+      var contentKey = track.storageKey + ':content:' + editBody.getAttribute('data-topic-edit');
+      if (track.contentVersion) {
+        contentKey = track.storageKey + ':content:v' + track.contentVersion + ':' + editBody.getAttribute('data-topic-edit');
+      }
+      localStorage.setItem(contentKey, editBody.innerHTML);
       var message = (mode === 'auto' ? 'Auto-saved ' : 'Saved ') + new Date().toLocaleTimeString();
       if (saveState) {
         saveState.textContent = message;
@@ -1880,7 +2085,7 @@
           saveJson(track.storageKey + ':progress', progress);
           updateProgress();
           if (checkbox.checked) {
-            showTopicToast(topic.title);
+            showTopicToast(displayTopicTitle(topic));
             burstConfetti();
           }
         });
@@ -1908,10 +2113,10 @@
       nav.innerHTML = [
         topics.map(function (topic, index) {
           return [
-            '<a href="?topic=' + encodeURIComponent(topic.id) + '" data-topic-link="' + topic.id + '">',
+            '<button type="button" data-topic-link="' + topic.id + '">',
             '<span>' + (index + 1) + '</span>',
             '<strong>' + escapeHtml(displayTopicTitle(topic)) + '</strong>',
-            '</a>'
+            '</button>'
           ].join('');
         }).join(''),
         '<button class="ai-add-topic-btn" type="button" data-add-topic>',

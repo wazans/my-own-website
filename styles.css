@@ -3836,37 +3836,94 @@ body.landing-page .text-link {
   line-height: 1.55;
 }
 
-.ai-note-image-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-  gap: 1rem;
+.ai-ui-block {
   margin: 1.1rem 0;
-}
-
-.ai-note-image-card {
-  margin: 0;
-  overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.22);
+  border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.72);
+  background: rgba(15, 23, 42, 0.62);
+  overflow: hidden;
 }
 
-.ai-note-image-card a {
-  display: block;
+.ai-ui-block h3 {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  color: var(--tn-text);
+  font-size: 0.95rem;
+  background: rgba(6, 182, 212, 0.12);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
 }
 
-.ai-note-image-card img {
-  display: block;
+.ai-ui-table-wrap {
+  overflow-x: auto;
+}
+
+.ai-ui-table {
   width: 100%;
-  height: auto;
-  background: #f8fafc;
+  border-collapse: collapse;
+  min-width: 520px;
 }
 
-.ai-note-image-card figcaption {
-  padding: 0.65rem 0.8rem;
-  color: var(--tn-muted);
-  font-size: 0.84rem;
+.ai-ui-table th,
+.ai-ui-table td {
+  padding: 0.72rem 0.85rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  text-align: left;
+  vertical-align: top;
+}
+
+.ai-ui-table th {
+  color: #a5f3fc;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  background: rgba(2, 6, 23, 0.38);
+}
+
+.ai-ui-table td {
+  color: var(--tn-text-secondary);
+  font-size: 0.93rem;
+}
+
+.ai-ui-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.9rem;
+}
+
+.ai-ui-flow span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0.48rem 0.7rem;
+  border: 1px solid rgba(6, 182, 212, 0.28);
+  border-radius: 8px;
+  color: var(--tn-text);
+  background: rgba(6, 182, 212, 0.1);
   font-weight: 800;
+}
+
+.ai-ui-flow i {
+  color: #a5f3fc;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.ai-ui-checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0.9rem;
+  list-style: none;
+}
+
+.ai-ui-checklist li {
+  padding: 0.62rem 0.7rem;
+  border: 1px solid rgba(16, 185, 129, 0.24);
+  border-radius: 8px;
+  color: var(--tn-text-secondary);
+  background: rgba(16, 185, 129, 0.08);
 }
 
 .ai-inline-save-panel {
