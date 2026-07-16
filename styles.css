@@ -4340,6 +4340,18 @@ body.landing-page .text-link {
   .ai-reader-shell {
     width: min(100% - 1rem, 1440px);
     padding-top: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ai-reader-page .site-nav:not(.open) {
+    display: none;
+  }
+
+  .ai-reader-page .ai-reader-sidebar,
+  .ai-reader-page .ai-reader-topic-nav {
+    position: relative;
+    z-index: 2;
   }
 
   .ai-reader-content {
