@@ -2128,6 +2128,7 @@
       nav.querySelectorAll('[data-topic-link]').forEach(function (link) {
         link.addEventListener('click', function (event) {
           event.preventDefault();
+          event.stopPropagation();
           openTopic(link.getAttribute('data-topic-link'), { updateUrl: true, scroll: true });
         });
       });
