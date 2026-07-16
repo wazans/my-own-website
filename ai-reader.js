@@ -551,7 +551,7 @@
     },
     playwright: {
       storageKey: 'testnova-reader-playwright-v2',
-      contentVersion: 3,
+      contentVersion: 4,
       title: 'Playwright',
       topics: buildPlaywrightPdfNotesTopics(),
       legacyTopics: [
@@ -821,6 +821,30 @@
   };
 
   function buildPlaywrightPdfNotesTopics() {
+    function topicImagePages(source) {
+      var seen = {};
+      var pages = [];
+      String(source || '').replace(/\d+(?:-\d+)?/g, function(token) {
+        var parts = token.split('-').map(function(part) { return parseInt(part, 10); });
+        var start = parts[0];
+        var end = parts[1] || start;
+        for (var page = start; page <= end; page++) {
+          if (!seen[page]) {
+            seen[page] = true;
+            pages.push(page);
+          }
+        }
+      });
+      return pages.map(function(page) {
+        var pageLabel = String(page).padStart(2, '0');
+        return {
+          src: 'content/playwright-notes/page-' + pageLabel + '.jpg',
+          alt: 'Playwright notebook page ' + page,
+          caption: 'Notebook page ' + page
+        };
+      });
+    }
+
     var items = [
       ['playwright-notes-01', '01. What is Playwright?', 'PDF page 1', [
         'Playwright is an open-source end-to-end testing framework by Microsoft for automating modern web applications reliably and efficiently.',
@@ -967,7 +991,7 @@
         'Use frameLocator for stable access to elements inside frames.',
         'Handle nested frames, switch back to default page content, verify frame content, and avoid using contentDocument/contentWindow directly.'
       ]],
-      ['playwright-notes-31', '31. Dialogs, Alerts, Confirmations and Prompts', 'PDF pages 14, 39', [
+      ['playwright-notes-31', '31. Dialogs, Alerts, Confirmations and Prompts', 'PDF pages 14, 29, 39', [
         'Dialog types include alert, confirm, prompt, and beforeunload.',
         'Use page.on("dialog") to handle dialogs, read message, accept, dismiss, or enter prompt text.',
         'Dialogs must be handled before the triggering action, otherwise tests can hang.'
@@ -1091,6 +1115,10 @@
         'The cheat sheet groups locator assertions, API/response assertions, and general assertions in one quick reference.',
         'It includes visibility, text, value, count, attributes, CSS, screenshots, status, headers, JSON, arrays, objects, and generic value checks.'
       ]],
+      ['playwright-notes-visual-continue', 'Course Continuation Visual', 'PDF page 44', [
+        'Visual course note included from the Playwright notebook material.',
+        'Use this as a reminder to keep learning, building, sharing, and growing while progressing through the Playwright course.'
+      ]],
       ['playwright-notes-57', '57. defineConfig()', 'PDF page 45', [
         'defineConfig is a helper function for writing clean typed Playwright configuration.',
         'It provides type safety, autocomplete, centralized settings, project management, reporter setup, and readable configuration.',
@@ -1140,13 +1168,15 @@
     ];
 
     return items.map(function(item) {
-      return lesson(
+      var topic = lesson(
         item[0],
         item[1],
-        ['Source: ' + item[2]].concat(item[3]),
+        item[3],
         'Practice: Convert this note into one runnable Playwright test, helper, config change, or checklist item.',
         item[4] || []
       );
+      topic.images = topicImagePages(item[2]);
+      return topic;
     });
   }
 
@@ -1589,6 +1619,10 @@
       .replace(/"/g, '&quot;');
   }
 
+  function displayTopicTitle(topic) {
+    return String(topic && topic.title ? topic.title : '').replace(/^\d+\.\s*/, '');
+  }
+
   function loadJson(key) {
     try { return JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) { return {}; }
   }
@@ -1719,7 +1753,7 @@
     }
     var body = savedContent || [
       '<div class="ai-reader-topic-kicker">Topic ' + (index + 1) + '</div>',
-      '<h2 data-topic-title>' + escapeHtml(topic.title) + '</h2>',
+      '<h2 data-topic-title>' + escapeHtml(displayTopicTitle(topic)) + '</h2>',
       topic.paragraphs.map(function (paragraph) { return '<p>' + escapeHtml(paragraph) + '</p>'; }).join(''),
       topic.examples && topic.examples.length ? topic.examples.map(function (example) {
         return [
@@ -1729,6 +1763,20 @@
           '</div>'
         ].join('');
       }).join('') : '',
+      topic.images && topic.images.length ? [
+        '<div class="ai-note-image-grid">',
+        topic.images.map(function (image) {
+          return [
+            '<figure class="ai-note-image-card">',
+            '<a href="' + escapeHtml(image.src) + '" target="_blank" rel="noopener noreferrer">',
+            '<img src="' + escapeHtml(image.src) + '" alt="' + escapeHtml(image.alt || image.caption || topic.title) + '" loading="lazy" />',
+            '</a>',
+            image.caption ? '<figcaption>' + escapeHtml(image.caption) + '</figcaption>' : '',
+            '</figure>'
+          ].join('');
+        }).join(''),
+        '</div>'
+      ].join('') : '',
       topic.resources && topic.resources.length ? [
         '<div class="ai-resource-row">',
         topic.resources.map(function (resource) {
@@ -1862,7 +1910,7 @@
           return [
             '<a href="?topic=' + encodeURIComponent(topic.id) + '" data-topic-link="' + topic.id + '">',
             '<span>' + (index + 1) + '</span>',
-            '<strong>' + escapeHtml(topic.title) + '</strong>',
+            '<strong>' + escapeHtml(displayTopicTitle(topic)) + '</strong>',
             '</a>'
           ].join('');
         }).join(''),
