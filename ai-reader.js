@@ -863,11 +863,11 @@
         'Create a new project folder, open it in terminal, and initialize a Playwright project.',
         'Install Playwright test package and browser binaries.',
         'Common commands shown in the notes include npm init, npm install -D @playwright/test, and npx playwright install.'
-      ], [{ title: 'Install commands', code: 'mkdir playwright-course\ncd playwright-course\nnpm init -y\nnpm install -D @playwright/test\nnpx playwright install' }]],
+      ], [{ title: 'Install commands', code: 'mkdir playwright-course\ncd playwright-course\nnpm init -y\nnpm install -D @playwright/test\nnpx playwright install', explanation: 'These commands create a clean project folder, initialize npm, add the Playwright Test package, and download the browser binaries required to run tests.' }]],
       ['playwright-notes-09', '09. Verify Installation', 'PDF page 2', [
         'Verify Playwright from terminal with the version command.',
         'If the version displays, installation is successful.'
-      ], [{ title: 'Verify command', code: 'npx playwright test --version' }]],
+      ], [{ title: 'Verify command', code: 'npx playwright test --version', explanation: 'The version command confirms that the Playwright test runner is installed and available from the current project terminal.' }]],
       ['playwright-notes-10', '10. Folder Structure', 'PDF page 2', [
         'Important folders and files include tests, pages, utils, test-data, playwright.config.ts, package.json, tsconfig.json, and README.md.',
         'tests stores test cases, pages stores Page Object classes, utils stores common helpers, and test-data stores fixtures such as JSON or CSV data.'
@@ -875,11 +875,11 @@
       ['playwright-notes-11', '11. package.json Scripts', 'PDF page 2', [
         'package.json stores project metadata, dependencies, devDependencies, and useful scripts.',
         'Scripts can run tests in normal mode, UI mode, headed mode, and report viewing mode.'
-      ], [{ title: 'Useful scripts', code: '"scripts": {\n  "test": "playwright test",\n  "test:ui": "playwright test --ui",\n  "test:headed": "playwright test --headed",\n  "report": "playwright show-report"\n}' }]],
+      ], [{ title: 'Useful scripts', code: '"scripts": {\n  "test": "playwright test",\n  "test:ui": "playwright test --ui",\n  "test:headed": "playwright test --headed",\n  "report": "playwright show-report"\n}', explanation: 'These package scripts give short, memorable commands for common Playwright workflows: normal runs, UI mode, headed debugging, and opening the HTML report.' }]],
       ['playwright-notes-12', '12. Run First Sample Test and Basic Commands', 'PDF page 2', [
         'The first sample test opens a browser and helps confirm that Playwright can generate and run tests successfully.',
         'Basic execution commands include run all tests, run headed, run UI mode, debug, and show report.'
-      ], [{ title: 'Basic commands', code: 'npx playwright test\nnpx playwright test --headed\nnpx playwright test --ui\nnpx playwright test --debug\nnpx playwright show-report' }]],
+      ], [{ title: 'Basic commands', code: 'npx playwright test\nnpx playwright test --headed\nnpx playwright test --ui\nnpx playwright test --debug\nnpx playwright show-report', explanation: 'Use these commands to run the suite, watch the browser in headed mode, inspect tests in UI mode, debug step by step, and review the generated report.' }]],
       ['playwright-notes-13', '13. playwright.config.ts', 'PDF page 3', [
         'playwright.config.ts is the main configuration file and controls browsers, reporters, timeouts, retries, and project behavior.',
         'Common properties include testDir, timeout, expect timeout, retries, workers, fullyParallel, reporter, use, projects, globalSetup, and globalTeardown.'
@@ -893,7 +893,7 @@
         'A Playwright test is a small piece of code that verifies a specific functionality.',
         'Basic imports usually come from @playwright/test and include test and expect.',
         'A test contains navigation, actions, and assertions.'
-      ], [{ title: 'Basic test structure', code: "import { test, expect } from '@playwright/test';\n\ntest('basic test', async ({ page }) => {\n  await page.goto('https://example.com');\n  await expect(page).toHaveTitle(/Example/);\n});" }]],
+      ], [{ title: 'Basic test structure', code: "import { test, expect } from '@playwright/test';\n\ntest('basic test', async ({ page }) => {\n  await page.goto('https://example.com');\n  await expect(page).toHaveTitle(/Example/);\n});", explanation: 'The import brings in the Playwright test runner and assertion API. The page fixture opens the browser tab, goto navigates, and the web-first assertion verifies the title.' }]],
       ['playwright-notes-16', '16. test.describe, Hooks, Steps and Annotations', 'PDF page 4', [
         'test.describe groups related tests together.',
         'Hooks include beforeAll, beforeEach, afterEach, and afterAll.',
