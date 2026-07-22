@@ -1136,6 +1136,46 @@
         'CI/CD runs Playwright tests automatically on every change or scheduled pipeline.',
         'The notes cover common CI systems such as GitHub Actions, Jenkins, Azure DevOps, GitLab CI, Bitbucket, CircleCI, Travis CI, TeamCity, Bamboo, and Docker-based runs.',
         'Best practice: install dependencies, install browsers, run tests, upload reports/artifacts, keep pipelines reliable, and fail builds on real test failures.'
+      ]],
+      ['playwright-notes-66', '66. Authentication, Cookies and Storage State', 'Code-first supplement', [
+        'Authentication examples show how to save login state once and reuse it across tests.',
+        'Cookies, local storage, and session storage are useful for setup, debugging, and validating browser session behavior.',
+        'Prefer storageState for repeatable authenticated tests instead of logging in through the UI before every test.'
+      ]],
+      ['playwright-notes-67', '67. API Testing and CRUD Requests', 'Code-first supplement', [
+        'Playwright can test APIs using the request fixture without opening a browser page.',
+        'Use API tests for GET, POST, PUT, PATCH, DELETE, setup data, cleanup data, and contract checks.',
+        'Always assert status code and important response body fields.'
+      ]],
+      ['playwright-notes-68', '68. Request Interception and Network Mocking', 'Code-first supplement', [
+        'Network interception lets tests observe, block, change, or mock requests.',
+        'Use route for controlled test data, failure scenarios, and stable UI tests that should not depend on a live backend.',
+        'Keep mocks realistic and close to the API contract.'
+      ]],
+      ['playwright-notes-69', '69. Mobile Emulation', 'Code-first supplement', [
+        'Mobile emulation runs tests with device viewport, user agent, touch settings, and browser options.',
+        'Use mobile projects to validate responsive layouts and important mobile workflows.',
+        'Run the same core tests across desktop and mobile projects when the user journey should behave the same.'
+      ]],
+      ['playwright-notes-70', '70. Visual Testing', 'Code-first supplement', [
+        'Visual testing compares screenshots against expected baselines.',
+        'Use it for stable UI regions where visual regressions matter.',
+        'Mask dynamic content and avoid visual checks for constantly changing areas.'
+      ]],
+      ['playwright-notes-71', '71. Accessibility Testing', 'Code-first supplement', [
+        'Accessibility checks validate whether important page elements are usable through roles, labels, names, and keyboard behavior.',
+        'Playwright locators encourage accessible selectors such as role and label.',
+        'Combine semantic locator checks with keyboard navigation and focused assertions.'
+      ]],
+      ['playwright-notes-72', '72. Environment Variables', 'Code-first supplement', [
+        'Environment variables keep URLs, credentials, feature flags, and CI settings outside test code.',
+        'Use them for baseURL, test users, retries, reporters, and environment-specific behavior.',
+        'Never commit real passwords, tokens, or production secrets.'
+      ]],
+      ['playwright-notes-73', '73. Tags, Annotations and Parameterization', 'Code-first supplement', [
+        'Tags and annotations organize tests for smoke, regression, slow, flaky, or browser-specific execution.',
+        'Parameterization runs the same logic with multiple inputs while keeping tests readable.',
+        'Use grep and project filters to run the right tests in local development and CI.'
       ]]
     ];
 
@@ -1149,6 +1189,1716 @@
       );
       return enrichPlaywrightTopic(topic);
     });
+  }
+
+  function codeBlock(lines) {
+    return lines.join('\n');
+  }
+
+  function playwrightExample(title, lines, language) {
+    return {
+      title: title,
+      code: codeBlock(lines),
+      language: language || 'ts',
+      explanation: 'This example uses Playwright Test with async/await and keeps the action close to the assertion so the test remains readable and runnable.'
+    };
+  }
+
+  function playwrightPdfExampleCatalog() {
+    return {
+      'playwright-notes-01': [
+        playwrightExample('Minimal Playwright test', [
+          'import { test, expect } from "@playwright/test"',
+          '',
+          'test("homepage has expected title", async ({ page }) => {',
+          '  await page.goto("https://example.com")',
+          '  await expect(page).toHaveTitle(/Example/)',
+          '})'
+        ])
+      ],
+      'playwright-notes-02': [
+        playwrightExample('Auto-waiting and web-first assertion', [
+          'import { test, expect } from "@playwright/test"',
+          '',
+          'test("login button is ready for the user", async ({ page }) => {',
+          '  await page.goto("/login")',
+          '  await page.getByRole("button", { name: "Login" }).click()',
+          '  await expect(page.getByText("Welcome")).toBeVisible()',
+          '})'
+        ])
+      ],
+      'playwright-notes-03': [
+        playwrightExample('Playwright style locator instead of driver setup', [
+          'import { test, expect } from "@playwright/test"',
+          '',
+          'test("uses built-in browser and locator support", async ({ page }) => {',
+          '  await page.goto("/products")',
+          '  await page.getByRole("link", { name: "Products" }).click()',
+          '  await expect(page.getByRole("heading", { name: "Products" })).toBeVisible()',
+          '})'
+        ])
+      ],
+      'playwright-notes-04': [
+        playwrightExample('Browser context isolation', [
+          'import { test, expect } from "@playwright/test"',
+          '',
+          'test("two users stay isolated", async ({ browser }) => {',
+          '  const adminContext = await browser.newContext()',
+          '  const buyerContext = await browser.newContext()',
+          '  const adminPage = await adminContext.newPage()',
+          '  const buyerPage = await buyerContext.newPage()',
+          '',
+          '  await adminPage.goto("/login")',
+          '  await buyerPage.goto("/login")',
+          '',
+          '  await expect(adminPage).toHaveURL(/login/)',
+          '  await expect(buyerPage).toHaveURL(/login/)',
+          '',
+          '  await adminContext.close()',
+          '  await buyerContext.close()',
+          '})'
+        ])
+      ],
+      'playwright-notes-05': [
+        playwrightExample('Cross-browser projects', [
+          'import { defineConfig, devices } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  projects: [',
+          '    { name: "chromium", use: { ...devices["Desktop Chrome"] } },',
+          '    { name: "firefox", use: { ...devices["Desktop Firefox"] } },',
+          '    { name: "webkit", use: { ...devices["Desktop Safari"] } }',
+          '  ]',
+          '})'
+        ])
+      ],
+      'playwright-notes-06': [
+        playwrightExample('Trace, screenshot and video features', [
+          'import { defineConfig } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  use: {',
+          '    trace: "on-first-retry",',
+          '    screenshot: "only-on-failure",',
+          '    video: "retain-on-failure"',
+          '  }',
+          '})'
+        ])
+      ],
+      'playwright-notes-07': [
+        playwrightExample('Prerequisite checks', [
+          'node -v',
+          'npm -v',
+          'npx playwright --version'
+        ], 'bash')
+      ],
+      'playwright-notes-08': [
+        playwrightExample('Recommended project setup', [
+          'mkdir playwright-course',
+          'cd playwright-course',
+          'npm init -y',
+          'npm init playwright@latest',
+          'npx playwright install'
+        ], 'bash')
+      ],
+      'playwright-notes-09': [
+        playwrightExample('Verify generated sample tests', [
+          'npx playwright test',
+          'npx playwright show-report',
+          'npx playwright test --ui'
+        ], 'bash')
+      ],
+      'playwright-notes-10': [
+        playwrightExample('Practical folder structure', [
+          'playwright-course/',
+          '  tests/',
+          '    login.spec.ts',
+          '  pages/',
+          '    LoginPage.ts',
+          '  utils/',
+          '    testData.ts',
+          '  test-data/',
+          '    users.json',
+          '  playwright.config.ts',
+          '  package.json',
+          '  tsconfig.json'
+        ], 'text')
+      ],
+      'playwright-notes-11': [
+        playwrightExample('package.json scripts', [
+          '{',
+          '  "scripts": {',
+          '    "test": "playwright test",',
+          '    "test:ui": "playwright test --ui",',
+          '    "test:headed": "playwright test --headed",',
+          '    "test:debug": "playwright test --debug",',
+          '    "report": "playwright show-report"',
+          '  }',
+          '}'
+        ], 'json')
+      ],
+      'playwright-notes-12': [
+        playwrightExample('Run commands by need', [
+          'npx playwright test',
+          'npx playwright test tests/login.spec.ts',
+          'npx playwright test --headed',
+          'npx playwright test --debug',
+          'npx playwright test --project=chromium',
+          'npx playwright show-report'
+        ], 'bash')
+      ],
+      'playwright-notes-13': [
+        playwrightExample('Complete starter config', [
+          'import { defineConfig, devices } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  testDir: "./tests",',
+          '  timeout: 30_000,',
+          '  expect: { timeout: 5_000 },',
+          '  retries: process.env.CI ? 2 : 0,',
+          '  workers: process.env.CI ? 2 : undefined,',
+          '  reporter: [["html"], ["list"]],',
+          '  use: {',
+          '    baseURL: "http://localhost:4200",',
+          '    trace: "on-first-retry"',
+          '  },',
+          '  projects: [',
+          '    { name: "chromium", use: { ...devices["Desktop Chrome"] } }',
+          '  ]',
+          '})'
+        ])
+      ],
+      'playwright-notes-14': [
+        playwrightExample('CLI override example', [
+          'npx playwright test --project=firefox --headed --workers=1'
+        ], 'bash')
+      ],
+      'playwright-notes-15': [
+        playwrightExample('Test with navigation, action and assertion', [
+          'import { test, expect } from "@playwright/test"',
+          '',
+          'test("user can search", async ({ page }) => {',
+          '  await page.goto("/products")',
+          '  await page.getByPlaceholder("Search").fill("phone")',
+          '  await page.getByRole("button", { name: "Search" }).click()',
+          '  await expect(page.getByText("Search results")).toBeVisible()',
+          '})'
+        ])
+      ],
+      'playwright-notes-16': [
+        playwrightExample('describe, hooks, steps and annotations', [
+          'import { test, expect } from "@playwright/test"',
+          '',
+          'test.describe("Login", () => {',
+          '  test.beforeEach(async ({ page }) => {',
+          '    await page.goto("/login")',
+          '  })',
+          '',
+          '  test("@smoke valid user logs in", async ({ page }) => {',
+          '    await test.step("Submit credentials", async () => {',
+          '      await page.getByLabel("Username").fill("standard_user")',
+          '      await page.getByLabel("Password").fill("secret_sauce")',
+          '      await page.getByRole("button", { name: "Login" }).click()',
+          '    })',
+          '',
+          '    await expect(page.getByText("Dashboard")).toBeVisible()',
+          '  })',
+          '})'
+        ])
+      ],
+      'playwright-notes-17': [
+        playwrightExample('Run specific tests', [
+          'npx playwright test tests/login.spec.ts',
+          'npx playwright test tests/login.spec.ts:12',
+          'npx playwright test --grep "@smoke"',
+          'npx playwright test --project=chromium',
+          'npx playwright test --ui'
+        ], 'bash')
+      ],
+      'playwright-notes-18': [
+        playwrightExample('Locator basics', [
+          'await page.getByRole("button", { name: "Submit" }).click()',
+          'await page.getByLabel("Email").fill("qa@example.com")',
+          'await page.getByPlaceholder("Search").fill("Playwright")',
+          'await page.getByText("Order placed").click()',
+          'await page.getByTestId("checkout-button").click()'
+        ])
+      ],
+      'playwright-notes-19': [
+        playwrightExample('Locator chaining and filtering', [
+          'const productCard = page.getByRole("listitem").filter({ hasText: "Laptop" })',
+          'await productCard.getByRole("button", { name: "Add to cart" }).click()',
+          'await expect(productCard.getByText("In stock")).toBeVisible()'
+        ])
+      ],
+      'playwright-notes-20': [
+        playwrightExample('Common element actions', [
+          'import { test, expect } from "@playwright/test"',
+          '',
+          'test("form actions", async ({ page }) => {',
+          '  await page.goto("/registration")',
+          '  await page.getByLabel("Name").fill("Asha QA")',
+          '  await page.getByLabel("Email").fill("asha@example.com")',
+          '  await page.getByLabel("Subscribe").check()',
+          '  await page.getByLabel("Country").selectOption("IN")',
+          '  await page.getByRole("button", { name: "Submit" }).click()',
+          '  await expect(page.getByText("Registration successful")).toBeVisible()',
+          '})'
+        ]),
+        playwrightExample('Keyboard, hover and double click', [
+          'await page.getByLabel("Search").fill("playwright")',
+          'await page.getByLabel("Search").press("Enter")',
+          'await page.getByRole("button", { name: "More" }).hover()',
+          'await page.getByText("Advanced options").dblclick()'
+        ])
+      ],
+      'playwright-notes-21': [
+        playwrightExample('Common assertions', [
+          'await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible()',
+          'await expect(page).toHaveURL(/dashboard/)',
+          'await expect(page.getByTestId("cart-count")).toHaveText("1")',
+          'await expect(page.getByRole("button", { name: "Pay" })).toBeEnabled()'
+        ])
+      ],
+      'playwright-notes-22': [
+        playwrightExample('POM test usage', [
+          'import { test, expect } from "@playwright/test"',
+          'import { LoginPage } from "../pages/LoginPage"',
+          '',
+          'test("login using page object", async ({ page }) => {',
+          '  const loginPage = new LoginPage(page)',
+          '  await loginPage.open()',
+          '  await loginPage.login("standard_user", "secret_sauce")',
+          '  await expect(page.getByText("Dashboard")).toBeVisible()',
+          '})'
+        ])
+      ],
+      'playwright-notes-23': [
+        playwrightExample('Login page class', [
+          'import { Page } from "@playwright/test"',
+          '',
+          'export class LoginPage {',
+          '  constructor(private page: Page) {}',
+          '',
+          '  async open() {',
+          '    await this.page.goto("/login")',
+          '  }',
+          '',
+          '  async login(username: string, password: string) {',
+          '    await this.page.getByLabel("Username").fill(username)',
+          '    await this.page.getByLabel("Password").fill(password)',
+          '    await this.page.getByRole("button", { name: "Login" }).click()',
+          '  }',
+          '}'
+        ])
+      ],
+      'playwright-notes-24': [
+        playwrightExample('Custom fixture', [
+          'import { test as base } from "@playwright/test"',
+          'import { LoginPage } from "../pages/LoginPage"',
+          '',
+          'type Fixtures = { loginPage: LoginPage }',
+          '',
+          'export const test = base.extend<Fixtures>({',
+          '  loginPage: async ({ page }, use) => {',
+          '    await use(new LoginPage(page))',
+          '  }',
+          '})',
+          '',
+          'export { expect } from "@playwright/test"'
+        ])
+      ],
+      'playwright-notes-25': [
+        playwrightExample('Worker-scoped fixture', [
+          'import { test as base } from "@playwright/test"',
+          '',
+          'export const test = base.extend<{}, { account: string }>({',
+          '  account: [async ({}, use) => {',
+          '    const account = "worker-user@example.com"',
+          '    await use(account)',
+          '  }, { scope: "worker" }]',
+          '})'
+        ])
+      ],
+      'playwright-notes-26': [
+        playwrightExample('Data-driven array', [
+          'const users = [',
+          '  { username: "valid_user", password: "Pass@123", expected: "Dashboard" },',
+          '  { username: "locked_user", password: "Pass@123", expected: "Locked" }',
+          ']',
+          '',
+          'for (const user of users) {',
+          '  test(`login check for ${user.username}`, async ({ page }) => {',
+          '    await page.goto("/login")',
+          '    await page.getByLabel("Username").fill(user.username)',
+          '    await page.getByLabel("Password").fill(user.password)',
+          '    await page.getByRole("button", { name: "Login" }).click()',
+          '    await expect(page.getByText(user.expected)).toBeVisible()',
+          '  })',
+          '}'
+        ])
+      ],
+      'playwright-notes-27': [
+        playwrightExample('Read JSON test data', [
+          'import users from "../test-data/users.json"',
+          '',
+          'for (const user of users) {',
+          '  test(`data row: ${user.username}`, async ({ page }) => {',
+          '    await page.goto("/login")',
+          '    await page.getByLabel("Username").fill(user.username)',
+          '    await page.getByLabel("Password").fill(user.password)',
+          '  })',
+          '}'
+        ])
+      ],
+      'playwright-notes-28': [
+        playwrightExample('Web-first assertion instead of hard wait', [
+          '// Avoid: await page.waitForTimeout(5000)',
+          'await page.getByRole("button", { name: "Save" }).click()',
+          'await expect(page.getByText("Saved successfully")).toBeVisible()'
+        ])
+      ],
+      'playwright-notes-29': [
+        playwrightExample('Dynamic element handling', [
+          'await page.getByRole("button", { name: "Load users" }).click()',
+          'const row = page.getByRole("row").filter({ hasText: "Asha QA" })',
+          'await expect(row).toBeVisible()',
+          'await expect(row.getByText("Active")).toBeVisible()'
+        ])
+      ],
+      'playwright-notes-30': [
+        playwrightExample('Frame locator', [
+          'const paymentFrame = page.frameLocator("iframe[name=\\"payment\\"]")',
+          'await paymentFrame.getByLabel("Card number").fill("4111111111111111")',
+          'await paymentFrame.getByLabel("Expiry").fill("12/30")',
+          'await paymentFrame.getByRole("button", { name: "Pay" }).click()'
+        ])
+      ],
+      'playwright-notes-31': [
+        playwrightExample('Handle alert, confirm and prompt', [
+          'page.on("dialog", async dialog => {',
+          '  console.log(dialog.message())',
+          '  if (dialog.type() === "prompt") {',
+          '    await dialog.accept("Playwright")',
+          '  } else {',
+          '    await dialog.accept()',
+          '  }',
+          '})',
+          '',
+          'await page.getByRole("button", { name: "Open dialog" }).click()'
+        ])
+      ],
+      'playwright-notes-32': [
+        playwrightExample('Manual browser launch', [
+          'import { chromium } from "@playwright/test"',
+          '',
+          'const browser = await chromium.launch({ headless: false, slowMo: 100 })',
+          'const page = await browser.newPage()',
+          'await page.goto("https://example.com")',
+          'await browser.close()'
+        ])
+      ],
+      'playwright-notes-33': [
+        playwrightExample('Context with permissions and viewport', [
+          'const context = await browser.newContext({',
+          '  viewport: { width: 390, height: 844 },',
+          '  geolocation: { latitude: 28.6139, longitude: 77.2090 },',
+          '  permissions: ["geolocation"]',
+          '})',
+          '',
+          'const page = await context.newPage()',
+          'await page.goto("/nearby-stores")'
+        ])
+      ],
+      'playwright-notes-34': [
+        playwrightExample('Page object APIs', [
+          'await page.goto("/dashboard")',
+          'console.log(await page.title())',
+          'console.log(page.url())',
+          'await page.locator("#refresh").click()',
+          'await page.waitForURL(/dashboard/)',
+          'await page.close()'
+        ])
+      ],
+      'playwright-notes-35': [
+        playwrightExample('Navigation flow', [
+          'await page.goto("/products", { waitUntil: "domcontentloaded" })',
+          'await page.getByRole("link", { name: "Details" }).click()',
+          'await page.waitForURL(/products\\/\\d+/)',
+          'await page.goBack()',
+          'await page.reload()',
+          'await page.waitForLoadState("load")'
+        ])
+      ],
+      'playwright-notes-36': [
+        playwrightExample('Stable locator strategy', [
+          'await page.getByRole("button", { name: "Login" }).click()',
+          'await page.getByLabel("Password").fill("secret_sauce")',
+          'await page.getByTestId("cart-count").click()',
+          '',
+          '// Use CSS only when user-facing locators are not enough.',
+          'await page.locator("[data-status=\\"active\\"]").click()'
+        ])
+      ],
+      'playwright-notes-37': [
+        playwrightExample('Advanced filtering', [
+          'const activeUserRow = page',
+          '  .getByRole("row")',
+          '  .filter({ hasText: "Asha QA" })',
+          '  .filter({ has: page.getByText("Active") })',
+          '',
+          'await activeUserRow.getByRole("button", { name: "Edit" }).click()'
+        ])
+      ],
+      'playwright-notes-38': [
+        playwrightExample('Table row locator', [
+          'const row = page.getByRole("row").filter({ hasText: "Order-1001" })',
+          'await expect(row.getByText("Paid")).toBeVisible()',
+          'await row.getByRole("button", { name: "View" }).click()'
+        ])
+      ],
+      'playwright-notes-39': [
+        playwrightExample('Keyboard shortcuts', [
+          'await page.getByLabel("Description").fill("Old value")',
+          'await page.getByLabel("Description").press("ControlOrMeta+A")',
+          'await page.keyboard.type("New value")',
+          'await page.keyboard.press("Tab")',
+          'await page.keyboard.press("Enter")'
+        ])
+      ],
+      'playwright-notes-40': [
+        playwrightExample('Upload and download', [
+          'await page.getByLabel("Upload resume").setInputFiles("test-data/resume.pdf")',
+          '',
+          'const downloadPromise = page.waitForEvent("download")',
+          'await page.getByRole("button", { name: "Download report" }).click()',
+          'const download = await downloadPromise',
+          'await download.saveAs("test-results/report.pdf")'
+        ])
+      ],
+      'playwright-notes-41': [
+        playwrightExample('Mouse actions', [
+          'await page.getByRole("menuitem", { name: "Settings" }).hover()',
+          'await page.getByText("Advanced").click()',
+          'await page.getByText("Canvas item").click({ button: "right" })',
+          'await page.locator("#source").dragTo(page.locator("#target"))'
+        ])
+      ],
+      'playwright-notes-42': [
+        playwrightExample('New tab from context', [
+          'const pagePromise = context.waitForEvent("page")',
+          'await page.getByRole("link", { name: "Open docs" }).click()',
+          'const newPage = await pagePromise',
+          'await newPage.waitForLoadState()',
+          'await expect(newPage).toHaveURL(/docs/)',
+          'await newPage.close()'
+        ])
+      ],
+      'playwright-notes-43': [
+        playwrightExample('Popup handling', [
+          'const popupPromise = page.waitForEvent("popup")',
+          'await page.getByRole("button", { name: "Open invoice" }).click()',
+          'const popup = await popupPromise',
+          'await popup.waitForLoadState("domcontentloaded")',
+          'await expect(popup.getByRole("heading", { name: "Invoice" })).toBeVisible()'
+        ])
+      ],
+      'playwright-notes-44': [
+        playwrightExample('Screenshot examples', [
+          'await page.screenshot({ path: "test-results/home.png", fullPage: true })',
+          'await page.getByTestId("invoice").screenshot({ path: "test-results/invoice.png" })',
+          'await page.screenshot({',
+          '  path: "test-results/masked.png",',
+          '  mask: [page.getByTestId("customer-email")]',
+          '})'
+        ])
+      ],
+      'playwright-notes-45': [
+        playwrightExample('Trace and video config', [
+          'import { defineConfig } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  use: {',
+          '    trace: "on-first-retry",',
+          '    video: "retain-on-failure"',
+          '  }',
+          '})',
+          '',
+          '// Open trace:',
+          '// npx playwright show-trace trace.zip'
+        ])
+      ],
+      'playwright-notes-46': [
+        playwrightExample('Inspector and codegen commands', [
+          'npx playwright test --debug',
+          'npx playwright codegen https://example.com',
+          'PWDEBUG=1 npx playwright test tests/login.spec.ts'
+        ], 'bash')
+      ],
+      'playwright-notes-47': [
+        playwrightExample('expect categories', [
+          'await expect(page.getByText("Saved")).toBeVisible()',
+          'await expect(page).toHaveTitle(/Dashboard/)',
+          'expect(response.status()).toBe(200)',
+          'expect(["admin", "viewer"]).toContain("admin")'
+        ])
+      ],
+      'playwright-notes-48': [
+        playwrightExample('Locator assertions part 1', [
+          'await expect(page.getByRole("button", { name: "Save" })).toBeVisible()',
+          'await expect(page.getByLabel("Email")).toHaveValue("qa@example.com")',
+          'await expect(page.getByRole("checkbox", { name: "Accept" })).toBeChecked()',
+          'await expect(page.getByRole("listitem")).toHaveCount(3)'
+        ])
+      ],
+      'playwright-notes-49': [
+        playwrightExample('Locator assertions part 2', [
+          'await expect(page.getByTestId("status")).toHaveAttribute("data-state", "active")',
+          'await expect(page.getByRole("button", { name: "Save" })).toHaveCSS("cursor", "pointer")',
+          'await expect(page.getByLabel("Search")).toBeFocused()',
+          'await expect(page.getByTestId("empty-state")).toBeEmpty()'
+        ])
+      ],
+      'playwright-notes-50': [
+        playwrightExample('Negative and timeout assertions', [
+          'await expect(page.getByText("Loading")).toBeHidden({ timeout: 10_000 })',
+          'await expect(page.getByText("Error")).not.toBeVisible()',
+          'await expect(page.getByTestId("receipt")).toHaveScreenshot("receipt.png")'
+        ])
+      ],
+      'playwright-notes-51': [
+        playwrightExample('Page assertions', [
+          'await page.goto("/dashboard")',
+          'await expect(page).toHaveURL(/dashboard/)',
+          'await expect(page).toHaveTitle(/Dashboard/)',
+          'await expect(page).toHaveScreenshot("dashboard.png")'
+        ])
+      ],
+      'playwright-notes-52': [
+        playwrightExample('API assertions', [
+          'const response = await request.get("/api/users/1")',
+          'expect(response.ok()).toBeTruthy()',
+          'expect(response.status()).toBe(200)',
+          'expect(response.headers()["content-type"]).toContain("application/json")',
+          'const body = await response.json()',
+          'expect(body.id).toBe(1)'
+        ])
+      ],
+      'playwright-notes-53': [
+        playwrightExample('Soft and poll assertions', [
+          'await expect.soft(page.getByText("Profile")).toBeVisible()',
+          'await expect.soft(page.getByText("Settings")).toBeVisible()',
+          '',
+          'await expect.poll(async () => {',
+          '  const response = await page.request.get("/api/job-status")',
+          '  return (await response.json()).status',
+          '}).toBe("completed")'
+        ])
+      ],
+      'playwright-notes-54': [
+        playwrightExample('Reusable custom assertion helper', [
+          'import { expect, Locator } from "@playwright/test"',
+          '',
+          'export async function expectToast(toast: Locator, message: string) {',
+          '  await expect(toast).toBeVisible()',
+          '  await expect(toast).toContainText(message)',
+          '}'
+        ])
+      ],
+      'playwright-notes-55': [
+        playwrightExample('Focused assertion pattern', [
+          'await page.getByRole("button", { name: "Place order" }).click()',
+          'await expect(page.getByRole("heading", { name: "Order confirmed" })).toBeVisible()',
+          'await expect(page.getByTestId("order-id")).toContainText("ORD-")'
+        ])
+      ],
+      'playwright-notes-56': [
+        playwrightExample('Assertion cheat sheet sample', [
+          'await expect(locator).toBeVisible()',
+          'await expect(locator).toHaveText("Saved")',
+          'await expect(locator).toHaveCount(3)',
+          'await expect(page).toHaveURL(/checkout/)',
+          'expect(response.status()).toBe(200)',
+          'expect(value).toEqual({ active: true })'
+        ])
+      ],
+      'playwright-notes-57': [
+        playwrightExample('defineConfig typed setup', [
+          'import { defineConfig } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  testDir: "./tests",',
+          '  fullyParallel: true,',
+          '  reporter: "html"',
+          '})'
+        ])
+      ],
+      'playwright-notes-58': [
+        playwrightExample('Test file matching config', [
+          'import { defineConfig } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  testDir: "./tests",',
+          '  testMatch: ["**/*.spec.ts"],',
+          '  testIgnore: ["**/*.manual.spec.ts"],',
+          '  outputDir: "test-results",',
+          '  snapshotDir: "snapshots"',
+          '})'
+        ])
+      ],
+      'playwright-notes-59': [
+        playwrightExample('Timeout configuration', [
+          'import { defineConfig } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  timeout: 30_000,',
+          '  globalTimeout: 60 * 60 * 1000,',
+          '  expect: { timeout: 5_000 },',
+          '  use: {',
+          '    actionTimeout: 10_000,',
+          '    navigationTimeout: 15_000',
+          '  }',
+          '})'
+        ])
+      ],
+      'playwright-notes-60': [
+        playwrightExample('Retries and workers config', [
+          'import { defineConfig } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  retries: process.env.CI ? 2 : 0,',
+          '  workers: process.env.CI ? 2 : undefined,',
+          '  fullyParallel: true',
+          '})'
+        ])
+      ],
+      'playwright-notes-61': [
+        playwrightExample('use block with common properties', [
+          'import { defineConfig } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  use: {',
+          '    baseURL: "https://qa.example.com",',
+          '    headless: true,',
+          '    viewport: { width: 1280, height: 720 },',
+          '    ignoreHTTPSErrors: true,',
+          '    screenshot: "only-on-failure",',
+          '    trace: "retain-on-failure"',
+          '  }',
+          '})'
+        ])
+      ],
+      'playwright-notes-62': [
+        playwrightExample('Multiple reporters', [
+          'import { defineConfig } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  reporter: [',
+          '    ["list"],',
+          '    ["html", { open: "never" }],',
+          '    ["junit", { outputFile: "test-results/results.xml" }]',
+          '  ]',
+          '})'
+        ])
+      ],
+      'playwright-notes-63': [
+        playwrightExample('Projects for browsers and mobile', [
+          'import { defineConfig, devices } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  projects: [',
+          '    { name: "chromium", use: { ...devices["Desktop Chrome"] } },',
+          '    { name: "firefox", use: { ...devices["Desktop Firefox"] } },',
+          '    { name: "mobile-chrome", use: { ...devices["Pixel 5"] } }',
+          '  ]',
+          '})'
+        ])
+      ],
+      'playwright-notes-64': [
+        playwrightExample('Global setup and teardown config', [
+          'import { defineConfig } from "@playwright/test"',
+          '',
+          'export default defineConfig({',
+          '  globalSetup: require.resolve("./global-setup"),',
+          '  globalTeardown: require.resolve("./global-teardown")',
+          '})'
+        ]),
+        playwrightExample('Save login state in global setup', [
+          'import { chromium } from "@playwright/test"',
+          '',
+          'export default async function globalSetup() {',
+          '  const browser = await chromium.launch()',
+          '  const page = await browser.newPage()',
+          '  await page.goto("https://qa.example.com/login")',
+          '  await page.getByLabel("Username").fill("admin")',
+          '  await page.getByLabel("Password").fill("secret")',
+          '  await page.getByRole("button", { name: "Login" }).click()',
+          '  await page.context().storageState({ path: "storage/auth.json" })',
+          '  await browser.close()',
+          '}'
+        ])
+      ],
+      'playwright-notes-65': [
+        playwrightExample('GitHub Actions workflow', [
+          'name: Playwright Tests',
+          'on: [push, pull_request]',
+          'jobs:',
+          '  test:',
+          '    runs-on: ubuntu-latest',
+          '    steps:',
+          '      - uses: actions/checkout@v4',
+          '      - uses: actions/setup-node@v4',
+          '        with:',
+          '          node-version: 20',
+          '      - run: npm ci',
+          '      - run: npx playwright install --with-deps',
+          '      - run: npx playwright test',
+          '      - uses: actions/upload-artifact@v4',
+          '        if: always()',
+          '        with:',
+          '          name: playwright-report',
+          '          path: playwright-report/'
+        ], 'yaml')
+      ]
+    };
+  }
+
+  function playwrightCodeFirstSupplementExamples(topic) {
+    var id = topic.id;
+    var number = parseInt(String(id).replace('playwright-notes-', ''), 10);
+    var examples = [];
+
+    function add(title, lines, language) {
+      examples.push(playwrightExample(title, lines, language));
+    }
+
+    if (number <= 7) {
+      add('tests/basic-smoke.spec.ts - Runnable smoke test', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("basic browser automation smoke test", async ({ page }) => {',
+        '  await page.goto("https://example.com")',
+        '  await expect(page.getByRole("heading", { name: "Example Domain" })).toBeVisible()',
+        '  await expect(page).toHaveURL(/example\\.com/)',
+        '})'
+      ]);
+      add('Common mistake and corrected setup command', [
+        '# Incorrect: running tests before installing browsers',
+        'npx playwright test',
+        '',
+        '# Correct: install dependencies and browser binaries first',
+        'npm install -D @playwright/test',
+        'npx playwright install',
+        'npx playwright test'
+      ], 'bash');
+    } else if (number <= 14) {
+      add('playwright.config.ts - Practical setup', [
+        'import { defineConfig, devices } from "@playwright/test"',
+        '',
+        'export default defineConfig({',
+        '  testDir: "./tests",',
+        '  timeout: 30_000,',
+        '  expect: { timeout: 5_000 },',
+        '  reporter: [["list"], ["html", { open: "never" }]],',
+        '  use: {',
+        '    baseURL: "https://example.com",',
+        '    trace: "on-first-retry"',
+        '  },',
+        '  projects: [',
+        '    { name: "chromium", use: { ...devices["Desktop Chrome"] } }',
+        '  ]',
+        '})'
+      ]);
+      add('tests/first-test.spec.ts - Verify setup works', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("opens the configured base URL", async ({ page }) => {',
+        '  await page.goto("/")',
+        '  await expect(page).toHaveTitle(/Example/)',
+        '})'
+      ]);
+    } else if (number <= 17) {
+      add('tests/hooks-and-steps.spec.ts - Practical test structure', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test.describe("Search flow", () => {',
+        '  test.beforeEach(async ({ page }) => {',
+        '    await page.goto("https://example.com")',
+        '  })',
+        '',
+        '  test("uses steps for readable reporting", async ({ page }) => {',
+        '    await test.step("Verify heading", async () => {',
+        '      await expect(page.getByRole("heading", { name: "Example Domain" })).toBeVisible()',
+        '    })',
+        '  })',
+        '})'
+      ]);
+      add('Common mistake: missing await', [
+        '// Incorrect: assertion may run before navigation finishes',
+        'page.goto("https://example.com")',
+        'expect(page).toHaveTitle(/Example/)',
+        '',
+        '// Correct',
+        'await page.goto("https://example.com")',
+        'await expect(page).toHaveTitle(/Example/)'
+      ]);
+    } else if ((number >= 18 && number <= 20) || (number >= 36 && number <= 38)) {
+      add('tests/locators-and-actions.spec.ts - Practical website example', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("complete form interaction with strong locators", async ({ page }) => {',
+        '  await page.goto("/registration_form.html")',
+        '  await page.getByLabel("Full Name").fill("Asha QA")',
+        '  await page.getByLabel("Email").fill("asha@example.com")',
+        '  await page.getByRole("button", { name: "Submit" }).click()',
+        '  await expect(page.getByText("Thank you")).toBeVisible()',
+        '})'
+      ]);
+      add('Common mistake: brittle selector vs user-facing locator', [
+        '// Incorrect: depends on layout and class names',
+        'await page.locator("div:nth-child(3) > button.btn").click()',
+        '',
+        '// Correct: describes the user-facing control',
+        'await page.getByRole("button", { name: "Submit" }).click()'
+      ]);
+    } else if (number === 21 || (number >= 47 && number <= 56)) {
+      add('tests/assertions.spec.ts - Code-first assertion examples', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("assert visible behavior after action", async ({ page }) => {',
+        '  await page.goto("https://example.com")',
+        '  await expect(page).toHaveTitle(/Example/)',
+        '  await expect(page.getByRole("heading", { name: "Example Domain" })).toBeVisible()',
+        '  await expect(page.getByText("illustrative examples")).toContainText("examples")',
+        '})'
+      ]);
+      add('Best practice: web-first assertion', [
+        '// Incorrect: fixed sleep hides the real condition',
+        'await page.waitForTimeout(3000)',
+        'expect(await page.locator("h1").textContent()).toBe("Example Domain")',
+        '',
+        '// Correct: Playwright waits for the expected UI state',
+        'await expect(page.getByRole("heading", { name: "Example Domain" })).toBeVisible()'
+      ]);
+    } else if (number === 22 || number === 23) {
+      add('pages/LoginPage.ts - Page object file', [
+        'import { Page, expect } from "@playwright/test"',
+        '',
+        'export class LoginPage {',
+        '  constructor(private page: Page) {}',
+        '',
+        '  async open() {',
+        '    await this.page.goto("/login")',
+        '  }',
+        '',
+        '  async login(username: string, password: string) {',
+        '    await this.page.getByLabel("Username").fill(username)',
+        '    await this.page.getByLabel("Password").fill(password)',
+        '    await this.page.getByRole("button", { name: "Login" }).click()',
+        '  }',
+        '',
+        '  async expectDashboard() {',
+        '    await expect(this.page.getByRole("heading", { name: "Dashboard" })).toBeVisible()',
+        '  }',
+        '}'
+      ]);
+      add('tests/login-pom.spec.ts - POM usage', [
+        'import { test, expect } from "@playwright/test"',
+        'import { LoginPage } from "../pages/LoginPage"',
+        '',
+        'test("login through page object", async ({ page }) => {',
+        '  const loginPage = new LoginPage(page)',
+        '  await loginPage.open()',
+        '  await loginPage.login("standard_user", "secret_sauce")',
+        '  await loginPage.expectDashboard()',
+        '  await expect(page).toHaveURL(/dashboard/)',
+        '})'
+      ]);
+    } else if (number === 24 || number === 25) {
+      add('fixtures/base.ts - Custom fixture with page object', [
+        'import { test as base, expect } from "@playwright/test"',
+        'import { LoginPage } from "../pages/LoginPage"',
+        '',
+        'type MyFixtures = { loginPage: LoginPage }',
+        '',
+        'export const test = base.extend<MyFixtures>({',
+        '  loginPage: async ({ page }, use) => {',
+        '    await use(new LoginPage(page))',
+        '  }',
+        '})',
+        '',
+        'export { expect }'
+      ]);
+      add('tests/fixture-login.spec.ts - Fixture usage', [
+        'import { test, expect } from "../fixtures/base"',
+        '',
+        'test("fixture provides login page", async ({ loginPage, page }) => {',
+        '  await loginPage.open()',
+        '  await loginPage.login("standard_user", "secret_sauce")',
+        '  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible()',
+        '})'
+      ]);
+    } else if (number >= 26 && number <= 28) {
+      add('tests/data-driven.spec.ts - Parameterized test', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'const users = [',
+        '  { username: "valid_user", password: "Pass@123", message: "Dashboard" },',
+        '  { username: "locked_user", password: "Pass@123", message: "locked" }',
+        ']',
+        '',
+        'for (const user of users) {',
+        '  test(`login validation for ${user.username}`, async ({ page }) => {',
+        '    await page.goto("/login")',
+        '    await page.getByLabel("Username").fill(user.username)',
+        '    await page.getByLabel("Password").fill(user.password)',
+        '    await page.getByRole("button", { name: "Login" }).click()',
+        '    await expect(page.getByText(user.message)).toBeVisible()',
+        '  })',
+        '}'
+      ]);
+      add('Common mistake: duplicate tests instead of data', [
+        '// Incorrect: copy-paste the same test for every user',
+        '// Correct: keep data in an array or JSON file and loop through it',
+        'const testData = [{ username: "user1" }, { username: "user2" }]',
+        'for (const data of testData) console.log(data.username)'
+      ]);
+    } else if (number >= 29 && number <= 31) {
+      add('tests/dynamic-frame-dialog.spec.ts - Event-first pattern', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("handle dynamic UI and dialog", async ({ page }) => {',
+        '  page.on("dialog", dialog => dialog.accept())',
+        '  await page.goto("/dynamic-page.html")',
+        '  await page.getByRole("button", { name: "Load" }).click()',
+        '  await expect(page.getByText("Loaded")).toBeVisible()',
+        '})'
+      ]);
+      add('tests/frame.spec.ts - iframe example', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("fill field inside iframe", async ({ page }) => {',
+        '  await page.goto("/iframe-form.html")',
+        '  const frame = page.frameLocator("iframe[name=\\"profile\\"]")',
+        '  await frame.getByLabel("City").fill("Pune")',
+        '  await expect(frame.getByLabel("City")).toHaveValue("Pune")',
+        '})'
+      ]);
+    } else if (number >= 32 && number <= 35) {
+      add('tests/browser-context-page.spec.ts - Browser context and page', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("create isolated context manually", async ({ browser }) => {',
+        '  const context = await browser.newContext({ viewport: { width: 1280, height: 720 } })',
+        '  const page = await context.newPage()',
+        '  await page.goto("https://example.com")',
+        '  await expect(page).toHaveTitle(/Example/)',
+        '  await context.close()',
+        '})'
+      ]);
+      add('Best practice: wait for URL after navigation action', [
+        'await page.goto("/products")',
+        'await page.getByRole("link", { name: "First product" }).click()',
+        'await page.waitForURL(/products\\/\\d+/)',
+        'await expect(page.getByRole("heading")).toBeVisible()'
+      ]);
+    } else if (number >= 39 && number <= 43) {
+      add('tests/user-input-and-tabs.spec.ts - Real user interactions', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("keyboard, mouse and popup flow", async ({ page }) => {',
+        '  await page.goto("/help.html")',
+        '  await page.getByPlaceholder("Search").fill("billing")',
+        '  await page.keyboard.press("Enter")',
+        '  const popupPromise = page.waitForEvent("popup")',
+        '  await page.getByRole("link", { name: "Open article" }).click()',
+        '  const popup = await popupPromise',
+        '  await expect(popup).toHaveURL(/article/)',
+        '})'
+      ]);
+      add('Common mistake: waiting for popup after click', [
+        '// Incorrect: event can be missed',
+        'await page.getByRole("link", { name: "Open article" }).click()',
+        'const popup = await page.waitForEvent("popup")',
+        '',
+        '// Correct',
+        'const popupPromise = page.waitForEvent("popup")',
+        'await page.getByRole("link", { name: "Open article" }).click()',
+        'const popup = await popupPromise'
+      ]);
+    } else if (number >= 44 && number <= 46) {
+      add('playwright.config.ts - Artifacts for debugging', [
+        'import { defineConfig } from "@playwright/test"',
+        '',
+        'export default defineConfig({',
+        '  use: {',
+        '    screenshot: "only-on-failure",',
+        '    video: "retain-on-failure",',
+        '    trace: "on-first-retry"',
+        '  }',
+        '})'
+      ]);
+      add('Debugging commands', [
+        'npx playwright test --debug',
+        'npx playwright test --ui',
+        'npx playwright codegen https://example.com',
+        'npx playwright show-trace test-results/trace.zip'
+      ], 'bash');
+    } else if (number >= 57 && number <= 65) {
+      add('playwright.config.ts - Production-ready config pattern', [
+        'import { defineConfig, devices } from "@playwright/test"',
+        '',
+        'export default defineConfig({',
+        '  testDir: "./tests",',
+        '  retries: process.env.CI ? 2 : 0,',
+        '  workers: process.env.CI ? 2 : undefined,',
+        '  reporter: process.env.CI ? [["junit", { outputFile: "results.xml" }], ["html"]] : "list",',
+        '  use: {',
+        '    baseURL: process.env.BASE_URL || "https://example.com",',
+        '    trace: "on-first-retry"',
+        '  },',
+        '  projects: [',
+        '    { name: "chromium", use: { ...devices["Desktop Chrome"] } },',
+        '    { name: "firefox", use: { ...devices["Desktop Firefox"] } }',
+        '  ]',
+        '})'
+      ]);
+      add('CI command sequence', [
+        'npm ci',
+        'npx playwright install --with-deps',
+        'npx playwright test',
+        'npx playwright show-report'
+      ], 'bash');
+    } else if (number === 66) {
+      add('auth.setup.ts - Save authenticated storage state', [
+        'import { test as setup, expect } from "@playwright/test"',
+        '',
+        'setup("authenticate", async ({ page }) => {',
+        '  await page.goto("/login")',
+        '  await page.getByLabel("Username").fill(process.env.TEST_USER || "admin")',
+        '  await page.getByLabel("Password").fill(process.env.TEST_PASSWORD || "secret")',
+        '  await page.getByRole("button", { name: "Login" }).click()',
+        '  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible()',
+        '  await page.context().storageState({ path: "playwright/.auth/user.json" })',
+        '})'
+      ]);
+      add('tests/storage.spec.ts - Cookies and local storage', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test.use({ storageState: "playwright/.auth/user.json" })',
+        '',
+        'test("authenticated user opens dashboard", async ({ page, context }) => {',
+        '  await page.goto("/dashboard")',
+        '  const cookies = await context.cookies()',
+        '  expect(cookies.length).toBeGreaterThan(0)',
+        '  await page.evaluate(() => localStorage.setItem("theme", "dark"))',
+        '  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible()',
+        '})'
+      ]);
+    } else if (number === 67) {
+      add('tests/api-crud.spec.ts - GET POST PUT PATCH DELETE', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("API CRUD flow", async ({ request }) => {',
+        '  const created = await request.post("/api/users", { data: { name: "Asha", role: "qa" } })',
+        '  expect(created.status()).toBe(201)',
+        '  const user = await created.json()',
+        '',
+        '  expect((await request.get(`/api/users/${user.id}`)).ok()).toBeTruthy()',
+        '  expect((await request.put(`/api/users/${user.id}`, { data: { name: "Asha QA" } })).ok()).toBeTruthy()',
+        '  expect((await request.patch(`/api/users/${user.id}`, { data: { role: "lead" } })).ok()).toBeTruthy()',
+        '  expect((await request.delete(`/api/users/${user.id}`)).status()).toBeLessThan(300)',
+        '})'
+      ]);
+      add('Best practice: assert contract fields', [
+        'const response = await request.get("/api/users/1")',
+        'expect(response.status()).toBe(200)',
+        'const body = await response.json()',
+        'expect(body).toEqual(expect.objectContaining({',
+        '  id: expect.any(Number),',
+        '  name: expect.any(String)',
+        '}))'
+      ]);
+    } else if (number === 68) {
+      add('tests/network-mocking.spec.ts - Mock API response', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("mock products API", async ({ page }) => {',
+        '  await page.route("**/api/products", route => route.fulfill({',
+        '    status: 200,',
+        '    contentType: "application/json",',
+        '    body: JSON.stringify([{ id: 1, name: "Mock Laptop" }])',
+        '  }))',
+        '',
+        '  await page.goto("/products")',
+        '  await expect(page.getByText("Mock Laptop")).toBeVisible()',
+        '})'
+      ]);
+      add('tests/request-interception.spec.ts - Block image requests', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("block images for faster smoke test", async ({ page }) => {',
+        '  await page.route("**/*.{png,jpg,jpeg}", route => route.abort())',
+        '  await page.goto("https://example.com")',
+        '  await expect(page.getByRole("heading", { name: "Example Domain" })).toBeVisible()',
+        '})'
+      ]);
+    } else if (number === 69) {
+      add('playwright.config.ts - Mobile project', [
+        'import { defineConfig, devices } from "@playwright/test"',
+        '',
+        'export default defineConfig({',
+        '  projects: [',
+        '    { name: "mobile-chrome", use: { ...devices["Pixel 5"] } },',
+        '    { name: "mobile-safari", use: { ...devices["iPhone 13"] } }',
+        '  ]',
+        '})'
+      ]);
+      add('tests/mobile-menu.spec.ts - Mobile flow', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("mobile menu opens", async ({ page }) => {',
+        '  await page.goto("/")',
+        '  await page.getByRole("button", { name: "Menu" }).click()',
+        '  await expect(page.getByRole("navigation")).toBeVisible()',
+        '})'
+      ]);
+    } else if (number === 70) {
+      add('tests/visual.spec.ts - Screenshot comparison', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("homepage visual snapshot", async ({ page }) => {',
+        '  await page.goto("/")',
+        '  await expect(page).toHaveScreenshot("homepage.png", { fullPage: true })',
+        '})'
+      ]);
+      add('Best practice: mask dynamic content', [
+        'await expect(page).toHaveScreenshot("dashboard.png", {',
+        '  mask: [page.getByTestId("current-time"), page.getByTestId("user-email")]',
+        '})'
+      ]);
+    } else if (number === 71) {
+      add('tests/accessibility-locators.spec.ts - Semantic checks', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("important controls have accessible names", async ({ page }) => {',
+        '  await page.goto("/login")',
+        '  await expect(page.getByLabel("Username")).toBeVisible()',
+        '  await expect(page.getByLabel("Password")).toBeVisible()',
+        '  await expect(page.getByRole("button", { name: "Login" })).toBeEnabled()',
+        '})'
+      ]);
+      add('tests/keyboard-access.spec.ts - Keyboard navigation', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("login form supports keyboard navigation", async ({ page }) => {',
+        '  await page.goto("/login")',
+        '  await page.keyboard.press("Tab")',
+        '  await expect(page.getByLabel("Username")).toBeFocused()',
+        '})'
+      ]);
+    } else if (number === 72) {
+      add('playwright.config.ts - Environment variable usage', [
+        'import { defineConfig } from "@playwright/test"',
+        '',
+        'export default defineConfig({',
+        '  use: {',
+        '    baseURL: process.env.BASE_URL || "https://example.com",',
+        '    extraHTTPHeaders: {',
+        '      "x-test-env": process.env.TEST_ENV || "local"',
+        '    }',
+        '  }',
+        '})'
+      ]);
+      add('tests/env-login.spec.ts - Read safe test values', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("login with environment-provided user", async ({ page }) => {',
+        '  await page.goto("/login")',
+        '  await page.getByLabel("Username").fill(process.env.TEST_USER || "demo")',
+        '  await page.getByLabel("Password").fill(process.env.TEST_PASSWORD || "demo")',
+        '  await page.getByRole("button", { name: "Login" }).click()',
+        '  await expect(page).toHaveURL(/dashboard|login/)',
+        '})'
+      ]);
+    } else if (number === 73) {
+      add('tests/tags-annotations.spec.ts - Tags and annotations', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("@smoke login page opens", async ({ page }) => {',
+        '  test.info().annotations.push({ type: "owner", description: "qa-team" })',
+        '  await page.goto("/login")',
+        '  await expect(page.getByRole("button", { name: "Login" })).toBeVisible()',
+        '})'
+      ]);
+      add('tests/parameterized-tags.spec.ts - Parameterized tests', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'for (const browserArea of ["login", "register", "contact"]) {',
+        '  test(`@regression ${browserArea} page opens`, async ({ page }) => {',
+        '    await page.goto(`/${browserArea}`)',
+        '    await expect(page).toHaveURL(new RegExp(browserArea))',
+        '  })',
+        '}',
+        '',
+        '// Run: npx playwright test --grep "@smoke"'
+      ]);
+    }
+
+    if (number === 18 || number === 19 || number === 36 || number === 37 || number === 38) {
+      add('tests/locator-deep-dive.spec.ts - Role, text and test id locators', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("use stable locator types", async ({ page }) => {',
+        '  await page.goto("/products")',
+        '  await page.getByRole("link", { name: "Products" }).click()',
+        '  await page.getByText("Featured products").isVisible()',
+        '  await page.getByTestId("product-search").fill("laptop")',
+        '  await expect(page.getByRole("listitem").filter({ hasText: "Laptop" })).toBeVisible()',
+        '})'
+      ]);
+      add('tests/css-xpath-locators.spec.ts - CSS and XPath fallback', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("use CSS or XPath only when needed", async ({ page }) => {',
+        '  await page.goto("/orders")',
+        '  await page.locator("[data-order-status=\\"paid\\"]").click()',
+        '  await expect(page.locator("//table//tr[td[contains(., \\"Paid\\")]]")).toBeVisible()',
+        '})'
+      ]);
+    }
+
+    if (number === 20) {
+      add('tests/form-controls.spec.ts - Checkboxes, radios and dropdowns', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("complete form controls", async ({ page }) => {',
+        '  await page.goto("/settings")',
+        '  await page.getByRole("checkbox", { name: "Email alerts" }).check()',
+        '  await page.getByRole("radio", { name: "Weekly" }).check()',
+        '  await page.getByLabel("Country").selectOption({ label: "India" })',
+        '  await expect(page.getByRole("checkbox", { name: "Email alerts" })).toBeChecked()',
+        '})'
+      ]);
+      add('tests/multi-select.spec.ts - Multi-select dropdown', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("select multiple skills", async ({ page }) => {',
+        '  await page.goto("/profile")',
+        '  await page.getByLabel("Skills").selectOption(["javascript", "playwright"])',
+        '  await expect(page.getByLabel("Skills")).toHaveValues(["javascript", "playwright"])',
+        '})'
+      ]);
+    }
+
+    if (number === 21 || (number >= 47 && number <= 56)) {
+      add('tests/assertion-mistakes.spec.ts - Incorrect and corrected assertions', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("prefer locator assertion", async ({ page }) => {',
+        '  await page.goto("/cart")',
+        '  // Incorrect: reads too early in dynamic pages',
+        '  // expect(await page.getByTestId("cart-count").textContent()).toBe("1")',
+        '',
+        '  // Correct: auto-retries until the UI reaches expected state',
+        '  await expect(page.getByTestId("cart-count")).toHaveText("1")',
+        '})'
+      ]);
+    }
+
+    if (number === 22 || number === 23) {
+      add('tests/pom-common-mistake.spec.ts - Avoid raw locators in tests', [
+        'import { test, expect } from "@playwright/test"',
+        'import { LoginPage } from "../pages/LoginPage"',
+        '',
+        'test("best practice keeps test readable", async ({ page }) => {',
+        '  const loginPage = new LoginPage(page)',
+        '  await loginPage.open()',
+        '  await loginPage.login("standard_user", "secret_sauce")',
+        '  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible()',
+        '})'
+      ]);
+    }
+
+    if (number === 24 || number === 25) {
+      add('fixtures/authenticatedPage.ts - Authenticated fixture', [
+        'import { test as base, expect, Page } from "@playwright/test"',
+        '',
+        'export const test = base.extend<{ authenticatedPage: Page }>({',
+        '  authenticatedPage: async ({ page }, use) => {',
+        '    await page.goto("/login")',
+        '    await page.getByLabel("Username").fill("admin")',
+        '    await page.getByLabel("Password").fill("secret")',
+        '    await page.getByRole("button", { name: "Login" }).click()',
+        '    await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible()',
+        '    await use(page)',
+        '  }',
+        '})'
+      ]);
+    }
+
+    if (number === 30) {
+      add('tests/nested-frame.spec.ts - Nested iframe example', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("work with nested frames", async ({ page }) => {',
+        '  await page.goto("/checkout")',
+        '  const card = page.frameLocator("#payment-frame").frameLocator("#card-frame")',
+        '  await card.getByLabel("Card number").fill("4111111111111111")',
+        '  await expect(card.getByLabel("Card number")).toHaveValue(/4111/)',
+        '})'
+      ]);
+    }
+
+    if (number === 52 || number === 67) {
+      add('tests/api-negative.spec.ts - Negative API assertion', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("invalid user returns not found", async ({ request }) => {',
+        '  const response = await request.get("/api/users/does-not-exist")',
+        '  expect(response.status()).toBe(404)',
+        '  const body = await response.json()',
+        '  expect(body.message || body.error).toBeTruthy()',
+        '})'
+      ]);
+      add('tests/api-setup-ui.spec.ts - API setup before UI test', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("create data with API then verify in UI", async ({ request, page }) => {',
+        '  const response = await request.post("/api/tasks", { data: { title: "Review Playwright" } })',
+        '  expect(response.ok()).toBeTruthy()',
+        '  await page.goto("/tasks")',
+        '  await expect(page.getByText("Review Playwright")).toBeVisible()',
+        '})'
+      ]);
+    }
+
+    if (number === 57 || number === 61 || number === 62 || number === 63 || number === 64 || number === 65) {
+      add('playwright.config.ts - Best-practice use block', [
+        'import { defineConfig } from "@playwright/test"',
+        '',
+        'export default defineConfig({',
+        '  use: {',
+        '    baseURL: process.env.BASE_URL || "https://example.com",',
+        '    actionTimeout: 10_000,',
+        '    navigationTimeout: 15_000,',
+        '    screenshot: "only-on-failure",',
+        '    trace: "on-first-retry"',
+        '  }',
+        '})'
+      ]);
+    }
+
+    if (number === 66) {
+      add('tests/session-storage.spec.ts - Session storage setup', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("set and verify session storage", async ({ page }) => {',
+        '  await page.goto("/")',
+        '  await page.evaluate(() => sessionStorage.setItem("wizardStep", "2"))',
+        '  const step = await page.evaluate(() => sessionStorage.getItem("wizardStep"))',
+        '  expect(step).toBe("2")',
+        '})'
+      ]);
+      add('Common mistake: UI login in every test', [
+        '// Incorrect: slow and repetitive',
+        '// test.beforeEach(async ({ page }) => loginThroughUi(page))',
+        '',
+        '// Correct: create storage state once and reuse it',
+        'test.use({ storageState: "playwright/.auth/user.json" })'
+      ]);
+    }
+
+    if (number === 68) {
+      add('tests/network-error.spec.ts - Mock backend failure', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("shows friendly error when API fails", async ({ page }) => {',
+        '  await page.route("**/api/products", route => route.fulfill({ status: 500, body: "Server error" }))',
+        '  await page.goto("/products")',
+        '  await expect(page.getByText("Unable to load products")).toBeVisible()',
+        '})'
+      ]);
+      add('tests/observe-request.spec.ts - Verify outgoing request', [
+        'import { test, expect } from "@playwright/test"',
+        '',
+        'test("search sends query to API", async ({ page }) => {',
+        '  const requestPromise = page.waitForRequest("**/api/search?q=playwright")',
+        '  await page.goto("/search")',
+        '  await page.getByPlaceholder("Search").fill("playwright")',
+        '  await page.getByRole("button", { name: "Search" }).click()',
+        '  expect((await requestPromise).url()).toContain("q=playwright")',
+        '})'
+      ]);
+    }
+
+    return examples;
+  }
+
+  function playwrightIplBatchOneExamples(topic) {
+    var examples = [];
+
+    function add(title, lines, explanation, language) {
+      var example = playwrightExample(title, lines, language || 'ts');
+      example.explanation = explanation;
+      examples.push(example);
+    }
+
+    if (topic.id === 'playwright-notes-18') {
+      add('Basic example - locate the IPL page by heading', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('finds the IPL practice page heading', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        "  const heading = page.getByRole('heading', {",
+        "    name: 'IPL Automation Practice Playground',",
+        '  });',
+        '',
+        '  await expect(heading).toBeVisible();',
+        '});'
+      ], 'The heading text was verified on the IPL page. This example starts with a user-facing role locator before using lower-level selectors.');
+
+      add('TestNova IPL practical example - search input and result area', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('uses stable IPL search locators', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        "  await page.getByTestId('player-search-input').fill('Virat');",
+        "  await page.getByTestId('search-players').click();",
+        '',
+        "  await expect(page.getByText('1 result(s)')).toBeVisible();",
+        "  await expect(page.getByTestId('player-search-results')).toContainText('Virat Kohli');",
+        '});'
+      ], 'The IPL search result intentionally changes after a short loading state, so the assertion waits for the final visible result instead of reading text immediately.');
+
+      add('Common mistake - fragile selector versus stable locator', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('uses stable locator instead of layout selector', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        '  // Incorrect: tied to DOM layout and likely to break.',
+        '  // await page.locator("main section:nth-child(2) input").fill("Virat");',
+        '',
+        '  // Correct: stable attribute already provided by the practice page.',
+        "  await page.getByTestId('player-search-input').fill('Virat');",
+        "  await expect(page.getByTestId('player-search-input')).toHaveValue('Virat');",
+        '});'
+      ], 'The corrected code targets the intended control directly and then verifies the entered value.');
+    }
+
+    if (topic.id === 'playwright-notes-20') {
+      add('Basic example - click, fill and assert', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('performs basic IPL page actions', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        "  await page.getByTestId('player-search-input').fill('Dhoni');",
+        "  await page.getByTestId('team-filter').selectOption('CSK');",
+        "  await page.getByTestId('search-players').click();",
+        '',
+        "  await expect(page.getByText('1 result(s)')).toBeVisible();",
+        "  await expect(page.getByTestId('player-search-results')).toContainText('MS Dhoni');",
+        '});'
+      ], 'This complete test performs form input, dropdown selection, button click, and result assertion on the IPL practice page.');
+
+      add('TestNova IPL practical example - table actions and pagination', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('sorts and paginates the IPL records table', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        "  await page.getByTestId('sort-runs').click();",
+        "  await expect(page.getByTestId('player-records-table')).toBeVisible();",
+        '',
+        "  await page.getByTestId('player-table-next').click();",
+        "  await expect(page.getByTestId('player-table-page-status')).toContainText('Page');",
+        '});'
+      ], 'The locators for the Runs sort button and pagination controls were verified on the rendered IPL table.');
+
+      add('Common mistake - acting before the page is ready', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('waits through assertions instead of hard sleeps', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        '  // Incorrect: a fixed sleep is slow and unreliable.',
+        '  // await page.waitForTimeout(3000);',
+        '',
+        '  // Correct: wait for the actual component that the user needs.',
+        "  await expect(page.getByTestId('player-records-table')).toBeVisible();",
+        "  await page.getByTestId('sort-runs').click();",
+        '});'
+      ], 'The corrected version waits for the table itself. It does not pause blindly.');
+    }
+
+    if (topic.id === 'playwright-notes-21') {
+      add('Basic example - IPL page assertions', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('verifies IPL page title, URL and heading', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        "  await expect(page).toHaveTitle(/IPL Automation Practice Playground/);",
+        "  await expect(page).toHaveURL(/ipl-automation-practice/);",
+        "  await expect(page.getByRole('heading', {",
+        "    name: 'IPL Automation Practice Playground',",
+        '  })).toBeVisible();',
+        '});'
+      ], 'This file demonstrates page assertions and a heading assertion against real IPL page content.');
+
+      add('TestNova IPL practical example - table, count, text and enabled assertions', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('asserts IPL records table structure and controls', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        "  const table = page.getByTestId('player-records-table');",
+        "  await expect(table).toBeVisible();",
+        "  await expect(table.locator('thead th')).toHaveCount(11);",
+        "  await expect(page.getByTestId('player-table-row-virat-kohli')).toContainText('Virat Kohli');",
+        "  await expect(page.getByTestId('player-table-next')).toBeEnabled();",
+        '});'
+      ], 'The table exists with 11 headers in the current IPL page. The player row assertion checks stable structure without depending on every statistic.');
+
+      add('Additional practical example - soft, negative and timeout assertions', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('uses soft and negative assertions on IPL search', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        "  await expect.soft(page.getByTestId('player-search-input')).toBeVisible();",
+        "  await expect.soft(page.getByTestId('search-players')).toBeEnabled();",
+        '',
+        "  await page.getByTestId('player-search-input').fill('Virat');",
+        "  await page.getByTestId('search-players').click();",
+        '',
+        "  await expect(page.getByText('1 result(s)')).toBeVisible({ timeout: 5000 });",
+        "  await expect(page.getByTestId('player-search-results')).not.toContainText('No players found');",
+        '});'
+      ], 'Soft assertions collect multiple UI checks. The search assertion uses a timeout because this component has a deliberate loading state.');
+
+      add('Common mistake - reading text too early', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('uses web-first assertions for dynamic search results', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        "  await page.getByTestId('player-search-input').fill('Virat');",
+        "  await page.getByTestId('search-players').click();",
+        '',
+        '  // Incorrect: textContent can read during the loading state.',
+        "  // expect(await page.getByTestId('player-search-results').textContent()).toContain('Virat Kohli');",
+        '',
+        '  // Correct: locator assertion retries until the expected text appears.',
+        "  await expect(page.getByTestId('player-search-results')).toContainText('Virat Kohli');",
+        '});'
+      ], 'This directly fixes the common flaky assertion pattern for dynamic content.');
+    }
+
+    if (topic.id === 'playwright-notes-26') {
+      add('Basic example - parameterized IPL player searches', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        'const players = [',
+        "  { query: 'Virat', expected: 'Virat Kohli' },",
+        "  { query: 'Dhoni', expected: 'MS Dhoni' },",
+        '];',
+        '',
+        'for (const player of players) {',
+        "  test(`finds ${player.expected} in IPL player search`, async ({ page }) => {",
+        "    await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        "    await page.getByTestId('player-search-input').fill(player.query);",
+        "    await page.getByTestId('search-players').click();",
+        '',
+        "    await expect(page.getByTestId('player-search-results')).toContainText(player.expected);",
+        '  });',
+        '}'
+      ], 'The same test body runs for multiple player records. Each row has independent input and expected text.');
+
+      add('TestNova IPL practical example - data-driven team filters', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        'const teamCases = [',
+        "  { team: 'CSK', player: 'MS Dhoni' },",
+        "  { team: 'RCB', player: 'Virat Kohli' },",
+        '];',
+        '',
+        'for (const item of teamCases) {',
+        "  test(`filters ${item.team} records`, async ({ page }) => {",
+        "    await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        "    await page.getByTestId('team-filter').selectOption(item.team);",
+        "    await page.getByTestId('search-players').click();",
+        '',
+        "    await expect(page.getByTestId('player-search-results')).toContainText(item.player);",
+        '  });',
+        '}'
+      ], 'The team filter values such as CSK and RCB are present in the IPL page dropdown.');
+
+      add('Common mistake - hardcoding duplicate tests', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('uses data instead of copy-paste tests', async ({ page }) => {",
+        '  // Incorrect: create separate duplicated tests for Virat, Dhoni, Rohit, and every player.',
+        '',
+        "  const data = [{ query: 'Virat', expected: 'Virat Kohli' }];",
+        '  for (const row of data) {',
+        "    await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        "    await page.getByTestId('player-search-input').fill(row.query);",
+        "    await page.getByTestId('search-players').click();",
+        "    await expect(page.getByTestId('player-search-results')).toContainText(row.expected);",
+        '  }',
+        '});'
+      ], 'The corrected pattern separates test data from the automation steps so adding more records is simple.');
+    }
+
+    if (topic.id === 'playwright-notes-38') {
+      add('Basic example - table row locator', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('locates a specific IPL player row', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        "  const viratRow = page.getByTestId('player-table-row-virat-kohli');",
+        "  await expect(viratRow).toContainText('Virat Kohli');",
+        "  await expect(viratRow).toContainText('RCB');",
+        '});'
+      ], 'The Virat row has a stable data-testid and visible player/team text. This is safer than depending on row index.');
+
+      add('TestNova IPL practical example - chaining inside the records table', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('chains locators inside the IPL records table', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        "  const table = page.getByTestId('player-records-table');",
+        "  const viratRow = table.locator('[data-testid=\"player-table-row-virat-kohli\"]');",
+        '',
+        "  await expect(viratRow).toContainText('Virat Kohli');",
+        "  await viratRow.getByRole('button', { name: 'View Details' }).click();",
+        "  await expect(page.getByTestId('player-details-modal')).toBeVisible();",
+        '});'
+      ], 'The example scopes the row lookup to the table, then finds the View Details button inside that row.');
+
+      add('Common mistake - using row position for changing tables', [
+        "import { test, expect } from '@playwright/test';",
+        '',
+        "test('avoids positional table locators', async ({ page }) => {",
+        "  await page.goto('https://www.testnova.in/ipl-automation-practice.html');",
+        '',
+        '  // Incorrect: sorting or pagination can change this row.',
+        "  // const row = page.locator('tbody tr').nth(0);",
+        '',
+        '  // Correct: use a stable row identifier or filter by visible player text.',
+        "  const row = page.getByTestId('player-table-row-virat-kohli');",
+        "  await expect(row).toContainText('Virat Kohli');",
+        '});'
+      ], 'The corrected locator still works when the table is sorted or paginated back to the row.');
+    }
+
+    return examples;
   }
 
   function enrichPlaywrightTopic(topic) {
@@ -1336,6 +3086,10 @@
       ]
     };
 
+    var examples = playwrightPdfExampleCatalog();
+    if (examples[topic.id]) topic.examples = (topic.examples || []).concat(examples[topic.id]);
+    topic.examples = (topic.examples || []).concat(playwrightCodeFirstSupplementExamples(topic));
+    topic.examples = (topic.examples || []).concat(playwrightIplBatchOneExamples(topic));
     if (ui[topic.id]) topic.ui = ui[topic.id];
     return topic;
   }
@@ -1970,10 +3724,12 @@
       '<h2 data-topic-title>' + escapeHtml(displayTopicTitle(topic)) + '</h2>',
       topic.paragraphs.map(function (paragraph) { return '<p>' + escapeHtml(paragraph) + '</p>'; }).join(''),
       topic.examples && topic.examples.length ? topic.examples.map(function (example) {
+        var languageClass = example.language ? ' class="language-' + escapeHtml(example.language) + '"' : '';
         return [
           '<div class="ai-code-example">',
           '<h3>' + escapeHtml(example.title) + '</h3>',
-          '<pre><code>' + escapeHtml(example.code) + '</code></pre>',
+          '<pre><code' + languageClass + '>' + escapeHtml(example.code) + '</code></pre>',
+          example.explanation ? '<p class="ai-code-explanation">' + escapeHtml(example.explanation) + '</p>' : '',
           '</div>'
         ].join('');
       }).join('') : '',

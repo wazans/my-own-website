@@ -4039,6 +4039,13 @@ body.landing-page .text-link {
   line-height: 1.55;
 }
 
+.ai-code-explanation {
+  margin: 0;
+  padding: 0 0.9rem 0.85rem;
+  color: var(--tn-text-secondary);
+  font-size: 0.92rem;
+}
+
 .ai-ui-block {
   margin: 1.1rem 0;
   border: 1px solid rgba(148, 163, 184, 0.2);
