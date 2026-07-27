@@ -1,6 +1,5 @@
 const recentByIp = new Map();
 const recentRegistrations = new Map();
-const crypto = require('crypto');
 const allowedStatuses = new Set(['Student', 'Fresher', 'Working Professional', 'Career Break', 'Looking for a Job', 'Other']);
 const allowedExperience = new Set(['No Experience', 'Less than 1 Year', '1–3 Years', '3–5 Years', '5–8 Years', '8+ Years']);
 const allowedAttendance = new Set(['Yes, I will attend', 'Most likely, but I need a reminder', 'I am interested but need more information']);
@@ -11,26 +10,6 @@ function clean(value, max = 500) {
 
 function fail(res, status, error) {
   return res.status(status).json({ ok: false, error });
-}
-
-async function sendEmail({ apiKey, from, to, subject, text, replyTo, idempotencyKey }) {
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'Idempotency-Key': idempotencyKey,
-      'User-Agent': 'TestNova-Webinar-Registration/1.0'
-    },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      subject,
-      text,
-      reply_to: replyTo
-    })
-  });
-  if (!response.ok) throw new Error('email delivery failed');
 }
 
 module.exports = async function handler(req, res) {
@@ -74,69 +53,37 @@ module.exports = async function handler(req, res) {
   const submittedAt = new Intl.DateTimeFormat('en-IN', {
     timeZone: 'Asia/Kolkata', dateStyle: 'long', timeStyle: 'medium'
   }).format(new Date());
-  const resendApiKey = process.env.RESEND_API_KEY;
-  const emailFrom = process.env.WEBINAR_EMAIL_FROM;
-  const adminEmail = process.env.WEBINAR_ADMIN_EMAIL || 'admin@testnova.in';
-  if (!resendApiKey || !emailFrom) {
-    return fail(res, 503, 'Email service is temporarily unavailable. Please contact TestNova through WhatsApp.');
-  }
-
   const interests = registration.interests.join(', ') || 'Not specified';
   const sourceUrl = registration.sourcePageUrl || 'https://www.testnova.in/registration/';
-  const adminText = [
-    'New TestNova webinar registration',
-    '',
-    `Full name: ${registration.fullName}`,
-    `WhatsApp number: ${registration.whatsappNumber}`,
-    `Email address: ${registration.emailAddress}`,
-    `Current status: ${registration.currentStatus}`,
-    `Total experience: ${registration.totalExperience}`,
-    `Selected interests: ${interests}`,
-    `Biggest challenge: ${registration.biggestChallenge || 'Not provided'}`,
-    `Webinar attendance response: ${registration.attendance}`,
-    'Consent status: Agreed',
-    `Submission date and time: ${submittedAt}`,
-    'Timezone: Asia/Kolkata (IST)',
-    `Source page URL: ${sourceUrl}`
-  ].join('\n');
-  const candidateText = [
-    `Hi ${registration.fullName},`,
-    '',
-    'Your registration for the TestNova Free QA Career Webinar is confirmed.',
-    '',
-    'Date: 15 August 2026',
-    'Time: 3:00 PM IST',
-    'Mode: Live Online',
-    '',
-    'The webinar joining details and reminders will be shared through WhatsApp or email.',
-    'Please save the TestNova WhatsApp number so you do not miss important updates.',
-    '',
-    'Regards,',
-    'Team TestNova'
-  ].join('\n');
-  const emailToken = crypto.createHash('sha256').update(`${duplicateKey}|2026-08-15`).digest('hex').slice(0, 32);
+  const emailData = new FormData();
+  emailData.append('_subject', `New Webinar Registration – ${registration.fullName} – 15 August 2026`);
+  emailData.append('_template', 'table');
+  emailData.append('_captcha', 'false');
+  emailData.append('_url', sourceUrl);
+  emailData.append('_replyto', registration.emailAddress);
+  emailData.append('email', registration.emailAddress);
+  emailData.append('Full name', registration.fullName);
+  emailData.append('WhatsApp number', registration.whatsappNumber);
+  emailData.append('Current status', registration.currentStatus);
+  emailData.append('Total experience', registration.totalExperience);
+  emailData.append('Selected interests', interests);
+  emailData.append('Biggest challenge', registration.biggestChallenge || 'Not provided');
+  emailData.append('Webinar attendance response', registration.attendance);
+  emailData.append('Consent status', 'Agreed');
+  emailData.append('Submission date and time', submittedAt);
+  emailData.append('Timezone', 'Asia/Kolkata (IST)');
+  emailData.append('Source page URL', sourceUrl);
 
   try {
-    await Promise.all([
-      sendEmail({
-        apiKey: resendApiKey,
-        from: emailFrom,
-        to: adminEmail,
-        subject: `New Webinar Registration – ${registration.fullName} – 15 August 2026`,
-        text: adminText,
-        replyTo: registration.emailAddress,
-        idempotencyKey: `webinar-admin-${emailToken}`
-      }),
-      sendEmail({
-        apiKey: resendApiKey,
-        from: emailFrom,
-        to: registration.emailAddress,
-        subject: 'Registration Confirmed – TestNova Free QA Career Webinar',
-        text: candidateText,
-        replyTo: adminEmail,
-        idempotencyKey: `webinar-candidate-${emailToken}`
-      })
-    ]);
+    const notification = await fetch('https://formsubmit.co/ajax/admin@testnova.in', {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body: emailData
+    });
+    const notificationResult = await notification.json().catch(() => ({}));
+    if (!notification.ok || notificationResult.success === 'false' || notificationResult.success === false) {
+      throw new Error('notification failed');
+    }
 
     if (process.env.WEBINAR_STORAGE_WEBHOOK_URL) {
       const stored = await fetch(process.env.WEBINAR_STORAGE_WEBHOOK_URL, {
