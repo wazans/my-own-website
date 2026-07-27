@@ -96,6 +96,45 @@
     submitButton.querySelector('span').textContent = value ? 'Submitting your registration…' : 'Register for the Free Webinar 🚀';
   }
 
+  async function submitAdminEmailFallback(data) {
+    var submittedAt = new Intl.DateTimeFormat('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      dateStyle: 'long',
+      timeStyle: 'medium'
+    }).format(new Date());
+    var emailData = new URLSearchParams();
+    emailData.append('_subject', 'New Webinar Registration – ' + data.fullName + ' – 15 August 2026');
+    emailData.append('_template', 'table');
+    emailData.append('_captcha', 'false');
+    emailData.append('_url', data.sourcePageUrl);
+    emailData.append('_replyto', data.emailAddress);
+    emailData.append('email', data.emailAddress);
+    emailData.append('Full name', data.fullName);
+    emailData.append('WhatsApp number', data.whatsappNumber);
+    emailData.append('Current status', data.currentStatus);
+    emailData.append('Total experience', data.totalExperience);
+    emailData.append('Selected interests', data.interests.join(', ') || 'Not specified');
+    emailData.append('Biggest challenge', data.biggestChallenge || 'Not provided');
+    emailData.append('Webinar attendance response', data.attendance);
+    emailData.append('Consent status', 'Agreed');
+    emailData.append('Submission date and time', submittedAt);
+    emailData.append('Timezone', 'Asia/Kolkata (IST)');
+    emailData.append('Source page URL', data.sourcePageUrl);
+
+    var response = await fetch('https://formsubmit.co/ajax/admin@testnova.in', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: emailData
+    });
+    var result = await response.json().catch(function () { return {}; });
+    if (!response.ok || result.success === false || result.success === 'false') {
+      throw new Error('');
+    }
+  }
+
   function showFailure(text) {
     messageBox.className = 'form-message error';
     messageBox.textContent = text || 'Your registration could not be submitted right now. Please check your internet connection and try again, or contact TestNova through WhatsApp.';
@@ -128,15 +167,20 @@
     setLoading(true);
     sessionStorage.setItem('testnova-webinar-submit-at', String(Date.now()));
     try {
+      var registrationData = payload();
       var response = await fetch('/api/webinar-registration', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload())
+        body: JSON.stringify(registrationData)
       });
       var result = await response.json().catch(function () { return {}; });
       if (!response.ok) {
         if (response.status === 409) throw new Error('It looks like you may have already registered with this email address or WhatsApp number. Please contact TestNova if you need help.');
-        throw new Error(result.error || '');
+        if (response.status >= 500) {
+          await submitAdminEmailFallback(registrationData);
+        } else {
+          throw new Error(result.error || '');
+        }
       }
       track('webinar_registration_submitted');
       form.hidden = true;
