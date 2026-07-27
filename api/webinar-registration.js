@@ -28,7 +28,7 @@ module.exports = async function handler(req, res) {
 
   const registration = {
     fullName: clean(body.fullName, 100),
-    whatsappNumber: clean(body.whatsappNumber, 14).replace(/\s/g, ''),
+    whatsappNumber: clean(body.whatsappNumber, 10).replace(/\D/g, ''),
     emailAddress: clean(body.emailAddress, 160).toLowerCase(),
     currentStatus: clean(body.currentStatus, 40),
     totalExperience: clean(body.totalExperience, 30),
@@ -40,7 +40,7 @@ module.exports = async function handler(req, res) {
   };
 
   if (registration.fullName.length < 3 || !/[A-Za-z\u00C0-\u024F\u0900-\u097F]/.test(registration.fullName)) return fail(res, 400, 'Please enter a valid full name.');
-  if (!/^(?:\+91|91)?[6-9]\d{9}$/.test(registration.whatsappNumber)) return fail(res, 400, 'Please enter a valid WhatsApp number.');
+  if (!/^[6-9]\d{9}$/.test(registration.whatsappNumber)) return fail(res, 400, 'Please enter a valid 10-digit WhatsApp number.');
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(registration.emailAddress)) return fail(res, 400, 'Please enter a valid email address.');
   if (!allowedStatuses.has(registration.currentStatus) || !allowedExperience.has(registration.totalExperience)) return fail(res, 400, 'Please check the selected status and experience.');
   if (!allowedAttendance.has(registration.attendance) || !registration.consent) return fail(res, 400, 'Please confirm attendance and consent.');

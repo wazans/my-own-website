@@ -11,6 +11,11 @@
   var started = false;
   var whatsappNumber = document.body.getAttribute('data-whatsapp-number') || '';
   var whatsappMessage = 'Hi TestNova, I have registered for the free QA Career Webinar on 15 August 2026 at 3:00 PM. Please share the joining details and reminders.';
+  var formSection = document.querySelector('.form-section');
+  var heroSection = document.querySelector('.webinar-hero');
+  if (formSection && heroSection && heroSection.parentNode) {
+    heroSection.parentNode.insertBefore(formSection, heroSection);
+  }
 
   function track(name) {
     if (typeof window.gtag === 'function') window.gtag('event', name);
@@ -43,8 +48,8 @@
       errorFor('full-name', 'Please enter a valid full name of at least three characters.');
       valid = false;
     }
-    if (!/^(?:\+91|91)?[6-9]\d{9}$/.test(phone)) {
-      errorFor('whatsapp-number', 'Please enter a valid WhatsApp number.', 'whatsapp-error');
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      errorFor('whatsapp-number', 'Please enter a valid 10-digit WhatsApp number.', 'whatsapp-error');
       valid = false;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
@@ -149,9 +154,7 @@
   }, { once: true });
 
   form.elements.whatsappNumber.addEventListener('input', function () {
-    var leadingPlus = this.value.trim().charAt(0) === '+';
-    var digits = this.value.replace(/\D/g, '').slice(0, 12);
-    this.value = leadingPlus ? '+' + digits : digits;
+    this.value = this.value.replace(/\D/g, '').slice(0, 10);
   });
 
   form.addEventListener('submit', async function (event) {
