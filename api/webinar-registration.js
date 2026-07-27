@@ -77,7 +77,11 @@ module.exports = async function handler(req, res) {
   try {
     const notification = await fetch('https://formsubmit.co/ajax/admin@testnova.in', {
       method: 'POST',
-      headers: { Accept: 'application/json' },
+      headers: {
+        Accept: 'application/json',
+        Origin: 'https://www.testnova.in',
+        Referer: 'https://www.testnova.in/registration/'
+      },
       body: emailData
     });
     const notificationResult = await notification.json().catch(() => ({}));
