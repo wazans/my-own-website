@@ -55,7 +55,7 @@ module.exports = async function handler(req, res) {
   }).format(new Date());
   const interests = registration.interests.join(', ') || 'Not specified';
   const sourceUrl = registration.sourcePageUrl || 'https://www.testnova.in/registration/';
-  const emailData = new FormData();
+  const emailData = new URLSearchParams();
   emailData.append('_subject', `New Webinar Registration – ${registration.fullName} – 15 August 2026`);
   emailData.append('_template', 'table');
   emailData.append('_captcha', 'false');
@@ -79,6 +79,7 @@ module.exports = async function handler(req, res) {
       method: 'POST',
       headers: {
         Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
         Origin: 'https://www.testnova.in',
         Referer: 'https://www.testnova.in/registration/'
       },
