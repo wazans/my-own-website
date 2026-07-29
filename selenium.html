@@ -31,7 +31,7 @@
     }
   </script>
 </head>
-<body class="learning-page selenium-page" data-progress-key="qa-hub-selenium-progress-v1">
+<body class="learning-page selenium-page" data-progress-key="seleniumBasicsProgress">
   <header class="topbar">
     <div class="container nav-container">
       <a class="brand" href="index.html">TestNova</a>
@@ -80,18 +80,76 @@
             </div>
           </div>
 
-          <a class="sidebar-link" href="#architecture">Architecture</a>
-          <a class="sidebar-link" href="#locators">Locators</a>
-          <a class="sidebar-link" href="#shadow-dom">Shadow DOM</a>
-          <a class="sidebar-link" href="#dropdowns">Selections</a>
-          <a class="sidebar-link" href="#sync">Waits</a>
-          <a class="sidebar-link" href="#actions">Actions</a>
-          <a class="sidebar-link" href="#calendar">Date handling</a>
-          <a class="sidebar-link" href="#javascript-executor">JavaScript</a>
-          <a class="sidebar-link" href="#screenshots">Screenshots</a>
-          <a class="sidebar-link" href="#tables">Tables</a>
-          <a class="sidebar-link" href="#advanced-strategy">Automation strategy</a>
-          <a class="sidebar-link" href="#practice-programs">Practice programs (30 sections)</a>
+          <div class="selenium-level" data-selenium-level="beginner">
+            <button class="selenium-level-toggle" type="button" aria-expanded="true" aria-controls="selenium-level-beginner">
+              <span>Beginner</span>
+              <span class="selenium-level-count" data-level-count="beginner">0 of 10 completed</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="selenium-level-topics" id="selenium-level-beginner">
+              <a class="sidebar-link" href="#architecture">Architecture</a>
+              <a class="sidebar-link" href="#locators">Locators</a>
+              <a class="sidebar-link" href="#dropdowns">Selections</a>
+              <a class="sidebar-link" href="#actions">Actions</a>
+              <a class="sidebar-link" href="#screenshots">Screenshots</a>
+              <a class="sidebar-link" href="#sel-sec-1">Basic Form Elements</a>
+              <a class="sidebar-link" href="#sel-sec-2">Button Interactions</a>
+              <a class="sidebar-link" href="#sel-sec-3">Checkboxes &amp; Radio Buttons</a>
+              <a class="sidebar-link" href="#sel-sec-4">Dropdowns</a>
+              <a class="sidebar-link" href="#sel-sec-5">Locator Practice</a>
+            </div>
+          </div>
+
+          <div class="selenium-level" data-selenium-level="intermediate">
+            <button class="selenium-level-toggle" type="button" aria-expanded="false" aria-controls="selenium-level-intermediate">
+              <span>Intermediate</span>
+              <span class="selenium-level-count" data-level-count="intermediate">0 of 16 completed</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="selenium-level-topics" id="selenium-level-intermediate" hidden>
+              <a class="sidebar-link" href="#sync">Waits</a>
+              <a class="sidebar-link" href="#calendar">Date handling</a>
+              <a class="sidebar-link" href="#javascript-executor">JavaScript</a>
+              <a class="sidebar-link" href="#tables">Tables</a>
+              <a class="sidebar-link" href="#sel-sec-6">Dynamic Content</a>
+              <a class="sidebar-link" href="#sel-sec-7">Waits &amp; Synchronisation</a>
+              <a class="sidebar-link" href="#sel-sec-8">Table Automation</a>
+              <a class="sidebar-link" href="#sel-sec-9">Alerts</a>
+              <a class="sidebar-link" href="#sel-sec-10">Modals</a>
+              <a class="sidebar-link" href="#sel-sec-11">iFrame</a>
+              <a class="sidebar-link" href="#sel-sec-12">Shadow DOM Practice</a>
+              <a class="sidebar-link" href="#sel-sec-13">Drag &amp; Drop</a>
+              <a class="sidebar-link" href="#sel-sec-14">Hover Menu</a>
+              <a class="sidebar-link" href="#sel-sec-15">Tooltip</a>
+              <a class="sidebar-link" href="#sel-sec-16">File Upload</a>
+              <a class="sidebar-link" href="#sel-sec-17">Download</a>
+            </div>
+          </div>
+
+          <div class="selenium-level" data-selenium-level="advanced">
+            <button class="selenium-level-toggle" type="button" aria-expanded="false" aria-controls="selenium-level-advanced">
+              <span>Advanced</span>
+              <span class="selenium-level-count" data-level-count="advanced">0 of 15 completed</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </button>
+            <div class="selenium-level-topics" id="selenium-level-advanced" hidden>
+              <a class="sidebar-link" href="#shadow-dom">Shadow DOM</a>
+              <a class="sidebar-link" href="#advanced-strategy">Automation strategy</a>
+              <a class="sidebar-link" href="#sel-sec-18">Hidden Elements</a>
+              <a class="sidebar-link" href="#sel-sec-19">Scroll Testing</a>
+              <a class="sidebar-link" href="#sel-sec-20">Multiple Windows</a>
+              <a class="sidebar-link" href="#sel-sec-21">Authentication Simulation</a>
+              <a class="sidebar-link" href="#sel-sec-22">Stale Element Simulation</a>
+              <a class="sidebar-link" href="#sel-sec-23">Dynamic List</a>
+              <a class="sidebar-link" href="#sel-sec-24">Network Delay Simulation</a>
+              <a class="sidebar-link" href="#sel-sec-25">Random Fail (Flaky) Elements</a>
+              <a class="sidebar-link" href="#sel-sec-26">Keyboard Actions</a>
+              <a class="sidebar-link" href="#sel-sec-27">Slider</a>
+              <a class="sidebar-link" href="#sel-sec-28">Date Picker</a>
+              <a class="sidebar-link" href="#sel-sec-29">Resizable Element</a>
+              <a class="sidebar-link" href="#sel-sec-30">Complex DOM Structure</a>
+            </div>
+          </div>
         </nav>
       </aside>
 
@@ -1027,5 +1085,7 @@ driver.findElement(By.id("flaky-btn")).click();</pre>
   <script src="site.js"></script>
   <script src="landing.js"></script>
   <script src="registration.js"></script>
+  <script src="progress.js"></script>
+  <script src="selenium-basics.js"></script>
 </body>
 </html>

@@ -1437,9 +1437,143 @@
   }
 
   function removeDocumentationNavigation() {
-    document.querySelectorAll('.breadcrumb, .page-sidebar').forEach(function(node) {
+    document.querySelectorAll('.breadcrumb').forEach(function(node) {
       node.remove();
     });
+  }
+
+  function courseProgressPanel() {
+    var panel = document.createElement('div');
+    panel.className = 'progress-panel';
+    panel.setAttribute('data-testid', 'progress-panel');
+    panel.innerHTML = [
+      '<div class="progress-header">',
+      '<span class="level-pill" id="progress-level">Lv 1</span>',
+      '<span class="progress-counts" id="progress-counts">0 / 0</span>',
+      '</div>',
+      '<div class="xp-bar"><i class="xp-fill" id="progress-fill"></i></div>',
+      '<div class="xp-meta">',
+      '<span id="progress-pct">0%</span>',
+      '<span id="progress-next">5 XP to Lv 2</span>',
+      '</div>'
+    ].join('');
+    return panel;
+  }
+
+  function stableCourseTopicId(title, index, usedIds) {
+    var base = String(title || 'topic-' + (index + 1))
+      .toLowerCase()
+      .replace(/&amp;/g, 'and')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'topic-' + (index + 1);
+    var id = 'course-topic-' + base;
+    var suffix = 2;
+    while (usedIds[id] || document.getElementById(id)) {
+      id = 'course-topic-' + base + '-' + suffix;
+      suffix++;
+    }
+    usedIds[id] = true;
+    return id;
+  }
+
+  function ensureCourseProgressScript() {
+    if (document.querySelector('script[src^="progress.js"]')) return;
+    var script = document.createElement('script');
+    script.src = 'progress.js';
+    script.setAttribute('data-course-progress-script', '');
+    document.body.appendChild(script);
+  }
+
+  function setupSharedCourseNavigation() {
+    if (!document.body.classList.contains('learning-page')) return;
+    if (document.body.classList.contains('ai-reader-page')) return;
+
+    var legacyCourse = document.body.matches(
+      '.api-page, .cucumber-page, .hybrid-page, .jenkins-page, .master-page, ' +
+      '.playwright-page, .rest-page, .selenium-page'
+    );
+    var cardCourse = document.body.classList.contains('course-page');
+    if (!legacyCourse && !cardCourse) return;
+
+    var fileName = (window.location.pathname.split('/').pop() || 'course')
+      .replace(/\.html?$/i, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    if (fileName === 'placeholder-template') return;
+    if (!document.body.getAttribute('data-progress-key')) {
+      document.body.setAttribute('data-progress-key', 'testnova-course-progress-' + fileName + '-v1');
+    }
+
+    var sidebar = document.querySelector('.page-sidebar');
+    var content = document.querySelector('.page-content');
+    var topics = [];
+
+    if (cardCourse) {
+      var courseContainer = document.querySelector('main .nova-section > .container.section-stack');
+      if (!courseContainer) return;
+
+      topics = Array.prototype.slice.call(courseContainer.querySelectorAll('.feature-card'))
+        .filter(function(card) {
+          return !!card.querySelector(':scope > h2, :scope > h3');
+        });
+      if (!topics.length) return;
+
+      var generatedContent = document.createElement('article');
+      generatedContent.className = 'page-content course-generated-content';
+      Array.prototype.slice.call(courseContainer.childNodes).forEach(function(node) {
+        generatedContent.appendChild(node);
+      });
+
+      sidebar = document.createElement('aside');
+      sidebar.className = 'page-sidebar';
+      sidebar.innerHTML = [
+        '<button type="button" class="sidebar-toggle" aria-label="Toggle course navigation" aria-expanded="false">',
+        '<h3>Course topics</h3>',
+        '<span class="faq-icon" aria-hidden="true"></span>',
+        '</button>',
+        '<nav class="sidebar-nav-content" aria-label="Course topics"></nav>'
+      ].join('');
+
+      courseContainer.classList.add('page-grid', 'course-page-grid');
+      courseContainer.appendChild(sidebar);
+      courseContainer.appendChild(generatedContent);
+      content = generatedContent;
+    } else if (content) {
+      topics = Array.prototype.slice.call(content.querySelectorAll('.section[id]'));
+    }
+
+    if (!sidebar || !content || !topics.length) return;
+
+    var nav = sidebar.querySelector('.sidebar-nav-content');
+    if (!nav) return;
+    if (!nav.querySelector('.progress-panel')) {
+      nav.insertBefore(courseProgressPanel(), nav.firstChild);
+    }
+
+    var usedIds = {};
+    topics.forEach(function(topic, index) {
+      var heading = topic.querySelector(':scope > h1, :scope > h2, :scope > h3, :scope > h4');
+      if (!heading) return;
+      if (!topic.id) {
+        topic.id = stableCourseTopicId(heading.textContent, index, usedIds);
+      }
+      topic.classList.add('progress-item');
+    });
+
+    if (!nav.querySelector('.sidebar-link')) {
+      topics.forEach(function(topic) {
+        var heading = topic.querySelector(':scope > h1, :scope > h2, :scope > h3, :scope > h4');
+        if (!heading || !topic.id) return;
+        var link = document.createElement('a');
+        link.className = 'sidebar-link';
+        link.href = '#' + topic.id;
+        link.textContent = heading.textContent.trim();
+        nav.appendChild(link);
+      });
+    }
+
+    ensureCourseProgressScript();
   }
 
   // Function to sync footer year
@@ -1636,6 +1770,7 @@
   function init() {
     renderLearningNav();
     removeDocumentationNavigation();
+    setupSharedCourseNavigation();
     renderAiLearningHub();
     renderCategoryCards();
     setupGatedActions();

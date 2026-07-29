@@ -54,6 +54,8 @@
       cb.type = 'checkbox';
       cb.className = 'topic-cb';
       cb.setAttribute('data-progress-id', id);
+      cb.id = 'progress-' + id;
+      cb.setAttribute('aria-label', 'Mark ' + heading.textContent.trim() + ' as completed');
       label.appendChild(cb);
 
       var num = document.createElement('span');

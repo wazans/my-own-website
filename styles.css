@@ -814,11 +814,112 @@ a {
   box-shadow: 0 10px 22px rgba(6, 182, 212, 0.14);
 }
 
+/* Selenium Basics level navigation extends the shared Playwright sidebar. */
+.selenium-level {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.selenium-level + .selenium-level {
+  margin-top: 0.25rem;
+}
+
+.selenium-level-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "title icon"
+    "count icon";
+  align-items: center;
+  gap: 0.1rem 0.5rem;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.55rem 0.7rem;
+  color: var(--tn-text);
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.24);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+}
+
+.selenium-level-toggle > span:first-child {
+  grid-area: title;
+}
+
+.selenium-level-toggle .selenium-level-count {
+  grid-area: count;
+  color: var(--tn-text-secondary);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.selenium-level-toggle .faq-icon {
+  grid-area: icon;
+}
+
+.selenium-level-toggle:hover,
+.selenium-level-toggle:focus-visible {
+  color: #fff;
+  background: rgba(99, 102, 241, 0.2);
+  outline: 2px solid rgba(34, 211, 238, 0.8);
+  outline-offset: 2px;
+}
+
+.selenium-level-toggle[aria-expanded="true"] .faq-icon::after {
+  opacity: 0;
+}
+
+.selenium-level-topics {
+  display: grid;
+  gap: 0.2rem;
+  padding-left: 0.35rem;
+}
+
+.selenium-level-topics[hidden] {
+  display: none;
+}
+
+.selenium-level-topics .sidebar-link {
+  min-height: 38px;
+  padding-block: 0.5rem;
+}
+
+.selenium-page .topic-cb:focus-visible {
+  outline: 3px solid rgba(34, 211, 238, 0.75);
+  outline-offset: 3px;
+}
+
 .page-content {
   min-width: 0;
 }
 
 .page-content .section {
+  scroll-margin-top: 7rem;
+}
+
+.course-page-grid {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.course-generated-content {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.course-generated-content .section-heading {
+  text-align: left;
+  margin-bottom: 0;
+}
+
+.course-generated-content .feature-grid {
+  width: 100%;
+}
+
+.course-generated-content .progress-item {
   scroll-margin-top: 7rem;
 }
 
