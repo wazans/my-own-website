@@ -3711,6 +3711,15 @@
   }
 
   function renderTopicHtml(track, topic, index, progress) {
+    if (window.TestNovaArraysPlayground && topic.id === window.TestNovaArraysPlayground.topicId) {
+      return [
+        '<label class="ai-reader-complete">',
+        '<input type="checkbox" data-reader-complete="' + topic.id + '"' + (progress[topic.id] ? ' checked' : '') + ' />',
+        '<span>Mark this topic complete</span>',
+        '</label>',
+        window.TestNovaArraysPlayground.render()
+      ].join('');
+    }
     var contentKey = track.storageKey + ':content:' + topic.id;
     if (track.contentVersion) {
       contentKey = track.storageKey + ':content:v' + track.contentVersion + ':' + topic.id;
@@ -3823,10 +3832,14 @@
     function openTopic(id, options) {
       options = options || {};
       saveCurrentContent();
+      if (window.TestNovaArraysPlayground) window.TestNovaArraysPlayground.destroy();
       var topic = topics.find(function (item) { return item.id === id; }) || topics[0];
       currentTopic = topic.id;
       var index = topics.indexOf(topic);
       content.innerHTML = renderTopicHtml(track, topic, index, progress);
+      if (window.TestNovaArraysPlayground && topic.id === window.TestNovaArraysPlayground.topicId) {
+        window.TestNovaArraysPlayground.mount(content.querySelector('[data-arrays-playground]'));
+      }
       if (options.updateUrl !== false) updateTopicUrl(topic.id);
 
       nav.querySelectorAll('[data-topic-link]').forEach(function (link) {
