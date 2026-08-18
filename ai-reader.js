@@ -3750,8 +3750,7 @@
         }).join(''),
         '</div>'
       ].join('') : '',
-      '<div class="ai-topic-practice"><strong>Try this:</strong><span>' + escapeHtml(topic.practice) + '</span></div>',
-      '<div class="ai-edit-placeholder"><strong>Editable notes:</strong><span>Type or paste your own examples, transcript notes, exercises, or trainer comments here.</span></div>'
+      ''
     ].join('');
 
     return [

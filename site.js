@@ -847,7 +847,7 @@
       modules: [
         {
           title: 'Introduction to AI',
-          intro: 'Build the base vocabulary first: AI, ML, deep learning, generative AI, LLMs, prompts, embeddings, fine tuning, RAG, and agentic AI. These notes are intentionally editable so the team can refine examples, add screenshots, and attach exercises later.',
+          intro: 'Build the base vocabulary first: AI, ML, deep learning, generative AI, LLMs, prompts, embeddings, fine tuning, RAG, and agentic AI.',
           topics: [
             {
               title: 'Generative AI - Introduction',
@@ -1234,9 +1234,7 @@
       topic.bullets && topic.bullets.length ? '<ul class="ai-topic-bullets">' + topic.bullets.map(function(item) {
         return '<li>' + escapeHtml(item) + '</li>';
       }).join('') + '</ul>' : '',
-      topic.resource ? '<div class="ai-resource-row"><a class="primary-btn" href="' + escapeHtml(topic.resource.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(topic.resource.label) + '</a></div>' : '',
-      topic.practice ? '<div class="ai-topic-practice"><strong>Try this:</strong><span>' + escapeHtml(topic.practice) + '</span></div>' : '',
-      '<div class="ai-edit-placeholder"><strong>Editing placeholder:</strong><span>Add screenshots, examples, transcript notes, quiz questions, or trainer comments here.</span></div>'
+      topic.resource ? '<div class="ai-resource-row"><a class="primary-btn" href="' + escapeHtml(topic.resource.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(topic.resource.label) + '</a></div>' : ''
     ].join('');
   }
 
