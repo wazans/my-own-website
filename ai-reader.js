@@ -551,7 +551,7 @@
     },
     playwright: {
       storageKey: 'testnova-reader-playwright-v2',
-      contentVersion: 7,
+      contentVersion: 8,
       title: 'Playwright',
       topics: buildPlaywrightPdfNotesTopics(),
       legacyTopics: [
@@ -860,14 +860,23 @@
         'Basic JavaScript or TypeScript understanding is required before writing useful tests.'
       ]],
       ['playwright-notes-08', '08. Install Playwright', 'PDF page 2', [
-        'Create a new project folder, open it in terminal, and initialize a Playwright project.',
-        'Install Playwright test package and browser binaries.',
-        'Common commands shown in the notes include npm init, npm install -D @playwright/test, and npx playwright install.'
-      ], [{ title: 'Install commands', code: 'mkdir playwright-course\ncd playwright-course\nnpm init -y\nnpm install -D @playwright/test\nnpx playwright install', explanation: 'These commands create a clean project folder, initialize npm, add the Playwright Test package, and download the browser binaries required to run tests.' }]],
+        'Create a project folder, open it in a terminal, and run the Playwright project initializer.',
+        'The setup asks whether to use JavaScript or TypeScript, where to store tests, whether to add a GitHub Actions workflow, and whether to install browser binaries.',
+        'After setup, install all supported browsers or install Chromium, Firefox, or WebKit individually when needed.'
+      ], [
+        { title: 'Create a project with the latest version', code: 'mkdir playwright-course\ncd playwright-course\nnpm init playwright@latest', explanation: 'This starts the guided Playwright project setup using the latest available version.', language: 'bash' },
+        { title: 'Create a project with a specific version', code: 'npm init playwright@1.62.0', explanation: 'Pin the initializer when the project requires a specific available Playwright version.', language: 'bash' },
+        { title: 'Install all browser engines', code: 'npx playwright install', explanation: 'Downloads Chromium, Firefox, and WebKit browser binaries.', language: 'bash' },
+        { title: 'Install one browser engine', code: 'npx playwright install chromium\nnpx playwright install firefox\nnpx playwright install webkit', explanation: 'Use an individual command when only one browser engine is required.', language: 'bash' }
+      ]],
       ['playwright-notes-09', '09. Verify Installation', 'PDF page 2', [
         'Verify Playwright from terminal with the version command.',
-        'If the version displays, installation is successful.'
-      ], [{ title: 'Verify command', code: 'npx playwright test --version', explanation: 'The version command confirms that the Playwright test runner is installed and available from the current project terminal.' }]],
+        'If the version displays, installation is successful.',
+        'npm installs and manages project packages. npx executes commands supplied by installed Node packages, such as the Playwright CLI.'
+      ], [
+        { title: 'Verify command', code: 'npx playwright test --version', explanation: 'The version command confirms that the Playwright test runner is available from the current project terminal.', language: 'bash' },
+        { title: 'npm installs; npx executes', code: 'npm install\nnpx playwright test', explanation: 'npm install restores dependencies from package.json. npx playwright test executes the Playwright CLI.', language: 'bash' }
+      ]],
       ['playwright-notes-10', '10. Folder Structure', 'PDF page 2', [
         'Important folders and files include tests, pages, utils, test-data, playwright.config.ts, package.json, tsconfig.json, and README.md.',
         'tests stores test cases, pages stores Page Object classes, utils stores common helpers, and test-data stores fixtures such as JSON or CSV data.'

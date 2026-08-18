@@ -52,38 +52,50 @@
     ]),
 
     topic(16, 'Basic Playwright Commands', [
-      'Run commands from the project terminal. Normal mode is best for routine execution, headed mode shows the browser, and UI mode provides an interactive test runner.'
+      'Run commands from the project terminal. By default, Playwright uses headless mode, so the browser UI is not displayed. Headed mode shows the browser, and UI mode provides an interactive test runner.',
+      'UI mode helps run individual tests, inspect steps and errors, rerun tests, debug execution, and view traces.',
+      'Debug mode opens Playwright Inspector for step-by-step execution, locator inspection, and page inspection. Codegen records browser interactions to create starter code, but generated code should always be reviewed.'
     ], [
       example('Run all tests', 'npx playwright test', 'Runs the Playwright test suite.', 'bash'),
       example('Run with a visible browser', 'npx playwright test --headed', 'Useful when you want to watch the test.', 'bash'),
-      example('Open UI mode', 'npx playwright test --ui', 'Opens Playwright’s interactive test interface.', 'bash')
+      example('Open UI mode', 'npx playwright test --ui', 'Opens Playwright’s interactive test interface.', 'bash'),
+      example('Open debug mode', 'npx playwright test --debug', 'Launches Playwright Inspector for step-by-step debugging.', 'bash'),
+      example('Record starter code', 'npx playwright codegen https://example.com', 'Opens the site and generates code as you interact with it. Review and improve the result.', 'bash'),
+      example('List discovered tests', 'npx playwright test --list', 'Shows the tests Playwright found without executing them.', 'bash'),
+      example('Control parallel workers', 'npx playwright test --workers=1\nnpx playwright test --workers=4', 'Use one worker for sequential troubleshooting or several workers for parallel execution.', 'bash'),
+      example('Open the HTML report', 'npx playwright show-report', 'Shows passed and failed tests, duration, errors, and configured artifacts.', 'bash')
     ]),
 
     topic(17, 'Run an Individual Test', [
       '-g filters tests by title. Only test names matching the supplied text or pattern are selected.',
-      'Add --headed when you also want to watch that matching test run in a browser window.'
+      'Add --headed when you also want to watch that matching test run in a browser window.',
+      'You can also run one test file or list several test files when you do not want the complete suite.'
     ], [
       example('Filter by test name', 'npx playwright test -g "Login Test"', 'Runs tests whose title matches Login Test.', 'bash'),
-      example('Filter and show the browser', 'npx playwright test -g "Login Test" --headed', 'Runs the matching test in headed mode.', 'bash')
+      example('Filter and show the browser', 'npx playwright test -g "Login Test" --headed', 'Runs the matching test in headed mode.', 'bash'),
+      example('Run one test file', 'npx playwright test example.spec.js', 'Runs tests found in the selected file.', 'bash'),
+      example('Run multiple test files', 'npx playwright test example.spec.js registration.spec.js', 'Runs only the listed files.', 'bash')
     ]),
 
     topic(18, 'Run Tests on a Specific Browser', [
-      '--project selects a configured Playwright project. The webkit project uses WebKit, the browser engine behind Safari.',
-      '--last-failed reruns only the tests that failed in the previous run. It can be combined with a project filter.'
+      '--project selects a browser project configured in playwright.config.js or playwright.config.ts. Common project names are chromium, firefox, and webkit. WebKit is the browser engine behind Safari.',
+      '--last-failed reruns only the tests that failed in the previous run. Compatible options can be combined, such as a browser project with headed mode.'
     ], [
-      example('Run WebKit tests', 'npx playwright test --project=webkit', 'Runs the selected tests with the WebKit project.', 'bash'),
-      example('Rerun WebKit failures', 'npx playwright test --project=webkit --last-failed', 'Runs only the previously failed WebKit tests.', 'bash')
+      example('Run each browser project', 'npx playwright test --project=chromium\nnpx playwright test --project=firefox\nnpx playwright test --project=webkit', 'Runs the suite with the selected configured browser project.', 'bash'),
+      example('Rerun WebKit failures', 'npx playwright test --project=webkit --last-failed', 'Runs only the previously failed WebKit tests.', 'bash'),
+      example('Combine compatible options', 'npx playwright test --project=chromium --headed', 'Runs the Chromium project with its browser window visible.', 'bash')
     ]),
 
     topic(19, 'Playwright Project & Test Result Files', [
       'playwright.config.js and playwright.config.ts configure test folders, browsers, timeouts, retries, reporters, and shared browser options. Use the extension that matches your JavaScript or TypeScript project.',
-      'last-run.json records information about the latest run, including failed-test data used by --last-failed. The HTML report presents test status, duration, errors, steps, and attached artifacts in a browser-friendly format.'
-    ], [], [checklist('Key Files', ['playwright.config.js — JavaScript configuration', 'playwright.config.ts — TypeScript configuration', 'last-run.json — latest run state', 'HTML report — readable test results and artifacts'])]),
+      'last-run.json records information about the latest run, including failed-test data used by --last-failed. The HTML report can present passed and failed tests, duration, error details, screenshots, traces, and attachments when those artifacts are configured.'
+    ], [example('Open the latest HTML report', 'npx playwright show-report', 'Opens the browser-friendly report generated by the test run.', 'bash')], [checklist('Key Files', ['playwright.config.js — JavaScript configuration', 'playwright.config.ts — TypeScript configuration', 'last-run.json — latest run state', 'HTML report — readable test results and configured artifacts'])]),
 
     topic(20, 'Playwright Test for VS Code', [
       'The Playwright Test for VS Code extension lets you run and debug tests from the editor. Test Explorer shows available tests and their results.',
-      'You can select a browser project and use Pick Locator to inspect an element in the browser and generate a suggested locator.'
-    ], [], [checklist('Extension Features', ['Run a test', 'Debug a test', 'Browse tests in Test Explorer', 'Select a browser', 'Pick a locator'])]),
+      'You can select a browser project and use Pick Locator to inspect an element in the browser and generate a suggested locator.',
+      'For CLI debugging, npx playwright test --debug opens Playwright Inspector. Use either workflow to step through execution and understand failures.'
+    ], [example('Debug from the terminal', 'npx playwright test --debug', 'Launches Playwright Inspector for the selected tests.', 'bash')], [checklist('Extension Features', ['Run a test', 'Debug a test', 'Browse tests in Test Explorer', 'Select a browser', 'Pick a locator'])]),
 
     topic(21, 'Assertions', [
       'Assertions compare an actual value produced by the application with an expected value. expect(actual).toBe(expected) performs an exact comparison.',
