@@ -34,7 +34,8 @@
 
     topic(13, 'Page Fixture', [
       'The page fixture represents one browser page or tab. Playwright creates it automatically and passes it into the test callback.',
-      'Before the test, Playwright prepares an isolated browser context and page. After the test, it closes and cleans them up. This isolation prevents cookies and session data from leaking between tests.'
+      'Before the test, Playwright prepares an isolated browser context and page. After the test, it closes and cleans them up. This isolation prevents cookies and session data from leaking between tests.',
+      'The fixture is the initial tab, but its browser context can contain more pages. Normal CLI runs close fixture-owned pages during cleanup; use headed debug mode, UI mode, or page.pause() for temporary investigation.'
     ], [], [flow('Page Fixture Lifecycle', ['Setup', 'Page Fixture', 'Test Steps', 'Cleanup'])]),
 
     topic(14, 'Async, Await and Promise', [
@@ -112,8 +113,12 @@
 
     topic(25, 'Locators Introduction', [
       'A locator describes how Playwright should find an element. Locators are lazy: Playwright finds the current matching element when an action or assertion runs.',
-      'Before actions, Playwright automatically waits for the element to become ready.'
-    ], [example('Find by placeholder and fill', 'await page.getByPlaceholder("Enter Email")\n  .fill("admin@email.com");', 'The locator targets the input by user-visible placeholder text.')]),
+      'Before actions, Playwright automatically waits for the element to become ready.',
+      'For normal form entry, prefer fill(). Use pressSequentially() only when the application must receive individual keyboard events, such as an autocomplete or masked input.'
+    ], [
+      example('Find by placeholder and fill', 'await page.getByPlaceholder("Enter Email")\n  .fill("admin@email.com");', 'The locator targets the input by user-visible placeholder text.'),
+      example('Send individual key events when required', 'await page.getByLabel("Email")\n  .pressSequentially("learner@example.com", { delay: 50 });', 'Use this only when the application depends on each keyboard event.')
+    ]),
 
     topic(26, 'Actionability Checks', [
       'Before an action such as click(), Playwright checks that the locator resolves correctly and the element is visible, stable, not covered, enabled when required, and able to receive the action.',
@@ -122,15 +127,20 @@
 
     topic(27, 'Locator Strictness', [
       'Actions are strict: if more than one element matches, Playwright reports an error instead of guessing.',
-      'first() selects the first match and nth(1) selects the second match because indexes start at zero. A more specific semantic locator is normally preferable.'
-    ], [example('Handle repeated text', 'await page.getByText("Sign in").click();\nawait page.getByText("Sign in").first().click();\nawait page.getByText("Sign in").nth(1).click();', 'Use first() or nth() only when selecting by position is intentional.')]),
+      'first() selects the first match and nth(1) selects the second match because indexes start at zero. Use positions only when order is part of the requirement and stable.',
+      'A unique accessible name, a stable parent scope, filter(), or a test ID is normally safer than depending on position.'
+    ], [
+      example('Handle repeated text', 'await page.getByText("Sign in").click();\nawait page.getByText("Sign in").first().click();\nawait page.getByText("Sign in").nth(1).click();', 'Use first() or nth() only when selecting by position is intentional.'),
+      example('Scope a repeated field', 'const billing = page.getByRole("group", {\n  name: "Billing address"\n});\nawait billing.getByLabel("City").fill("Pune");', 'Scoping expresses which City field the test means.')
+    ]),
 
     topic(28, 'Count Matching Elements', [
       'Creating a locator does not search the page immediately and does not require await. count() performs the browser query and returns a Promise, so count() does require await.'
     ], [example('Count matching elements', 'const locator = page.getByText("Sign in");\n\nconsole.log(await locator.count());', 'Remember: no await for locator creation; await the asynchronous count operation.')]),
 
     topic(29, 'getByPlaceholder()', [
-      'getByPlaceholder() finds form controls by their placeholder text. It is useful when the placeholder is visible, meaningful, and stable.'
+      'getByPlaceholder() finds an input or textarea by placeholder text. A placeholder is a hint shown inside an empty control; it is not the entered value and is not a replacement for a proper label.',
+      'When a form control has an associated label, getByLabel() is usually the stronger choice.'
     ], [
       example('HTML input', '<input placeholder="Enter Email">', 'The input exposes Enter Email as its placeholder.', 'html'),
       example('Fill the input', 'await page.getByPlaceholder("Enter Email")\n  .fill("admin@email.com");', 'Playwright locates the input and fills it.')
@@ -144,8 +154,13 @@
     topic(31, 'getByRole()', [
       'getByRole() is usually the best locator because it targets the element as a user or assistive technology understands it.',
       'Common roles include button, link, textbox, checkbox, radio, and heading.',
-      'Important: name means the element’s accessible name. It does not necessarily mean the HTML name attribute. The accessible name can come from visible text, a label, aria-label, or other accessibility information.'
-    ], [example('Find a button by role and accessible name', "await page.getByRole('button', {\n  name: 'Sign in'\n}).click();", 'This targets the button role whose accessible name is Sign in.')], [checklist('Common Roles', ['button', 'link', 'textbox', 'checkbox', 'radio', 'heading'])]),
+      'Important: name means the computed accessible name. It is not the HTML name attribute. The accessible name can come from visible text, a linked label, aria-label, aria-labelledby, alt text, or other accessibility rules.',
+      'Use standard ARIA role names exactly. A valid but incorrect role usually matches nothing and times out; an unsupported role can be rejected.'
+    ], [
+      example('Find a button by role and accessible name', "await page.getByRole('button', {\n  name: 'Sign in'\n}).click();", 'This targets the button role whose accessible name is Sign in.'),
+      example('HTML name is not the accessible name', '<label for="email">Work email</label>\n<input id="email" name="email">', 'Here the linked label gives the textbox its accessible name: Work email.', 'html'),
+      example('Use the computed accessible name', 'await page.getByRole("textbox", {\n  name: "Work email"\n}).fill("a@b.com");', 'Playwright matches Work email, not the form-submission name value email.')
+    ], [checklist('Common Roles', ['button', 'link', 'textbox', 'checkbox', 'radio', 'heading'])]),
 
     topic(32, 'getByLabel()', [
       'getByLabel() finds a form control through its associated label. It is readable and encourages accessible forms.'
@@ -162,7 +177,8 @@
     ]),
 
     topic(34, 'getByAltText()', [
-      'getByAltText() finds images and image-like elements by alternative text. Good alt text makes images understandable when they cannot be seen.'
+      'getByAltText() finds images and image-like elements by alternative text. Good alt text makes images understandable when they cannot be seen.',
+      'Alt text can legitimately repeat. When several images match, scope the locator to a stable card, row, region, or other container instead of relying on nth() when order may change.'
     ], [
       example('Image with alternative text', '<img alt="Company Logo">', 'The alt attribute provides the accessible text.', 'html'),
       example('Find the image', 'page.getByAltText("Company Logo");', 'Locator creation is synchronous and does not need await.')
@@ -170,17 +186,24 @@
 
     topic(35, 'Locator Priority / Best Practices', [
       'Prefer semantic, accessibility-based locators because they resemble how users identify elements and are usually more stable than selectors tied to the DOM structure.',
-      'Use test IDs when a stable user-facing locator is not available. Keep CSS and XPath as the final options for cases semantic locators cannot express.'
+      'Use test IDs when a stable user-facing locator is not available and the application provides a consistent testing contract. A test ID can still be unsuitable when it is dynamic or not unique.',
+      'Keep CSS and XPath as the final options for cases semantic locators cannot express. Whatever strategy you choose, check uniqueness, stability, and readability.'
     ], [], [flow('Recommended Locator Priority', ['getByRole()', 'getByLabel()', 'getByPlaceholder()', 'getByText()', 'getByAltText() / getByTitle()', 'getByTestId()', 'CSS / XPath'])]),
 
     topic(36, 'Pick Locator', [
       'Pick Locator is available through the Playwright VS Code extension. It opens a browser for selecting an element and suggests a Playwright locator.',
-      'Review the suggestion and prefer a stable, readable semantic locator.'
-    ], [example('Example suggested locator', "page.getByRole('button', { name: 'Sign in' });", 'The picker commonly suggests role-based locators when accessibility information is available.')], [flow('Pick Locator Flow', ['Playwright Extension', 'Tools', 'Pick Locator', 'Browser', 'Select Element', 'Suggested Locator'])]),
+      'It is also available in Playwright Inspector, which can be opened with --debug or page.pause(). The picker highlights matching elements while you inspect them.',
+      'Do not trust generated output blindly. Review and simplify the suggestion, confirm that it uniquely matches, and practise writing locators manually.'
+    ], [
+      example('Open Inspector', 'npx playwright test --debug', 'Run in debug mode, then use Pick Locator from the Inspector toolbar.', 'bash'),
+      example('Pause at a chosen step', 'await page.pause();', 'Pauses the test so you can inspect the current browser state.'),
+      example('Example suggested locator', "page.getByRole('button', { name: 'Sign in' });", 'The picker commonly suggests role-based locators when accessibility information is available.')
+    ], [flow('Pick Locator Flow', ['Playwright Extension or Inspector', 'Pick Locator', 'Browser', 'Select Element', 'Suggested Locator', 'Review and simplify'])]),
 
     topic(37, 'SelectorsHub', [
       'SelectorsHub is a browser extension that opens from developer tools and helps inspect or generate selectors.',
-      'It can help when investigating difficult elements, but prefer Playwright semantic locators whenever possible because they are more readable and user-focused.'
+      'It can help when investigating difficult elements, but prefer Playwright semantic locators whenever possible because they are more readable and user-focused.',
+      'Generated selectors still need manual review. Because company security policies differ, confirm that browser extensions are permitted before using SelectorsHub on work systems.'
     ]),
 
     topic(38, 'XPath Introduction', [
