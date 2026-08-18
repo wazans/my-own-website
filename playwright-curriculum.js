@@ -25,6 +25,10 @@
     return { type: 'checklist', title: title, items: items };
   }
 
+  function table(title, headers, rows) {
+    return { type: 'table', title: title, headers: headers, rows: rows };
+  }
+
   window.TestNovaPlaywrightCurriculum = [
     topic(12, 'Run Your First Playwright Test', [
       'test() represents one test case. Its first argument is the test case name, and its second argument is the callback function containing the test steps.',
@@ -220,43 +224,60 @@
 
     topic(38, 'XPath Introduction', [
       'XPath locates elements by their position, tag, attributes, or relationships in the document. Playwright accepts XPath directly when the selector starts with //.',
-      'The explicit xpath= prefix is equivalent and can make the selector type clear.'
-    ], [example('Two equivalent XPath forms', 'await page.locator("//input").fill("test");\nawait page.locator("xpath=//input").fill("test");', 'Both expressions locate matching input elements with XPath.')]),
+      'The explicit xpath= prefix is equivalent and can make the selector type clear.',
+      'A relative XPath commonly starts with // and searches from the current document or scope. An absolute XPath starts with / at the document root and follows the full hierarchy, making it more likely to break when the page layout changes.',
+      'Prefer Playwright locators such as getByRole(), getByLabel(), or getByTestId() when they clearly express the target. Use XPath when semantic locators cannot describe a stable relationship.'
+    ], [
+      example('Two equivalent XPath forms', 'await page.locator("//input").fill("test");\nawait page.locator("xpath=//input").fill("test");', 'Both expressions locate matching input elements with XPath.'),
+      example('Relative and absolute examples', '//input[@name="email"]\n/html/body/main/form/input', 'The relative XPath is usually easier to read and maintain. Avoid long absolute paths.')
+    ], [table('Relative vs Absolute XPath', ['Type', 'Starts with', 'Guidance'], [['Relative', '//', 'Searches broadly or within the current scope; generally preferred'], ['Absolute', '/', 'Starts at the document root; often brittle']])]),
 
     topic(39, 'XPath – Tag', [
-      '//input selects input elements anywhere in the document. If several inputs exist, make the locator more specific before performing a strict action.'
+      '//input selects input elements anywhere in the document. The same pattern works with tags such as a, img, select, and button.',
+      'If several elements match, make the locator more specific before performing a strict action. Creating page.locator() itself does not require await; await the action or asynchronous query.'
     ], [
-      example('XPath expression', '//input', 'Selects input tags.', 'xpath'),
-      example('Playwright locator', 'page.locator("//input");', 'Creates a locator using that XPath expression.')
+      example('XPath tag expressions', '//input\n//a\n//img\n//select\n//button', 'Each expression selects matching tags anywhere below the current scope.', 'xpath'),
+      example('Create and use the locator', 'const email = page.locator("//input");\nawait email.fill("test@gmail.com");', 'Locator creation is synchronous; fill() is asynchronous.')
     ]),
 
     topic(40, 'XPath – Tag + Attribute', [
-      'Add an attribute condition inside square brackets to narrow the matching tag.'
+      'Add an attribute condition inside square brackets to narrow the matching tag. In XPath, @ represents an attribute.',
+      'Attribute names and values follow the page markup and are case-sensitive: state and State are different values.',
+      'Single quotes and double quotes both work inside XPath. Balance them with the surrounding JavaScript string, or use a template literal when interpolation is useful.'
     ], [
       example('General syntax', "//tagname[@attribute='value']", 'Replace the tag, attribute, and value with the target element details.', 'xpath'),
-      example('Select by name attribute', "//select[@name='state']", 'Finds select elements whose name is state.', 'xpath')
+      example('Common attribute examples', "//select[@name='state']\n//input[@id='email']\n//input[@placeholder='Email']\n//input[@type='email']", 'Choose an attribute that is stable and specific.', 'xpath'),
+      example('Balance JavaScript and XPath quotes', "page.locator('//input[@type=\"email\"]');\npage.locator(\"//input[@type='email']\");\n\nconst field = 'email';\npage.locator(`//input[@name='${field}']`);", 'A quote error is usually a JavaScript string problem, not an XPath limitation.')
     ]),
 
     topic(41, 'XPath AND Condition', [
-      'The and operator requires both attribute conditions to match the same element.'
-    ], [example('Require two conditions', "//input[@type='text' and @name='email']", 'The input must have type text and name email.', 'xpath')]),
+      'The and operator requires every listed condition to match the same element. Add attributes only when each one helps identify the intended element.'
+    ], [
+      example('Require two conditions', "//input[@type='text' and @name='email']", 'The input must have type text and name email.', 'xpath'),
+      example('Require three conditions', "//input[@type='email' and @name='email' and @placeholder='Email']", 'All three attributes must match.', 'xpath')
+    ]),
 
     topic(42, 'XPath OR Condition', [
-      'The or operator matches when either condition is true. This can produce several matches, so confirm the result is specific enough.'
-    ], [example('Allow either condition', "//input[@type='text' or @name='email']", 'An input matches when its type is text or its name is email.', 'xpath')]),
+      'The or operator matches when any listed condition is true. Because it deliberately broadens the match, confirm that the locator still identifies the intended element.',
+      'Use count() or the locator picker to check uniqueness. Do not use nth() merely to silence a strict-mode error unless position is part of the requirement.'
+    ], [example('Allow either condition', "//input[@type='text' or @name='email' or @placeholder='Email']", 'An input matches when at least one condition is true.', 'xpath'), example('Check the number of matches', 'const fields = page.locator("//input[@type=\'text\' or @name=\'email\']");\nconsole.log(await fields.count());', 'Count the matches before relying on a broad OR expression.')]),
 
     topic(43, 'Dynamic XPath – contains()', [
       'contains() is useful when only part of a changing attribute is stable. IDs such as email, email1, and emailasdf all contain email.',
-      'Use the stable portion carefully so the expression does not match unrelated elements.'
+      'Use the stable portion carefully so the expression does not match unrelated elements. XPath is case-sensitive, so Email and email are different.',
+      'Before using a partial XPath, first look for a stable role, label, accessible name, test ID, or parent scope. starts-with() is another option when the stable portion is specifically at the beginning.'
     ], [
       example('General syntax', "//tagname[contains(@attribute,'value')]", 'Checks whether an attribute contains the supplied text.', 'xpath'),
-      example('Match a dynamic email ID', "//input[contains(@id,'email')]", 'Matches input IDs containing email.', 'xpath')
+      example('Partial attribute examples', "//input[contains(@id,'email')]\n//img[contains(@src,'menu')]\n//a[contains(@href,'dashboard')]\n//select[contains(@name,'state')]", 'Use the stable part of a changing attribute.', 'xpath'),
+      example('Match a stable prefix', "//input[starts-with(@id,'user_')]", 'Use starts-with() when the attribute reliably begins with the same text.', 'xpath'),
+      example('Combine exact and partial conditions', "//input[@type='email' and contains(@name,'email')]", 'Both the exact type and partial name condition must match.', 'xpath')
     ]),
 
     topic(44, 'CSS ID Locator', [
       'In CSS selectors, # represents an element ID. #gender2 selects the element whose id is gender2.',
-      'IDs should be unique. Avoid an ID locator when the application generates a different ID on each run.'
-    ], [example('Click by CSS ID', 'await page.locator("#gender2").click();', 'The locator targets id="gender2".')]),
+      'IDs should be unique. Avoid an ID locator when the application generates a different ID on each run.',
+      'Playwright auto-detects CSS and XPath in page.locator(). CSS partial-attribute selectors can also match stable fragments, but semantic Playwright locators remain the first choice.'
+    ], [example('Click by CSS ID', 'await page.locator("#gender2").click();', 'The locator targets id="gender2".'), example('CSS and XPath comparison', 'page.locator("input[id*=\'email\']");\npage.locator("//input[contains(@id, \'email\')]");', 'Both match an input whose ID contains email. Choose the clearest stable strategy.')]),
 
     topic(45, 'Complete First Playwright Test', [
       'The test imports Playwright, defines one Login Test case, and receives an isolated page fixture.',
