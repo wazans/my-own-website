@@ -17,12 +17,12 @@
   </header>
 
   <main class="ai-reader-shell">
-    <aside class="ai-reader-sidebar editable-surface" data-ai-reader-sidebar>
+    <aside class="ai-reader-sidebar" data-ai-reader-sidebar>
       <a class="text-link" href="index.html#featured-readers">Back to landing page</a>
-      <div class="ai-reader-sidebar-copy" contenteditable="true" data-edit-key="playwright-sidebar-copy">
+      <div class="ai-reader-sidebar-copy">
         <span class="section-tag">Automation Reader</span>
         <h1>Playwright</h1>
-        <p>Open a topic from the left navigation. Your progress, checkboxes, and edits are saved in this browser.</p>
+        <p>Open a topic from the left navigation. Your progress and completed-topic checkboxes are saved in this browser.</p>
       </div>
       <div class="progress-panel">
         <div class="progress-header">
@@ -40,17 +40,16 @@
 
     <section class="ai-reader-main">
       <div class="ai-reader-toolbar">
-        <button class="secondary-btn" type="button" data-reader-save>Save edits</button>
         <button class="secondary-btn" type="button" data-reader-copy>Copy current content</button>
-        <span data-reader-save-state>Edits save in this browser.</span>
+        <span data-reader-save-state>Read-only learning content.</span>
       </div>
-      <article class="glass-card ai-reader-content editable-surface" data-reader-content></article>
+      <article class="glass-card ai-reader-content" data-reader-content></article>
     </section>
   </main>
 
   <script src="site.js?v=remove-notes-20260818"></script>
   <script src="playwright-curriculum.js?v=command-reference-20260819"></script>
-  <script src="ai-reader.js?v=command-reference-20260819"></script>
+  <script src="ai-reader.js?v=readonly-20260819"></script>
   <script src="registration.js"></script>
 </body>
 </html>

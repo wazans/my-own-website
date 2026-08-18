@@ -552,6 +552,7 @@
     playwright: {
       storageKey: 'testnova-reader-playwright-v2',
       contentVersion: 10,
+      readOnly: true,
       title: 'Playwright',
       topics: buildPlaywrightPdfNotesTopics(),
       legacyTopics: [
@@ -3618,6 +3619,7 @@
   }
 
   function loadTopics(track) {
+    if (track.readOnly) return track.topics.slice();
     var customTopics = loadJson(customTopicsKey(track));
     if (!Array.isArray(customTopics)) customTopics = [];
     return track.topics.concat(customTopics);
@@ -3738,7 +3740,7 @@
     if (track.contentVersion) {
       contentKey = track.storageKey + ':content:v' + track.contentVersion + ':' + topic.id;
     }
-    var savedContent = localStorage.getItem(contentKey);
+    var savedContent = track.readOnly ? '' : localStorage.getItem(contentKey);
     if (savedContent) {
       savedContent = savedContent.replace(/<div class="ai-inline-save-panel"[\s\S]*?<\/div>/g, '');
     }
@@ -3766,6 +3768,16 @@
       ].join('') : '',
       ''
     ].join('');
+
+    if (track.readOnly) {
+      return [
+        '<label class="ai-reader-complete">',
+        '<input type="checkbox" data-reader-complete="' + topic.id + '"' + (progress[topic.id] ? ' checked' : '') + ' />',
+        '<span>Mark this topic complete</span>',
+        '</label>',
+        '<div class="ai-reader-edit-body" data-reader-body>' + body + '</div>'
+      ].join('');
+    }
 
     return [
       '<label class="ai-reader-complete">',
@@ -3901,10 +3913,12 @@
             '</button>'
           ].join('');
         }).join(''),
-        '<button class="ai-add-topic-btn" type="button" data-add-topic>',
-        '<span>+</span>',
-        '<strong>Add topic</strong>',
-        '</button>'
+        track.readOnly ? '' : [
+          '<button class="ai-add-topic-btn" type="button" data-add-topic>',
+          '<span>+</span>',
+          '<strong>Add topic</strong>',
+          '</button>'
+        ].join('')
       ].join('');
 
       nav.querySelectorAll('[data-topic-link]').forEach(function (link) {
@@ -3945,7 +3959,7 @@
     var copyButton = document.querySelector('[data-reader-copy]');
     if (copyButton) {
       copyButton.addEventListener('click', function () {
-        var editBody = content.querySelector('[data-topic-edit]');
+        var editBody = content.querySelector('[data-reader-body], [data-topic-edit]');
         if (!editBody) return;
         navigator.clipboard.writeText(editBody.innerText || '').then(function () {
           if (saveState) saveState.textContent = 'Copied current content';
