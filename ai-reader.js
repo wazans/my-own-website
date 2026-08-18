@@ -551,7 +551,7 @@
     },
     playwright: {
       storageKey: 'testnova-reader-playwright-v2',
-      contentVersion: 5,
+      contentVersion: 6,
       title: 'Playwright',
       topics: buildPlaywrightPdfNotesTopics(),
       legacyTopics: [
@@ -1179,7 +1179,7 @@
       ]]
     ];
 
-    return items.map(function(item) {
+    var preservedTopics = items.slice(0, 11).map(function(item) {
       var topic = lesson(
         item[0],
         item[1],
@@ -1189,6 +1189,11 @@
       );
       return enrichPlaywrightTopic(topic);
     });
+
+    var replacementTopics = Array.isArray(window.TestNovaPlaywrightCurriculum)
+      ? window.TestNovaPlaywrightCurriculum
+      : [];
+    return preservedTopics.concat(replacementTopics);
   }
 
   function codeBlock(lines) {
