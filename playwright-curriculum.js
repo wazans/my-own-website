@@ -68,7 +68,23 @@
       example('List discovered tests', 'npx playwright test --list', 'Shows the tests Playwright found without executing them.', 'bash'),
       example('Control parallel workers', 'npx playwright test --workers=1\nnpx playwright test --workers=4', 'Use one worker for sequential troubleshooting or several workers for parallel execution.', 'bash'),
       example('Open the HTML report', 'npx playwright show-report', 'Shows passed and failed tests, duration, errors, and configured artifacts.', 'bash')
-    ]),
+    ], [table('Useful Playwright Commands - Quick Reference', ['Command', 'Purpose'], [
+      ['npm init playwright@latest', 'Create a project with the latest Playwright version'],
+      ['npm init playwright@1.62.0', 'Create a project with a specific version'],
+      ['npx playwright install', 'Install Playwright browser binaries'],
+      ['npx playwright test', 'Run tests'],
+      ['npx playwright test --headed', 'Run tests with the browser visible'],
+      ['npx playwright test --ui', 'Open UI mode'],
+      ['npx playwright test --project=chromium', 'Run on Chromium'],
+      ['npx playwright test --project=firefox', 'Run on Firefox'],
+      ['npx playwright test --project=webkit', 'Run on WebKit'],
+      ['npx playwright test example.spec.js', 'Run a specific test file'],
+      ['npx playwright test -g "login"', 'Run tests whose titles match login'],
+      ['npx playwright test --debug', 'Run in debug mode'],
+      ['npx playwright codegen', 'Open Codegen'],
+      ['npx playwright test --list', 'List discovered tests without running them'],
+      ['npx playwright test --workers=1', 'Run with one worker']
+    ])]),
 
     topic(17, 'Run an Individual Test', [
       '-g filters tests by title. Only test names matching the supplied text or pattern are selected.',
