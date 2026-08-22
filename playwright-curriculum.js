@@ -127,10 +127,12 @@
 
     topic(22, 'Web-First Assertions', [
       'Web-first assertions inspect live browser state. Playwright automatically waits and retries until the expected condition is met or the assertion times out.',
-      'This is more reliable than reading a value once while the page may still be updating.'
+      'This is more reliable than reading a value once while the page may still be updating.',
+      'Use assertions for important expected outcomes and state changes. Playwright actions already wait for elements to become actionable, so avoid adding a visibility check after every step.'
     ], [
       example('Check the title', 'await expect(page).toHaveTitle("Example");', 'Waits for the exact title.'),
-      example('Check the URL', 'await expect(page).toHaveURL(/example/);', 'Waits for a URL containing example.')
+      example('Check the URL', 'await expect(page).toHaveURL(/example/);', 'Waits for a URL containing example.'),
+      example('Common locator assertions', 'await expect(locator).toBeVisible();\nawait expect(locator).toBeHidden();\nawait expect(locator).toBeEnabled();\nawait expect(locator).toBeDisabled();\nawait expect(locator).toBeChecked();\nawait expect(locator).toHaveText("Welcome");\nawait expect(locator).toContainText("Welcome");\nawait expect(locator).toHaveValue("Mukesh");\nawait expect(locator).toHaveCount(5);', 'Matcher names are exact: use toBeEnabled() and toBeDisabled().')
     ]),
 
     topic(23, 'Assertion Timeout', [
@@ -180,8 +182,13 @@
 
     topic(30, 'getByText()', [
       'getByText() finds an element by visible text. It is useful for unique labels, messages, menu items, and other text users can see.',
-      'If several elements contain the same text, use a more specific locator to avoid strictness errors.'
-    ], [example('Click visible text', 'await page.getByText("Sign in").click();', 'This is best when Sign in uniquely identifies the target element.')]),
+      'By default, text matching can find text within a longer string. Use { exact: true } when the complete text must match.',
+      'Partial matching may find several elements, so use a more specific locator when needed to avoid strictness errors.'
+    ], [
+      example('Click visible text', 'await page.getByText("Sign in").click();', 'This is best when Sign in uniquely identifies the target element.'),
+      example('Require exact text', 'await page.getByText("AI", { exact: true }).click();', 'Only an element whose text matches AI exactly is selected.'),
+      example('Allow a partial text match', 'page.getByText("Sign up", { exact: false });', 'This can match longer text containing Sign up; confirm that the result is unique.')
+    ]),
 
     topic(31, 'getByRole()', [
       'getByRole() is usually the best locator because it targets the element as a user or assistive technology understands it.',
@@ -299,6 +306,95 @@
       'The test imports Playwright, defines one Login Test case, and receives an isolated page fixture.',
       'It navigates to the site, fills email and password fields with semantic locators, clicks the Sign in button by role and accessible name, then uses a retrying web-first assertion to verify the title.',
       'Each browser action is awaited so the steps run in the intended order.'
-    ], [example('Complete login test', "import { test, expect } from '@playwright/test';\n\ntest(\"Login Test\", async ({ page }) => {\n  await page.goto(\"https://example.com\");\n\n  await page.getByPlaceholder(\"Enter Email\")\n    .fill(\"admin@email.com\");\n\n  await page.getByLabel(\"Password\")\n    .fill(\"password123\");\n\n  await page.getByRole(\"button\", {\n    name: \"Sign in\"\n  }).click();\n\n  await expect(page).toHaveTitle(/Example/);\n});", 'This combines navigation, fixtures, async actions, semantic locators, and a web-first assertion.')], [flow('Test Flow', ['Open page', 'Fill email', 'Fill password', 'Click Sign in', 'Verify title'])])
+    ], [example('Complete login test', "import { test, expect } from '@playwright/test';\n\ntest(\"Login Test\", async ({ page }) => {\n  await page.goto(\"https://example.com\");\n\n  await page.getByPlaceholder(\"Enter Email\")\n    .fill(\"admin@email.com\");\n\n  await page.getByLabel(\"Password\")\n    .fill(\"password123\");\n\n  await page.getByRole(\"button\", {\n    name: \"Sign in\"\n  }).click();\n\n  await expect(page).toHaveTitle(/Example/);\n});", 'This combines navigation, fixtures, async actions, semantic locators, and a web-first assertion.')], [flow('Test Flow', ['Open page', 'Fill email', 'Fill password', 'Click Sign in', 'Verify title'])]),
+
+    topic(46, 'Dropdowns: Native vs Custom', [
+      'A native HTML dropdown uses a select element containing option elements. Playwright provides selectOption() specifically for this control.',
+      'A custom dropdown may look similar but is built from elements such as div, input, listbox, and option. Do not use selectOption() unless the DOM contains a real select element.'
+    ], [
+      example('Native HTML dropdown', '<select id="state">\n  <option value="GA">Goa</option>\n  <option value="GJ">Gujarat</option>\n</select>', 'A real select element can use selectOption().', 'html'),
+      example('Inspect before choosing an API', 'const state = page.locator("#state");\nawait state.selectOption({ label: "Goa" });', 'The locator targets a native select control.')
+    ], [table('Dropdown Types', ['Type', 'Typical DOM', 'Playwright approach'], [['Native', '<select> with <option>', 'selectOption()'], ['Custom', 'button/input/listbox/options', 'Click or fill, then select an option locator']])]),
+
+    topic(47, 'Select by Label, Value or Index', [
+      'selectOption() can select a native option by visible label, HTML value, or zero-based index.',
+      'Prefer label first because it represents what the user sees. Use value when it is a stable application contract. Treat index as the most fragile option because positions change when options are added or removed.'
+    ], [
+      example('Select by visible label', 'await page.locator("#state")\n  .selectOption({ label: "Goa" });', 'Recommended when the visible option text is stable.'),
+      example('Select by HTML value', 'await page.locator("#state")\n  .selectOption({ value: "GJ" });', 'Matches the option value attribute.'),
+      example('Select by zero-based index', 'await page.locator("#state")\n  .selectOption({ index: 4 });', 'Index 4 selects the fifth option.')
+    ], [flow('Recommended Selection Priority', ['Label', 'Value', 'Index'])]),
+
+    topic(48, 'Multi-Select Dropdowns', [
+      'A single-select control accepts one option. A native multi-select control can accept several options at the same time.',
+      'Pass an array to selectOption() for multiple values. Confirm that the HTML select supports multiple selections.'
+    ], [
+      example('Multi-select HTML', '<select id="hobbies" multiple>\n  <option>Playing</option>\n  <option>Swimming</option>\n  <option>Dancing</option>\n</select>', 'The multiple attribute allows more than one option.', 'html'),
+      example('Select several options', 'await page.locator("#hobbies")\n  .selectOption(["Playing", "Swimming", "Dancing"]);', 'The array selects all three matching options.')
+    ]),
+
+    topic(49, 'Custom Dropdowns', [
+      'Custom dropdowns do not use a native select element, so selectOption() will not work. Open the dropdown, wait for its options, and choose the required option with a semantic locator.',
+      'Roles such as combobox, listbox, and option often describe custom dropdown behavior. Use the exact roles exposed by the application.'
+    ], [example('Choose from a custom dropdown', 'await page.getByRole("combobox", { name: "City" }).click();\nawait page.getByRole("option", { name: "Bengaluru" }).click();', 'The first action opens the control; the second selects the user-visible option.')], [flow('Custom Dropdown Flow', ['Open the control', 'Wait for options', 'Locate by role and name', 'Choose the option', 'Verify the result'])]),
+
+    topic(50, 'Dynamic Registration Test Data', [
+      'Registration tests often need a new email for each positive run. Reusing the same address can produce an already-registered error instead of exercising successful registration.',
+      'Date.now() provides a timestamp that can make a safe test-domain email unique. Reuse an existing address intentionally for a negative duplicate-email scenario.',
+      'Do not use real customer data or send test data to public disposable-email services unless the workflow requires email delivery and company policy permits it.'
+    ], [
+      example('Create a timestamp email', 'const email = `user_${Date.now()}@test.example`;\nawait page.getByLabel("Email").fill(email);', 'Each run receives a changing timestamp-based address.'),
+      example('Positive and negative scenarios', '// Positive: register with a new generated email.\n// Negative: reuse an existing email and verify the duplicate error.', 'Dynamic data should support the scenario, not hide the behavior being tested.')
+    ]),
+
+    topic(51, 'Unique Data in Parallel Tests', [
+      'Workers can run tests at the same time. They do not create users automatically, but parallel registration tests can collide if they generate the same data.',
+      'Combine a timestamp with testInfo.workerIndex or testInfo.parallelIndex when parallel tests require distinct values.'
+    ], [example('Include the worker index', 'test("register user", async ({ page }, testInfo) => {\n  const email = `qa_${Date.now()}_${testInfo.workerIndex}@test.example`;\n  await page.getByLabel("Email").fill(email);\n});', 'The timestamp and worker index reduce collisions between concurrent runs.')]),
+
+    topic(52, 'Faker Test Data', [
+      'Faker can generate realistic names, emails, addresses, phone numbers, passwords, UUIDs, dates, and other test values.',
+      'Before adding a third-party package at work, check company policy, licence, maintenance, vulnerabilities, and the approved dependency list.',
+      'Generated data is useful for variation, but assertions should still verify clear expected outcomes.'
+    ], [
+      example('Install Faker', 'npm install --save-dev @faker-js/faker', 'Adds Faker as a development dependency.', 'bash'),
+      example('Generate test data', "import { faker } from '@faker-js/faker';\n\nconst firstName = faker.person.firstName();\nconst lastName = faker.person.lastName();\nconst email = faker.internet.exampleEmail();", 'exampleEmail() uses reserved example domains, which is safer for test data.'),
+      example('Fill a form with Faker', 'await page.getByPlaceholder("First Name")\n  .fill(faker.person.firstName());\nawait page.getByPlaceholder("Email")\n  .fill(faker.internet.exampleEmail());', 'Faker values can be passed directly to Playwright actions.')
+    ]),
+
+    topic(53, 'XPath Text Functions', [
+      'text() matches an element text node exactly. contains() supports partial text matching.',
+      'normalize-space() trims leading and trailing whitespace and collapses repeated spaces or line breaks. It is useful when formatted HTML prevents a simple exact-text expression from matching.'
+    ], [
+      example('Exact and partial text XPath', "//button[text()='Sign up']\n//button[contains(text(),'Sign up')]", 'Use exact text when the full value is stable and partial text when intentional.', 'xpath'),
+      example('Normalize formatted text', "//button[normalize-space()='Sign up']\n//button[contains(normalize-space(),'Sign up')]", 'normalize-space() makes whitespace-heavy markup easier to match.', 'xpath')
+    ], [checklist('XPath Text Functions', ['text() - exact text node', 'contains() - partial value', 'starts-with() - stable prefix', 'normalize-space() - normalized whitespace'])]),
+
+    topic(54, 'XPath Axes Introduction', [
+      'XPath axes locate elements through their relationship to another element. Common axes include following, following-sibling, preceding, preceding-sibling, parent, ancestor, child, and descendant.',
+      'Use relationship-based XPath only when it expresses a stable DOM relationship that semantic Playwright locators cannot describe clearly.'
+    ], [], [checklist('Common XPath Axes', ['following', 'following-sibling', 'preceding', 'preceding-sibling', 'parent', 'ancestor', 'child', 'descendant'])]),
+
+    topic(55, 'Following and Sibling Axes', [
+      'following:: searches matching elements later in document order and can continue beyond the current row or container.',
+      'following-sibling:: searches only later siblings with the same parent. preceding-sibling:: moves in the opposite direction. Use [1] for the nearest matching sibling in that direction.'
+    ], [
+      example('Following can search beyond the row', "//td[text()='Agentic']/following::td", 'This may return many td elements later in the document.', 'xpath'),
+      example('Select cells in the same row', "//td[text()='Agentic']/following-sibling::td[1]\n//td[text()='Agentic']/following-sibling::td[2]", 'The first expression gets the next cell; the second gets the following cell after that.', 'xpath'),
+      example('Move to a preceding sibling', "//td[text()='Active']/preceding-sibling::td[1]", 'Selects the nearest earlier td under the same parent.', 'xpath')
+    ], [table('Axis Difference', ['Axis', 'Scope'], [['following::', 'Matching elements later in document order'], ['following-sibling::', 'Later matching elements with the same parent'], ['preceding-sibling::', 'Earlier matching elements with the same parent']])]),
+
+    topic(56, 'Parent, Ancestor and Dynamic CSS', [
+      'parent:: selects the direct parent, while ancestor:: can select a matching container higher in the hierarchy. The .. shortcut also means the parent node.',
+      'For dynamic CSS attributes, ^= means starts with, $= means ends with, and *= means contains. Prefer a semantic locator before CSS or XPath when possible.'
+    ], [
+      example('Parent and ancestor XPath', "//button[text()='Sign up']/parent::div\n//button[text()='Sign up']/..\n//button[text()='Sign up']/ancestor::form", 'Use the relationship that accurately describes the target container.', 'xpath'),
+      example('Dynamic CSS attributes', "input[id^='email']\ninput[id$='12345']\ninput[id*='email']", 'These selectors match a stable prefix, suffix, or contained fragment.', 'css')
+    ], [table('Dynamic CSS Operators', ['Operator', 'Meaning'], [['^=', 'Starts with'], ['$=', 'Ends with'], ['*=', 'Contains']])]),
+
+    topic(57, 'Registration Test with Dropdown and Dynamic Data', [
+      'This example combines unique test data, a native dropdown, a semantic button locator, and a web-first success assertion.',
+      'Assertions should validate important outcomes and state changes. Playwright actions already perform actionability checks, so a visibility assertion is not required after every action.'
+    ], [example('Complete registration flow', "import { test, expect } from '@playwright/test';\n\ntest('register a new user', async ({ page }, testInfo) => {\n  const email = `qa_${Date.now()}_${testInfo.workerIndex}@test.example`;\n\n  await page.goto('https://example.com/register');\n  await page.getByLabel('Email').fill(email);\n  await page.getByLabel('State').selectOption({ label: 'Goa' });\n  await page.getByRole('button', { name: 'Sign up' }).click();\n\n  await expect(\n    page.getByText('Signup successfully, Please login!')\n  ).toBeVisible();\n});", 'The generated email prevents positive registration runs from reusing the same account.')], [flow('Registration Flow', ['Generate unique email', 'Fill registration form', 'Select state', 'Submit', 'Verify success'])])
   ];
 })();
