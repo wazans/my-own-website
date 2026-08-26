@@ -1189,21 +1189,107 @@
       ]]
     ];
 
-    var preservedTopics = items.slice(0, 11).map(function(item) {
-      var topic = lesson(
-        item[0],
-        item[1],
-        item[3],
-        'Practice: Convert this note into one runnable Playwright test, helper, config change, or checklist item.',
-        item[4] || []
-      );
-      return enrichPlaywrightTopic(topic);
-    });
+    var condensedTopics = [
+      {
+        id: 'playwright-notes-01',
+        title: '01. Playwright Introduction and Prerequisites',
+        paragraphs: [
+          'Playwright is Microsoft open-source framework for reliable end-to-end testing of modern web applications. It provides auto-waiting, web-first assertions, isolated browser contexts, parallel execution, tracing, screenshots, API testing, and Codegen.',
+          'Playwright supports JavaScript and TypeScript, Python, Java, and .NET. Its browser engines are Chromium, Firefox, and WebKit, providing coverage for Chrome or Edge-style browsers, Firefox, and Safari-style behavior.',
+          'For this JavaScript tutorial, learn basic variables, functions, imports, and async/await. Install Node.js 18 or newer, npm, and a code editor such as VS Code.'
+        ],
+        practice: '',
+        examples: [],
+        resources: [],
+        ui: [
+          { type: 'table', title: 'Beginner Prerequisites', headers: ['Requirement', 'Why it is needed'], rows: [
+            ['Node.js 18+', 'Runs JavaScript and Playwright tools'],
+            ['npm', 'Installs dependencies; included with Node.js'],
+            ['VS Code or another editor', 'Writes and debugs test files'],
+            ['Basic JavaScript', 'Variables, functions, imports, and async/await']
+          ]},
+          { type: 'checklist', title: 'Key Features', items: ['Chromium, Firefox, and WebKit', 'Auto-waiting', 'Web-first assertions', 'Headed and headless modes', 'Parallel execution', 'Trace, screenshots, reports, and Codegen'] }
+        ]
+      },
+      {
+        id: 'playwright-notes-02',
+        title: '02. Installation and Project Setup',
+        paragraphs: [
+          'Install Node.js first, then create one project and run the guided Playwright initializer. Choose JavaScript or TypeScript, keep the tests folder, and allow the installer to download browser binaries.',
+          'The tests folder contains test files. playwright.config.js or playwright.config.ts stores runner settings. package.json records dependencies and scripts. package-lock.json locks installed versions. test-results and playwright-report contain generated artifacts.',
+          'Run the version command once to confirm that the Playwright test runner is available. Installation commands appear only in this topic.'
+        ],
+        practice: '',
+        examples: [
+          { title: 'Create and install the project', code: 'node --version\nnpm --version\nmkdir playwright-course\ncd playwright-course\nnpm init playwright@latest', explanation: 'The guided initializer installs Playwright Test, creates the starter project, and can download the browser binaries.', language: 'bash' },
+          { title: 'Verify installation', code: 'npx playwright test --version', explanation: 'A displayed version confirms that the project can run the Playwright CLI.', language: 'bash' }
+        ],
+        resources: [],
+        ui: [
+          { type: 'table', title: 'Important Project Files', headers: ['Path', 'Purpose'], rows: [
+            ['tests/', 'Playwright test files'],
+            ['playwright.config.ts or .js', 'Browsers, timeouts, reporters, and shared options'],
+            ['package.json', 'Dependencies and project scripts'],
+            ['package-lock.json', 'Locked dependency versions'],
+            ['test-results/', 'Run artifacts such as traces and screenshots'],
+            ['playwright-report/', 'Generated HTML report']
+          ]}
+        ]
+      },
+      {
+        id: 'playwright-notes-03',
+        title: '03. First Playwright Test',
+        paragraphs: [
+          'A test imports test and expect from @playwright/test. test defines the scenario, page represents an isolated browser tab, and expect verifies the result.',
+          'The usual flow is navigation, browser actions, and an assertion. Actions and web-first assertions wait for the page to become ready.'
+        ],
+        practice: '',
+        examples: [
+          { title: 'tests/example.spec.js', code: "import { test, expect } from '@playwright/test';\n\ntest('verify Google title', async ({ page }) => {\n  await page.goto('https://www.google.com/');\n  await expect(page).toHaveTitle(/Google/);\n});", explanation: 'page.goto() opens the website and toHaveTitle() verifies its title.', language: 'javascript' },
+          { title: 'Basic browser action', code: "await page.getByRole('link', { name: 'About' }).click();", explanation: 'A locator finds a user-visible element and click() performs the action. Detailed locator lessons come later.', language: 'javascript' }
+        ],
+        resources: [],
+        ui: [
+          { type: 'flow', title: 'Test Structure', steps: ['Import test and expect', 'Define the test', 'Open a page', 'Perform an action', 'Assert the result'] }
+        ]
+      },
+      {
+        id: 'playwright-notes-04',
+        title: '04. Running and Debugging Tests',
+        paragraphs: [
+          'Playwright runs headlessly by default. Use headed mode to watch the browser, target one file for a focused run, and use debug mode to open Playwright Inspector.',
+          'Open the HTML report to review results and failure details. These are the essential beginner commands.'
+        ],
+        practice: '',
+        examples: [
+          { title: 'Essential commands', code: 'npx playwright test\nnpx playwright test --headed\nnpx playwright test tests/example.spec.js\nnpx playwright test --debug\nnpx playwright show-report', explanation: 'Run the full suite, watch the browser, run one file, debug step by step, or open the latest HTML report.', language: 'bash' }
+        ],
+        resources: [],
+        ui: [
+          { type: 'table', title: 'Command Purpose', headers: ['Command', 'Purpose'], rows: [
+            ['npx playwright test', 'Run all tests headlessly'],
+            ['npx playwright test --headed', 'Run with a visible browser'],
+            ['npx playwright test tests/example.spec.js', 'Run one test file'],
+            ['npx playwright test --debug', 'Open Playwright Inspector'],
+            ['npx playwright show-report', 'Open the HTML report']
+          ]}
+        ]
+      }
+    ];
 
     var replacementTopics = Array.isArray(window.TestNovaPlaywrightCurriculum)
       ? window.TestNovaPlaywrightCurriculum
       : [];
-    return preservedTopics.concat(replacementTopics);
+
+    var retainedTopics = replacementTopics.map(function(topic, index) {
+      var number = index + condensedTopics.length + 1;
+      var copy = Object.assign({}, topic);
+      copy.id = 'playwright-notes-' + String(number).padStart(2, '0');
+      copy.title = String(number).padStart(2, '0') + '. ' + displayTopicTitle(topic);
+      return copy;
+    });
+
+    return condensedTopics.concat(retainedTopics);
   }
 
   function codeBlock(lines) {
