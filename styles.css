@@ -4117,6 +4117,102 @@ body.landing-page .text-link {
   overflow: hidden;
 }
 
+
+.ai-code-example-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 48px;
+  padding: 0.45rem 0.65rem 0.45rem 0.85rem;
+  background: rgba(15, 23, 42, 0.9);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.ai-code-example .ai-code-example-header h3 {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.ai-code-example-header span {
+  color: #a5f3fc;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ai-code-copy {
+  min-height: 36px;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  border-radius: 7px;
+  color: #ecfeff;
+  background: rgba(6, 182, 212, 0.14);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.ai-code-copy:hover,
+.ai-code-copy:focus-visible {
+  border-color: #67e8f9;
+  background: rgba(6, 182, 212, 0.25);
+}
+
+.ai-code-example code.language-bash { color: #fde68a; }
+.ai-code-example code.language-html { color: #fda4af; }
+.ai-code-example code.language-text { color: #cbd5e1; }
+.ai-code-example code.language-javascript { color: #bfdbfe; }
+
+.ai-ui-callout {
+  margin: 1.1rem 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(56, 189, 248, 0.32);
+  border-left: 4px solid #38bdf8;
+  border-radius: 10px;
+  background: rgba(14, 165, 233, 0.1);
+}
+
+.ai-ui-callout--warning {
+  border-color: rgba(251, 191, 36, 0.36);
+  border-left-color: #fbbf24;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.ai-ui-callout h3 {
+  margin: 0 0 0.35rem;
+  color: var(--tn-text);
+  font-size: 1rem;
+}
+
+.ai-ui-callout p {
+  margin: 0;
+  color: var(--tn-text-secondary);
+}
+
+@media (max-width: 560px) {
+  .ai-code-example-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .ai-code-example-header h3 {
+    flex-basis: calc(100% - 64px);
+  }
+
+  .ai-code-example-header span {
+    order: 3;
+  }
+
+  .ai-code-copy {
+    margin-left: auto;
+  }
+}
+
 .ai-code-example h3 {
   margin: 0;
   padding: 0.7rem 0.85rem;
@@ -4130,7 +4226,8 @@ body.landing-page .text-link {
   margin: 0;
   padding: 0.9rem;
   overflow: auto;
-  white-space: pre-wrap;
+  white-space: pre;
+  tab-size: 2;
 }
 
 .ai-code-example code {

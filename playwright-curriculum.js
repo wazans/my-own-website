@@ -5,14 +5,14 @@
     return { title: title, code: code, explanation: explanation, language: language || 'javascript' };
   }
 
-  function topic(number, title, paragraphs, examples, ui) {
+  function topic(number, title, paragraphs, examples, ui, resources) {
     return {
       id: 'playwright-notes-' + String(number).padStart(2, '0'),
       title: String(number).padStart(2, '0') + '. ' + title,
       paragraphs: paragraphs,
       practice: '',
       examples: examples || [],
-      resources: [],
+      resources: resources || [],
       ui: ui || []
     };
   }
@@ -27,6 +27,10 @@
 
   function table(title, headers, rows) {
     return { type: 'table', title: title, headers: headers, rows: rows };
+  }
+
+  function callout(title, tone, text) {
+    return { type: 'callout', title: title, tone: tone, text: text };
   }
 
   window.TestNovaPlaywrightCurriculum = [
@@ -409,6 +413,99 @@
       example('Step 4 - send this prompt in the chat window', 'Read and follow testcontext.txt.\n\nWrite a complete automation script using Playwright with TypeScript to perform the following steps:\n\nNavigate to the live BBC website: https://www.bbc.com/.\n\nWait until the network conditions are completely idle to ensure all dynamic elements and menu lists are loaded.\n\nLocate all hyperlink anchor tags (<a>) present on the page.\n\nExtract the href attribute from each element and print the clean link text and URL in the terminal using console.log.\n\nSave the generated test in the tests directory, execute it, and iterate until it passes.', 'Open the VS Code chat in Agent mode so it can use the Playwright MCP tools and project files.', 'text'),
       example('Step 5 - run the generated test', 'npx playwright test\nnpx playwright test --headed', 'The first command runs normally. Use headed mode when you want to watch the browser.', 'bash'),
       example('Step 6 - generate and open the HTML report', 'npx playwright test --reporter=html\nnpx playwright show-report', 'The first command runs the tests and creates the HTML report. The second command opens the latest report.', 'bash')
-    ], [flow('Playwright MCP Workflow', ['Check prerequisites', 'Create the Playwright project', 'Install Playwright MCP in VS Code', 'Create testcontext.txt', 'Install browser binaries', 'Send the BBC scenario in Agent chat', 'Run the generated test', 'Open the HTML report'])])
+    ], [flow('Playwright MCP Workflow', ['Check prerequisites', 'Create the Playwright project', 'Install Playwright MCP in VS Code', 'Create testcontext.txt', 'Install browser binaries', 'Send the BBC scenario in Agent chat', 'Run the generated test', 'Open the HTML report'])]),
+
+    topic(59, 'Playwright Codegen', [
+      'Playwright Codegen records actions performed in a browser and automatically generates Playwright JavaScript code and locators.',
+      'The command opens two windows: a browser where you perform actions and Playwright Inspector where the generated code appears. This lesson uses SauceDemo as the practice website.'
+    ], [
+      example('Start Codegen with SauceDemo', 'npx playwright codegen https://www.saucedemo.com/', 'Perform the login actions in the opened browser and watch Inspector generate the code.', 'bash'),
+      example('Generated login actions', "await page.goto('https://www.saucedemo.com/');\nawait page.getByPlaceholder('Username').fill('standard_user');\nawait page.getByPlaceholder('Password').fill('secret_sauce');\nawait page.getByRole('button', { name: 'Login' }).click();", 'Codegen creates a useful starting point that should be reviewed before use.'),
+      example('Complete login test', "import { test, expect } from '@playwright/test';\n\ntest('login using generated code', async ({ page }) => {\n  await page.goto('https://www.saucedemo.com/');\n\n  await page.getByPlaceholder('Username').fill('standard_user');\n  await page.getByPlaceholder('Password').fill('secret_sauce');\n  await page.getByRole('button', { name: 'Login' }).click();\n\n  await expect(page).toHaveURL(/inventory/);\n  await expect(page.getByText('Products')).toBeVisible();\n});", 'The assertions verify the important result of the generated login steps.')
+    ], [flow('Codegen Flow', ['Run the command', 'Use the browser', 'Review code in Inspector', 'Add meaningful assertions', 'Run the test'])], [{ label: 'Open SauceDemo', url: 'https://www.saucedemo.com/' }]),
+
+    topic(60, 'Codegen Tools and Assertions', [
+      'The Playwright Inspector toolbar helps record actions, select locators, and add common assertions.',
+      'Record captures clicks, text input, checkbox and radio-button actions, dropdown selections, and page navigation.'
+    ], [
+      example('Record', 'Click Record, perform the browser actions, and watch the generated steps appear in Inspector.', 'Stop recording before using Pick Locator.', 'text'),
+      example('Pick Locator', '1. Stop recording.\n2. Click Pick Locator.\n3. Hover over the required element.\n4. Click the element.\n5. Copy the generated locator.', 'Example result: page.getByRole(\'button\', { name: \'Login\' })', 'text'),
+      example('Assert Visibility', "await expect(page.getByText('Products')).toBeVisible();", 'Checks that the Products element is visible.'),
+      example('Assert Text', "await expect(page.getByText('Products')).toHaveText('Products');", 'Checks the complete text value.'),
+      example('Assert Value', "await expect(\n  page.getByPlaceholder('Username')\n).toHaveValue('standard_user');", 'Checks the current input value.'),
+      example('Assert Screenshot', "await expect(page).toHaveScreenshot('saucedemo-login.png');", 'Screenshot assertions compare the current screenshot with a saved baseline image.')
+    ], [checklist('Record Captures', ['Click actions', 'Text input', 'Checkbox and radio-button actions', 'Dropdown selections', 'Page navigation'])]),
+
+    topic(61, 'Generate Only a Locator', [
+      'Codegen can generate a locator without recording a complete workflow. Start Codegen, stop recording, and use Pick Locator.',
+      'Playwright generally prefers user-facing and accessible locators before CSS or XPath.'
+    ], [
+      example('Open Codegen', 'npx playwright codegen https://www.saucedemo.com/', 'Wait for the browser and Inspector to open.', 'bash'),
+      example('Locator-only workflow', 'Stop Recording -> Pick Locator -> Click Element -> Copy Locator', 'Use this workflow prominently when you need only one locator.', 'text'),
+      example('Example result', "page.getByRole('button', { name: 'Login' })", 'Review that the locator is unique and stable.')
+    ], [
+      flow('Generate Only a Locator', ['Stop Recording', 'Pick Locator', 'Click Element', 'Copy Locator']),
+      checklist('Preferred Locator Order', ['1. Role', '2. Label', '3. Placeholder', '4. Text', '5. Test ID', '6. CSS or XPath when necessary'])
+    ], [{ label: 'Practise on SauceDemo', url: 'https://www.saucedemo.com/' }]),
+
+    topic(62, 'Codegen Emulation', [
+      'Codegen options let you record under a chosen viewport, device, colour scheme, language, time zone, or location.',
+      'Choose emulation that matches the scenario you need to test.'
+    ], [
+      example('Custom viewport', 'npx playwright codegen --viewport-size="1280,720" https://www.saucedemo.com/', 'Records with a 1280 by 720 viewport.', 'bash'),
+      example('Mobile device', 'npx playwright codegen --device="iPhone 13" https://www.saucedemo.com/', 'Uses the Playwright device profile for iPhone 13.', 'bash'),
+      example('Dark colour scheme', 'npx playwright codegen --color-scheme="dark" https://www.saucedemo.com/', 'Requests the dark colour preference.', 'bash'),
+      example('Language', 'npx playwright codegen --lang="en-GB" https://www.saucedemo.com/', 'Uses the specified browser locale.', 'bash'),
+      example('Time zone', 'npx playwright codegen --timezone="Asia/Kolkata" https://www.saucedemo.com/', 'Emulates the Asia/Kolkata time zone.', 'bash'),
+      example('Geolocation', 'npx playwright codegen --geolocation="28.6139,77.2090" https://www.google.com/maps', 'The website must receive browser geolocation permission.', 'bash')
+    ]),
+
+    topic(63, 'Codegen Limitations', [
+      'Codegen is a starting tool, not a replacement for test design, engineering judgment, or a maintainable automation framework.'
+    ], [], [
+      callout('Important', 'warning', 'Generated code must always be reviewed before it is used in a real project.'),
+      checklist('Codegen Limitations', ['Cannot understand the complete business requirement', 'Generated locators may require improvement', 'May generate unnecessary actions', 'Cannot decide every required assertion', 'Cannot directly control native Windows file-selection or download dialogs', 'Dynamic test data normally requires manual handling', 'Does not automatically become a maintainable framework', 'Page Objects, reusable methods, and test-data management must be added manually', 'Generated code must always be reviewed'])
+    ]),
+
+    topic(64, 'Date Picker Handling', [
+      'Use https://demoqa.com/date-picker to practise both common date-picker methods.',
+      'Filling the input is simplest when the control allows typing. Use the calendar UI when the user journey specifically requires calendar interaction.'
+    ], [
+      example('Method 1 - fill the date directly', "import { test, expect } from '@playwright/test';\n\ntest('select date by filling input', async ({ page }) => {\n  await page.goto('https://demoqa.com/date-picker');\n\n  const dateInput = page.locator('#datePickerMonthYearInput');\n\n  await dateInput.fill('03/27/2027');\n  await dateInput.press('Enter');\n\n  await expect(dateInput).toHaveValue('03/27/2027');\n});", 'Use this method when the date input accepts typed values.'),
+      example('Method 2 - select using the calendar UI', "test('select date from calendar', async ({ page }) => {\n  await page.goto('https://demoqa.com/date-picker');\n\n  await page.locator('#datePickerMonthYearInput').click();\n\n  await page.locator('.react-datepicker__month-select')\n    .selectOption('2');\n\n  await page.locator('.react-datepicker__year-select')\n    .selectOption('2027');\n\n  await page.locator(\n    '.react-datepicker__day--027:not(.react-datepicker__day--outside-month)'\n  ).click();\n\n  await expect(page.locator('#datePickerMonthYearInput'))\n    .toHaveValue('03/27/2027');\n});", 'This selects March 27, 2027 through the calendar controls.')
+    ], [callout('Month Index Note', 'info', 'January = 0, February = 1, March = 2. JavaScript month indexes commonly start from zero.')], [{ label: 'Open DemoQA Date Picker', url: 'https://demoqa.com/date-picker' }]),
+
+    topic(65, 'File Upload', [
+      'File-upload controls normally use an input element with type="file". Playwright sets the file directly on that input instead of controlling the native operating-system dialog.',
+      'The syntax is locator.setInputFiles(files). path.join() is safer across Windows, macOS, and Linux.'
+    ], [
+      example('HTML file input', '<input type="file">', 'A standard upload control.', 'html'),
+      example('Project structure', 'project\n|-- tests\n|   |-- file-upload.spec.js\n|-- test-data\n    |-- sample.txt', 'Keep reusable upload fixtures in a dedicated test-data directory.', 'text'),
+      example('Upload one file', "import { test, expect } from '@playwright/test';\nimport path from 'path';\n\ntest('upload one file', async ({ page }) => {\n  await page.goto('https://the-internet.herokuapp.com/upload');\n\n  const filePath = path.join(\n    process.cwd(),\n    'test-data',\n    'sample.txt'\n  );\n\n  await page.locator('#file-upload').setInputFiles(filePath);\n  await page.locator('#file-submit').click();\n\n  await expect(\n    page.getByRole('heading', { name: 'File Uploaded!' })\n  ).toBeVisible();\n\n  await expect(page.locator('#uploaded-files'))\n    .toHaveText('sample.txt');\n});", 'The test uploads sample.txt and verifies the success heading and uploaded filename.'),
+      example('Syntax', 'locator.setInputFiles(files);', 'files can be one path, several paths, or an in-memory file payload.')
+    ], [], [{ label: 'Open The Internet File Upload', url: 'https://the-internet.herokuapp.com/upload' }]),
+
+    topic(66, 'Multiple File Upload', [
+      'The HTML input must support the multiple attribute before it can accept several files.',
+      'setInputFiles() can also clear a selection or upload a file created entirely in memory.'
+    ], [
+      example('Multiple file input', '<input type="file" multiple>', 'The multiple attribute allows more than one selected file.', 'html'),
+      example('Upload multiple files', "await page.locator('input[type=\"file\"]').setInputFiles([\n  './test-data/file1.txt',\n  './test-data/file2.pdf'\n]);", 'Pass an array containing each required file path.'),
+      example('Clear selected files', "await page.locator('input[type=\"file\"]').setInputFiles([]);", 'An empty array clears the current selection.'),
+      example('Create and upload a file from memory', "await page.locator('input[type=\"file\"]').setInputFiles({\n  name: 'test-data.txt',\n  mimeType: 'text/plain',\n  buffer: Buffer.from('Created during Playwright test')\n});", 'This method does not require a physical file to already exist.')
+    ]),
+
+    topic(67, 'Dynamic File Upload with FileChooser', [
+      'The filechooser event is useful when the input is created dynamically or no permanent input[type=\"file\"] element is available.',
+      'Create the event listener before clicking the upload button so Playwright cannot miss the event.'
+    ], [
+      example('Upload using FileChooser', "test('upload using file chooser', async ({ page }) => {\n  await page.goto('https://example.com');\n\n  const fileChooserPromise = page.waitForEvent('filechooser');\n\n  await page.getByRole('button', {\n    name: 'Choose File'\n  }).click();\n\n  const fileChooser = await fileChooserPromise;\n\n  await fileChooser.setFiles('./test-data/sample.txt');\n});", 'The promise starts listening before the click triggers the chooser.'),
+      example('Correct order', "const fileChooserPromise = page.waitForEvent('filechooser');\nawait page.getByRole('button', { name: 'Choose File' }).click();\nconst fileChooser = await fileChooserPromise;", 'Create the listener first.'),
+      example('Incorrect order', "await page.getByRole('button', { name: 'Choose File' }).click();\nconst fileChooserPromise = page.waitForEvent('filechooser');", 'The event may finish before Playwright starts waiting for it.')
+    ], [callout('Important', 'warning', 'The filechooser listener must be created before clicking the upload button.')]),
+
+    topic(68, 'File Upload Test Scenarios', [
+      'Use this QA checklist to cover successful uploads, validation failures, filenames, replacement, and removal behavior.'
+    ], [], [checklist('File Upload QA Checklist', ['Upload a valid file', 'Upload an unsupported file extension', 'Upload a file exceeding the maximum size', 'Submit without selecting a file', 'Upload multiple files', 'Upload duplicate files', 'Upload a filename containing spaces', 'Upload a filename containing special characters', 'Verify the success message', 'Verify the uploaded filename', 'Replace an already selected file', 'Remove or clear the selected file'])])
   ];
 })();

@@ -3592,6 +3592,15 @@
           '</section>'
         ].join('');
       }
+      if (block.type === 'callout') {
+        var tone = block.tone === 'warning' ? 'warning' : 'info';
+        return [
+          '<aside class="ai-ui-callout ai-ui-callout--' + tone + '" role="note">',
+          '<h3>' + escapeHtml(block.title) + '</h3>',
+          '<p>' + escapeHtml(block.text) + '</p>',
+          '</aside>'
+        ].join('');
+      }
       if (block.type === 'checklist') {
         return [
           '<section class="ai-ui-block">',
@@ -3752,7 +3761,7 @@
         var languageClass = example.language ? ' class="language-' + escapeHtml(example.language) + '"' : '';
         return [
           '<div class="ai-code-example">',
-          '<h3>' + escapeHtml(example.title) + '</h3>',
+          '<div class="ai-code-example-header"><h3>' + escapeHtml(example.title) + '</h3><span>' + escapeHtml(example.language || 'javascript') + '</span><button type="button" class="ai-code-copy" data-code-copy aria-label="Copy code">Copy</button></div>',
           '<pre><code' + languageClass + '>' + escapeHtml(example.code) + '</code></pre>',
           example.explanation ? '<p class="ai-code-explanation">' + escapeHtml(example.explanation) + '</p>' : '',
           '</div>'
@@ -3862,6 +3871,23 @@
       currentTopic = topic.id;
       var index = topics.indexOf(topic);
       content.innerHTML = renderTopicHtml(track, topic, index, progress);
+      content.querySelectorAll('[data-code-copy]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var code = button.closest('.ai-code-example').querySelector('code');
+          var value = code ? code.textContent : '';
+          navigator.clipboard.writeText(value).then(function () {
+            button.textContent = 'Copied';
+            button.setAttribute('aria-label', 'Code copied');
+            setTimeout(function () {
+              button.textContent = 'Copy';
+              button.setAttribute('aria-label', 'Copy code');
+            }, 1400);
+          }).catch(function () {
+            if (saveState) saveState.textContent = 'Copy failed. Select and copy the code manually.';
+          });
+        });
+      });
+
       if (window.TestNovaArraysPlayground && topic.id === window.TestNovaArraysPlayground.topicId) {
         window.TestNovaArraysPlayground.mount(content.querySelector('[data-arrays-playground]'));
       }
