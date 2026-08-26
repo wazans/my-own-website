@@ -1289,7 +1289,67 @@
       return copy;
     });
 
-    return condensedTopics.concat(retainedTopics);
+    var allTopics = condensedTopics.concat(retainedTopics);
+    var consolidationGroups = [
+      ['playwright-notes-03', 'playwright-notes-05', 'playwright-notes-06', 'playwright-notes-07', 'playwright-notes-08'],
+      ['playwright-notes-04', 'playwright-notes-09', 'playwright-notes-10', 'playwright-notes-11', 'playwright-notes-12', 'playwright-notes-13'],
+      ['playwright-notes-14', 'playwright-notes-15', 'playwright-notes-16', 'playwright-notes-17'],
+      ['playwright-notes-18', 'playwright-notes-19', 'playwright-notes-20', 'playwright-notes-21'],
+      ['playwright-notes-22', 'playwright-notes-23', 'playwright-notes-24', 'playwright-notes-25', 'playwright-notes-26', 'playwright-notes-27'],
+      ['playwright-notes-28', 'playwright-notes-29', 'playwright-notes-30'],
+      ['playwright-notes-31', 'playwright-notes-32', 'playwright-notes-33', 'playwright-notes-34', 'playwright-notes-35', 'playwright-notes-36'],
+      ['playwright-notes-39', 'playwright-notes-40', 'playwright-notes-41', 'playwright-notes-42'],
+      ['playwright-notes-43', 'playwright-notes-44', 'playwright-notes-45'],
+      ['playwright-notes-46', 'playwright-notes-47', 'playwright-notes-48', 'playwright-notes-49'],
+      ['playwright-notes-52', 'playwright-notes-53', 'playwright-notes-54', 'playwright-notes-55', 'playwright-notes-56'],
+      ['playwright-notes-58', 'playwright-notes-59', 'playwright-notes-60', 'playwright-notes-61']
+    ];
+
+    var topicById = {};
+    allTopics.forEach(function(topic) {
+      topicById[topic.id] = topic;
+    });
+
+    var groupedIds = {};
+    var consolidatedTopics = [];
+
+    consolidationGroups.forEach(function(group) {
+      var existing = group.map(function(id) { return topicById[id]; }).filter(Boolean);
+      if (existing.length < 2) return;
+      existing.forEach(function(topic) { groupedIds[topic.id] = true; });
+      consolidatedTopics.push({
+        sourceIndex: allTopics.indexOf(existing[0]),
+        topic: {
+          id: existing[0].id,
+          title: existing[0].title,
+          paragraphs: [],
+          practice: '',
+          examples: [],
+          resources: [],
+          ui: [],
+          subsections: existing,
+          legacyIds: existing.map(function(topic) { return topic.id; })
+        }
+      });
+    });
+
+    allTopics.forEach(function(topic, index) {
+      if (groupedIds[topic.id]) return;
+      consolidatedTopics.push({
+        sourceIndex: index,
+        topic: Object.assign({}, topic, { legacyIds: [topic.id] })
+      });
+    });
+
+    consolidatedTopics.sort(function(a, b) { return a.sourceIndex - b.sourceIndex; });
+
+    return consolidatedTopics.map(function(entry, index) {
+      var topic = entry.topic;
+      var number = index + 1;
+      topic.id = 'playwright-notes-' + String(number).padStart(2, '0');
+      topic.title = String(number).padStart(2, '0') + '. ' + displayTopicTitle(topic);
+      return topic;
+    });
   }
 
   function codeBlock(lines) {
@@ -3701,6 +3761,54 @@
     }).join('');
   }
 
+  function renderTopicExamples(topic) {
+    if (!topic.examples || !topic.examples.length) return '';
+    return topic.examples.map(function(example) {
+      var languageClass = example.language ? ' class="language-' + escapeHtml(example.language) + '"' : '';
+      return [
+        '<div class="ai-code-example">',
+        '<div class="ai-code-example-header"><h3>' + escapeHtml(example.title) + '</h3><span>' + escapeHtml(example.language || 'javascript') + '</span><button type="button" class="ai-code-copy" data-code-copy aria-label="Copy code">Copy</button></div>',
+        '<pre><code' + languageClass + '>' + escapeHtml(example.code) + '</code></pre>',
+        example.explanation ? '<p class="ai-code-explanation">' + escapeHtml(example.explanation) + '</p>' : '',
+        '</div>'
+      ].join('');
+    }).join('');
+  }
+
+  function renderTopicResources(topic) {
+    if (!topic.resources || !topic.resources.length) return '';
+    return [
+      '<div class="ai-resource-row">',
+      topic.resources.map(function(resource) {
+        return '<a class="primary-btn" href="' + escapeHtml(resource.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(resource.label) + '</a>';
+      }).join(''),
+      '</div>'
+    ].join('');
+  }
+
+  function renderTopicMaterial(topic) {
+    return [
+      (topic.paragraphs || []).map(function(paragraph) { return '<p>' + escapeHtml(paragraph) + '</p>'; }).join(''),
+      renderTopicExamples(topic),
+      renderTopicUi(topic),
+      renderTopicResources(topic)
+    ].join('');
+  }
+
+  function renderTopicSubsections(topic) {
+    if (!topic.subsections || !topic.subsections.length) return renderTopicMaterial(topic);
+    return '<div class="ai-reader-subsections">' + topic.subsections.map(function(subsection, index) {
+      return [
+        '<details class="ai-reader-subsection"' + (index === 0 ? ' open' : '') + '>',
+        '<summary><span>' + escapeHtml(displayTopicTitle(subsection)) + '</span></summary>',
+        '<div class="ai-reader-subsection-body">',
+        renderTopicMaterial(subsection),
+        '</div>',
+        '</details>'
+      ].join('');
+    }).join('') + '</div>';
+  }
+
   function loadJson(key) {
     try { return JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) { return {}; }
   }
@@ -3842,25 +3950,7 @@
     var body = savedContent || [
       '<div class="ai-reader-topic-kicker">Topic ' + (index + 1) + '</div>',
       '<h2 data-topic-title>' + escapeHtml(displayTopicTitle(topic)) + '</h2>',
-      topic.paragraphs.map(function (paragraph) { return '<p>' + escapeHtml(paragraph) + '</p>'; }).join(''),
-      topic.examples && topic.examples.length ? topic.examples.map(function (example) {
-        var languageClass = example.language ? ' class="language-' + escapeHtml(example.language) + '"' : '';
-        return [
-          '<div class="ai-code-example">',
-          '<div class="ai-code-example-header"><h3>' + escapeHtml(example.title) + '</h3><span>' + escapeHtml(example.language || 'javascript') + '</span><button type="button" class="ai-code-copy" data-code-copy aria-label="Copy code">Copy</button></div>',
-          '<pre><code' + languageClass + '>' + escapeHtml(example.code) + '</code></pre>',
-          example.explanation ? '<p class="ai-code-explanation">' + escapeHtml(example.explanation) + '</p>' : '',
-          '</div>'
-        ].join('');
-      }).join('') : '',
-      renderTopicUi(topic),
-      topic.resources && topic.resources.length ? [
-        '<div class="ai-resource-row">',
-        topic.resources.map(function (resource) {
-          return '<a class="primary-btn" href="' + escapeHtml(resource.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(resource.label) + '</a>';
-        }).join(''),
-        '</div>'
-      ].join('') : '',
+      renderTopicSubsections(topic),
       ''
     ].join('');
 
@@ -3953,7 +4043,11 @@
       options = options || {};
       saveCurrentContent();
       if (window.TestNovaArraysPlayground) window.TestNovaArraysPlayground.destroy();
-      var topic = topics.find(function (item) { return item.id === id; }) || topics[0];
+      var topic = topics.find(function (item) { return item.id === id; });
+      if (!topic) {
+        topic = topics.find(function (item) { return item.legacyIds && item.legacyIds.indexOf(id) !== -1; });
+      }
+      topic = topic || topics[0];
       currentTopic = topic.id;
       var index = topics.indexOf(topic);
       content.innerHTML = renderTopicHtml(track, topic, index, progress);

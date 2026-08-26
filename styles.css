@@ -4118,6 +4118,59 @@ body.landing-page .text-link {
 }
 
 
+
+.ai-reader-subsections {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.ai-reader-subsection {
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.5);
+  overflow: hidden;
+}
+
+.ai-reader-subsection summary {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0.8rem 1rem;
+  color: var(--tn-text);
+  background: rgba(6, 182, 212, 0.09);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.ai-reader-subsection summary:hover,
+.ai-reader-subsection summary:focus-visible {
+  background: rgba(6, 182, 212, 0.16);
+  outline: none;
+}
+
+.ai-reader-subsection summary::marker {
+  color: #67e8f9;
+}
+
+.ai-reader-subsection-body {
+  padding: 0.25rem 1rem 1rem;
+}
+
+.ai-reader-subsection-body > p:first-child {
+  margin-top: 0.9rem;
+}
+
+@media (max-width: 560px) {
+  .ai-reader-subsection summary {
+    padding: 0.75rem;
+  }
+
+  .ai-reader-subsection-body {
+    padding: 0.2rem 0.75rem 0.8rem;
+  }
+}
+
 .ai-code-example-header {
   display: flex;
   align-items: center;
