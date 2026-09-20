@@ -475,7 +475,31 @@
       example('Method 2 - select using the calendar UI', "test('select date from calendar', async ({ page }) => {\n  await page.goto('https://demoqa.com/date-picker');\n\n  await page.locator('#datePickerMonthYearInput').click();\n\n  await page.locator('.react-datepicker__month-select')\n    .selectOption('2');\n\n  await page.locator('.react-datepicker__year-select')\n    .selectOption('2027');\n\n  await page.locator(\n    '.react-datepicker__day--027:not(.react-datepicker__day--outside-month)'\n  ).click();\n\n  await expect(page.locator('#datePickerMonthYearInput'))\n    .toHaveValue('03/27/2027');\n});", 'This selects March 27, 2027 through the calendar controls.')
     ], [callout('Month Index Note', 'info', 'January = 0, February = 1, March = 2. JavaScript month indexes commonly start from zero.')], [{ label: 'Open DemoQA Date Picker', url: 'https://demoqa.com/date-picker' }]),
 
-    topic(65, 'File Upload', [
+    topic(65, 'Alerts and Dialogs', [
+      'JavaScript dialogs include alert, confirm, and prompt. They are modal, so the page action waits until the dialog is accepted or dismissed.',
+      'Register the dialog listener before clicking the button that opens it. Use page.once() for the next dialog only and page.on() when the same handler should process every dialog during the page session.',
+      'A dialog provides its type, message, and default prompt value. Use accept() for OK, dismiss() for Cancel, and accept("text") to enter prompt text. If no listener is registered, Playwright automatically dismisses dialogs.'
+    ], [
+      example('Accept one JavaScript alert', "page.once('dialog', async dialog => {\n  console.log(dialog.message());\n  await dialog.accept();\n});\n\nawait page.getByRole('button', {\n  name: 'Click for JS Alert'\n}).click();", 'page.once() handles only the next dialog event.'),
+      example('Accept a confirmation dialog', "page.once('dialog', async dialog => {\n  console.log(dialog.type());\n  console.log(dialog.message());\n  await dialog.accept();\n});\n\nawait page.getByRole('button', {\n  name: 'Click for JS Confirm'\n}).click();", 'accept() selects OK in a confirmation dialog.'),
+      example('Dismiss a confirmation dialog', "page.once('dialog', async dialog => {\n  await dialog.dismiss();\n});\n\nawait page.getByRole('button', {\n  name: 'Click for JS Confirm'\n}).click();", 'dismiss() selects Cancel in a confirmation dialog.'),
+      example('Enter text in a prompt', "page.once('dialog', async dialog => {\n  console.log(dialog.defaultValue());\n  await dialog.accept('Playwright');\n});\n\nawait page.getByRole('button', {\n  name: 'Click for JS Prompt'\n}).click();", 'Pass text to accept() when the prompt requires an input value.'),
+      example('Handle every dialog with page.on()', "page.on('dialog', async dialog => {\n  console.log(dialog.message());\n\n  if (dialog.type() === 'prompt') {\n    await dialog.accept('Playwright');\n  } else {\n    await dialog.accept();\n  }\n});", 'page.on() keeps the handler active for dialogs raised later in the same page session.'),
+      example('Complete alert practice setup', "import { test } from '@playwright/test';\n\ntest('handle JavaScript alert', async ({ page }) => {\n  await page.goto(\n    'https://the-internet.herokuapp.com/javascript_alerts'\n  );\n\n  page.once('dialog', async dialog => {\n    console.log(dialog.message());\n    await dialog.accept();\n  });\n\n  await page.getByRole('button', {\n    name: 'Click for JS Alert'\n  }).click();\n});", 'The listener is ready before the click triggers the alert.')
+    ], [
+      table('Dialog Types', ['Type', 'User experience', 'Handling'], [
+        ['alert', 'Message with OK', 'dialog.accept()'],
+        ['confirm', 'OK or Cancel', 'dialog.accept() / dialog.dismiss()'],
+        ['prompt', 'Input box', 'dialog.accept("value")']
+      ]),
+      table('Dialog Listener Choice', ['Listener', 'Scope'], [
+        ['page.once("dialog", handler)', 'Handles the next dialog only'],
+        ['page.on("dialog", handler)', 'Handles every dialog for the page session']
+      ]),
+      callout('Important', 'warning', 'Create the dialog listener before the action that opens the dialog, and always accept or dismiss it inside the handler. Otherwise the click can stall.')
+    ], [{ label: 'Practise JavaScript Alerts', url: 'https://the-internet.herokuapp.com/javascript_alerts' }]),
+
+    topic(66, 'File Upload', [
       'File-upload controls normally use an input element with type="file". Playwright sets the file directly on that input instead of controlling the native operating-system dialog.',
       'The syntax is locator.setInputFiles(files). path.join() is safer across Windows, macOS, and Linux.'
     ], [
@@ -485,7 +509,7 @@
       example('Syntax', 'locator.setInputFiles(files);', 'files can be one path, several paths, or an in-memory file payload.')
     ], [], [{ label: 'Open The Internet File Upload', url: 'https://the-internet.herokuapp.com/upload' }]),
 
-    topic(66, 'Multiple File Upload', [
+    topic(67, 'Multiple File Upload', [
       'The HTML input must support the multiple attribute before it can accept several files.',
       'setInputFiles() can also clear a selection or upload a file created entirely in memory.'
     ], [
@@ -495,7 +519,7 @@
       example('Create and upload a file from memory', "await page.locator('input[type=\"file\"]').setInputFiles({\n  name: 'test-data.txt',\n  mimeType: 'text/plain',\n  buffer: Buffer.from('Created during Playwright test')\n});", 'This method does not require a physical file to already exist.')
     ]),
 
-    topic(67, 'Dynamic File Upload with FileChooser', [
+    topic(68, 'Dynamic File Upload with FileChooser', [
       'The filechooser event is useful when the input is created dynamically or no permanent input[type=\"file\"] element is available.',
       'Create the event listener before clicking the upload button so Playwright cannot miss the event.'
     ], [
@@ -504,7 +528,7 @@
       example('Incorrect order', "await page.getByRole('button', { name: 'Choose File' }).click();\nconst fileChooserPromise = page.waitForEvent('filechooser');", 'The event may finish before Playwright starts waiting for it.')
     ], [callout('Important', 'warning', 'The filechooser listener must be created before clicking the upload button.')]),
 
-    topic(68, 'File Upload Test Scenarios', [
+    topic(69, 'File Upload Test Scenarios', [
       'Use this QA checklist to cover successful uploads, validation failures, filenames, replacement, and removal behavior.'
     ], [], [checklist('File Upload QA Checklist', ['Upload a valid file', 'Upload an unsupported file extension', 'Upload a file exceeding the maximum size', 'Submit without selecting a file', 'Upload multiple files', 'Upload duplicate files', 'Upload a filename containing spaces', 'Upload a filename containing special characters', 'Verify the success message', 'Verify the uploaded filename', 'Replace an already selected file', 'Remove or clear the selected file'])])
   ];
