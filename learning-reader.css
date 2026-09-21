@@ -141,6 +141,18 @@
   text-transform: uppercase;
 }
 .reader-nav-group > summary::-webkit-details-marker { display: none; }
+.reader-nav-group > summary > span {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  overflow-wrap: anywhere;
+}
 .reader-nav-group > summary::after { content: '›'; margin-left: auto; color: var(--reader-subtle); font-size: 1.2rem; transform: rotate(0); transition: transform 150ms ease; }
 .reader-nav-group[open] > summary::after { transform: rotate(90deg); }
 .reader-nav-group > summary small { order: 2; margin-left: 0.55rem; color: var(--reader-subtle); font-size: 0.72rem; }
