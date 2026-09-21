@@ -4016,8 +4016,17 @@
     });
   }
 
-  function playwrightTopicGroup(topic) {
+  function readerTopicGroup(topic, trackId) {
     var title = displayTopicTitle(topic).toLowerCase();
+    if (trackId === 'jsTs') {
+      if (/typescript|interface|type alias|enum|generic/.test(title)) return 'TypeScript';
+      if (/async|await|promise|callback|fetch/.test(title)) return 'Async JavaScript';
+      if (/array|object|map|set|json|destructur|spread/.test(title)) return 'Data & Collections';
+      if (/function|arrow|scope|closure/.test(title)) return 'Functions';
+      if (/loop|condition|operator|switch/.test(title)) return 'Control Flow';
+      if (/dom|browser|form|storage|event/.test(title)) return 'Browser Concepts';
+      return 'Foundations';
+    }
     if (/introduction|prerequisite|installation|project setup|first playwright test/.test(title)) return 'Getting Started';
     if (/run|debug|browser|codegen|mcp/.test(title)) return 'Running Tests';
     if (/locator|xpath|css id/.test(title)) return 'Locators';
@@ -4027,6 +4036,12 @@
     if (/ci|architecture|framework|project/.test(title)) return 'Framework / Architecture';
     return 'Actions';
   }
+
+  function readerGroupOrder(trackId) {
+    if (trackId === 'jsTs') return ['Foundations', 'Control Flow', 'Functions', 'Data & Collections', 'Async JavaScript', 'Browser Concepts', 'TypeScript'];
+    return ['Getting Started', 'Running Tests', 'Locators', 'Actions', 'Assertions', 'Forms & UI', 'Debugging', 'Framework / Architecture', 'API Testing', 'CI/CD'];
+  }
+
   function initReader() {
     var trackId = document.body.getAttribute('data-ai-reader-track');
     if (!trackId || !TRACKS[trackId]) return;
@@ -4123,10 +4138,10 @@
       var index = topics.indexOf(topic);
       content.innerHTML = renderTopicHtml(track, topic, index, progress, topics.length);
       if (positionNode) positionNode.textContent = (index + 1) + ' of ' + topics.length;
-      if (breadcrumbNode) breadcrumbNode.textContent = playwrightTopicGroup(topic) + ' / Playwright';
-      document.title = displayTopicTitle(topic) + ' | Playwright Tutorial | TestNova';
+      if (breadcrumbNode) breadcrumbNode.textContent = readerTopicGroup(topic, trackId) + ' / ' + track.title;
+      document.title = displayTopicTitle(topic) + ' | ' + track.title + ' | TestNova';
       var descriptionNode = document.querySelector('meta[name="description"]');
-      if (descriptionNode) descriptionNode.setAttribute('content', topic.learningObjective || ((topic.paragraphs || [])[0]) || 'Learn Playwright with TestNova.');
+      if (descriptionNode) descriptionNode.setAttribute('content', topic.learningObjective || ((topic.paragraphs || [])[0]) || 'Learn ' + track.title + ' with TestNova.');
       highlightCodeBlocks(content);
       content.querySelectorAll('[data-code-copy]').forEach(function (button) {
         button.addEventListener('click', function () {
@@ -4197,10 +4212,10 @@
     }
 
     function renderNav() {
-      var groupOrder = ['Getting Started', 'Running Tests', 'Locators', 'Actions', 'Assertions', 'Forms & UI', 'Debugging', 'Framework / Architecture', 'API Testing', 'CI/CD'];
+      var groupOrder = readerGroupOrder(trackId);
       var groups = {};
       topics.forEach(function(topic, index) {
-        var group = playwrightTopicGroup(topic);
+        var group = readerTopicGroup(topic, trackId);
         if (!groups[group]) groups[group] = [];
         groups[group].push({ topic: topic, index: index });
       });
