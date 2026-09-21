@@ -1343,13 +1343,41 @@
 
     consolidatedTopics.sort(function(a, b) { return a.sourceIndex - b.sourceIndex; });
 
-    return consolidatedTopics.map(function(entry, index) {
+    var readerTopics = consolidatedTopics.map(function(entry, index) {
       var topic = entry.topic;
       var number = index + 1;
       topic.id = 'playwright-notes-' + String(number).padStart(2, '0');
       topic.title = String(number).padStart(2, '0') + '. ' + displayTopicTitle(topic);
       return topic;
     });
+
+    // Topic 18 is the canonical browser-project lesson requested by the reader UI.
+    // Preserve Date Picker content by moving it into the existing Forms & UI module.
+    var runningModule = readerTopics.find(function(topic) { return /Running and Debugging Tests/.test(topic.title); });
+    var formsModule = readerTopics.find(function(topic) { return /Dropdowns: Native vs Custom/.test(topic.title); });
+    var topicEighteen = readerTopics.find(function(topic) { return topic.id === 'playwright-notes-18'; });
+    var browserLesson = runningModule && (runningModule.subsections || []).find(function(topic) {
+      return /Running Tests on a Specific Browser/.test(topic.title);
+    });
+
+    if (runningModule && formsModule && topicEighteen && browserLesson) {
+      var datePickerLesson = Object.assign({}, topicEighteen, {
+        id: 'playwright-notes-57',
+        title: '57. ' + displayTopicTitle(topicEighteen)
+      });
+      runningModule.subsections = runningModule.subsections.filter(function(topic) { return topic !== browserLesson; });
+      runningModule.legacyIds = (runningModule.legacyIds || []).filter(function(id) { return id !== browserLesson.id; });
+      formsModule.subsections = (formsModule.subsections || []).concat([datePickerLesson]);
+      formsModule.legacyIds = (formsModule.legacyIds || []).concat(['playwright-notes-57']);
+      Object.keys(topicEighteen).forEach(function(key) { delete topicEighteen[key]; });
+      Object.assign(topicEighteen, browserLesson, {
+        id: 'playwright-notes-18',
+        title: '18. Running Tests on a Specific Browser',
+        legacyIds: [browserLesson.id]
+      });
+    }
+
+    return readerTopics;
   }
 
   function codeBlock(lines) {
@@ -3761,18 +3789,23 @@
     }).join('');
   }
 
+  function renderCodeExample(example, modifier) {
+    var language = String(example.language || 'javascript').toLowerCase();
+    var label = language === 'bash' ? 'Bash' : (language === 'ts' ? 'TypeScript' : (language === 'js' || language === 'javascript' ? 'JavaScript' : language.charAt(0).toUpperCase() + language.slice(1)));
+    return [
+      '<div class="ai-code-example' + (modifier ? ' ' + modifier : '') + '">',
+      '<div class="ai-code-example-header"><strong>' + escapeHtml(example.title || 'Example') + '</strong><span>' + escapeHtml(label) + '</span><button type="button" class="ai-code-copy" data-code-copy aria-label="Copy ' + escapeHtml(label) + ' code">Copy</button></div>',
+      '<pre tabindex="0"><code class="language-' + escapeHtml(language) + '">' + escapeHtml(example.code) + '</code></pre>',
+      example.explanation ? '<div class="ai-code-explanation"><strong>What happens?</strong><p>' + escapeHtml(example.explanation) + '</p></div>' : '',
+      '</div>'
+    ].join('');
+  }
+
   function renderTopicExamples(topic) {
     if (!topic.examples || !topic.examples.length) return '';
-    return topic.examples.map(function(example) {
-      var languageClass = example.language ? ' class="language-' + escapeHtml(example.language) + '"' : '';
-      return [
-        '<div class="ai-code-example">',
-        '<div class="ai-code-example-header"><h3>' + escapeHtml(example.title) + '</h3><span>' + escapeHtml(example.language || 'javascript') + '</span><button type="button" class="ai-code-copy" data-code-copy aria-label="Copy code">Copy</button></div>',
-        '<pre><code' + languageClass + '>' + escapeHtml(example.code) + '</code></pre>',
-        example.explanation ? '<p class="ai-code-explanation">' + escapeHtml(example.explanation) + '</p>' : '',
-        '</div>'
-      ].join('');
-    }).join('');
+    return '<section class="reader-lesson-section"><h3>Example</h3>' + topic.examples.map(function(example) {
+      return renderCodeExample(example, '');
+    }).join('') + '</section>';
   }
 
   function renderTopicResources(topic) {
@@ -3787,12 +3820,32 @@
   }
 
   function renderTopicMaterial(topic) {
-    return [
-      (topic.paragraphs || []).map(function(paragraph) { return '<p>' + escapeHtml(paragraph) + '</p>'; }).join(''),
-      renderTopicExamples(topic),
-      renderTopicUi(topic),
-      renderTopicResources(topic)
-    ].join('');
+    var paragraphs = (topic.paragraphs || []).map(function(paragraph) { return '<p>' + escapeHtml(paragraph) + '</p>'; }).join('');
+    var concept = paragraphs ? '<section class="reader-lesson-section"><h3>Concept</h3>' + paragraphs + '</section>' : '';
+    var tryIt = topic.tryIt ? [
+      '<aside class="reader-learning-callout reader-learning-callout--try" aria-labelledby="try-it-title">',
+      '<h3 id="try-it-title">' + escapeHtml(topic.tryIt.title || 'Try it yourself') + '</h3>',
+      renderCodeExample({ title: 'Run this command', code: topic.tryIt.code, language: topic.tryIt.language || 'bash' }, 'ai-code-example--embedded'),
+      '<p>' + escapeHtml(topic.tryIt.text || '') + '</p>',
+      '</aside>'
+    ].join('') : '';
+    var mistake = topic.commonMistake ? [
+      '<aside class="reader-learning-callout reader-learning-callout--mistake" aria-labelledby="mistake-title">',
+      '<h3 id="mistake-title">Common mistake</h3>',
+      renderCodeExample({ title: 'Avoid this', code: topic.commonMistake.code, language: topic.commonMistake.language || 'text' }, 'ai-code-example--embedded'),
+      '<p>' + escapeHtml(topic.commonMistake.text || '') + '</p>',
+      '</aside>'
+    ].join('') : '';
+    var challenge = topic.challenge ? [
+      '<section class="reader-learning-callout reader-learning-callout--challenge">',
+      '<h3>Mini challenge</h3>',
+      '<p>' + escapeHtml(topic.challenge.question) + '</p>',
+      '<details class="reader-answer"><summary>Show Answer</summary>',
+      renderCodeExample({ title: 'Answer', code: topic.challenge.answer, language: topic.challenge.language || 'text' }, 'ai-code-example--embedded'),
+      '</details>',
+      '</section>'
+    ].join('') : '';
+    return [concept, renderTopicUi(topic), renderTopicExamples(topic), tryIt, mistake, challenge, renderTopicResources(topic)].join('');
   }
 
   function renderTopicSubsections(topic) {
@@ -3866,58 +3919,6 @@
     ], 'Add a practical exercise for this topic.');
   }
 
-  function showTopicToast(title) {
-    var toast = document.createElement('div');
-    toast.className = 'level-toast topic-complete-toast';
-    toast.textContent = 'Congratulations! Completed: ' + title;
-    document.body.appendChild(toast);
-    requestAnimationFrame(function () { toast.classList.add('show'); });
-    setTimeout(function () {
-      toast.classList.remove('show');
-      setTimeout(function () { toast.remove(); }, 350);
-    }, 1800);
-  }
-
-  function burstConfetti() {
-    var colors = ['#fbbf24', '#ec4899', '#7c3aed', '#10b981', '#3b82f6', '#ef4444'];
-    var box = document.createElement('div');
-    box.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;';
-    document.body.appendChild(box);
-
-    for (var i = 0; i < 42; i++) {
-      var piece = document.createElement('span');
-      var size = 6 + Math.random() * 8;
-      var startX = 50 + (Math.random() * 60 - 30);
-      var endX = startX + (Math.random() * 80 - 40);
-      var fall = 60 + Math.random() * 30;
-      var rotate = Math.random() * 720 - 360;
-      var duration = 1400 + Math.random() * 1100;
-      piece.style.cssText = [
-        'position:absolute',
-        'left:' + startX + '%',
-        'top:-5%',
-        'width:' + size + 'px',
-        'height:' + (size * 0.55) + 'px',
-        'background:' + colors[i % colors.length],
-        'border-radius:1px',
-        'opacity:0.95',
-        'transform:rotate(' + (Math.random() * 360) + 'deg)',
-        'transition:transform ' + duration + 'ms cubic-bezier(.2,.7,.2,1), top ' + duration + 'ms cubic-bezier(.2,.7,.2,1), opacity ' + duration + 'ms ease'
-      ].join(';');
-      box.appendChild(piece);
-      (function (el, x, y, r) {
-        requestAnimationFrame(function () {
-          el.style.top = y + 'vh';
-          el.style.left = x + '%';
-          el.style.transform = 'rotate(' + r + 'deg)';
-          el.style.opacity = '0';
-        });
-      })(piece, endX, fall, rotate);
-    }
-
-    setTimeout(function () { box.remove(); }, 2700);
-  }
-
   function initEditableSurfaces() {
     document.querySelectorAll('[data-edit-key]').forEach(function (node) {
       var key = 'testnova-edit-' + node.getAttribute('data-edit-key');
@@ -3929,51 +3930,103 @@
     });
   }
 
-  function renderTopicHtml(track, topic, index, progress) {
-    if (window.TestNovaArraysPlayground && topic.id === window.TestNovaArraysPlayground.topicId) {
-      return [
-        '<label class="ai-reader-complete">',
-        '<input type="checkbox" data-reader-complete="' + topic.id + '"' + (progress[topic.id] ? ' checked' : '') + ' />',
-        '<span>Mark this topic complete</span>',
-        '</label>',
-        window.TestNovaArraysPlayground.render()
-      ].join('');
-    }
-    var contentKey = track.storageKey + ':content:' + topic.id;
-    if (track.contentVersion) {
-      contentKey = track.storageKey + ':content:v' + track.contentVersion + ':' + topic.id;
-    }
-    var savedContent = track.readOnly ? '' : localStorage.getItem(contentKey);
-    if (savedContent) {
-      savedContent = savedContent.replace(/<div class="ai-inline-save-panel"[\s\S]*?<\/div>/g, '');
-    }
-    var body = savedContent || [
-      '<div class="ai-reader-topic-kicker">Topic ' + (index + 1) + '</div>',
-      '<h2 data-topic-title>' + escapeHtml(displayTopicTitle(topic)) + '</h2>',
-      renderTopicSubsections(topic),
-      ''
-    ].join('');
+  function estimateReadingTime(topic) {
+    var text = (topic.paragraphs || []).join(' ') + ' ' + (topic.examples || []).map(function(example) { return example.explanation || ''; }).join(' ');
+    return Math.max(2, Math.ceil(text.trim().split(/\s+/).length / 150)) + ' min read';
+  }
 
-    if (track.readOnly) {
-      return [
-        '<label class="ai-reader-complete">',
-        '<input type="checkbox" data-reader-complete="' + topic.id + '"' + (progress[topic.id] ? ' checked' : '') + ' />',
-        '<span>Mark this topic complete</span>',
-        '</label>',
-        '<div class="ai-reader-edit-body" data-reader-body>' + body + '</div>'
-      ].join('');
-    }
-
+  function renderLessonNavigation(topic, index, total, progress) {
     return [
-      '<label class="ai-reader-complete">',
-      '<input type="checkbox" data-reader-complete="' + topic.id + '"' + (progress[topic.id] ? ' checked' : '') + ' />',
-      '<span>Mark this topic complete</span>',
-      '</label>',
-      '<div class="ai-reader-edit-body" contenteditable="true" data-topic-edit="' + topic.id + '">' + body + '</div>',
-      '<div class="ai-inline-save-panel"><button class="primary-btn" type="button" data-inline-save>Save edits now</button><span data-inline-save-state>Typing auto-saves. Manual save is here as backup.</span></div>'
+      '<nav class="reader-lesson-navigation" aria-label="Lesson navigation">',
+      '<button type="button" class="reader-nav-button reader-nav-button--previous" data-reader-previous' + (index === 0 ? ' disabled' : '') + '><span aria-hidden="true">←</span><span><small>Previous</small><strong>Lesson ' + index + '</strong></span></button>',
+      '<button type="button" class="reader-complete-button' + (progress[topic.id] ? ' is-complete' : '') + '" data-reader-complete="' + topic.id + '" aria-pressed="' + (progress[topic.id] ? 'true' : 'false') + '"><span aria-hidden="true">✓</span> ' + (progress[topic.id] ? 'Completed' : 'Mark Complete') + '</button>',
+      '<button type="button" class="reader-nav-button reader-nav-button--next" data-reader-next-topic' + (index === total - 1 ? ' disabled' : '') + '><span><small>Next</small><strong>Lesson ' + (index + 2) + '</strong></span><span aria-hidden="true">→</span></button>',
+      '</nav>'
     ].join('');
   }
 
+  function renderTopicHtml(track, topic, index, progress, total) {
+    if (window.TestNovaArraysPlayground && topic.id === window.TestNovaArraysPlayground.topicId) {
+      return window.TestNovaArraysPlayground.render() + renderLessonNavigation(topic, index, total, progress);
+    }
+    var contentKey = track.storageKey + ':content:' + topic.id;
+    if (track.contentVersion) contentKey = track.storageKey + ':content:v' + track.contentVersion + ':' + topic.id;
+    var savedContent = track.readOnly ? '' : localStorage.getItem(contentKey);
+    if (savedContent) savedContent = savedContent.replace(/<div class="ai-inline-save-panel"[\s\S]*?<\/div>/g, '');
+
+    var objective = topic.learningObjective || ((topic.paragraphs && topic.paragraphs[0]) ? topic.paragraphs[0] : 'Build practical Playwright knowledge with a focused example.');
+    var body = savedContent || renderTopicSubsections(topic);
+    var header = [
+      '<header class="reader-lesson-header">',
+      '<p class="reader-kicker">' + (index + 1) + ' · ' + escapeHtml(displayTopicTitle(topic)) + '</p>',
+      '<h2 data-topic-title>' + escapeHtml(displayTopicTitle(topic)) + '</h2>',
+      '<div class="reader-lesson-meta" aria-label="Lesson details"><span>' + escapeHtml(topic.level || 'Beginner') + '</span><span>' + escapeHtml(topic.duration || estimateReadingTime(topic)) + '</span><span>' + escapeHtml(topic.tag || 'Playwright') + '</span></div>',
+      '<section class="reader-learning-objective" aria-labelledby="learning-objective-title"><h3 id="learning-objective-title">What you’ll learn</h3><p>' + escapeHtml(objective) + '</p></section>',
+      '</header>'
+    ].join('');
+
+    if (track.readOnly) {
+      return '<div class="reader-lesson-wrap">' + header + '<div class="ai-reader-edit-body" data-reader-body>' + body + '</div>' + renderLessonNavigation(topic, index, total, progress) + '</div>';
+    }
+    return [
+      '<div class="reader-lesson-wrap">', header,
+      '<div class="ai-reader-edit-body" contenteditable="true" data-topic-edit="' + topic.id + '">' + body + '</div>',
+      '<div class="ai-inline-save-panel"><button class="primary-btn" type="button" data-inline-save>Save edits now</button><span data-inline-save-state>Typing auto-saves. Manual save is here as backup.</span></div>',
+      renderLessonNavigation(topic, index, total, progress), '</div>'
+    ].join('');
+  }
+
+  function copyReaderText(value) {
+    function fallbackCopy() {
+      var textarea = document.createElement('textarea');
+      textarea.value = value;
+      textarea.setAttribute('readonly', '');
+      textarea.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0;';
+      document.body.appendChild(textarea);
+      textarea.select();
+      var copied = false;
+      try { copied = document.execCommand('copy'); } catch (e) { copied = false; }
+      textarea.remove();
+      return copied ? Promise.resolve() : Promise.reject(new Error('Copy is unavailable'));
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(value).catch(fallbackCopy);
+    }
+    return fallbackCopy();
+  }
+  function highlightCodeBlocks(root) {
+    root.querySelectorAll('.ai-code-example code').forEach(function(code) {
+      var language = (code.className.match(/language-([\w-]+)/) || [])[1] || 'text';
+      var value = code.textContent || '';
+      var tokenPattern = language === 'bash'
+        ? /(--?[\w-]+)|("[^"\n]*"|'[^'\n]*')|\b(npx|npm|playwright|test|node)\b/g
+        : /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|\b(import|from|const|let|var|async|await|function|return|if|else|for|test|expect|true|false|null|undefined)\b|\b(\d+(?:\.\d+)?)\b/g;
+      var html = '';
+      var cursor = 0;
+      value.replace(tokenPattern, function(match) {
+        var offset = arguments[arguments.length - 2];
+        html += escapeHtml(value.slice(cursor, offset));
+        var tokenClass = /^--?/.test(match) ? 'option' : (/^['"`]/.test(match) ? 'string' : (/^\/\//.test(match) || /^\/\*/.test(match) ? 'comment' : (/^\d/.test(match) ? 'number' : 'keyword')));
+        html += '<span class="token-' + tokenClass + '">' + escapeHtml(match) + '</span>';
+        cursor = offset + match.length;
+        return match;
+      });
+      html += escapeHtml(value.slice(cursor));
+      code.innerHTML = html;
+    });
+  }
+
+  function playwrightTopicGroup(topic) {
+    var title = displayTopicTitle(topic).toLowerCase();
+    if (/introduction|prerequisite|installation|project setup|first playwright test/.test(title)) return 'Getting Started';
+    if (/run|debug|browser|codegen|mcp/.test(title)) return 'Running Tests';
+    if (/locator|xpath|css id/.test(title)) return 'Locators';
+    if (/assertion/.test(title)) return 'Assertions';
+    if (/dropdown|registration|date picker|file upload|alert|dialog/.test(title)) return 'Forms & UI';
+    if (/api/.test(title)) return 'API Testing';
+    if (/ci|architecture|framework|project/.test(title)) return 'Framework / Architecture';
+    return 'Actions';
+  }
   function initReader() {
     var trackId = document.body.getAttribute('data-ai-reader-track');
     if (!trackId || !TRACKS[trackId]) return;
@@ -3982,6 +4035,13 @@
     var nav = document.querySelector('[data-reader-nav]');
     var content = document.querySelector('[data-reader-content]');
     var saveState = document.querySelector('[data-reader-save-state]');
+    var sidebar = document.querySelector('[data-ai-reader-sidebar]');
+    var sidebarToggle = document.querySelector('[data-reader-sidebar-toggle]');
+    var sidebarClose = document.querySelector('[data-reader-sidebar-close]');
+    var sidebarScrim = document.querySelector('[data-reader-sidebar-scrim]');
+    var searchInput = document.querySelector('[data-reader-search]');
+    var positionNode = document.querySelector('[data-reader-position]');
+    var breadcrumbNode = document.querySelector('[data-reader-breadcrumb]');
     var progress = loadJson(track.storageKey + ':progress');
     var customTopics = loadJson(customTopicsKey(track));
     if (!Array.isArray(customTopics)) customTopics = [];
@@ -3993,18 +4053,17 @@
       var done = topics.filter(function (topic) { return progress[topic.id]; }).length;
       var total = topics.length;
       var pct = total ? Math.round((done / total) * 100) : 0;
-      var level = Math.floor(done / 5) + 1;
       var fill = document.querySelector('[data-reader-fill]');
       var counts = document.querySelector('[data-reader-counts]');
       var pctNode = document.querySelector('[data-reader-pct]');
-      var levelNode = document.querySelector('[data-reader-level]');
       var next = document.querySelector('[data-reader-next]');
 
       if (fill) fill.style.width = pct + '%';
-      if (counts) counts.textContent = done + ' / ' + total;
+      if (counts) counts.textContent = done + ' / ' + total + ' completed';
       if (pctNode) pctNode.textContent = pct + '%';
-      if (levelNode) levelNode.textContent = 'Lv ' + level;
-      if (next) next.textContent = done === total ? 'All topics complete' : (total - done) + ' topics remaining';
+      if (next) next.textContent = done === total ? 'Course complete' : (total - done) + ' remaining';
+      var progressbar = document.querySelector('[data-reader-progressbar]');
+      if (progressbar) progressbar.setAttribute('aria-valuenow', String(pct));
 
       nav.querySelectorAll('[data-topic-link]').forEach(function (link) {
         var id = link.getAttribute('data-topic-link');
@@ -4050,12 +4109,18 @@
       topic = topic || topics[0];
       currentTopic = topic.id;
       var index = topics.indexOf(topic);
-      content.innerHTML = renderTopicHtml(track, topic, index, progress);
+      content.innerHTML = renderTopicHtml(track, topic, index, progress, topics.length);
+      if (positionNode) positionNode.textContent = (index + 1) + ' of ' + topics.length;
+      if (breadcrumbNode) breadcrumbNode.textContent = playwrightTopicGroup(topic) + ' / Playwright';
+      document.title = displayTopicTitle(topic) + ' | Playwright Tutorial | TestNova';
+      var descriptionNode = document.querySelector('meta[name="description"]');
+      if (descriptionNode) descriptionNode.setAttribute('content', topic.learningObjective || ((topic.paragraphs || [])[0]) || 'Learn Playwright with TestNova.');
+      highlightCodeBlocks(content);
       content.querySelectorAll('[data-code-copy]').forEach(function (button) {
         button.addEventListener('click', function () {
           var code = button.closest('.ai-code-example').querySelector('code');
           var value = code ? code.textContent : '';
-          navigator.clipboard.writeText(value).then(function () {
+          copyReaderText(value).then(function () {
             button.textContent = 'Copied';
             button.setAttribute('aria-label', 'Code copied');
             setTimeout(function () {
@@ -4077,19 +4142,29 @@
         link.classList.toggle('active', link.getAttribute('data-topic-link') === topic.id);
       });
 
-      var checkbox = content.querySelector('[data-reader-complete]');
-      if (checkbox) {
-        checkbox.addEventListener('change', function () {
-          progress[topic.id] = checkbox.checked ? 1 : 0;
-          if (!checkbox.checked) delete progress[topic.id];
+      var completeButton = content.querySelector('[data-reader-complete]');
+      if (completeButton) {
+        completeButton.addEventListener('click', function () {
+          var completed = completeButton.getAttribute('aria-pressed') !== 'true';
+          if (completed) progress[topic.id] = 1;
+          else delete progress[topic.id];
+          completeButton.setAttribute('aria-pressed', String(completed));
+          completeButton.classList.toggle('is-complete', completed);
+          completeButton.innerHTML = '<span aria-hidden="true">✓</span> ' + (completed ? 'Completed' : 'Mark Complete');
           saveJson(track.storageKey + ':progress', progress);
           updateProgress();
-          if (checkbox.checked) {
-            showTopicToast(displayTopicTitle(topic));
-            burstConfetti();
-          }
         });
       }
+
+      var previousButton = content.querySelector('[data-reader-previous]');
+      var nextButton = content.querySelector('[data-reader-next-topic]');
+      if (previousButton && index > 0) previousButton.addEventListener('click', function() { openTopic(topics[index - 1].id, { updateUrl: true, scroll: true }); });
+      if (nextButton && index < topics.length - 1) nextButton.addEventListener('click', function() { openTopic(topics[index + 1].id, { updateUrl: true, scroll: true }); });
+
+      if (sidebar) sidebar.classList.remove('is-open');
+      if (sidebarScrim) sidebarScrim.hidden = true;
+      if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('reader-drawer-open');
 
       var editBody = content.querySelector('[data-topic-edit]');
       if (editBody) {
@@ -4110,47 +4185,53 @@
     }
 
     function renderNav() {
-      nav.innerHTML = [
-        topics.map(function (topic, index) {
-          return [
-            '<button type="button" data-topic-link="' + topic.id + '">',
-            '<span>' + (index + 1) + '</span>',
-            '<strong>' + escapeHtml(displayTopicTitle(topic)) + '</strong>',
-            '</button>'
-          ].join('');
-        }).join(''),
-        track.readOnly ? '' : [
-          '<button class="ai-add-topic-btn" type="button" data-add-topic>',
-          '<span>+</span>',
-          '<strong>Add topic</strong>',
-          '</button>'
-        ].join('')
-      ].join('');
+      var groupOrder = ['Getting Started', 'Running Tests', 'Locators', 'Actions', 'Assertions', 'Forms & UI', 'Debugging', 'Framework / Architecture', 'API Testing', 'CI/CD'];
+      var groups = {};
+      topics.forEach(function(topic, index) {
+        var group = playwrightTopicGroup(topic);
+        if (!groups[group]) groups[group] = [];
+        groups[group].push({ topic: topic, index: index });
+      });
 
-      nav.querySelectorAll('[data-topic-link]').forEach(function (link) {
-        link.addEventListener('click', function (event) {
+      nav.innerHTML = groupOrder.filter(function(group) { return groups[group] && groups[group].length; }).map(function(group, groupIndex) {
+        var containsCurrent = groups[group].some(function(entry) { return entry.topic.id === currentTopic; });
+        return [
+          '<details class="reader-nav-group"' + (containsCurrent || groupIndex === 0 ? ' open' : '') + '>',
+          '<summary aria-expanded="' + (containsCurrent || groupIndex === 0 ? 'true' : 'false') + '"><span>' + escapeHtml(group) + '</span><small>' + groups[group].length + '</small></summary>',
+          '<div class="reader-nav-group-items">',
+          groups[group].map(function(entry) {
+            return '<button type="button" data-topic-link="' + entry.topic.id + '" data-search-title="' + escapeHtml(displayTopicTitle(entry.topic).toLowerCase()) + '"><span>' + (entry.index + 1) + '</span><strong>' + escapeHtml(displayTopicTitle(entry.topic)) + '</strong><i aria-hidden="true">✓</i></button>';
+          }).join(''),
+          '</div></details>'
+        ].join('');
+      }).join('') + (track.readOnly ? '' : '<button class="ai-add-topic-btn" type="button" data-add-topic><span>+</span><strong>Add topic</strong></button>');
+
+      nav.querySelectorAll('.reader-nav-group').forEach(function(group) {
+        group.addEventListener('toggle', function() {
+          var summary = group.querySelector('summary');
+          if (summary) summary.setAttribute('aria-expanded', String(group.open));
+        });
+      });
+      nav.querySelectorAll('[data-topic-link]').forEach(function(link) {
+        link.addEventListener('click', function(event) {
           event.preventDefault();
-          event.stopPropagation();
           openTopic(link.getAttribute('data-topic-link'), { updateUrl: true, scroll: true });
         });
       });
 
       var addButton = nav.querySelector('[data-add-topic]');
-      if (addButton) {
-        addButton.addEventListener('click', function () {
-          saveCurrentContent();
-          var title = window.prompt('New topic title');
-          var topic = createCustomTopic(track, topics, title);
-          if (!topic) return;
-          customTopics.push(topic);
-          saveCustomTopics(track, customTopics);
-          topics = loadTopics(track);
-          renderNav();
-          updateProgress();
-          openTopic(topic.id, { updateUrl: true, scroll: true });
-          if (saveState) saveState.textContent = 'Added topic: ' + topic.title;
-        });
-      }
+      if (addButton) addButton.addEventListener('click', function() {
+        saveCurrentContent();
+        var title = window.prompt('New topic title');
+        var topic = createCustomTopic(track, topics, title);
+        if (!topic) return;
+        customTopics.push(topic);
+        saveCustomTopics(track, customTopics);
+        topics = loadTopics(track);
+        renderNav();
+        updateProgress();
+        openTopic(topic.id, { updateUrl: true, scroll: true });
+      });
 
       updateProgress();
     }
@@ -4162,18 +4243,33 @@
       saveCurrentContent('auto');
     });
 
-    var copyButton = document.querySelector('[data-reader-copy]');
-    if (copyButton) {
-      copyButton.addEventListener('click', function () {
-        var editBody = content.querySelector('[data-reader-body], [data-topic-edit]');
-        if (!editBody) return;
-        navigator.clipboard.writeText(editBody.innerText || '').then(function () {
-          if (saveState) saveState.textContent = 'Copied current content';
-        }).catch(function () {
-          if (saveState) saveState.textContent = 'Copy failed. Select and copy manually.';
-        });
-      });
+    function setSidebarOpen(open) {
+      if (!sidebar || !sidebarToggle || !sidebarScrim) return;
+      sidebar.classList.toggle('is-open', open);
+      sidebarToggle.setAttribute('aria-expanded', String(open));
+      sidebarScrim.hidden = !open;
+      document.body.classList.toggle('reader-drawer-open', open);
+      if (open && searchInput) searchInput.focus();
     }
+
+    if (sidebarToggle) sidebarToggle.addEventListener('click', function() { setSidebarOpen(true); });
+    if (sidebarClose) sidebarClose.addEventListener('click', function() { setSidebarOpen(false); });
+    if (sidebarScrim) sidebarScrim.addEventListener('click', function() { setSidebarOpen(false); });
+    document.addEventListener('keydown', function(event) { if (event.key === 'Escape') setSidebarOpen(false); });
+
+    if (searchInput) searchInput.addEventListener('input', function() {
+      var query = searchInput.value.trim().toLowerCase();
+      nav.querySelectorAll('.reader-nav-group').forEach(function(group) {
+        var matches = 0;
+        group.querySelectorAll('[data-topic-link]').forEach(function(link) {
+          var visible = !query || (link.getAttribute('data-search-title') || '').indexOf(query) !== -1;
+          link.hidden = !visible;
+          if (visible) matches++;
+        });
+        group.hidden = matches === 0;
+        if (query && matches) group.open = true;
+      });
+    });
 
     initEditableSurfaces();
     renderNav();

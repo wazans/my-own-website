@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Playwright | TestNova</title>
-  <meta name="description" content="Beginner-friendly Playwright lessons with topic navigation, examples, checkboxes, and progress tracking." />
+  <title>Playwright Tutorial | TestNova</title>
+  <meta name="description" content="Learn Playwright with focused lessons, practical examples, browser commands, and saved course progress." />
   <link rel="canonical" href="https://www.testnova.in/playwright-reader.html" />
-  <link rel="stylesheet" href="styles.css?v=playwright-alerts-20260919" />
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="styles.css?v=playwright-reader-redesign-20260920" />
+  <link rel="stylesheet" href="playwright-reader.css?v=playwright-reader-redesign-20260920" />
 </head>
-<body class="learning-page ai-reader-page" data-ai-reader-track="playwright">
+<body class="learning-page ai-reader-page playwright-reader-modern" data-ai-reader-track="playwright">
   <header class="topbar">
     <div class="container nav-container">
       <a class="brand" href="index.html">TestNova</a>
@@ -17,39 +19,64 @@
   </header>
 
   <main class="ai-reader-shell">
-    <aside class="ai-reader-sidebar" data-ai-reader-sidebar>
-      <a class="text-link" href="index.html#featured-readers">Back to landing page</a>
+    <button class="reader-sidebar-toggle" type="button" data-reader-sidebar-toggle aria-controls="playwright-lesson-sidebar" aria-expanded="false">
+      <span aria-hidden="true">☰</span> Lessons
+    </button>
+    <div class="reader-sidebar-scrim" data-reader-sidebar-scrim hidden></div>
+
+    <aside class="ai-reader-sidebar" id="playwright-lesson-sidebar" data-ai-reader-sidebar aria-label="Playwright course navigation">
+      <div class="reader-sidebar-topline">
+        <a class="text-link" href="index.html#featured-readers">← All learning paths</a>
+        <button class="reader-sidebar-close" type="button" data-reader-sidebar-close aria-label="Close lessons menu">×</button>
+      </div>
       <div class="ai-reader-sidebar-copy">
-        <span class="section-tag">Automation Reader</span>
+        <span class="reader-eyebrow">TestNova course</span>
         <h1>Playwright</h1>
-        <p>Open a topic from the left navigation. Your progress and completed-topic checkboxes are saved in this browser.</p>
+        <p>Practical browser automation, one focused lesson at a time.</p>
       </div>
       <div class="progress-panel">
         <div class="progress-header">
-          <span class="level-pill" data-reader-level>Lv 1</span>
-          <span class="progress-counts" data-reader-counts>0 / 0</span>
+          <strong>Course progress</strong>
+          <span class="progress-counts" data-reader-counts>0 / 0 completed</span>
         </div>
-        <div class="xp-bar"><i class="xp-fill" data-reader-fill></i></div>
+        <div class="xp-bar" role="progressbar" aria-label="Course completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-reader-progressbar><i class="xp-fill" data-reader-fill></i></div>
         <div class="xp-meta">
           <span data-reader-pct>0%</span>
           <span data-reader-next>Start reading</span>
         </div>
       </div>
+      <label class="reader-search">
+        <span class="sr-only">Search lessons</span>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
+        <input type="search" placeholder="Search lessons..." autocomplete="off" data-reader-search />
+      </label>
       <nav class="ai-reader-topic-nav" aria-label="Playwright topics" data-reader-nav></nav>
     </aside>
 
     <section class="ai-reader-main">
       <div class="ai-reader-toolbar">
-        <button class="secondary-btn" type="button" data-reader-copy>Copy current content</button>
-        <span data-reader-save-state>Read-only learning content.</span>
+        <span data-reader-breadcrumb>Playwright course</span>
+        <span class="reader-position" data-reader-position>1 of 20</span>
       </div>
-      <article class="glass-card ai-reader-content" data-reader-content></article>
+      <article class="ai-reader-content" data-reader-content aria-live="polite">
+        <header class="reader-static-intro">
+          <p class="reader-kicker">Playwright course</p>
+          <h2>Choose a Playwright lesson</h2>
+          <p>Select a lesson from the course navigation. Direct lesson links open the requested topic automatically.</p>
+        </header>
+      </article>
+      <noscript>
+        <section class="reader-noscript">
+          <h2>Playwright learning reader</h2>
+          <p>JavaScript is required for lesson navigation, progress tracking, and code-copy controls. Enable JavaScript and reload this page.</p>
+        </section>
+      </noscript>
     </section>
   </main>
 
   <script src="site.js?v=remove-notes-20260818"></script>
-  <script src="playwright-curriculum.js?v=playwright-alerts-20260919"></script>
-  <script src="ai-reader.js?v=playwright-alerts-20260919"></script>
+  <script src="playwright-curriculum.js?v=playwright-reader-redesign-20260920"></script>
+  <script src="ai-reader.js?v=playwright-reader-redesign-20260920"></script>
   <script src="registration.js"></script>
 </body>
 </html>

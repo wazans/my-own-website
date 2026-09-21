@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  // TODO(TestNova practice): replace placeholder example.com targets only when equivalent TestNova-controlled practice pages exist.
+
   function example(title, code, explanation, language) {
     return { title: title, code: code, explanation: explanation, language: language || 'javascript' };
   }
@@ -101,14 +103,35 @@
       example('Run multiple test files', 'npx playwright test example.spec.js registration.spec.js', 'Runs only the listed files.', 'bash')
     ]),
 
-    topic(18, 'Run Tests on a Specific Browser', [
-      '--project selects a browser project configured in playwright.config.js or playwright.config.ts. Common project names are chromium, firefox, and webkit. WebKit is the browser engine behind Safari.',
-      '--last-failed reruns only the tests that failed in the previous run. Compatible options can be combined, such as a browser project with headed mode.'
+    Object.assign(topic(18, 'Running Tests on a Specific Browser', [
+      'Playwright projects are named test configurations stored in playwright.config.js or playwright.config.ts. A project can select a browser, device, environment, or shared test setting.',
+      'The --project option tells Playwright to run the selected tests with one configured project. The project name must match the name in your configuration.'
     ], [
-      example('Run each browser project', 'npx playwright test --project=chromium\nnpx playwright test --project=firefox\nnpx playwright test --project=webkit', 'Runs the suite with the selected configured browser project.', 'bash'),
-      example('Rerun WebKit failures', 'npx playwright test --project=webkit --last-failed', 'Runs only the previously failed WebKit tests.', 'bash'),
-      example('Combine compatible options', 'npx playwright test --project=chromium --headed', 'Runs the Chromium project with its browser window visible.', 'bash')
-    ]),
+      example('Run with Chromium', 'npx playwright test --project=chromium', 'Playwright selects the configured Chromium project and runs the selected tests with that project.', 'bash'),
+      example('Run with Firefox', 'npx playwright test --project=firefox', 'The same tests run through the configured Firefox project.', 'bash'),
+      example('Run with WebKit', 'npx playwright test --project=webkit', 'WebKit provides Safari-style browser-engine coverage.', 'bash')
+    ], [flow('How --project works', ['Your Test', 'Playwright Project', 'Chromium / Firefox / WebKit'])]), {
+      level: 'Beginner',
+      duration: '3 min read',
+      tag: 'CLI',
+      learningObjective: 'After this lesson, you’ll know how to run Playwright tests using Chromium, Firefox, or WebKit.',
+      tryIt: {
+        title: 'Try it yourself',
+        code: 'npx playwright test --project=chromium --headed',
+        language: 'bash',
+        text: 'The browser should open so you can watch the test run.'
+      },
+      commonMistake: {
+        code: 'npx playwright test --project=chrome',
+        language: 'bash',
+        text: 'This may fail when the configured project name is chromium. Project names come from playwright.config.js or playwright.config.ts.'
+      },
+      challenge: {
+        question: 'Run only login.spec.js in Firefox and show the browser.',
+        answer: 'npx playwright test login.spec.js --project=firefox --headed',
+        language: 'bash'
+      }
+    }),
 
     topic(19, 'Playwright Project & Test Result Files', [
       'playwright.config.js and playwright.config.ts configure test folders, browsers, timeouts, retries, reporters, and shared browser options. Use the extension that matches your JavaScript or TypeScript project.',
