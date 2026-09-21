@@ -4042,6 +4042,7 @@
     var searchInput = document.querySelector('[data-reader-search]');
     var positionNode = document.querySelector('[data-reader-position]');
     var breadcrumbNode = document.querySelector('[data-reader-breadcrumb]');
+    var readerTopbar = document.querySelector('.topbar');
     var progress = loadJson(track.storageKey + ':progress');
     var customTopics = loadJson(customTopicsKey(track));
     if (!Array.isArray(customTopics)) customTopics = [];
@@ -4049,6 +4050,17 @@
     var currentTopic = topicFromUrl() || track.topics[0].id;
     var saveTimer = null;
 
+    function syncReaderHeaderOffset() {
+      var height = readerTopbar ? Math.ceil(readerTopbar.getBoundingClientRect().height) : 70;
+      document.documentElement.style.setProperty('--reader-header-height', height + 'px');
+      document.documentElement.style.scrollPaddingTop = (height + 16) + 'px';
+    }
+
+    syncReaderHeaderOffset();
+    window.addEventListener('resize', syncReaderHeaderOffset);
+    if (readerTopbar && window.ResizeObserver) {
+      new ResizeObserver(syncReaderHeaderOffset).observe(readerTopbar);
+    }
     function updateProgress() {
       var done = topics.filter(function (topic) { return progress[topic.id]; }).length;
       var total = topics.length;
