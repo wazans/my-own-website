@@ -522,7 +522,23 @@
       callout('Important', 'warning', 'Create the dialog listener before the action that opens the dialog, and always accept or dismiss it inside the handler. Otherwise the click can stall.')
     ], [{ label: 'Practise JavaScript Alerts', url: 'https://the-internet.herokuapp.com/javascript_alerts' }]),
 
-    topic(66, 'File Upload', [
+    topic(66, 'Handling Multiple Tabs', [
+      'A browser context is an isolated browser session that can contain more than one page. Each page represents a browser tab or popup.',
+      'Start waiting for the page event before clicking the link. This prevents Playwright from missing a new tab that opens quickly.',
+      'After the event resolves, use the new Page object to wait for the tab to load and interact with its elements.'
+    ], [
+      example('Handle a new tab using BrowserContext', "import { test, expect } from '@playwright/test';\n\ntest('Handling multiple tabs using context', async ({ browser }) => {\n  const context = await browser.newContext();\n  const page = await context.newPage();\n\n  await page.goto(\n    'https://freelance-learn-automation.vercel.app/login'\n  );\n\n  // Start waiting before the action that opens the new tab.\n  const newPagePromise = context.waitForEvent('page');\n\n  await page\n    .locator(\"//div[@id='login_container']//a[contains(@href,'linkedin')]\")\n    .click();\n\n  const newPage = await newPagePromise;\n  await newPage.waitForLoadState();\n\n  await expect(newPage).toHaveURL(/linkedin\\.com/);\n  await newPage.locator('#email-or-phone').fill('test@test.com');\n\n  await context.close();\n});", 'The context emits a page event when the LinkedIn link opens a new tab. The returned Page object lets the test work in that tab.', 'ts')
+    ], [
+      table('Objects in This Test', ['Object', 'Meaning'], [
+        ['browser', 'The Playwright browser instance'],
+        ['context', 'An isolated browser session'],
+        ['page', 'The original login tab'],
+        ['newPage', 'The new LinkedIn tab']
+      ]),
+      callout('Important', 'warning', 'Create context.waitForEvent("page") before clicking the link. If you start waiting after the click, Playwright may miss the new-tab event.')
+    ], [{ label: 'Open the Practice Login Page', url: 'https://freelance-learn-automation.vercel.app/login' }]),
+
+    topic(67, 'File Upload', [
       'File-upload controls normally use an input element with type="file". Playwright sets the file directly on that input instead of controlling the native operating-system dialog.',
       'The syntax is locator.setInputFiles(files). path.join() is safer across Windows, macOS, and Linux.'
     ], [
@@ -532,7 +548,7 @@
       example('Syntax', 'locator.setInputFiles(files);', 'files can be one path, several paths, or an in-memory file payload.')
     ], [], [{ label: 'Open The Internet File Upload', url: 'https://the-internet.herokuapp.com/upload' }]),
 
-    topic(67, 'Multiple File Upload', [
+    topic(68, 'Multiple File Upload', [
       'The HTML input must support the multiple attribute before it can accept several files.',
       'setInputFiles() can also clear a selection or upload a file created entirely in memory.'
     ], [
@@ -542,7 +558,7 @@
       example('Create and upload a file from memory', "await page.locator('input[type=\"file\"]').setInputFiles({\n  name: 'test-data.txt',\n  mimeType: 'text/plain',\n  buffer: Buffer.from('Created during Playwright test')\n});", 'This method does not require a physical file to already exist.')
     ]),
 
-    topic(68, 'Dynamic File Upload with FileChooser', [
+    topic(69, 'Dynamic File Upload with FileChooser', [
       'The filechooser event is useful when the input is created dynamically or no permanent input[type=\"file\"] element is available.',
       'Create the event listener before clicking the upload button so Playwright cannot miss the event.'
     ], [
@@ -551,7 +567,7 @@
       example('Incorrect order', "await page.getByRole('button', { name: 'Choose File' }).click();\nconst fileChooserPromise = page.waitForEvent('filechooser');", 'The event may finish before Playwright starts waiting for it.')
     ], [callout('Important', 'warning', 'The filechooser listener must be created before clicking the upload button.')]),
 
-    topic(69, 'File Upload Test Scenarios', [
+    topic(70, 'File Upload Test Scenarios', [
       'Use this QA checklist to cover successful uploads, validation failures, filenames, replacement, and removal behavior.'
     ], [], [checklist('File Upload QA Checklist', ['Upload a valid file', 'Upload an unsupported file extension', 'Upload a file exceeding the maximum size', 'Submit without selecting a file', 'Upload multiple files', 'Upload duplicate files', 'Upload a filename containing spaces', 'Upload a filename containing special characters', 'Verify the success message', 'Verify the uploaded filename', 'Replace an already selected file', 'Remove or clear the selected file'])])
   ];
