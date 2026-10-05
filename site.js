@@ -1167,20 +1167,19 @@
     var isLearning = ['learning-hub.html', 'qa-engineering.html', 'development-technologies.html', 'ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'js-typescript.html', 'playwright-reader.html', 'git-github-essentials.html', 'ipl-automation-practice.html', 'tech-courses.html', 'ai-courses.html'].indexOf(page) !== -1 || document.body.classList.contains('learning-page');
     var navHtml = [
       '<a' + (page === 'index.html' ? ' class="active"' : '') + ' href="/index.html">Home</a>',
-      '<div class="has-mega-menu learning-dropdown">',
       '<a' + (isLearning ? ' class="active"' : '') + ' href="/learning-hub.html">Learning Hub</a>',
+      '<a' + (page === 'qa-engineering.html' ? ' class="active"' : '') + ' href="/qa-engineering.html">QA</a>',
+      '<a' + (page === 'ai-emerging-technologies.html' ? ' class="active"' : '') + ' href="/ai-emerging-technologies.html">AI</a>',
+      '<a' + (page === 'development-technologies.html' ? ' class="active"' : '') + ' href="/development-technologies.html">Tech</a>',
+      '<div class="has-mega-menu learning-dropdown">',
+      '<a href="/learning-hub.html">Courses</a>',
       '<div class="mega-menu compact-learning-menu">',
-      '<a href="/qa-engineering.html">QA Engineering</a>',
-      '<a href="/development-technologies.html">Development Technologies</a>',
-      '<a href="/ai-emerging-technologies.html">AI Learning Hub</a>',
-      '<a href="/ipl-automation-practice.html">IPL Practice</a>',
-      '<a class="mobile-learning-overview" href="/learning-hub.html">Learning Hub Overview</a>',
-      '</div>',
-      '</div>',
-      '<a' + (page === 'career-services.html' ? ' class="active"' : '') + ' href="/career-services.html">Career Services</a>',
-      '<a' + (page === 'corporate-training.html' ? ' class="active"' : '') + ' href="/corporate-training.html">Corporate Training</a>',
+      '<a href="/playwright-reader.html">Playwright</a>',
+      '<a href="/selenium.html">Selenium</a>',
+      '<a href="/api.html">API Testing</a>',
+      '<a href="/js-typescript.html">JavaScript &amp; TypeScript</a>',
+      '</div></div>',
       '<a' + (page === 'about.html' ? ' class="active"' : '') + ' href="/about.html">About</a>',
-      '<a' + (page === 'contact.html' ? ' class="active"' : '') + ' href="/contact.html">Contact</a>',
       '<a class="nav-register' + (page === 'registration' || page === 'register.html' ? ' active' : '') + '" href="/registration/">Register</a>'
     ].join('');
 
