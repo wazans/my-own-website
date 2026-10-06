@@ -4016,32 +4016,6 @@
     });
   }
 
-  function readerTopicGroup(topic, trackId) {
-    var title = displayTopicTitle(topic).toLowerCase();
-    if (trackId === 'jsTs') {
-      if (/typescript|interface|type alias|enum|generic/.test(title)) return 'TypeScript';
-      if (/async|await|promise|callback|fetch/.test(title)) return 'Async JavaScript';
-      if (/array|object|map|set|json|destructur|spread/.test(title)) return 'Data & Collections';
-      if (/function|arrow|scope|closure/.test(title)) return 'Functions';
-      if (/loop|condition|operator|switch/.test(title)) return 'Control Flow';
-      if (/dom|browser|form|storage|event/.test(title)) return 'Browser Concepts';
-      return 'Foundations';
-    }
-    if (/introduction|prerequisite|installation|project setup|first playwright test/.test(title)) return 'Getting Started';
-    if (/run|debug|browser|codegen|mcp/.test(title)) return 'Running Tests';
-    if (/locator|xpath|css id/.test(title)) return 'Locators';
-    if (/assertion/.test(title)) return 'Assertions';
-    if (/dropdown|registration|date picker|file upload|alert|dialog/.test(title)) return 'Forms & UI';
-    if (/api/.test(title)) return 'API Testing';
-    if (/ci|architecture|framework|project/.test(title)) return 'Framework / Architecture';
-    return 'Actions';
-  }
-
-  function readerGroupOrder(trackId) {
-    if (trackId === 'jsTs') return ['Foundations', 'Control Flow', 'Functions', 'Data & Collections', 'Async JavaScript', 'Browser Concepts', 'TypeScript'];
-    return ['Getting Started', 'Running Tests', 'Locators', 'Actions', 'Assertions', 'Forms & UI', 'Debugging', 'Framework / Architecture', 'API Testing', 'CI/CD'];
-  }
-
   function initReader() {
     var trackId = document.body.getAttribute('data-ai-reader-track');
     if (!trackId || !TRACKS[trackId]) return;
@@ -4138,7 +4112,7 @@
       var index = topics.indexOf(topic);
       content.innerHTML = renderTopicHtml(track, topic, index, progress, topics.length);
       if (positionNode) positionNode.textContent = (index + 1) + ' of ' + topics.length;
-      if (breadcrumbNode) breadcrumbNode.textContent = readerTopicGroup(topic, trackId) + ' / ' + track.title;
+      if (breadcrumbNode) breadcrumbNode.textContent = track.title + ' / Lesson ' + (index + 1);
       document.title = displayTopicTitle(topic) + ' | ' + track.title + ' | TestNova';
       var descriptionNode = document.querySelector('meta[name="description"]');
       if (descriptionNode) descriptionNode.setAttribute('content', topic.learningObjective || ((topic.paragraphs || [])[0]) || 'Learn ' + track.title + ' with TestNova.');
@@ -4212,33 +4186,11 @@
     }
 
     function renderNav() {
-      var groupOrder = readerGroupOrder(trackId);
-      var groups = {};
-      topics.forEach(function(topic, index) {
-        var group = readerTopicGroup(topic, trackId);
-        if (!groups[group]) groups[group] = [];
-        groups[group].push({ topic: topic, index: index });
-      });
-
-      nav.innerHTML = groupOrder.filter(function(group) { return groups[group] && groups[group].length; }).map(function(group, groupIndex) {
-        var containsCurrent = groups[group].some(function(entry) { return entry.topic.id === currentTopic; });
-        return [
-          '<details class="reader-nav-group"' + (containsCurrent || groupIndex === 0 ? ' open' : '') + '>',
-          '<summary aria-expanded="' + (containsCurrent || groupIndex === 0 ? 'true' : 'false') + '"><span>' + escapeHtml(group) + '</span><small>' + groups[group].length + '</small></summary>',
-          '<div class="reader-nav-group-items">',
-          groups[group].map(function(entry) {
-            return '<button type="button" data-topic-link="' + entry.topic.id + '" data-search-title="' + escapeHtml(displayTopicTitle(entry.topic).toLowerCase()) + '"><span>' + (entry.index + 1) + '</span><strong>' + escapeHtml(displayTopicTitle(entry.topic)) + '</strong><i aria-hidden="true">✓</i></button>';
-          }).join(''),
-          '</div></details>'
-        ].join('');
+      nav.classList.add('reader-topic-list');
+      nav.innerHTML = topics.map(function(topic, index) {
+        return '<button type="button" data-topic-link="' + topic.id + '" data-search-title="' + escapeHtml(displayTopicTitle(topic).toLowerCase()) + '"><span>' + (index + 1) + '</span><strong>' + escapeHtml(displayTopicTitle(topic)) + '</strong><i aria-hidden="true">✓</i></button>';
       }).join('') + (track.readOnly ? '' : '<button class="ai-add-topic-btn" type="button" data-add-topic><span>+</span><strong>Add topic</strong></button>');
 
-      nav.querySelectorAll('.reader-nav-group').forEach(function(group) {
-        group.addEventListener('toggle', function() {
-          var summary = group.querySelector('summary');
-          if (summary) summary.setAttribute('aria-expanded', String(group.open));
-        });
-      });
       nav.querySelectorAll('[data-topic-link]').forEach(function(link) {
         link.addEventListener('click', function(event) {
           event.preventDefault();
@@ -4286,15 +4238,9 @@
 
     if (searchInput) searchInput.addEventListener('input', function() {
       var query = searchInput.value.trim().toLowerCase();
-      nav.querySelectorAll('.reader-nav-group').forEach(function(group) {
-        var matches = 0;
-        group.querySelectorAll('[data-topic-link]').forEach(function(link) {
-          var visible = !query || (link.getAttribute('data-search-title') || '').indexOf(query) !== -1;
-          link.hidden = !visible;
-          if (visible) matches++;
-        });
-        group.hidden = matches === 0;
-        if (query && matches) group.open = true;
+      nav.querySelectorAll('[data-topic-link]').forEach(function(link) {
+        var visible = !query || (link.getAttribute('data-search-title') || '').indexOf(query) !== -1;
+        link.hidden = !visible;
       });
     });
 
