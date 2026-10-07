@@ -3803,7 +3803,8 @@
 
   function renderTopicExamples(topic) {
     if (!topic.examples || !topic.examples.length) return '';
-    return '<section class="reader-lesson-section reader-lesson-section--example"><h3><span aria-hidden="true">02</span> Example</h3>' + topic.examples.map(function(example) {
+    var title = displayTopicTitle(topic);
+    return '<section class="reader-lesson-section reader-lesson-section--example"><h3><span aria-hidden="true">CODE</span> ' + escapeHtml(title) + ' examples</h3>' + topic.examples.map(function(example) {
       return renderCodeExample(example, '');
     }).join('') + '</section>';
   }
@@ -3821,7 +3822,8 @@
 
   function renderTopicMaterial(topic) {
     var paragraphs = (topic.paragraphs || []).map(function(paragraph) { return '<p>' + escapeHtml(paragraph) + '</p>'; }).join('');
-    var concept = paragraphs ? '<section class="reader-lesson-section reader-lesson-section--concept"><h3><span aria-hidden="true">01</span> Concept</h3>' + paragraphs + '</section>' : '';
+    var topicTitle = displayTopicTitle(topic);
+    var concept = paragraphs ? '<section class="reader-lesson-section reader-lesson-section--concept"><h3><span aria-hidden="true">TOPIC</span> ' + escapeHtml(topicTitle) + '</h3>' + paragraphs + '</section>' : '';
     var tryIt = topic.tryIt ? [
       '<aside class="reader-learning-callout reader-learning-callout--try" aria-labelledby="try-it-title">',
       '<h3 id="try-it-title"><span aria-hidden="true">▶</span> ' + escapeHtml(topic.tryIt.title || 'Try it yourself') + '</h3>',

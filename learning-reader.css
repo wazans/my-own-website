@@ -44,6 +44,8 @@
   box-shadow: none;
   scrollbar-width: thin;
   scrollbar-color: #344258 transparent;
+  box-sizing: border-box;
+  min-width: 0;
 }
 
 .reader-sidebar-topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
@@ -79,19 +81,24 @@
 .learning-reader-modern .progress-panel {
   display: grid;
   gap: 0.55rem;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
   padding: 0.8rem;
   border: 1px solid var(--reader-border);
   border-radius: 10px;
   background: var(--reader-surface);
   box-shadow: none;
+  overflow: visible;
 }
 .learning-reader-modern .progress-panel::before { display: none; }
 .learning-reader-modern .progress-header,
-.learning-reader-modern .xp-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.learning-reader-modern .xp-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; min-width: 0; }
 .learning-reader-modern .progress-header strong { color: var(--reader-text); font-size: 0.84rem; }
 .learning-reader-modern .progress-counts,
 .learning-reader-modern .xp-meta { color: var(--reader-muted); font-size: 0.76rem; font-weight: 600; }
-.learning-reader-modern .xp-bar { height: 5px; overflow: hidden; border-radius: 999px; background: #253044; }
+.learning-reader-modern .progress-counts { flex: none; white-space: nowrap; }
+.learning-reader-modern .xp-bar { display: block; width: 100%; min-width: 0; height: 9px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--reader-accent) 28%, var(--reader-border)); border-radius: 999px; background: color-mix(in srgb, var(--reader-accent) 12%, var(--reader-surface-soft)); }
 .learning-reader-modern .xp-fill { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--reader-accent-strong); transition: width 180ms ease; }
 
 .reader-search { position: relative; display: block; }
@@ -279,14 +286,15 @@
 .reader-lesson-section { margin: 0 0 2.2rem; }
 .reader-lesson-section > h3 { display: flex; align-items: center; gap: 0.55rem; }
 .reader-lesson-section > h3 > span {
-  display: grid;
-  width: 30px;
+  display: inline-grid;
+  min-width: 48px;
   height: 24px;
+  padding-inline: 0.45rem;
   place-items: center;
   border-radius: 6px;
   color: #fff;
   background: #2563eb;
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   letter-spacing: 0;
 }
 .reader-lesson-section--example > h3 > span { background: #7c3aed; }
