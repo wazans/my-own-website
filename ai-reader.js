@@ -3803,7 +3803,7 @@
 
   function renderTopicExamples(topic) {
     if (!topic.examples || !topic.examples.length) return '';
-    return '<section class="reader-lesson-section"><h3>Example</h3>' + topic.examples.map(function(example) {
+    return '<section class="reader-lesson-section reader-lesson-section--example"><h3><span aria-hidden="true">02</span> Example</h3>' + topic.examples.map(function(example) {
       return renderCodeExample(example, '');
     }).join('') + '</section>';
   }
@@ -3821,24 +3821,24 @@
 
   function renderTopicMaterial(topic) {
     var paragraphs = (topic.paragraphs || []).map(function(paragraph) { return '<p>' + escapeHtml(paragraph) + '</p>'; }).join('');
-    var concept = paragraphs ? '<section class="reader-lesson-section"><h3>Concept</h3>' + paragraphs + '</section>' : '';
+    var concept = paragraphs ? '<section class="reader-lesson-section reader-lesson-section--concept"><h3><span aria-hidden="true">01</span> Concept</h3>' + paragraphs + '</section>' : '';
     var tryIt = topic.tryIt ? [
       '<aside class="reader-learning-callout reader-learning-callout--try" aria-labelledby="try-it-title">',
-      '<h3 id="try-it-title">' + escapeHtml(topic.tryIt.title || 'Try it yourself') + '</h3>',
+      '<h3 id="try-it-title"><span aria-hidden="true">▶</span> ' + escapeHtml(topic.tryIt.title || 'Try it yourself') + '</h3>',
       renderCodeExample({ title: 'Run this command', code: topic.tryIt.code, language: topic.tryIt.language || 'bash' }, 'ai-code-example--embedded'),
       '<p>' + escapeHtml(topic.tryIt.text || '') + '</p>',
       '</aside>'
     ].join('') : '';
     var mistake = topic.commonMistake ? [
       '<aside class="reader-learning-callout reader-learning-callout--mistake" aria-labelledby="mistake-title">',
-      '<h3 id="mistake-title">Common mistake</h3>',
+      '<h3 id="mistake-title"><span aria-hidden="true">!</span> Common mistake</h3>',
       renderCodeExample({ title: 'Avoid this', code: topic.commonMistake.code, language: topic.commonMistake.language || 'text' }, 'ai-code-example--embedded'),
       '<p>' + escapeHtml(topic.commonMistake.text || '') + '</p>',
       '</aside>'
     ].join('') : '';
     var challenge = topic.challenge ? [
       '<section class="reader-learning-callout reader-learning-callout--challenge">',
-      '<h3>Mini challenge</h3>',
+      '<h3><span aria-hidden="true">?</span> Mini challenge</h3>',
       '<p>' + escapeHtml(topic.challenge.question) + '</p>',
       '<details class="reader-answer"><summary>Show Answer</summary>',
       renderCodeExample({ title: 'Answer', code: topic.challenge.answer, language: topic.challenge.language || 'text' }, 'ai-code-example--embedded'),
@@ -3860,6 +3860,39 @@
         '</details>'
       ].join('');
     }).join('') + '</div>';
+  }
+
+  function lessonKeyPoint(topic) {
+    if (topic.paragraphs && topic.paragraphs.length) return topic.paragraphs[0];
+    if (topic.subsections && topic.subsections.length) {
+      for (var index = 0; index < topic.subsections.length; index++) {
+        var subsection = topic.subsections[index];
+        if (subsection.paragraphs && subsection.paragraphs.length) return subsection.paragraphs[0];
+      }
+    }
+    return 'Use this concept in a small Playwright example and explain why it is useful.';
+  }
+
+  function renderLessonReview(topic) {
+    var title = displayTopicTitle(topic);
+    var keyPoint = lessonKeyPoint(topic);
+    var practice = topic.practice || ('Create one small working example for “' + title + '” and add one assertion to verify the result.');
+    return [
+      '<section class="reader-review-grid" aria-label="Practice and revision">',
+      '<article class="reader-review-card reader-review-card--practice">',
+      '<span class="reader-review-label">Practice</span>',
+      '<h3>Try it yourself</h3><p>' + escapeHtml(practice) + '</p>',
+      '</article>',
+      '<details class="reader-review-card reader-review-card--interview">',
+      '<summary><span><small>Interview question</small>How would you explain ' + escapeHtml(title) + '?</span><b>Show answer</b></summary>',
+      '<p>' + escapeHtml(keyPoint) + '</p>',
+      '</details>',
+      '<details class="reader-review-card reader-review-card--check">',
+      '<summary><span><small>Quick check</small>What is the main purpose of this concept?</span><b>Check answer</b></summary>',
+      '<p>' + escapeHtml(keyPoint) + '</p>',
+      '</details>',
+      '</section>'
+    ].join('');
   }
 
   function loadJson(key) {
@@ -3931,48 +3964,55 @@
   }
 
   function estimateReadingTime(topic) {
-    var text = (topic.paragraphs || []).join(' ') + ' ' + (topic.examples || []).map(function(example) { return example.explanation || ''; }).join(' ');
+    var parts = [topic].concat(topic.subsections || []);
+    var text = parts.map(function(part) {
+      return (part.paragraphs || []).join(' ') + ' ' + (part.examples || []).map(function(example) { return example.explanation || ''; }).join(' ');
+    }).join(' ');
     return Math.max(2, Math.ceil(text.trim().split(/\s+/).length / 150)) + ' min read';
   }
 
-  function renderLessonNavigation(topic, index, total, progress) {
+  function renderLessonNavigation(topic, index, topics, progress) {
+    var total = topics.length;
+    var previous = index > 0 ? displayTopicTitle(topics[index - 1]) : 'Start of course';
+    var next = index < total - 1 ? displayTopicTitle(topics[index + 1]) : 'Course complete';
     return [
       '<nav class="reader-lesson-navigation" aria-label="Lesson navigation">',
-      '<button type="button" class="reader-nav-button reader-nav-button--previous" data-reader-previous' + (index === 0 ? ' disabled' : '') + '><span aria-hidden="true">←</span><span><small>Previous</small><strong>Lesson ' + index + '</strong></span></button>',
+      '<button type="button" class="reader-nav-button reader-nav-button--previous" data-reader-previous' + (index === 0 ? ' disabled' : '') + '><span aria-hidden="true">←</span><span><small>Previous lesson</small><strong>' + escapeHtml(previous) + '</strong></span></button>',
       '<button type="button" class="reader-complete-button' + (progress[topic.id] ? ' is-complete' : '') + '" data-reader-complete="' + topic.id + '" aria-pressed="' + (progress[topic.id] ? 'true' : 'false') + '"><span aria-hidden="true">✓</span> ' + (progress[topic.id] ? 'Completed' : 'Mark Complete') + '</button>',
-      '<button type="button" class="reader-nav-button reader-nav-button--next" data-reader-next-topic' + (index === total - 1 ? ' disabled' : '') + '><span><small>Next</small><strong>Lesson ' + (index + 2) + '</strong></span><span aria-hidden="true">→</span></button>',
+      '<button type="button" class="reader-nav-button reader-nav-button--next" data-reader-next-topic' + (index === total - 1 ? ' disabled' : '') + '><span><small>Next lesson</small><strong>' + escapeHtml(next) + '</strong></span><span aria-hidden="true">→</span></button>',
       '</nav>'
     ].join('');
   }
 
-  function renderTopicHtml(track, topic, index, progress, total) {
+  function renderTopicHtml(track, topic, index, progress, topics) {
+    var total = topics.length;
     if (window.TestNovaArraysPlayground && topic.id === window.TestNovaArraysPlayground.topicId) {
-      return window.TestNovaArraysPlayground.render() + renderLessonNavigation(topic, index, total, progress);
+      return window.TestNovaArraysPlayground.render() + renderLessonNavigation(topic, index, topics, progress);
     }
     var contentKey = track.storageKey + ':content:' + topic.id;
     if (track.contentVersion) contentKey = track.storageKey + ':content:v' + track.contentVersion + ':' + topic.id;
     var savedContent = track.readOnly ? '' : localStorage.getItem(contentKey);
     if (savedContent) savedContent = savedContent.replace(/<div class="ai-inline-save-panel"[\s\S]*?<\/div>/g, '');
 
-    var objective = topic.learningObjective || ((topic.paragraphs && topic.paragraphs[0]) ? topic.paragraphs[0] : 'Build practical Playwright knowledge with a focused example.');
+    var objective = topic.learningObjective || lessonKeyPoint(topic);
     var body = savedContent || renderTopicSubsections(topic);
     var header = [
       '<header class="reader-lesson-header">',
       '<p class="reader-kicker">' + (index + 1) + ' · ' + escapeHtml(displayTopicTitle(topic)) + '</p>',
       '<h2 data-topic-title>' + escapeHtml(displayTopicTitle(topic)) + '</h2>',
-      '<div class="reader-lesson-meta" aria-label="Lesson details"><span>' + escapeHtml(topic.level || 'Beginner') + '</span><span>' + escapeHtml(topic.duration || estimateReadingTime(topic)) + '</span><span>' + escapeHtml(topic.tag || 'Playwright') + '</span></div>',
-      '<section class="reader-learning-objective" aria-labelledby="learning-objective-title"><h3 id="learning-objective-title">What you’ll learn</h3><p>' + escapeHtml(objective) + '</p></section>',
+      '<div class="reader-lesson-meta" aria-label="Lesson details"><span>' + escapeHtml(topic.level || 'Beginner') + '</span><span>' + escapeHtml(topic.duration || estimateReadingTime(topic)) + '</span><span>Lesson ' + (index + 1) + ' of ' + total + '</span></div>',
+      '<section class="reader-learning-objective" aria-labelledby="learning-objective-title"><h3 id="learning-objective-title"><span aria-hidden="true">◆</span> What you’ll learn</h3><p>' + escapeHtml(objective) + '</p></section>',
       '</header>'
     ].join('');
 
     if (track.readOnly) {
-      return '<div class="reader-lesson-wrap">' + header + '<div class="ai-reader-edit-body" data-reader-body>' + body + '</div>' + renderLessonNavigation(topic, index, total, progress) + '</div>';
+      return '<div class="reader-lesson-wrap">' + header + '<div class="ai-reader-edit-body" data-reader-body>' + body + '</div>' + renderLessonReview(topic) + renderLessonNavigation(topic, index, topics, progress) + '</div>';
     }
     return [
       '<div class="reader-lesson-wrap">', header,
       '<div class="ai-reader-edit-body" contenteditable="true" data-topic-edit="' + topic.id + '">' + body + '</div>',
       '<div class="ai-inline-save-panel"><button class="primary-btn" type="button" data-inline-save>Save edits now</button><span data-inline-save-state>Typing auto-saves. Manual save is here as backup.</span></div>',
-      renderLessonNavigation(topic, index, total, progress), '</div>'
+      renderLessonReview(topic), renderLessonNavigation(topic, index, topics, progress), '</div>'
     ].join('');
   }
 
@@ -4110,7 +4150,7 @@
       topic = topic || topics[0];
       currentTopic = topic.id;
       var index = topics.indexOf(topic);
-      content.innerHTML = renderTopicHtml(track, topic, index, progress, topics.length);
+      content.innerHTML = renderTopicHtml(track, topic, index, progress, topics);
       if (positionNode) positionNode.textContent = (index + 1) + ' of ' + topics.length;
       if (breadcrumbNode) breadcrumbNode.textContent = track.title + ' / Lesson ' + (index + 1);
       document.title = displayTopicTitle(topic) + ' | ' + track.title + ' | TestNova';
