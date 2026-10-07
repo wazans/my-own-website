@@ -599,6 +599,50 @@
         ['locator.nth(index)', 'Work with an item at a particular zero-based index']
       ]),
       callout('External Site Note', 'info', 'Google may show a consent screen or different accessible names depending on location. For stable training and CI tests, use an application or practice page that your team controls.')
+    ]),
+
+    topic(73, 'Timeouts, Waits and Page Load States', [
+      'Playwright has separate timeout controls for the complete test, web-first assertions, element actions, and navigation. Increasing one timeout does not automatically increase every other timeout.',
+      'Playwright already auto-waits before actions and retries web-first assertions. Prefer those capabilities over fixed sleeps such as waitForTimeout().',
+      'Use explicit waits only when the scenario requires a specific element state or page load event. Keep timeouts finite unless you are temporarily debugging.'
+    ], [
+      example('1. Set the timeout for one test', "import { test, expect } from '@playwright/test';\n\ntest('set a test timeout', async ({ page }) => {\n  test.setTimeout(60_000);\n\n  await page.goto('https://www.google.com/');\n  await expect(page).toHaveTitle(/Google/);\n});", 'test.setTimeout() controls the maximum duration of this complete test, including setup, actions, assertions, and teardown.', 'ts'),
+      example('2. Common test-timeout values', "test.setTimeout(60_000);  // 60 seconds\ntest.setTimeout(120_000); // 2 minutes\ntest.setTimeout(180_000); // 3 minutes\ntest.setTimeout(0);       // no test timeout", 'A zero timeout disables the test limit. Avoid it in normal suites because a stuck test can run indefinitely.', 'ts'),
+      example('3. Configure test, expect, and action timeouts', "import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  timeout: 30_000,\n  expect: {\n    timeout: 10_000\n  },\n  use: {\n    actionTimeout: 10_000,\n    navigationTimeout: 30_000\n  }\n});", 'These settings control different operations. The test timeout remains the overall upper limit.', 'ts'),
+      example('4. Override one assertion timeout', "await expect(page).toHaveTitle('Google', {\n  timeout: 8_000\n});", 'This changes only this assertion. An intentionally wrong expected title will retry until 8 seconds and then report expected, received, and timeout values.', 'ts'),
+      example('5. Intentional assertion failure demo', "test.skip('observe an expect timeout error', async ({ page }) => {\n  await page.goto('https://www.google.com/');\n\n  await expect(page).toHaveTitle('testnow', {\n    timeout: 8_000\n  });\n});", 'The test is skipped because the incorrect title is deliberately used to demonstrate the assertion timeout error.', 'ts'),
+      example('6. Override one action timeout', "await page.locator('#username').fill('Wasim', {\n  timeout: 14_000\n});", 'Playwright waits up to 14 seconds for this locator to resolve to an actionable input. A missing #username element causes a timeout error.', 'ts'),
+      example('7. Wait for locator states', "const message = page.locator('#message');\n\nawait message.waitFor({\n  state: 'visible',\n  timeout: 20_000\n});\n\nawait message.waitFor({ state: 'hidden' });\nawait message.waitFor({ state: 'attached' });\nawait message.waitFor({ state: 'detached' });", 'waitFor() accepts an options object. The test continues as soon as the requested state is satisfied.', 'ts'),
+      example('8. Wait during navigation', "await page.goto('https://example.com/', {\n  waitUntil: 'domcontentloaded'\n});\n\nawait page.waitForLoadState('load');", 'goto() can wait for a chosen navigation state. waitForLoadState() is useful when a navigation has already started elsewhere in the scenario.', 'ts'),
+      example('9. Recommended element wait', "await page.getByRole('button', { name: 'Login' }).click();\n\nawait expect(\n  page.getByText('Welcome')\n).toBeVisible();", 'The click uses actionability auto-waiting and the assertion retries until the visible result appears. No fixed delay is needed.', 'ts'),
+      example('10. waitFor() syntax correction', "// Incorrect JavaScript syntax\n// await page.locator('#message').waitFor(timeout: 45_000);\n\n// Correct: pass an options object\nawait page.locator('#message').waitFor({\n  timeout: 45_000\n});", 'Options must be wrapped in curly braces.', 'ts')
+    ], [
+      table('Timeout Types', ['Timeout', 'Default / scope', 'How to change it'], [
+        ['Test timeout', '30 seconds for the complete test', 'test.setTimeout() or config timeout'],
+        ['Expect timeout', '5 seconds for web-first assertions', 'Assertion option or config expect.timeout'],
+        ['Action timeout', 'No separate limit by default; bounded by the test timeout', 'Action option or use.actionTimeout'],
+        ['Navigation timeout', 'No separate limit by default; bounded by the test timeout', 'Navigation option or use.navigationTimeout']
+      ]),
+      table('Locator Wait States', ['State', 'In the DOM?', 'Visible on the UI?'], [
+        ['visible', 'Yes', 'Yes'],
+        ['hidden', 'Maybe', 'No'],
+        ['attached', 'Yes', 'Maybe'],
+        ['detached', 'No', 'No']
+      ]),
+      table('Page Load States', ['State', 'Meaning', 'Guidance'], [
+        ['domcontentloaded', 'HTML parsed and DOM ready', 'Useful when later resources are not required'],
+        ['load', 'The page load event has fired', 'Waits for dependent resources associated with the load event'],
+        ['networkidle', 'No network connections for at least 500 ms', 'Discouraged for test readiness; assert the required UI instead']
+      ]),
+      table('Recommended Waiting Strategy', ['Requirement', 'Recommended approach'], [
+        ['Perform an element action', 'Use Playwright actionability auto-waiting'],
+        ['Verify UI behavior', 'Use a web-first expect assertion'],
+        ['Wait for a specific element state', 'Use locator.waitFor()'],
+        ['Wait for a page load state', 'Use goto({ waitUntil }) or waitForLoadState()'],
+        ['Change the complete test duration', 'Use test.setTimeout() or config timeout']
+      ]),
+      callout('Avoid Fixed Sleeps', 'warning', 'Do not use page.waitForTimeout() as the normal synchronization strategy. A fixed sleep is either unnecessarily slow or too short under load.'),
+      callout('Important', 'info', 'A test timeout and an expect timeout are independent. test.setTimeout(10_000) does not change an assertion timeout to 10 seconds, and expect.timeout does not extend the total test duration.')
     ])
   ];
 })();
