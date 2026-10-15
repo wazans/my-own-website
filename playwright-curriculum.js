@@ -636,6 +636,45 @@
         ])]),
       section('7. Recommended Waiting Style', 'Avoid fixed waits using waitForTimeout(). Allow Playwright to auto-wait for the action, and then verify the expected result.',
         example('Use auto-wait with an assertion', "await page.getByRole('button', { name: 'Login' }).click();\nawait expect(page.getByText('Welcome')).toBeVisible();", 'Default: click() already auto-waits for the button, and the assertion retries for up to 5 seconds. Change: no custom timeout is added here. Impact: only these statements wait for their required conditions, so the test stays faster and more stable than using a fixed wait.', 'ts'), [callout('Important', 'warning', 'Test timeout, expect timeout, and action timeout are separate. Changing one timeout does not change the others.')])
+    ]),
+
+    topic(74, 'End-to-End Assignment: Manage Categories', [], [], [], [], [
+      section('1. Assignment Problem', 'Create one Playwright test for the complete admin category journey. The test must log in, open Manage Categories in a new tab, create a unique category through a prompt, verify it, delete it, sign out, and close the browser context.', null, [
+        flow('Complete User Journey', ['Login page', 'Admin login', 'Manage menu', 'New categories tab', 'Add category', 'Verify row', 'Delete category', 'Sign out']),
+        checklist('Your Task', [
+          'Create a new BrowserContext and Page',
+          'Login with the provided admin credentials',
+          'Hover over Manage and open Manage Categories',
+          'Capture the new tab before clicking the link',
+          'Create a unique category using the JavaScript prompt',
+          'Verify the new category in the table',
+          'Delete the same category and verify removal',
+          'Sign out and verify the Sign in button',
+          'Close the complete browser context'
+        ]),
+        callout('Assignment Rule', 'info', 'First try the assignment yourself. Open the Solution section only after completing your own attempt or when you are fully blocked.')
+      ]),
+      section('2. Complete Solution', 'This solution uses one browser context, waits for the new tab before clicking, creates unique test data, handles the prompt safely, verifies every important result, and closes all pages through context.close().',
+        example('Complete end-to-end solution', "import { test, expect } from '@playwright/test';\n\ntest('manage categories end to end', async ({ browser }) => {\n  const context = await browser.newContext();\n  const page = await context.newPage();\n  const categoryName = `RAG_${Date.now()}`;\n\n  try {\n    await page.goto(\n      'https://freelance-learn-automation.vercel.app/login'\n    );\n\n    await page.getByRole('textbox', {\n      name: 'Enter Email'\n    }).fill('admin@email.com');\n\n    await page.getByPlaceholder('Enter Password')\n      .fill('admin@123');\n\n    await page.getByRole('button', { name: 'Sign in' })\n      .click();\n\n    await page.getByText('Manage', { exact: true }).hover();\n\n    const newPagePromise = context.waitForEvent('page');\n    await page.getByText('Manage Categories', { exact: true })\n      .click();\n\n    const categoriesPage = await newPagePromise;\n    await categoriesPage.waitForLoadState('domcontentloaded');\n\n    const promptHandled = new Promise((resolve, reject) => {\n      categoriesPage.once('dialog', async dialog => {\n        try {\n          expect(dialog.message()).toBe('Enter a Category Name');\n          await dialog.accept(categoryName);\n          resolve();\n        } catch (error) {\n          reject(error);\n        }\n      });\n    });\n\n    await categoriesPage.getByRole('button', {\n      name: 'Add New Category'\n    }).click();\n    await promptHandled;\n\n    const categoryRow = categoriesPage.getByRole('row')\n      .filter({ hasText: categoryName });\n    await expect(categoryRow).toBeVisible();\n\n    categoriesPage.once('dialog', async dialog => {\n      await dialog.accept();\n    });\n\n    await categoryRow.getByRole('button', { name: /delete/i })\n      .click();\n\n    const confirmationDialog = categoriesPage.getByRole('dialog');\n    if (await confirmationDialog.isVisible().catch(() => false)) {\n      await confirmationDialog.getByRole('button', { name: /delete/i })\n        .click();\n    }\n\n    await expect(categoryRow).toHaveCount(0);\n\n    await categoriesPage.getByRole('img', { name: /menu/i })\n      .click();\n    await categoriesPage.getByRole('button', { name: 'Sign out' })\n      .click();\n\n    await expect(categoriesPage.getByRole('button', {\n      name: 'Sign in'\n    })).toBeVisible();\n  } finally {\n    await context.close();\n  }\n});", 'The test listens before events happen, uses a unique category name, checks create and delete results, and closes every tab by closing the context.', 'ts')),
+      section('3. Easy Flow Diagrams', 'Read the flow from left to right. Each arrow represents the next action or verification in the test.', null, [
+        flow('Browser and Tab Flow', ['Browser', 'New context', 'Login page', 'Click Manage Categories', 'New categories page']),
+        flow('Create Category Flow', ['Listen for prompt', 'Click Add New Category', 'Check prompt message', 'Enter unique name', 'Verify table row']),
+        flow('Delete and Logout Flow', ['Find created row', 'Click Delete', 'Confirm deletion', 'Verify row removed', 'Open menu', 'Sign out'])
+      ]),
+      section('4. Solution Explained', 'The test is divided into small stages. Each stage performs one action and then verifies the important result.', null, [
+        table('Step-by-Step Explanation', ['Stage', 'Important code', 'Why it is needed'], [
+          ['Browser setup', 'browser.newContext() and context.newPage()', 'Creates an isolated session and the first tab'],
+          ['Login', 'fill() and Sign in click', 'Enters admin credentials and opens the admin area'],
+          ['New tab', 'context.waitForEvent("page")', 'Starts listening before the click opens another tab'],
+          ['Test data', '`RAG_${Date.now()}`', 'Creates a new category name for every run'],
+          ['Prompt', 'page.once("dialog")', 'Checks the message and enters the category name'],
+          ['Create check', 'expect(categoryRow).toBeVisible()', 'Confirms that the category was added'],
+          ['Delete check', 'expect(categoryRow).toHaveCount(0)', 'Confirms that the category was removed'],
+          ['Cleanup', 'context.close()', 'Closes all tabs even when the test fails']
+        ]),
+        callout('Why No page.pause()?', 'info', 'page.pause() is useful while debugging, but it should not remain in the final automated test because it stops unattended execution.'),
+        callout('Common QA Mistake', 'warning', 'Do not click first and wait for the new page or dialog later. Start listening before the action, otherwise Playwright can miss a fast event.')
+      ])
     ])
   ];
 })();
