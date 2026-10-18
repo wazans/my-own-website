@@ -675,6 +675,64 @@
         callout('Why No page.pause()?', 'info', 'page.pause() is useful while debugging, but it should not remain in the final automated test because it stops unattended execution.'),
         callout('Common QA Mistake', 'warning', 'Do not click first and wait for the new page or dialog later. Start listening before the action, otherwise Playwright can miss a fast event.')
       ])
+    ]),
+
+    topic(75, 'Workers, Spec Files and fullyParallel', [], [], [], [
+      { label: 'Download the complete worker guide (PDF)', url: 'output/pdf/Playwright_Parallel_Execution_and_Test_Modes_Worker_Concept_Updated.pdf' }
+    ], [
+      section('1. What Is a Worker?', 'A worker is a separate operating-system process started by Playwright. The workers setting controls how many units of test work may run at the same time. After a worker finishes its current unit, it becomes idle and asks the scheduler for the next available unit.', null, [
+        table('Worker Configuration', ['Setting', 'Meaning'], [
+          ['workers: 3', 'Playwright may run a maximum of three worker processes at the same time'],
+          ['fullyParallel: false', 'The scheduler distributes complete spec files'],
+          ['fullyParallel: true', 'The scheduler may distribute individual tests from inside spec files']
+        ]),
+        callout('Key Idea', 'info', 'workers decides HOW MANY tasks can run at the same time. fullyParallel decides WHAT SIZE of task is given to each worker.')
+      ]),
+      section('2. fullyParallel: false - One Worker, One Spec File', 'With fullyParallel set to false, the spec file is the scheduling unit. A worker receives one complete spec file, and tests inside that file normally run one after another. An idle worker can take another unassigned spec file, but it cannot take a remaining test out of a spec file that another worker is already running.',
+        example('Configure file-level parallelism', "import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  workers: 3,\n  fullyParallel: false\n});", 'Three workers may run three different spec files at the same time. Tests within each assigned file stay together.', 'ts'), [
+          flow('Step-by-Step File Distribution', [
+            'Worker 1 takes login.spec.ts',
+            'Worker 2 takes checkout.spec.ts',
+            'Worker 3 takes payment.spec.ts',
+            'Worker 2 finishes first',
+            'Worker 2 takes invoice.spec.ts',
+            'No unassigned file remains, so a free worker stays idle'
+          ]),
+          callout('Remember', 'warning', 'Worker 3 cannot take Login Test 2 while Worker 1 is still running login.spec.ts. With fullyParallel: false, the complete file remains with its assigned worker.')
+        ]),
+      section('3. fullyParallel: true - Idle Workers Take Tests', 'With fullyParallel set to true, individual tests can become scheduling units. Tests from the same spec file may therefore run on different workers. As soon as a worker finishes its current test, it can take the next waiting test without waiting for the other tests in that file to finish.',
+        example('Configure test-level parallelism', "import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  workers: 3,\n  fullyParallel: true\n});", 'Three tests can start together. The first worker to finish can immediately take the next waiting test.', 'ts'), [
+          flow('Step-by-Step Test Distribution', [
+            'Worker 1 takes Login',
+            'Worker 2 takes Search',
+            'Worker 3 takes Add to cart',
+            'Search finishes first',
+            'Worker 2 takes Checkout',
+            'Login finishes next',
+            'Worker 1 takes Payment'
+          ]),
+          callout('Idle-Worker Rule', 'info', 'Any idle worker may take the next available test. A worker is not permanently attached to one test or one spec file.')
+        ]),
+      section('4. Run It and Observe the Worker Index', 'Create several independent tests, give them different short durations, and print the worker index. Run the suite with three workers and compare the output for fullyParallel false and true.',
+        example('Print the worker that executes each test', "import { test } from '@playwright/test';\n\ntest('example', async ({ page }, testInfo) => {\n  console.log(\n    `Worker ${testInfo.workerIndex}: ${testInfo.title}`\n  );\n});", 'The output shows which worker received each test.', 'ts'), [
+          checklist('Learner Actions', [
+            'Create three spec files containing two or more tests each',
+            'Set workers to 3 and fullyParallel to false',
+            'Run npx playwright test and observe that each file stays with one worker',
+            'Change fullyParallel to true',
+            'Run again and observe that idle workers can take individual waiting tests',
+            'Confirm that every parallel test is independent and owns its own test data'
+          ]),
+          callout('Safe Usage Rule', 'warning', 'Use test-level parallelism only for independent tests. Do not share mutable accounts, page objects, files, or database state. If execution order matters, redesign the scenario or use serial mode intentionally.')
+        ]),
+      section('5. Quick Revision', 'Use this comparison before choosing a parallel execution mode.', null, [
+        table('Parallel Scheduling Summary', ['Mode', 'Work given to a worker', 'What an idle worker takes'], [
+          ['fullyParallel: false', 'One complete spec file', 'Another unassigned spec file'],
+          ['fullyParallel: true', 'One individual test', 'The next available test, including one from the same spec file'],
+          ['serial describe group', 'An ordered test group', 'The group stays ordered; later tests are skipped after a failure']
+        ]),
+        callout('One Line to Remember', 'info', 'fullyParallel: false gives workers whole spec files; fullyParallel: true lets idle workers take individual tests.')
+      ])
     ])
   ];
 })();
