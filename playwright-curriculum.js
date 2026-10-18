@@ -677,7 +677,7 @@
       ])
     ]),
 
-    topic(75, 'Workers, Spec Files and fullyParallel', [], [], [], [], [
+    topic(75, 'Workers, Parallel Execution, Serial Mode and forbidOnly', [], [], [], [], [
       section('1. What Is a Worker?', 'A worker is a separate operating-system process started by Playwright. The workers setting controls how many units of test work may run at the same time. After a worker finishes its current unit, it becomes idle and asks the scheduler for the next available unit.', null, [
         table('Worker Configuration', ['Setting', 'Meaning'], [
           ['workers: 3', 'Playwright may run a maximum of three worker processes at the same time'],
@@ -756,13 +756,55 @@
         ]),
         callout('Best Practice', 'warning', 'Do not split one business journey into dependent tests only to force an execution order. Prefer complete independent scenarios. Use serial mode intentionally when the dependency cannot reasonably be removed.')
       ]),
-      section('9. Quick Revision', 'Use this comparison before choosing a parallel execution mode.', null, [
+      section('9. test.only() - Run Selected Tests', 'During local debugging, test.only() limits execution to the selected test or describe group. Tests without .only are discovered but are not run. If several tests use .only, Playwright runs all of those selected tests.',
+        example('Select one test during debugging', "import { test } from '@playwright/test';\n\ntest('Test 1', async () => {\n  // Not run\n});\n\ntest.only('Test 2', async () => {\n  // Runs\n});\n\ntest('Test 3', async () => {\n  // Not run\n});", 'Only Test 2 runs because it is the selected test.', 'ts'), [
+          table('Execution Result', ['Test', 'Result'], [
+            ['Test 1', 'NOT RUN'],
+            ['Test 2 with .only', 'RUN'],
+            ['Test 3', 'NOT RUN']
+          ]),
+          callout('Multiple Selections', 'info', 'If Login and Checkout both use test.only(), both selected tests run while the remaining tests are ignored.')
+        ]),
+      section('10. forbidOnly: false', 'When forbidOnly is false, Playwright allows test.only() and describe.only(). This is useful on a developer machine when someone wants to focus on one test while debugging.',
+        example('Allow .only locally', "import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  forbidOnly: false\n});", 'A selected test is allowed to run without causing a configuration failure.', 'ts'), [
+          flow('Local Debug Flow', ['Add test.only()', 'Run Playwright', 'Selected test runs', 'Other tests are ignored']),
+          callout('Use Carefully', 'warning', 'Remove .only before sharing or committing the test. Otherwise a normal run may execute only a small part of the suite.')
+        ]),
+      section('11. forbidOnly: true', 'When forbidOnly is true, Playwright fails the test run if test.only() or describe.only() is found. This protects CI/CD from silently running only the selected tests instead of the complete suite.',
+        example('Block .only in CI', "import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  forbidOnly: true\n});", 'The run fails immediately when a focused test or group is committed.', 'ts'), [
+          flow('CI Protection Flow', ['CI discovers test.only()', 'forbidOnly blocks the run', 'Pipeline reports a failure', 'Developer removes .only', 'Complete suite runs']),
+          callout('Why It Matters', 'warning', 'Without this protection, a suite containing 100 tests could accidentally execute only one focused test and still appear successful.')
+        ]),
+      section('12. Recommended forbidOnly Configuration', 'Use the CI environment variable so local debugging remains convenient while CI always protects the complete suite. On a normal local machine process.env.CI is usually false, so .only is allowed. In CI it is true, so .only causes the run to fail.',
+        example('Allow locally and block in CI', "import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  forbidOnly: !!process.env.CI\n});", 'The double exclamation converts the CI environment value to a boolean.', 'ts'), [
+          table('Environment Behavior', ['Environment', 'process.env.CI', 'forbidOnly', 'Result'], [
+            ['Local machine', 'Usually false or undefined', 'false', 'test.only() is allowed for debugging'],
+            ['CI/CD pipeline', 'true', 'true', 'The run fails if .only is found']
+          ]),
+          callout('Recommended Pattern', 'info', 'forbidOnly: !!process.env.CI is the usual choice because it provides local flexibility and CI safety.')
+        ]),
+      section('13. Complete Example Configuration', 'This configuration combines workers, test-level parallelism, CI protection, and retries. Each setting controls a different part of execution.',
+        example('playwright.config.ts', "import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  workers: 4,\n  fullyParallel: true,\n  forbidOnly: !!process.env.CI,\n  retries: process.env.CI ? 2 : 0\n});", 'Four workers may execute independent tests in parallel. Focused tests are allowed locally but blocked in CI, and failed tests receive two retries in CI.', 'ts'), [
+          table('Configuration Meaning', ['Setting', 'Meaning'], [
+            ['workers: 4', 'Use a maximum of four worker processes'],
+            ['fullyParallel: true', 'Tests inside spec files may run in parallel'],
+            ['forbidOnly: !!process.env.CI', 'Allow .only locally and block it in CI'],
+            ['retries: process.env.CI ? 2 : 0', 'Retry failed tests twice in CI and do not retry locally']
+          ])
+        ]),
+      section('14. Quick Revision', 'Use this complete comparison to revise workers, parallel execution, serial mode, selected tests, and CI protection.', null, [
         table('Parallel Scheduling Summary', ['Mode', 'Work given to a worker', 'What an idle worker takes'], [
           ['fullyParallel: false', 'One complete spec file', 'Another unassigned spec file'],
           ['fullyParallel: true', 'One individual test', 'The next available test, including one from the same spec file'],
           ['serial describe group', 'An ordered test group', 'The group stays ordered; later tests are skipped after a failure']
         ]),
-        callout('One Line to Remember', 'info', 'fullyParallel: false gives workers whole spec files; fullyParallel: true lets idle workers take individual tests.')
+        table('Focused-Test Safety Summary', ['Setting', 'Behavior'], [
+          ['test.only()', 'Run only the selected test or group'],
+          ['forbidOnly: false', 'Allow .only'],
+          ['forbidOnly: true', 'Fail the run if .only exists'],
+          ['forbidOnly: !!process.env.CI', 'Allow .only locally and block it in CI']
+        ]),
+        callout('One Line to Remember', 'info', 'Workers decide HOW MANY tests run simultaneously, fullyParallel decides WHERE parallelism is allowed, serial forces ordered execution, and forbidOnly protects CI from accidental test.only().')
       ])
     ])
   ];
