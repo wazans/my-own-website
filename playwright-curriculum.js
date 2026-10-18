@@ -723,7 +723,40 @@
           ]),
           callout('Safe Usage Rule', 'warning', 'Use test-level parallelism only for independent tests. Do not share mutable accounts, page objects, files, or database state. If execution order matters, redesign the scenario or use serial mode intentionally.')
         ]),
-      section('5. Quick Revision', 'Use this comparison before choosing a parallel execution mode.', null, [
+      section('5. Change One Group to Serial Mode', 'Sometimes the project uses parallel execution, but one describe group must run in a fixed order. Configure that group with mode: serial. The tests then run one after another in the order in which they are declared.',
+        example('Configure a serial group', "import { test, expect } from '@playwright/test';\n\ntest.describe.configure({\n  mode: 'serial'\n});\n\ntest('Login', async ({ page }) => {\n  // login steps\n});\n\ntest('Checkout', async ({ page }) => {\n  // checkout steps\n});\n\ntest('Payment', async ({ page }) => {\n  // payment steps\n});\n\ntest('Invoice', async ({ page }) => {\n  // invoice verification\n});", 'The declared order is Login, Checkout, Payment, then Invoice. Playwright treats the tests as one connected serial group.', 'ts'), [
+          flow('Serial Execution Order', ['Login', 'Checkout', 'Payment', 'Invoice']),
+          callout('Scope', 'info', 'test.describe.configure({ mode: serial }) changes the behavior of that describe group. It does not need to disable parallel execution for the complete project.')
+        ]),
+      section('6. What Happens When a Serial Test Fails?', 'Playwright assumes that tests in a serial group may depend on earlier tests. If one test fails, the later tests in that same serial group are skipped because their required starting state may no longer exist.', null, [
+        table('Example: Checkout Fails', ['Test', 'Result', 'Reason'], [
+          ['Login', 'PASS', 'It completed before the failure'],
+          ['Checkout', 'FAIL', 'This is the failing test'],
+          ['Payment', 'SKIPPED', 'It comes after the failed test in the serial group'],
+          ['Invoice', 'SKIPPED', 'It also comes after the failed test']
+        ]),
+        flow('Failure Flow', ['Login passes', 'Checkout fails', 'Payment is skipped', 'Invoice is skipped']),
+        callout('Important', 'warning', 'The skip behavior applies to later tests in the same serial group. It prevents Playwright from continuing a dependent sequence after its state has become invalid.')
+      ]),
+      section('7. What Happens During Retry?', 'When retries are enabled and a test in a serial group fails, Playwright retries the complete serial group together. Earlier tests run again so the sequence can rebuild the state required by the failed and later tests.',
+        example('Enable one retry', "import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  retries: 1\n});", 'One retry gives the failed serial group a second complete attempt.', 'ts'), [
+          table('Serial Retry Timeline', ['Attempt', 'Login', 'Checkout', 'Payment', 'Invoice'], [
+            ['First run', 'PASS', 'FAIL', 'SKIPPED', 'SKIPPED'],
+            ['Retry', 'RUN AGAIN', 'RUN AGAIN', 'RUN', 'RUN']
+          ]),
+          flow('Retry Flow', ['Restart the serial group', 'Run Login again', 'Run Checkout again', 'Continue to Payment', 'Continue to Invoice']),
+          callout('Interview Point', 'info', 'In serial mode, one failure skips the later tests, and a retry reruns the serial group together rather than retrying only the failed test in isolation.')
+        ]),
+      section('8. Serial Mode vs Independent Tests', 'Serial mode is available when a workflow truly requires shared ordered state, but dependent tests are harder to diagnose and maintain. The preferred design is usually to make every test a complete independent business scenario.', null, [
+        table('Design Comparison', ['Dependent serial design', 'Preferred independent design'], [
+          ['Test 1 only logs in', 'Test 1 performs login, checkout, payment, and invoice verification'],
+          ['Test 2 assumes Test 1 already logged in', 'Test 2 performs its own login, checkout, invalid payment, and error verification'],
+          ['A failure blocks later tests', 'Each scenario can pass or fail independently'],
+          ['The group must run in order', 'Independent scenarios may run in parallel']
+        ]),
+        callout('Best Practice', 'warning', 'Do not split one business journey into dependent tests only to force an execution order. Prefer complete independent scenarios. Use serial mode intentionally when the dependency cannot reasonably be removed.')
+      ]),
+      section('9. Quick Revision', 'Use this comparison before choosing a parallel execution mode.', null, [
         table('Parallel Scheduling Summary', ['Mode', 'Work given to a worker', 'What an idle worker takes'], [
           ['fullyParallel: false', 'One complete spec file', 'Another unassigned spec file'],
           ['fullyParallel: true', 'One individual test', 'The next available test, including one from the same spec file'],
