@@ -677,9 +677,7 @@
       ])
     ]),
 
-    topic(75, 'Workers, Spec Files and fullyParallel', [], [], [], [
-      { label: 'Download the complete worker guide (PDF)', url: 'output/pdf/Playwright_Parallel_Execution_and_Test_Modes_Worker_Concept_Updated.pdf' }
-    ], [
+    topic(75, 'Workers, Spec Files and fullyParallel', [], [], [], [], [
       section('1. What Is a Worker?', 'A worker is a separate operating-system process started by Playwright. The workers setting controls how many units of test work may run at the same time. After a worker finishes its current unit, it becomes idle and asks the scheduler for the next available unit.', null, [
         table('Worker Configuration', ['Setting', 'Meaning'], [
           ['workers: 3', 'Playwright may run a maximum of three worker processes at the same time'],
