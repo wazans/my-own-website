@@ -2988,6 +2988,98 @@
     }
 
     if (topic.id === 'playwright-notes-26') {
+      add('Real working project - folder structure', [
+        'playwright-data-driven/',
+        '|-- data/',
+        '|   `-- players.json',
+        '|-- tests/',
+        '|   `-- player-search.spec.ts',
+        '|-- package.json',
+        '`-- playwright.config.ts'
+      ], 'Create this small project anywhere on your computer. Test data stays outside the test, so new cases can be added without copying the automation steps.');
+
+      add('Step 1 - package.json', [
+        '{',
+        '  "name": "playwright-data-driven-example",',
+        '  "private": true,',
+        '  "scripts": {',
+        '    "test": "playwright test",',
+        '    "test:headed": "playwright test --headed",',
+        '    "report": "playwright show-report"',
+        '  },',
+        '  "devDependencies": {',
+        '    "@playwright/test": "latest",',
+        '    "@types/node": "latest"',
+        '  }',
+        '}'
+      ], 'Save this file in the project root. The scripts provide short commands for normal, headed, and report runs.');
+
+      add('Step 2 - playwright.config.ts', [
+        "import { defineConfig, devices } from '@playwright/test';",
+        '',
+        'export default defineConfig({',
+        "  testDir: './tests',",
+        '  fullyParallel: true,',
+        '  timeout: 30_000,',
+        "  reporter: [['list'], ['html', { open: 'never' }]],",
+        '  use: {',
+        "    baseURL: 'https://www.testnova.in',",
+        "    trace: 'on-first-retry',",
+        '    screenshot: \'only-on-failure\',',
+        '  },',
+        '  projects: [',
+        "    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },",
+        '  ],',
+        '});'
+      ], 'baseURL keeps the test readable, and the Chromium project makes the first run fast and predictable.');
+
+      add('Step 3 - data/players.json', [
+        '[',
+        '  { "query": "Virat", "expectedPlayer": "Virat Kohli", "team": "RCB" },',
+        '  { "query": "Dhoni", "expectedPlayer": "MS Dhoni", "team": "CSK" },',
+        '  { "query": "Rohit", "expectedPlayer": "Rohit Sharma", "team": "MI" }',
+        ']'
+      ], 'Each object is one independent test case. Add another object to increase coverage without changing the test logic.');
+
+      add('Step 4 - tests/player-search.spec.ts', [
+        "import { test, expect } from '@playwright/test';",
+        "import players from '../data/players.json';",
+        '',
+        "test.describe('IPL player search - data driven', () => {",
+        '  for (const player of players) {',
+        "    test(`finds ${player.expectedPlayer} for ${player.query}`, async ({ page }) => {",
+        "      await page.goto('/ipl-automation-practice.html');",
+        '',
+        "      await page.getByTestId('player-search-input').fill(player.query);",
+        "      await page.getByTestId('team-filter').selectOption(player.team);",
+        "      await page.getByTestId('search-players').click();",
+        '',
+        "      const results = page.getByTestId('player-search-results');",
+        '      await expect(results).toContainText(player.expectedPlayer);',
+        '      await expect(results).toContainText(player.team);',
+        '    });',
+        '  }',
+        '});'
+      ], 'This is a real runnable test against the TestNova IPL practice page. The locators match the page data-testid values, and every JSON record becomes a separately reported Playwright test.');
+
+      add('Step 5 - install and run', [
+        'cd playwright-data-driven',
+        'npm install',
+        'npx playwright install chromium',
+        '',
+        '# Run all cases headless',
+        'npm test',
+        '',
+        '# Watch the browser',
+        'npm run test:headed',
+        '',
+        '# Run only this file',
+        'npx playwright test tests/player-search.spec.ts',
+        '',
+        '# Open the HTML report after a run',
+        'npm run report'
+      ], 'Run these commands from the project root. A successful run reports one passing test for each row in players.json.');
+
       add('Basic example - parameterized IPL player searches', [
         "import { test, expect } from '@playwright/test';",
         '',
