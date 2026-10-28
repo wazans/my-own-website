@@ -1377,6 +1377,232 @@
       });
     }
 
+    // Topic 26 uses the consolidated curriculum renderer. Attach its complete
+    // runnable project directly to a rendered subsection.
+    var workersTopic = readerTopics.find(function(topic) {
+      return topic.id === 'playwright-notes-26';
+    });
+    if (workersTopic) {
+      function workerGuideExample(title, lines, explanation, language) {
+        var item = playwrightExample(title, lines, language || 'ts');
+        item.explanation = explanation;
+        return item;
+      }
+
+      var completeWorkersGuide = {
+        id: 'playwright-notes-26-working-project',
+        title: 'Complete Working Project - Workers, Parallel and Serial Tests',
+        paragraphs: [
+          'Create this project from an empty folder to see how Playwright assigns spec files to workers, how fullyParallel changes the scheduling unit, how serial mode preserves order, and how forbidOnly protects CI.',
+          'Every test below runs against the real TestNova IPL practice page. Follow the cards in order and keep every file at the exact path shown.'
+        ],
+        practice: '',
+        examples: [
+          workerGuideExample('Step 1 - create the project folder', [
+            '# PowerShell or VS Code terminal',
+            'mkdir playwright-workers-demo',
+            'cd playwright-workers-demo',
+            'npm init -y',
+            'npm install --save-dev @playwright/test typescript @types/node',
+            'npx playwright install chromium',
+            'code .'
+          ], 'Node.js LTS must already be installed. Open the new playwright-workers-demo folder in VS Code before creating the files below.', 'bash'),
+          workerGuideExample('Step 2 - create folders and files', [
+            '# Run from playwright-workers-demo in PowerShell',
+            'New-Item -ItemType Directory -Force tests',
+            'New-Item -ItemType File -Force tests/search.spec.ts',
+            'New-Item -ItemType File -Force tests/table.spec.ts',
+            'New-Item -ItemType File -Force tests/serial-flow.spec.ts',
+            'New-Item -ItemType File -Force playwright.config.ts',
+            'New-Item -ItemType File -Force tsconfig.json',
+            'New-Item -ItemType File -Force .gitignore'
+          ], 'You may create the same folders and files from the VS Code Explorer. File names ending in .spec.ts are discovered as tests.'),
+          workerGuideExample('Step 3 - final folder structure', [
+            'playwright-workers-demo/',
+            '|-- tests/',
+            '|   |-- search.spec.ts',
+            '|   |-- table.spec.ts',
+            '|   `-- serial-flow.spec.ts',
+            '|-- .gitignore',
+            '|-- package.json',
+            '|-- playwright.config.ts',
+            '`-- tsconfig.json'
+          ], 'With fullyParallel set to false, each complete spec file is one scheduling unit that can be assigned to a worker.'),
+          workerGuideExample('Step 4 - package.json', [
+            '{',
+            '  "name": "playwright-workers-demo",',
+            '  "private": true,',
+            '  "scripts": {',
+            '    "test": "playwright test",',
+            '    "test:headed": "playwright test --headed",',
+            '    "test:one-worker": "playwright test --workers=1",',
+            '    "test:debug": "playwright test --debug",',
+            '    "typecheck": "tsc --noEmit",',
+            '    "report": "playwright show-report"',
+            '  },',
+            '  "devDependencies": {',
+            '    "@playwright/test": "latest",',
+            '    "@types/node": "latest",',
+            '    "typescript": "latest"',
+            '  }',
+            '}'
+          ], 'Replace the generated package.json with this content. The scripts make it easy to compare three workers with a forced single-worker run.', 'json'),
+          workerGuideExample('Step 5 - tsconfig.json', [
+            '{',
+            '  "compilerOptions": {',
+            '    "target": "ES2022",',
+            '    "module": "NodeNext",',
+            '    "moduleResolution": "NodeNext",',
+            '    "strict": true,',
+            '    "noEmit": true,',
+            '    "types": ["node"]',
+            '  },',
+            '  "include": ["tests/**/*.ts", "playwright.config.ts"]',
+            '}'
+          ], 'Playwright runs TypeScript directly. This file lets npm run typecheck find mistakes before browser execution.', 'json'),
+          workerGuideExample('Step 6 - playwright.config.ts', [
+            "import { defineConfig, devices } from '@playwright/test';",
+            '',
+            'export default defineConfig({',
+            "  testDir: './tests',",
+            '  workers: 3,',
+            '  fullyParallel: false,',
+            '  forbidOnly: !!process.env.CI,',
+            '  retries: process.env.CI ? 2 : 0,',
+            "  reporter: [['list'], ['html', { open: 'never' }]],",
+            '  use: {',
+            "    baseURL: 'https://www.testnova.in',",
+            "    trace: 'on-first-retry',",
+            "    screenshot: 'only-on-failure',",
+            '  },',
+            '  projects: [',
+            "    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },",
+            '  ],',
+            '});'
+          ], 'Change workers to control the maximum worker processes. Change fullyParallel to true to allow tests inside the same file to be scheduled independently. Keep forbidOnly enabled in CI.'),
+          workerGuideExample('Step 7 - tests/search.spec.ts', [
+            "import { test, expect } from '@playwright/test';",
+            '',
+            "test('searches for Virat Kohli', async ({ page }) => {",
+            "  console.log(`search test worker: ${test.info().workerIndex}`);",
+            "  await page.goto('/ipl-automation-practice.html');",
+            "  await page.getByTestId('player-search-input').fill('Virat');",
+            "  await page.getByTestId('team-filter').selectOption('RCB');",
+            "  await page.getByTestId('search-players').click();",
+            "  await expect(page.getByTestId('player-search-results')).toContainText('Virat Kohli');",
+            '});',
+            '',
+            "test('searches for MS Dhoni', async ({ page }) => {",
+            "  console.log(`Dhoni test worker: ${test.info().workerIndex}`);",
+            "  await page.goto('/ipl-automation-practice.html');",
+            "  await page.getByTestId('player-search-input').fill('Dhoni');",
+            "  await page.getByTestId('team-filter').selectOption('CSK');",
+            "  await page.getByTestId('search-players').click();",
+            "  await expect(page.getByTestId('player-search-results')).toContainText('MS Dhoni');",
+            '});'
+          ], 'With fullyParallel: false, both tests remain in the same search.spec.ts scheduling unit and normally run one after another on the same assigned worker.'),
+          workerGuideExample('Step 8 - tests/table.spec.ts', [
+            "import { test, expect } from '@playwright/test';",
+            '',
+            "test('shows the IPL player records table', async ({ page }) => {",
+            "  console.log(`table test worker: ${test.info().workerIndex}`);",
+            "  await page.goto('/ipl-automation-practice.html');",
+            "  await expect(page.getByTestId('player-records-table')).toBeVisible();",
+            '});',
+            '',
+            "test('contains the Virat Kohli row', async ({ page }) => {",
+            "  await page.goto('/ipl-automation-practice.html');",
+            "  await expect(page.getByTestId('player-table-row-virat-kohli')).toContainText('Virat Kohli');",
+            '});'
+          ], 'table.spec.ts is a second scheduling unit. With multiple workers it can run at the same time as search.spec.ts.'),
+          workerGuideExample('Step 9 - tests/serial-flow.spec.ts', [
+            "import { test, expect } from '@playwright/test';",
+            '',
+            "test.describe.configure({ mode: 'serial' });",
+            '',
+            "test('serial step 1 - page opens', async ({ page }) => {",
+            "  console.log(`serial worker: ${test.info().workerIndex}`);",
+            "  await page.goto('/ipl-automation-practice.html');",
+            "  await expect(page.getByRole('heading', { name: 'IPL Automation Practice Playground' })).toBeVisible();",
+            '});',
+            '',
+            "test('serial step 2 - search works', async ({ page }) => {",
+            "  await page.goto('/ipl-automation-practice.html');",
+            "  await page.getByTestId('player-search-input').fill('Rohit');",
+            "  await page.getByTestId('team-filter').selectOption('MI');",
+            "  await page.getByTestId('search-players').click();",
+            "  await expect(page.getByTestId('player-search-results')).toContainText('Rohit Sharma');",
+            '});'
+          ], 'Serial mode keeps this describe group ordered. If step 1 fails, Playwright skips the later serial test. Prefer independent tests unless order is a real requirement.'),
+          workerGuideExample('Step 10 - .gitignore', [
+            'node_modules/',
+            'playwright-report/',
+            'test-results/',
+            'blob-report/',
+            '.env'
+          ], 'Generated dependencies, reports, traces, screenshots, and secrets should not be committed.', 'text'),
+          workerGuideExample('Step 11 - validate and run', [
+            'npm install',
+            'npm run typecheck',
+            '',
+            '# Run with workers: 3 from the config',
+            'npm test',
+            '',
+            '# Compare with only one worker',
+            'npm run test:one-worker',
+            '',
+            '# Watch the browser',
+            'npm run test:headed',
+            '',
+            '# Run only the serial file',
+            'npx playwright test tests/serial-flow.spec.ts',
+            '',
+            '# Open the HTML report',
+            'npm run report'
+          ], 'The console workerIndex values show which worker executed each test. Exact indexes and ordering can change between runs because the scheduler assigns available work dynamically.', 'bash'),
+          workerGuideExample('Experiment A - enable test-level parallelism', [
+            '// In playwright.config.ts change:',
+            'fullyParallel: false,',
+            '',
+            '// To:',
+            'fullyParallel: true,',
+            '',
+            '// Then run:',
+            'npm test'
+          ], 'With fullyParallel: true, Playwright can distribute individual tests from search.spec.ts and table.spec.ts to different workers. Serial groups still preserve their declared order.'),
+          workerGuideExample('Experiment B - understand forbidOnly', [
+            "test.only('temporary focused test', async ({ page }) => {",
+            "  await page.goto('/ipl-automation-practice.html');",
+            '});',
+            '',
+            '# PowerShell: simulate CI protection',
+            "$env:CI='1'",
+            'npm test',
+            'Remove-Item Env:CI'
+          ], 'Locally, test.only focuses a test when forbidOnly is false. In CI, forbidOnly: !!process.env.CI makes the run fail so an accidentally committed .only cannot silently skip the suite.'),
+          workerGuideExample('Common errors and fixes', [
+            'node is not recognized -> install Node.js LTS and open a new terminal.',
+            'Cannot find @playwright/test -> run npm install in playwright-workers-demo.',
+            'Browser executable does not exist -> run npx playwright install chromium.',
+            'No tests found -> confirm files are inside tests/ and end with .spec.ts.',
+            'Only one worker is used -> confirm workers: 3 and create multiple spec files.',
+            'Tests still run in order inside one file -> fullyParallel is false; this is expected.',
+            'CI fails because of test.only -> remove .only; forbidOnly is protecting the suite.',
+            'A serial test is skipped -> an earlier test in the same serial group failed.'
+          ], 'Run commands from the folder containing package.json and playwright.config.ts. Save all files before rerunning.', 'text')
+        ],
+        resources: [],
+        ui: []
+      };
+
+      if (workersTopic.subsections && workersTopic.subsections.length) {
+        workersTopic.subsections = [completeWorkersGuide].concat(workersTopic.subsections);
+      } else {
+        workersTopic.paragraphs = completeWorkersGuide.paragraphs;
+        workersTopic.examples = completeWorkersGuide.examples;
+      }
+    }
+
     return readerTopics;
   }
 
