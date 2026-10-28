@@ -2988,66 +2988,162 @@
     }
 
     if (topic.id === 'playwright-notes-26') {
+      add('What you will build', [
+        'A new Playwright + TypeScript project created from an empty folder.',
+        'One JSON file that contains three IPL player test cases.',
+        'One test file that reads the JSON and creates a separate test for every row.',
+        'A Playwright configuration with the TestNova URL, Chromium, screenshots, traces, and an HTML report.',
+        'Commands to install, run, debug, and open the report.'
+      ], 'Follow the sections in order. Every path and command below is part of the same project, named playwright-data-driven.');
+
+      add('Before starting - required software', [
+        '1. Install Node.js LTS from https://nodejs.org/.',
+        '2. Install Visual Studio Code from https://code.visualstudio.com/.',
+        '3. Open PowerShell or the VS Code terminal.',
+        '4. Verify the installation:',
+        '',
+        'node --version',
+        'npm --version',
+        '',
+        'Both commands must print a version number before you continue.'
+      ], 'Playwright Test runs on Node.js. npm is installed together with Node.js and downloads the project dependencies.');
+
+      add('Step 1 - create and open the project folder', [
+        '# PowerShell or VS Code terminal',
+        'mkdir playwright-data-driven',
+        'cd playwright-data-driven',
+        'code .',
+        '',
+        '# If the code command is unavailable:',
+        '# Open VS Code > File > Open Folder > choose playwright-data-driven'
+      ], 'All remaining files must be created inside playwright-data-driven. In VS Code, use Terminal > New Terminal and confirm the prompt ends with playwright-data-driven.');
+
+      add('Step 2 - initialize npm and install Playwright', [
+        'npm init -y',
+        'npm install --save-dev @playwright/test typescript @types/node',
+        'npx playwright install chromium'
+      ], 'npm init creates package.json. The install command adds the Playwright test runner and TypeScript tools. The final command downloads the Chromium browser used by the test.');
+
+      add('Step 3 - create the folders and empty files', [
+        '# PowerShell commands',
+        'New-Item -ItemType Directory -Force data, tests',
+        'New-Item -ItemType File -Force data/players.json',
+        'New-Item -ItemType File -Force tests/player-search.spec.ts',
+        'New-Item -ItemType File -Force playwright.config.ts',
+        'New-Item -ItemType File -Force tsconfig.json',
+        'New-Item -ItemType File -Force .gitignore'
+      ], 'You can instead create the data and tests folders from the VS Code Explorer, then create each file under the exact path shown. Do not put players.json inside tests.');
+
       add('Real working project - folder structure', [
         'playwright-data-driven/',
+        '|-- .gitignore',
         '|-- data/',
         '|   `-- players.json',
         '|-- tests/',
         '|   `-- player-search.spec.ts',
         '|-- package.json',
-        '`-- playwright.config.ts'
-      ], 'Create this small project anywhere on your computer. Test data stays outside the test, so new cases can be added without copying the automation steps.');
+        '|-- playwright.config.ts',
+        '`-- tsconfig.json'
+      ], 'The data folder contains inputs, tests contains executable specifications, and playwright.config.ts controls every test run. playwright-report and test-results are generated later and must not be created manually.');
 
-      add('Step 1 - package.json', [
+      add('Step 4 - replace package.json', [
         '{',
         '  "name": "playwright-data-driven-example",',
         '  "private": true,',
         '  "scripts": {',
         '    "test": "playwright test",',
         '    "test:headed": "playwright test --headed",',
+        '    "test:debug": "playwright test --debug",',
+        '    "typecheck": "tsc --noEmit",',
         '    "report": "playwright show-report"',
         '  },',
         '  "devDependencies": {',
         '    "@playwright/test": "latest",',
-        '    "@types/node": "latest"',
+        '    "@types/node": "latest",',
+        '    "typescript": "latest"',
         '  }',
         '}'
-      ], 'Save this file in the project root. The scripts provide short commands for normal, headed, and report runs.');
+      ], 'Open package.json in the project root, replace its entire content with this JSON, and save. JSON does not allow comments or trailing commas.');
 
-      add('Step 2 - playwright.config.ts', [
+      add('Step 5 - create tsconfig.json', [
+        '{',
+        '  "compilerOptions": {',
+        '    "target": "ES2022",',
+        '    "module": "NodeNext",',
+        '    "moduleResolution": "NodeNext",',
+        '    "strict": true,',
+        '    "noEmit": true,',
+        '    "types": ["node"]',
+        '  },',
+        '  "include": ["tests/**/*.ts", "playwright.config.ts"]',
+        '}'
+      ], 'This file enables strict TypeScript checking. Playwright can run TypeScript directly, while npm run typecheck catches type errors before the browser starts.');
+
+      add('Step 6 - create playwright.config.ts', [
         "import { defineConfig, devices } from '@playwright/test';",
         '',
         'export default defineConfig({',
         "  testDir: './tests',",
-        '  fullyParallel: true,',
+        '  fullyParallel: false,',
         '  timeout: 30_000,',
+        '  expect: { timeout: 10_000 },',
+        '  retries: process.env.CI ? 2 : 0,',
         "  reporter: [['list'], ['html', { open: 'never' }]],",
         '  use: {',
         "    baseURL: 'https://www.testnova.in',",
         "    trace: 'on-first-retry',",
         '    screenshot: \'only-on-failure\',',
+        "    video: 'retain-on-failure',",
         '  },',
         '  projects: [',
         "    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },",
         '  ],',
         '});'
-      ], 'baseURL keeps the test readable, and the Chromium project makes the first run fast and predictable.');
+      ], 'Paste this into playwright.config.ts in the project root. testDir tells Playwright where tests live. baseURL is joined with page.goto paths. projects selects Chromium. reporter creates terminal and HTML results.');
 
-      add('Step 3 - data/players.json', [
+      add('Where to change the environment URL and browser', [
+        '// In playwright.config.ts, change only this line for another site:',
+        "baseURL: 'https://www.testnova.in',",
+        '',
+        '// Add Firefox and WebKit inside projects when needed:',
+        'projects: [',
+        "  { name: 'chromium', use: { ...devices['Desktop Chrome'] } },",
+        "  { name: 'firefox', use: { ...devices['Desktop Firefox'] } },",
+        "  { name: 'webkit', use: { ...devices['Desktop Safari'] } },",
+        '],',
+        '',
+        '# Then install the additional browsers:',
+        'npx playwright install firefox webkit'
+      ], 'For this tutorial keep only Chromium. The extra projects are shown so you know exactly where browser configuration belongs.');
+
+      add('Step 7 - create data/players.json', [
         '[',
-        '  { "query": "Virat", "expectedPlayer": "Virat Kohli", "team": "RCB" },',
-        '  { "query": "Dhoni", "expectedPlayer": "MS Dhoni", "team": "CSK" },',
-        '  { "query": "Rohit", "expectedPlayer": "Rohit Sharma", "team": "MI" }',
+        '  { "id": "TC-001", "query": "Virat", "expectedPlayer": "Virat Kohli", "team": "RCB" },',
+        '  { "id": "TC-002", "query": "Dhoni", "expectedPlayer": "MS Dhoni", "team": "CSK" },',
+        '  { "id": "TC-003", "query": "Rohit", "expectedPlayer": "Rohit Sharma", "team": "MI" }',
         ']'
-      ], 'Each object is one independent test case. Add another object to increase coverage without changing the test logic.');
+      ], 'Paste this into data/players.json. Each object is one test case. id gives the report a traceable test-case number, query is typed into search, team is selected, and expectedPlayer is asserted.');
 
-      add('Step 4 - tests/player-search.spec.ts', [
+      add('Step 8 - create tests/player-search.spec.ts', [
         "import { test, expect } from '@playwright/test';",
-        "import players from '../data/players.json';",
+        "import fs from 'node:fs';",
+        "import path from 'node:path';",
+        '',
+        'type PlayerCase = {',
+        '  id: string;',
+        '  query: string;',
+        '  expectedPlayer: string;',
+        '  team: string;',
+        '};',
+        '',
+        "const dataFile = path.resolve(process.cwd(), 'data', 'players.json');",
+        'const players = JSON.parse(',
+        "  fs.readFileSync(dataFile, 'utf-8')",
+        ') as PlayerCase[];',
         '',
         "test.describe('IPL player search - data driven', () => {",
         '  for (const player of players) {',
-        "    test(`finds ${player.expectedPlayer} for ${player.query}`, async ({ page }) => {",
+        "    test(`${player.id} - finds ${player.expectedPlayer}`, async ({ page }) => {",
         "      await page.goto('/ipl-automation-practice.html');",
         '',
         "      await page.getByTestId('player-search-input').fill(player.query);",
@@ -3056,16 +3152,34 @@
         '',
         "      const results = page.getByTestId('player-search-results');",
         '      await expect(results).toContainText(player.expectedPlayer);',
-        '      await expect(results).toContainText(player.team);',
         '    });',
         '  }',
         '});'
-      ], 'This is a real runnable test against the TestNova IPL practice page. The locators match the page data-testid values, and every JSON record becomes a separately reported Playwright test.');
+      ], 'Paste this into tests/player-search.spec.ts. Node reads the JSON once. The for loop registers three separate Playwright tests, so one bad data row fails independently and has its own report entry.');
 
-      add('Step 5 - install and run', [
+      add('How the working test runs - line by line', [
+        "1. fs.readFileSync reads data/players.json from the project root.",
+        '2. JSON.parse converts the file text into an array of PlayerCase objects.',
+        '3. for (const player of players) repeats test creation for every JSON object.',
+        '4. page.goto uses baseURL from playwright.config.ts plus /ipl-automation-practice.html.',
+        '5. getByTestId locates stable elements on the real TestNova practice page.',
+        '6. fill enters the player name, selectOption chooses the IPL team, and click submits the form.',
+        '7. toContainText automatically waits until the expected player appears.',
+        '8. Playwright reports TC-001, TC-002, and TC-003 separately.'
+      ], 'The test uses Playwright web-first assertions, so it waits for the UI instead of using unsafe fixed delays such as waitForTimeout.');
+
+      add('Step 9 - create .gitignore', [
+        'node_modules/',
+        'playwright-report/',
+        'test-results/',
+        'blob-report/',
+        '.env'
+      ], 'Paste this into .gitignore. Dependencies, generated reports, screenshots, videos, traces, and secrets should not be committed to Git.');
+
+      add('Step 10 - validate and run', [
         'cd playwright-data-driven',
         'npm install',
-        'npx playwright install chromium',
+        'npm run typecheck',
         '',
         '# Run all cases headless',
         'npm test',
@@ -3076,9 +3190,49 @@
         '# Run only this file',
         'npx playwright test tests/player-search.spec.ts',
         '',
+        '# Run one case by its test-case ID',
+        'npx playwright test --grep "TC-001"',
+        '',
+        '# Open Playwright Inspector and step through the code',
+        'npm run test:debug',
+        '',
         '# Open the HTML report after a run',
         'npm run report'
-      ], 'Run these commands from the project root. A successful run reports one passing test for each row in players.json.');
+      ], 'Run commands from the folder that contains package.json and playwright.config.ts. npm install is safe to repeat after copying package.json to another computer.');
+
+      add('Expected successful result', [
+        'Running 3 tests using 1 worker',
+        '',
+        '  ✓ TC-001 - finds Virat Kohli',
+        '  ✓ TC-002 - finds MS Dhoni',
+        '  ✓ TC-003 - finds Rohit Sharma',
+        '',
+        '  3 passed',
+        '',
+        'Generated folders:',
+        '- playwright-report/ contains the HTML report.',
+        '- test-results/ contains failure artifacts when a test fails.'
+      ], 'Timing and output symbols can differ by operating system, but the run should contain three separately named passing tests.');
+
+      add('Add a new data row without copying the test', [
+        '{',
+        '  "id": "TC-004",',
+        '  "query": "Bumrah",',
+        '  "expectedPlayer": "Jasprit Bumrah",',
+        '  "team": "MI"',
+        '}'
+      ], 'Add a comma after TC-003, paste this object before the closing square bracket in players.json, save, and run npm test. Playwright will automatically create a fourth test.');
+
+      add('Common errors and exact fixes', [
+        'Error: node is not recognized -> install Node.js LTS, close the terminal, and open a new terminal.',
+        'Error: Cannot find module @playwright/test -> run npm install from the project root.',
+        'Error: browser executable does not exist -> run npx playwright install chromium.',
+        'Error: No tests found -> confirm the file is tests/player-search.spec.ts and testDir is ./tests.',
+        'Error parsing players.json -> remove comments/trailing commas and validate that the file starts with [ and ends with ].',
+        'Error reading data/players.json -> run the command from playwright-data-driven, not from its parent folder.',
+        'Timeout selecting a team -> confirm team uses the code RCB, CSK, or MI and that the practice page loaded.',
+        'Old code still runs -> save every file, stop the run with Ctrl+C, then run npm test again.'
+      ], 'Most setup problems come from running commands in the wrong folder, an unsaved file, invalid JSON, or a missing browser installation.');
 
       add('Basic example - parameterized IPL player searches', [
         "import { test, expect } from '@playwright/test';",
