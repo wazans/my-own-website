@@ -1631,6 +1631,132 @@
         ui: []
       };
 
+      // Keep the rendered lesson short and classroom-friendly. The examples
+      // below intentionally reuse the same tests while changing one setting.
+      completeWorkersGuide.title = 'Simple Guide - Parallel, Serial and test.only';
+      completeWorkersGuide.paragraphs = [
+        'Use the same small tests and change one Playwright setting at a time. Run the test after every change and compare the worker numbers in the terminal.',
+        'The one-second wait is included only so parallel execution is easy to see. Normal tests should wait for a real page condition instead.'
+      ];
+      completeWorkersGuide.examples = [
+        workerGuideExample('1. fullyParallel: false, then fullyParallel: true', [
+          '// playwright.config.ts',
+          'export default defineConfig({',
+          '  workers: 2,',
+          '  fullyParallel: false,',
+          '});',
+          '',
+          '# Run the test',
+          'npx playwright test tests/search.spec.ts',
+          '',
+          '# false: tests in one file run one after another.',
+          '# Change only this line and run again:',
+          'fullyParallel: true,',
+          '',
+          '# true: tests in the same file may run together on different workers.'
+        ], 'Start with false. You will normally see Virat finish before Dhoni starts, using the same worker. Change it to true and run again. You may see both START messages first and two different worker numbers. The exact order can change.', 'ts'),
+        workerGuideExample('tests/search.spec.ts - use this for false and true', [
+          "import { test, expect } from '@playwright/test';",
+          '',
+          "test('fills Virat in the player input', async ({ page }) => {",
+          "  console.log(`START Virat - worker ${test.info().workerIndex}`);",
+          "  await page.goto('/ipl-automation-practice.html');",
+          "  await page.getByTestId('player-search-input').fill('Virat');",
+          "  await expect(page.getByTestId('player-search-input')).toHaveValue('Virat');",
+          '  await page.waitForTimeout(1000); // Demo only.',
+          "  console.log(`END Virat - worker ${test.info().workerIndex}`);",
+          '});',
+          '',
+          "test('fills Dhoni in the player input', async ({ page }) => {",
+          "  console.log(`START Dhoni - worker ${test.info().workerIndex}`);",
+          "  await page.goto('/ipl-automation-practice.html');",
+          "  await page.getByTestId('player-search-input').fill('Dhoni');",
+          "  await expect(page.getByTestId('player-search-input')).toHaveValue('Dhoni');",
+          '  await page.waitForTimeout(1000); // Demo only.',
+          "  console.log(`END Dhoni - worker ${test.info().workerIndex}`);",
+          '});'
+        ], 'Keep this file unchanged for the first experiment. Only change fullyParallel in playwright.config.ts.'),
+        workerGuideExample("2. test.describe.configure({ mode: 'serial' })", [
+          "import { test, expect } from '@playwright/test';",
+          '',
+          "test.describe.configure({ mode: 'serial' });",
+          '',
+          "test('serial step 1 - page opens', async ({ page }) => {",
+          "  console.log(`serial worker: ${test.info().workerIndex}`);",
+          "  await page.goto('/ipl-automation-practice.html');",
+          "  await expect(page.getByRole('heading', { name: 'IPL Automation Practice Playground' })).toBeVisible();",
+          '});',
+          '',
+          "test('serial step 2 - search works', async ({ page }) => {",
+          "  await page.goto('/ipl-automation-practice.html');",
+          "  await page.getByTestId('player-search-input').fill('Rohit');",
+          "  await page.getByTestId('search-players').click();",
+          "  await expect(page.getByTestId('player-search-results')).toContainText('Rohit Sharma');",
+          '});'
+        ], 'Serial means strict order: step 1 runs before step 2. If step 1 fails, Playwright skips step 2. Use serial only when order is truly required.'),
+        workerGuideExample("3. test.describe.configure({ mode: 'parallel' })", [
+          "import { test, expect } from '@playwright/test';",
+          '',
+          "test.describe.configure({ mode: 'parallel' });",
+          '',
+          '// Keep the same Virat and Dhoni tests below this line.',
+          '// They may now run on different workers even when the global',
+          '// playwright.config.ts has fullyParallel: false.'
+        ], 'This changes only this file or describe group. Use it when the full project should stay conservative but these independent tests are safe to run together.'),
+        workerGuideExample('Optional second file - tests/table.spec.ts', [
+          "import { test, expect } from '@playwright/test';",
+          '',
+          "test('shows the IPL player records table', async ({ page }) => {",
+          "  console.log(`table test worker: ${test.info().workerIndex}`);",
+          "  await page.goto('/ipl-automation-practice.html');",
+          "  await expect(page.getByTestId('player-records-table')).toBeVisible();",
+          '});',
+          '',
+          "test('contains the Virat Kohli row', async ({ page }) => {",
+          "  await page.goto('/ipl-automation-practice.html');",
+          "  await expect(page.getByTestId('player-table-row-virat-kohli')).toContainText('Virat Kohli');",
+          '});'
+        ], 'With fullyParallel: false, different spec files can still run at the same time. search.spec.ts may use one worker while table.spec.ts uses another worker.'),
+        workerGuideExample('4. test.only() and forbidOnly', [
+          '// Test A is focused. Test B will not run.',
+          "test.only('Test A - fills Virat', async ({ page }) => {",
+          "  await page.goto('/ipl-automation-practice.html');",
+          "  await page.getByTestId('player-search-input').fill('Virat');",
+          "  await expect(page.getByTestId('player-search-input')).toHaveValue('Virat');",
+          '});',
+          '',
+          "test('Test B - fills Dhoni', async ({ page }) => {",
+          '  // This is skipped because Test A has test.only().',
+          '});',
+          '',
+          '// playwright.config.ts',
+          'forbidOnly: false, // test.only() is allowed.',
+          'forbidOnly: true,  // the run fails if test.only() exists.'
+        ], 'test.only() is useful while debugging because it runs only the focused test. Before sharing code, remove .only so the complete suite runs.'),
+        workerGuideExample('Easy meaning of forbidOnly: !!process.env.CI', [
+          '// playwright.config.ts',
+          'forbidOnly: !!process.env.CI,',
+          '',
+          '// Easy meaning:',
+          '// On your laptop: CI is usually missing -> false -> test.only() is allowed.',
+          '// In Jenkins/GitHub Actions/Azure DevOps: CI exists -> true -> test.only() is blocked.',
+          '',
+          '// Example:',
+          '// Test A has test.only().',
+          '// Local run: only Test A runs.',
+          '// Jenkins run: Playwright fails immediately and asks you to remove .only.'
+        ], 'CI means the automated machine that runs tests after code is pushed, such as Jenkins, GitHub Actions, GitLab CI, or Azure DevOps. The first ! converts the CI value to true/false and the second ! makes it a clean Boolean. In simple words: allow .only on your computer, but block it on the team test server.'),
+        workerGuideExample('When should I change playwright.config.ts?', [
+          'fullyParallel: false  // Simple default; tests inside one file stay in order.',
+          'fullyParallel: true   // Use when all tests are independent and parallel-safe.',
+          'workers: 1            // Use for debugging or shared test data.',
+          'workers: 2            // Use two browser workers.',
+          'forbidOnly: false      // Local learning/debugging only.',
+          'forbidOnly: true       // Always block test.only().',
+          'forbidOnly: !!process.env.CI // Recommended: local allowed, CI blocked.'
+        ], 'Change one option at a time, save playwright.config.ts, and rerun the same test command. That makes the result easy to compare.', 'ts')
+      ];
+
       if (workersTopic.subsections && workersTopic.subsections.length) {
         workersTopic.subsections = [completeWorkersGuide].concat(workersTopic.subsections);
       } else {
