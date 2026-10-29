@@ -1906,6 +1906,7 @@
           ui: []
         }
       ];
+      workersTopic.hideReview = true;
     }
 
     return readerTopics;
@@ -4784,14 +4785,15 @@
       '</header>'
     ].join('');
 
+    var review = topic.hideReview ? '' : renderLessonReview(topic);
     if (track.readOnly) {
-      return '<div class="reader-lesson-wrap">' + header + '<div class="ai-reader-edit-body" data-reader-body>' + body + '</div>' + renderLessonReview(topic) + renderLessonNavigation(topic, index, topics, progress) + '</div>';
+      return '<div class="reader-lesson-wrap">' + header + '<div class="ai-reader-edit-body" data-reader-body>' + body + '</div>' + review + renderLessonNavigation(topic, index, topics, progress) + '</div>';
     }
     return [
       '<div class="reader-lesson-wrap">', header,
       '<div class="ai-reader-edit-body" contenteditable="true" data-topic-edit="' + topic.id + '">' + body + '</div>',
       '<div class="ai-inline-save-panel"><button class="primary-btn" type="button" data-inline-save>Save edits now</button><span data-inline-save-state>Typing auto-saves. Manual save is here as backup.</span></div>',
-      renderLessonReview(topic), renderLessonNavigation(topic, index, topics, progress), '</div>'
+      review, renderLessonNavigation(topic, index, topics, progress), '</div>'
     ].join('');
   }
 
