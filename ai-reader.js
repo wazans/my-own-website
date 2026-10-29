@@ -1757,12 +1757,155 @@
         ], 'Change one option at a time, save playwright.config.ts, and rerun the same test command. That makes the result easy to compare.', 'ts')
       ];
 
-      if (workersTopic.subsections && workersTopic.subsections.length) {
-        workersTopic.subsections = [completeWorkersGuide].concat(workersTopic.subsections);
-      } else {
-        workersTopic.paragraphs = completeWorkersGuide.paragraphs;
-        workersTopic.examples = completeWorkersGuide.examples;
-      }
+      workersTopic.subsections = [
+        {
+          id: 'playwright-notes-26-fully-parallel',
+          title: '1. fullyParallel: false and true',
+          paragraphs: [
+            'Concept: fullyParallel controls whether tests inside the same spec file may run at the same time. false keeps tests in that file one after another. true allows Playwright to send them to different workers.'
+          ],
+          examples: [
+            workerGuideExample('Code - tests/search.spec.ts', [
+              "import { test, expect } from '@playwright/test';",
+              '',
+              "test('fills Virat', async ({ page }) => {",
+              "  console.log(`START Virat - worker ${test.info().workerIndex}`);",
+              "  await page.goto('/ipl-automation-practice.html');",
+              "  await page.getByTestId('player-search-input').fill('Virat');",
+              "  await expect(page.getByTestId('player-search-input')).toHaveValue('Virat');",
+              '  await page.waitForTimeout(1000); // Demo only.',
+              "  console.log(`END Virat - worker ${test.info().workerIndex}`);",
+              '});',
+              '',
+              "test('fills Dhoni', async ({ page }) => {",
+              "  console.log(`START Dhoni - worker ${test.info().workerIndex}`);",
+              "  await page.goto('/ipl-automation-practice.html');",
+              "  await page.getByTestId('player-search-input').fill('Dhoni');",
+              "  await expect(page.getByTestId('player-search-input')).toHaveValue('Dhoni');",
+              '  await page.waitForTimeout(1000); // Demo only.',
+              "  console.log(`END Dhoni - worker ${test.info().workerIndex}`);",
+              '});'
+            ], 'Use this same file for both runs. Change only fullyParallel in playwright.config.ts.'),
+            workerGuideExample('Config and run', [
+              '// First run',
+              'workers: 2,',
+              'fullyParallel: false,',
+              'npx playwright test tests/search.spec.ts',
+              '',
+              '// Second run - change only this value',
+              'fullyParallel: true,',
+              'npx playwright test tests/search.spec.ts'
+            ], 'Run once with false, then once with true.', 'ts'),
+            workerGuideExample('Output explained', [
+              'false:',
+              'START Virat - worker 0',
+              'END Virat - worker 0',
+              'START Dhoni - worker 0',
+              'END Dhoni - worker 0',
+              '',
+              'true (one possible result):',
+              'START Virat - worker 0',
+              'START Dhoni - worker 1',
+              'END Virat - worker 0',
+              'END Dhoni - worker 1'
+            ], 'With false, one worker runs both tests in order. With true, two workers can start the tests together. Worker numbers and line order may vary.', 'text')
+          ],
+          resources: [],
+          ui: []
+        },
+        {
+          id: 'playwright-notes-26-serial',
+          title: "2. test.describe.configure({ mode: 'serial' })",
+          paragraphs: [
+            'Concept: serial forces the tests in this group to run in order. If the first test fails, the later test is skipped.'
+          ],
+          examples: [
+            workerGuideExample('Code', [
+              "import { test, expect } from '@playwright/test';",
+              '',
+              "test.describe.configure({ mode: 'serial' });",
+              '',
+              "test('step 1 - page opens', async ({ page }) => {",
+              "  await page.goto('/ipl-automation-practice.html');",
+              "  await expect(page.getByRole('heading', { name: 'IPL Automation Practice Playground' })).toBeVisible();",
+              '});',
+              '',
+              "test('step 2 - search works', async ({ page }) => {",
+              "  await page.goto('/ipl-automation-practice.html');",
+              "  await page.getByTestId('player-search-input').fill('Rohit');",
+              "  await page.getByTestId('search-players').click();",
+              "  await expect(page.getByTestId('player-search-results')).toContainText('Rohit Sharma');",
+              '});'
+            ], 'The two tests are forced to run as step 1, then step 2.'),
+            workerGuideExample('Output explained', [
+              '✓ step 1 - page opens',
+              '✓ step 2 - search works',
+              '',
+              'If step 1 fails:',
+              '✘ step 1 - page opens',
+              '- step 2 - search works (skipped)'
+            ], 'Use serial only when order is truly required. Independent tests should normally remain independent.', 'text')
+          ],
+          resources: [],
+          ui: []
+        },
+        {
+          id: 'playwright-notes-26-parallel-mode',
+          title: "3. test.describe.configure({ mode: 'parallel' })",
+          paragraphs: [
+            'Concept: parallel makes only this test file or describe group parallel. It can be used even when the global config has fullyParallel: false.'
+          ],
+          examples: [
+            workerGuideExample('Code - add one line to search.spec.ts', [
+              "import { test, expect } from '@playwright/test';",
+              '',
+              "test.describe.configure({ mode: 'parallel' });",
+              '',
+              '// Keep the same Virat and Dhoni tests below.'
+            ], 'Only the mode line is new; do not copy the two tests again.'),
+            workerGuideExample('Output explained', [
+              'START Virat - worker 0',
+              'START Dhoni - worker 1',
+              'END Virat - worker 0',
+              'END Dhoni - worker 1'
+            ], 'The two tests from the same file may use different workers. This is a local override for that group.', 'text')
+          ],
+          resources: [],
+          ui: []
+        },
+        {
+          id: 'playwright-notes-26-forbid-only',
+          title: '4. test.only() and forbidOnly',
+          paragraphs: [
+            'Concept: test.only() focuses one test while debugging. forbidOnly decides whether Playwright allows that focused test or stops the run.'
+          ],
+          examples: [
+            workerGuideExample('Code - suppose Test A has test.only()', [
+              "test.only('Test A - Virat', async ({ page }) => {",
+              "  await page.goto('/ipl-automation-practice.html');",
+              "  await page.getByTestId('player-search-input').fill('Virat');",
+              '});',
+              '',
+              "test('Test B - Dhoni', async ({ page }) => {",
+              '  // Test B will not run while Test A has .only.',
+              '});'
+            ], 'test.only() means: run only Test A.'),
+            workerGuideExample('Config and output explained', [
+              'forbidOnly: false',
+              'Output: Test A runs. Test B is skipped.',
+              '',
+              'forbidOnly: true',
+              'Output: Playwright fails the run because test.only() was found.',
+              '',
+              'forbidOnly: !!process.env.CI',
+              'Local laptop: CI is missing -> false -> test.only() is allowed.',
+              'Jenkins/GitHub Actions: CI exists -> true -> test.only() is blocked.'
+            ], 'CI is the automated test machine, such as Jenkins, GitHub Actions, GitLab CI, or Azure DevOps. In simple words, !!process.env.CI means: allow .only on your laptop, but block it on the team test server.', 'text')
+          ],
+          resources: [],
+          ui: []
+        }
+      ];
     }
 
     return readerTopics;
