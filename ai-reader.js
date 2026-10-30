@@ -1,5 +1,115 @@
 (function () {
   var TRACKS = {
+    aiModels: {
+      storageKey: 'testnova-reader-ai-models-v1',
+      contentVersion: 1,
+      title: 'AI Models, LLMs & AI-Driven QA',
+      topics: [
+        lesson('how-ai-models-work', 'How an AI Model Works', [
+          'AI models learn patterns from enormous training datasets containing text, code, images, audio, or other data. A language model does not simply look up and copy a stored answer; it generates a response from learned patterns and the context supplied at inference time.',
+          'Tokenization divides input into smaller units called tokens. The model repeatedly predicts a useful next token until it forms a complete response.',
+          'Training is the learning phase. Inference is the usage phase: you enter a prompt and the trained model generates an answer, test cases, documentation, or code.'
+        ], 'Ask an AI assistant to turn a login requirement into five test cases, then identify the prompt, tokens, inference step, and generated output.', [
+          { title: 'QA prompt example', language: 'text', code: 'Create Playwright TypeScript tests for a login page.\nCover valid login, invalid password, empty fields,\nand visible error-message assertions.' }
+        ]),
+        lesson('companies-model-families', 'AI Companies & Model Families', [
+          'Think of the company as the manufacturer, the model family as the product range, and a version as one specific model. OpenAI builds GPT models, Anthropic builds Claude, Google builds Gemini, and Meta builds Llama.',
+          'ChatGPT is an AI application, while GPT is a model family. Claude names both Anthropic\'s assistant experience and its model family. Gemini is Google\'s model and product brand. Llama is Meta\'s open-weight model family.',
+          'Model names and versions change frequently. For real projects, verify the currently available model, capability, price, and usage terms in the provider\'s official documentation.'
+        ], 'Choose two AI providers and compare one current model from each by capability, speed, cost, context window, and data policy.'),
+        lesson('llm-slm-multimodal', 'LLM, SLM & Multimodal Models', [
+          'An LLM is a Large Language Model used for language, coding, reasoning, summarization, and generation. An SLM is a smaller language model designed for lower cost, faster execution, local use, or a narrow task.',
+          'A multimodal model can work with more than one data type, such as text and images, or text and audio. Multimodal input does not guarantee multimodal output; always check the exact model contract.',
+          'The abbreviation MLM often means Masked Language Model in machine learning. Use the full phrase multimodal model when discussing models that handle images, audio, or video.'
+        ], 'Classify three possible QA tasks as best suited to an LLM, an SLM, or a multimodal model, and explain why.'),
+        lesson('model-capabilities', 'Model Capabilities: Text, Image, Audio & Video', [
+          'Text models generate explanations, requirements summaries, test cases, source code, and documentation. Vision-capable models can inspect screenshots and reason about visible UI states.',
+          'Audio models support speech recognition, voice interaction, transcription, and voice generation. Video models can analyze or generate sequences of visual frames, depending on the service.',
+          'Capability belongs to a specific model and API—not merely to the provider. Confirm supported inputs, outputs, file limits, latency, safety rules, and regional availability before designing a workflow.'
+        ], 'Create a capability checklist for a tool that reads a failed-test screenshot, explains the likely problem, and drafts a bug report.'),
+        lesson('chat-model-vs-agent', 'Chat Model vs Coding Agent', [
+          'A chat model answers questions and proposes content or code. A coding agent combines a model with tools and a workflow so it can inspect files, edit code, run tests, and use results in the next step.',
+          'The model provides language and reasoning capability. Tools provide controlled actions. Permissions, logging, review, and verification determine what the agent is allowed to do safely.',
+          'For example, a Playwright agent can inspect a page, choose locators, edit a failing test, run it, analyze the failure, and report the verified change. A normal chat response usually stops at suggested code.'
+        ], 'Draw the steps an agent should follow to fix a failing Playwright test, including a human approval or review point.'),
+        lesson('selecting-ai-model', 'How to Select an AI Model', [
+          'The largest model is not automatically the best choice. Compare task accuracy, reasoning and coding quality, latency, input and output cost, context window, privacy controls, availability, and hosting needs.',
+          'Use a capable coding or reasoning model for framework design and difficult debugging. A faster, cheaper model may suit repetitive drafting, classification, or log summarization.',
+          'Consider self-hosting when data control or offline use is essential and the team can support the required infrastructure. Always evaluate models on your own representative QA tasks.'
+        ], 'Create a small scorecard to compare three models for test generation, failure analysis, and confidential project work.'),
+        lesson('qa-use-cases', 'Practical LLM Use Cases for QA', [
+          'During requirement analysis, AI can identify ambiguity, missing acceptance criteria, assumptions, and risk areas. For manual testing, it can draft positive, negative, boundary, exploratory, and regression ideas.',
+          'For automation, AI can explain code, propose Playwright or Selenium tests, create API requests and assertions, draft page objects, and suggest test data. It can also summarize CI failures, logs, defects, and release results.',
+          'Treat every result as a draft. Check business rules, coverage, selectors, waits, assertions, secrets, and maintainability before using generated output.'
+        ], 'Use the sample prompt to generate login tests, then review the result for missing risks and weak assertions.', [
+          { title: 'Reusable QA prompt', language: 'text', code: 'Act as a senior QA engineer.\nGenerate Playwright TypeScript test cases for login.\nInclude valid credentials, invalid credentials, empty fields,\nboundary cases, and visible error-message assertions.\nReturn a coverage table followed by maintainable test code.' }
+        ]),
+        lesson('ai-driven-lifecycle', 'AI-DLC: AI-Driven Development Lifecycle', [
+          'AI-DLC integrates AI assistance across the delivery lifecycle while preserving human oversight. The flow remains requirements, planning, development, testing, deployment, monitoring, and feedback.',
+          'AI can analyze stories and gaps, propose architecture and tasks, generate or update code, assist with tests, analyze build results, and summarize production signals.',
+          'Each stage still needs measurable acceptance criteria, deterministic checks where possible, traceability, security controls, and an accountable human decision-maker.'
+        ], 'Map one sample feature through requirements, design, development, testing, deployment, and monitoring. Add an AI task and a human verification task at every stage.'),
+        lesson('ai-assisted-vs-testing-ai', 'AI-Assisted Testing vs Testing AI', [
+          'AI-assisted testing uses AI to help test conventional software—for example generating test cases, suggesting locators, analyzing Selenium failures, or creating API payloads.',
+          'Testing an AI application means validating the AI system itself. QA evaluates response correctness, groundedness, hallucinations, consistency, latency, privacy, safety, prompt-injection resistance, and tool-call behavior.',
+          'AI output can vary, so evaluation uses representative datasets, scoring rules, thresholds, repeated runs, production monitoring, and human review rather than relying only on one expected string.'
+        ], 'Create five tests for a support chatbot: correctness, hallucination, prompt injection, privacy, and latency.'),
+        lesson('prompt-engineering-for-qa', 'Prompt Engineering for QA', [
+          'A prompt is the instruction and context given to an AI model. Prompt engineering is the practice of designing that input so the model produces useful, consistent, and reviewable results.',
+          'The same task can produce very different output depending on how clearly you define the role, objective, background, limits, and expected format. Treat a prompt like a precise briefing for a capable teammate.',
+          'A weak request such as “write test cases” leaves scope and quality to guesswork. A stronger request identifies the feature, risk area, test level, constraints, and required output structure.'
+        ], 'Rewrite a vague request for login tests as a complete prompt with role, task, context, constraints, and output format.', [
+          { title: 'From vague to testable', language: 'text', code: 'Weak:\nWrite test cases.\n\nStronger:\nAct as a senior QA engineer. Generate boundary test cases\nfor a login age field that accepts values from 18 to 60\nand rejects non-numeric input. Return a table with columns:\nID, Input, Expected Result, and Priority.' }
+        ]),
+        lesson('prompting-techniques', 'Prompting Techniques for Test Design', [
+          'Zero-shot prompting gives the model a task without examples. Use it for quick drafts and familiar problems. One-shot prompting provides one input-output example to establish the desired pattern.',
+          'Few-shot prompting supplies several examples so the model can follow a consistent format, tone, and level of detail. Role prompting assigns a perspective such as senior QA engineer, test architect, product owner, or security tester.',
+          'For complex work, ask the model to analyze requirements, identify validations and risks, and then produce the result. Request a concise rationale or assumptions rather than depending on hidden reasoning. Structured prompting specifies a table, JSON, CSV, or another exact schema.'
+        ], 'Create zero-shot, one-shot, and few-shot versions of a prompt that generates registration test cases.', [
+          { title: 'Few-shot pattern', language: 'text', code: 'Examples:\nValid login -> authentication succeeds\nWrong password -> generic error is displayed\nEmpty username -> required-field validation is displayed\n\nGenerate five additional login scenarios in the same format.\nAvoid duplicates and include at least one boundary case.' }
+        ]),
+        lesson('croftcc-prompt-framework', 'CROFTCC Prompt Framework', [
+          'CROFTCC is a reusable checklist for building detailed prompts: Context, Role, Objective, Format, Tone, Constraints, and Clarification.',
+          'Context describes the product, feature, users, environment, and supplied artifacts. Role defines the expertise the model should apply. Objective states the exact outcome. Format makes the answer reusable.',
+          'Tone controls communication style. Constraints prevent duplication, unsafe assumptions, secret exposure, or excessive scope. Clarification tells the model to ask focused questions when essential details are missing.'
+        ], 'Use CROFTCC to write a prompt for generating checkout test scenarios from a user story and UI screenshot.', [
+          { title: 'CROFTCC template', language: 'text', code: 'Context: [feature, users, environment, source artifacts]\nRole: Act as [relevant QA role]\nObjective: Produce [specific result]\nFormat: Return [table, JSON, checklist, code]\nTone: Use [concise, technical, stakeholder-friendly]\nConstraints: [scope, exclusions, limits, privacy rules]\nClarification: Ask only the questions required to avoid unsafe assumptions.' }
+        ]),
+        lesson('prompt-files-management', 'Prompt Files & Management', [
+          'Store reusable prompts in dedicated text or Markdown files instead of burying them inside application code. Clear names such as test-case-prompt.md, api-review-prompt.md, and defect-summary-prompt.md make intent visible.',
+          'Prompt files improve reuse, maintenance, review, and version control. Teams can update one source, review changes in Git, and link a prompt version to evaluation results.',
+          'Treat prompts as first-class assets: define an owner, record versions, peer-review important changes, test them on representative inputs, and monitor output quality before production use.'
+        ], 'Design a prompts folder for a QA repository and define a review checklist for prompt changes.', [
+          { title: 'Suggested prompt assets', language: 'text', code: 'prompts/\n  manual-test-cases.md\n  api-test-cases.md\n  bug-report.md\n  failure-analysis.md\n  README.md\n\nevaluations/\n  prompt-cases.json\n  expected-rubric.md' }
+        ]),
+        lesson('manual-testcase-prompts', 'Prompts for Manual Test Cases', [
+          'A strong manual-testing prompt supplies the feature description, user roles, application type, environment, business rules, and available artifacts such as a BRD, PRD, screenshot, design, or API documentation.',
+          'Request deliberate coverage across functional flows, positive and negative paths, boundaries, validation, error handling, data integrity, UI and accessibility, security, integration, concurrency, and performance where relevant.',
+          'Define independence, realistic data, non-duplication, and risk-based priority as quality rules. Ask for clarification before generation when missing information would materially change the test design.'
+        ], 'Use the template to generate and then review 20 production-grade test cases for one feature.', [
+          { title: 'Manual test-case prompt template', language: 'text', code: 'Act as a senior QA architect.\n\nFeature: [name and detailed behavior]\nUsers: [roles]\nApplication and environment: [web/mobile/API, browser/device]\nBusiness rules and source artifacts: [details or attachments]\n\nGenerate independent, non-duplicate test cases covering functional,\npositive, negative, boundary, validation, data, UI, accessibility,\nsecurity, integration, concurrency, error, and performance risks\nwhere applicable. Use realistic test data and prioritize by impact.\n\nReturn: ID | Title | Priority | Type | Preconditions | Steps |\nTest Data | Expected Result | Postcondition.\nAsk focused clarification questions before generating if essential\nrequirements are missing.' }
+        ]),
+        lesson('api-testing-prompts', 'Prompts for API Test Suites', [
+          'For API test generation, provide the method, path, purpose, authentication, headers, parameters, request and response schemas, validation rules, business rules, dependencies, idempotency expectations, pagination behavior, and rate limits.',
+          'Require coverage for happy paths, missing or invalid fields, authorization and tenant isolation, content negotiation, status codes, contract validation, safe error responses, retries, concurrency, pagination, throttling, performance, observability, and security payloads.',
+          'Machine-readable JSON is useful when output feeds another tool, but it must be validated against a schema before use. Limit the requested test count deliberately so important scenarios are not buried in repetitive output.'
+        ], 'Adapt the API prompt template for one endpoint and validate the returned JSON before importing it into a test-management tool.', [
+          { title: 'API prompt template', language: 'text', code: 'Act as a senior API QA architect.\nEndpoint: [METHOD PATH]\nContext: [domain, base URL, environment, dependencies]\nAuth and access: [type, roles, tenant rules]\nContract: [headers, params, request/response schemas]\nRules: [validation, idempotency, pagination, rate limits]\n\nCreate unique tests for functional, validation, auth, contract,\nerrors, retries, concurrency, pagination, rate limiting, security,\nperformance, and observability where applicable.\nReturn only valid JSON using the supplied schema.\nDo not invent unspecified limits; list them as clarification needs.' }
+        ]),
+        lesson('bug-report-prompts', 'Prompts for Professional Bug Reports', [
+          'A bug-report prompt should provide the affected feature, application type, environment, build, browser or device, issue description, observed and expected behavior, performed steps, test data, logs, screenshots, and API responses.',
+          'Request a short reproducible title, justified severity and priority, numbered reproduction steps, clear expected versus actual results, impact, and relevant evidence. Possible root-cause hints must be labeled as hypotheses rather than facts.',
+          'Avoid vague language such as “not working.” A useful report gives a developer enough precise information to reproduce, investigate, and verify the fix.'
+        ], 'Turn a rough issue description into a complete defect report, then check every statement against the supplied evidence.', [
+          { title: 'Bug-report prompt template', language: 'text', code: 'Act as a senior QA lead. Build a production-quality defect report.\n\nFeature: [name]\nEnvironment and build: [details]\nBrowser/device: [details]\nObserved behavior: [facts]\nExpected behavior: [requirement]\nSteps and test data: [details]\nEvidence: [logs, screenshots, responses]\n\nReturn: Title, Severity, Priority, Environment, Preconditions,\nNumbered Steps, Test Data, Expected Result, Actual Result, Logs,\nImpact, Root-Cause Hypotheses, and Suggested Attachments.\nAsk for clarification when required evidence is missing.\nDo not present a possible root cause as confirmed.' }
+        ]),
+        lesson('key-takeaways', 'Key Takeaways & Next Steps', [
+          'LLM is the language-focused brain. An agent is a model plus tools, permissions, and workflow. MCP is an integration protocol that can connect agents to tools and data. An SLM is a smaller model suited to efficient or local tasks.',
+          'Multimodal models work with multiple data types. AI-DLC uses AI throughout software delivery. QA remains the quality gate for both AI-generated artifacts and AI-enabled applications.',
+          'The core principle is simple: AI can accelerate QA, but deterministic assertions, reproducible tests, measurable evaluations, secure data handling, and human judgment remain essential.'
+        ], 'Write a one-page checklist your QA team can use before accepting AI-generated test assets or releasing an AI feature.')
+      ]
+    },
     everyone: {
       storageKey: 'testnova-ai-reader-everyone',
       title: 'Basic AI',
