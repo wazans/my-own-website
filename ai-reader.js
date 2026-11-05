@@ -107,7 +107,8 @@
           'LLM is the language-focused brain. An agent is a model plus tools, permissions, and workflow. MCP is an integration protocol that can connect agents to tools and data. An SLM is a smaller model suited to efficient or local tasks.',
           'Multimodal models work with multiple data types. AI-DLC uses AI throughout software delivery. QA remains the quality gate for both AI-generated artifacts and AI-enabled applications.',
           'The core principle is simple: AI can accelerate QA, but deterministic assertions, reproducible tests, measurable evaluations, secure data handling, and human judgment remain essential.'
-        ], 'Write a one-page checklist your QA team can use before accepting AI-generated test assets or releasing an AI feature.')
+        ], 'Write a one-page checklist your QA team can use before accepting AI-generated test assets or releasing an AI feature.'),
+        threeAgentSkillsLesson()
       ]
     },
     everyone: {
@@ -4603,6 +4604,241 @@
 
   function lesson(id, title, paragraphs, practice, examples, resources) {
     return { id: id, title: title, paragraphs: paragraphs, practice: practice, examples: examples || [], resources: resources || [] };
+  }
+
+  function threeAgentSkillsLesson() {
+    function skillSection(id, title, paragraphs, examples, ui) {
+      return {
+        id: id,
+        title: title,
+        paragraphs: paragraphs,
+        examples: examples || [],
+        resources: [],
+        ui: ui || []
+      };
+    }
+
+    function skillExample(title, lines, explanation, language) {
+      return {
+        title: title,
+        code: lines.join('\n'),
+        explanation: explanation,
+        language: language || 'markdown'
+      };
+    }
+
+    return {
+      id: 'build-3-ai-agent-skills',
+      title: 'Hands-On: Build 3 AI Agent Skills from Scratch',
+      paragraphs: [
+        'Build three reusable Agent Skills in one VS Code project: a professional email writer, a QA test-case writer, and a daily stand-up summarizer.',
+        'You will create each SKILL.md file, invoke the skills in GitHub Copilot Chat, inspect the output, and troubleshoot skill discovery.'
+      ],
+      practice: 'Create all three skills, run one prompt through each skill, and verify that the response follows the requested output format.',
+      examples: [],
+      resources: [
+        { label: 'VS Code Agent Skills documentation', url: 'https://code.visualstudio.com/docs/agent-customization/agent-skills' },
+        { label: 'GitHub Copilot Agent Skills documentation', url: 'https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills' }
+      ],
+      subsections: [
+        skillSection('three-skills-overview', '1. What You Will Build', [
+          'An Agent Skill is a reusable folder of instructions that helps an AI agent perform a specialized task consistently. The main instruction file is named SKILL.md.',
+          'Instead of repeating a long prompt every time, define the workflow, rules, and output format once. The model still generates the answer; the skill supplies reusable guidance.',
+          'This class uses GitHub Copilot in VS Code. You need VS Code, the GitHub Copilot extension, GitHub sign-in, and working Copilot Chat. Node.js, Java, Selenium, and Playwright are not required.'
+        ], [], [
+          { type: 'table', title: 'The Three Skills', headers: ['Skill', 'Purpose', 'Example request'], rows: [
+            ['email-writer', 'Create concise professional emails', 'Write a leave request email'],
+            ['qa-test-case-writer', 'Generate structured manual test cases', 'Create login test cases'],
+            ['standup-summary', 'Convert rough notes into a Scrum update', 'Prepare today’s stand-up']
+          ]}
+        ]),
+        skillSection('three-skills-project-setup', '2. Create the Project and Folder Structure', [
+          'Create a folder named my-ai-skills and open it as the root folder in VS Code. Inside it, create .github/skills.',
+          'Every skill needs its own folder and its own file named exactly SKILL.md. Skill folder names should use lowercase letters and hyphens.'
+        ], [
+          skillExample('Final folder structure', [
+            'my-ai-skills/',
+            '`-- .github/',
+            '    `-- skills/',
+            '        |-- email-writer/',
+            '        |   `-- SKILL.md',
+            '        |-- qa-test-case-writer/',
+            '        |   `-- SKILL.md',
+            '        `-- standup-summary/',
+            '            `-- SKILL.md'
+          ], 'Do not combine all three skills into one SKILL.md file.', 'text'),
+          skillExample('Optional PowerShell setup', [
+            'mkdir my-ai-skills',
+            'cd my-ai-skills',
+            'mkdir .github/skills/email-writer',
+            'mkdir .github/skills/qa-test-case-writer',
+            'mkdir .github/skills/standup-summary',
+            'code .'
+          ], 'You can also create the same folders from the VS Code Explorer.', 'bash')
+        ]),
+        skillSection('email-writer-skill', '3. Skill One: Professional Email Writer', [
+          'Create .github/skills/email-writer/SKILL.md and paste the instructions below. The name must match the parent folder.',
+          'This skill converts rough notes into one concise, ready-to-send workplace email without inventing missing facts.'
+        ], [
+          skillExample('.github/skills/email-writer/SKILL.md', [
+            '---',
+            'name: email-writer',
+            'description: Write clear, concise professional emails from a topic and rough notes. Use for workplace emails, requests, follow-ups, invitations, and replies.',
+            '---',
+            '',
+            '# Professional Email Writer',
+            '',
+            '## Workflow',
+            '1. Identify the purpose and recipient.',
+            '2. Extract facts, commitments, and deadlines.',
+            '3. Write a specific subject and greeting.',
+            '4. Draft 2–4 short, polite paragraphs.',
+            '5. Add a clear next step when required.',
+            '6. Proofread before responding.',
+            '',
+            '## Rules',
+            '- Never invent names, dates, links, or promises.',
+            '- Preserve dates, times, and numbers.',
+            '- Avoid jargon and unnecessary explanation.',
+            '- Omit the sender name when it was not provided.',
+            '',
+            '## Output Format',
+            '**Subject:** <specific subject>',
+            '',
+            'Hi <recipient or Team>,',
+            '',
+            '<email body>',
+            '',
+            'Best regards,',
+            '<sender name, only if provided>'
+          ], 'Save the file, then start a fresh Copilot chat so skill discovery can refresh.'),
+          skillExample('Practice prompt', [
+            '/email-writer Write a short professional email requesting one day of leave on Monday. Include a subject and keep it polite.'
+          ], 'Expected structure: subject, greeting, short message, and sign-off.', 'text')
+        ]),
+        skillSection('qa-test-case-writer-skill', '4. Skill Two: QA Test Case Writer', [
+          'Create .github/skills/qa-test-case-writer/SKILL.md. This skill turns a feature description or acceptance criteria into structured manual test cases.',
+          'It must separate confirmed requirements from assumptions and must never claim that generated tests were executed.'
+        ], [
+          skillExample('.github/skills/qa-test-case-writer/SKILL.md', [
+            '---',
+            'name: qa-test-case-writer',
+            'description: Generate structured manual QA test cases from features or acceptance criteria. Use for positive, negative, boundary, and validation testing.',
+            '---',
+            '',
+            '# QA Test Case Writer',
+            '',
+            '## Workflow',
+            '1. Understand the feature and requirements.',
+            '2. Identify positive, negative, boundary, and edge cases.',
+            '3. Write clear steps and observable expected results.',
+            '4. Assign test IDs and priorities.',
+            '5. List missing requirements separately.',
+            '',
+            '## Rules',
+            '- Never invent business requirements.',
+            '- Mark unclear requirements as “Assumption / confirm with PO”.',
+            '- Avoid duplicate test cases.',
+            '- Do not claim tests were executed.',
+            '- Use sample data, never real credentials.',
+            '',
+            '## Output Format',
+            '1. Feature Summary',
+            '2. Assumptions / Questions',
+            '3. Test Cases',
+            '',
+            '| ID | Scenario | Preconditions | Test Data | Steps | Expected Result | Priority |',
+            '',
+            '4. Coverage Gaps'
+          ], 'The output format makes generated test cases easier to review and move into a test-management tool.'),
+          skillExample('Practice prompt', [
+            '/qa-test-case-writer Generate manual test cases for a login page with email, password, Login, and Forgot Password. Include positive, negative, empty-field, and boundary scenarios. List missing validation requirements separately.'
+          ], 'Expected result: structured cases plus questions about unspecified rules such as password limits or lockout behavior.', 'text')
+        ]),
+        skillSection('standup-summary-skill', '5. Skill Three: Daily Stand-up Summary', [
+          'Create .github/skills/standup-summary/SKILL.md. This skill converts informal notes into a short professional Scrum update.',
+          'It must preserve actual status and ticket IDs. It must not invent completed work or blockers.'
+        ], [
+          skillExample('.github/skills/standup-summary/SKILL.md', [
+            '---',
+            'name: standup-summary',
+            'description: Convert rough daily work notes into concise Scrum stand-up summaries with yesterday, today, and blockers. Use for daily stand-ups and async updates.',
+            '---',
+            '',
+            '# Daily Stand-up Summary',
+            '',
+            '## Workflow',
+            '1. Identify completed work.',
+            '2. Identify today’s planned activities.',
+            '3. Identify blockers or dependencies.',
+            '4. Preserve ticket IDs and work status.',
+            '5. Rewrite clearly in 60–100 words.',
+            '',
+            '## Rules',
+            '- Do not invent tasks, blockers, or ticket IDs.',
+            '- Do not mark in-progress work as completed.',
+            '- If blockers are missing, write “No blockers mentioned”.',
+            '',
+            '## Output Format',
+            '**Yesterday**',
+            '- Completed activities',
+            '',
+            '**Today**',
+            '- Planned activities',
+            '',
+            '**Blockers**',
+            '- Existing blockers or dependencies'
+          ], 'This structure keeps daily updates brief, factual, and consistent.'),
+          skillExample('Practice prompt', [
+            '/standup-summary Yesterday I tested login and raised BUG-12. Today I will run login regression and start dashboard smoke testing. I am waiting for the new development build.'
+          ], 'Expected result: Yesterday, Today, and Blockers sections without changing the facts.', 'text')
+        ]),
+        skillSection('run-copilot-skills', '6. Run the Skills in GitHub Copilot', [
+          'Open Copilot Chat in VS Code, select Agent mode, and start a fresh chat after creating or changing a skill.',
+          'Type / to view available skills. Select a skill and add your task. Copilot may also load a relevant skill automatically when the request matches its description.',
+          'Automatic selection is helpful but not guaranteed for every prompt. During learning, invoke the skill explicitly so you can verify the behavior.'
+        ], [
+          skillExample('Direct invocation examples', [
+            '/email-writer Write a meeting reschedule email for Friday.',
+            '',
+            '/qa-test-case-writer Generate test cases for a registration form.',
+            '',
+            '/standup-summary Yesterday completed API testing. Today starting UI regression. Waiting for deployment.'
+          ], 'The description in each SKILL.md helps Copilot decide when the skill is relevant.', 'text'),
+          skillExample('Automatic-selection test', [
+            'I completed API testing yesterday. Today I will start UI regression testing, but I am waiting for the latest deployment. Convert this into a daily stand-up update.'
+          ], 'Copilot may select standup-summary automatically because the request matches its description.', 'text')
+        ]),
+        skillSection('verify-troubleshoot-skills', '7. Verify and Troubleshoot', [
+          'A good-looking answer does not automatically prove that Copilot loaded your skill. Start a fresh chat, invoke the skill directly, and check whether the output follows the skill format and rules.',
+          'Use /skills to open skill configuration. If the skill is missing, check the file name, YAML header, folder name, workspace root, Copilot sign-in, and chat session.'
+        ], [], [
+          { type: 'checklist', title: 'Skill Discovery Checklist', items: [
+            'The file is named exactly SKILL.md, not SKILLS.md or SKILL.md.txt',
+            'Each skill has its own folder under .github/skills',
+            'YAML frontmatter contains valid name and description fields',
+            'The skill name matches the parent folder and uses lowercase letters and hyphens',
+            'The my-ai-skills folder is open as the VS Code workspace root',
+            'GitHub Copilot Chat is signed in and Agent mode is available',
+            'A fresh chat was started after creating or editing the skill',
+            'The skill appears in the / menu or /skills configuration'
+          ]}
+        ]),
+        skillSection('skill-locations-takeaways', '8. Skill Locations and Key Takeaways', [
+          'Use .github/skills for skills stored with one repository. GitHub Copilot also supports project skills under .agents/skills or .claude/skills, depending on the surface and workflow.',
+          'Use ~/.copilot/skills or ~/.agents/skills for personal skills shared across projects. Supported locations can vary by agent surface, so check its setup guide before copying skills.',
+          'The reusable pattern is simple: create one folder per skill, add SKILL.md with a clear name and description, define workflow and rules, invoke the skill, and verify the result.'
+        ], [], [
+          { type: 'flow', title: 'Agent Skill Workflow', steps: ['Create project', 'Create skills folder', 'Add one SKILL.md per task', 'Define workflow and rules', 'Invoke in Copilot', 'Verify output'] },
+          { type: 'table', title: 'Common Skill Locations', headers: ['Location', 'Typical use'], rows: [
+            ['.github/skills/', 'Project skills stored in the current repository'],
+            ['.agents/skills/', 'Portable project skills supported by compatible agents'],
+            ['~/.copilot/skills/', 'Personal Copilot skills across projects'],
+            ['~/.agents/skills/', 'Personal portable skills across compatible agents']
+          ]}
+        ])
+      ]
+    };
   }
 
   function slugify(value) {
