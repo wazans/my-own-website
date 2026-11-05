@@ -133,11 +133,53 @@
     nav.querySelectorAll('[data-ipl-topic-link]').forEach(function (link) {
       link.addEventListener('click', function (event) {
         event.preventDefault();
-        var target = byId(this.getAttribute('data-ipl-topic-link'));
+        var sectionId = this.getAttribute('data-ipl-topic-link');
+        var target = byId(sectionId);
+        applyMobileSection(sectionId);
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         nav.querySelectorAll('a').forEach(function (a) { a.classList.remove('active'); });
         this.classList.add('active');
       });
+    });
+
+    var picker = byId('ipl-section-picker');
+    if (picker) {
+      picker.innerHTML = '<option value="all">Show all components</option>' + practiceSections.map(function (item) {
+        return '<option value="' + item[0] + '">' + escapeHtml(item[1]) + '</option>';
+      }).join('');
+      picker.addEventListener('change', function () {
+        if (picker.value === 'all') {
+          applyMobileSection('all');
+          window.history.replaceState(null, '', window.location.pathname + window.location.search);
+          return;
+        }
+        var target = byId(picker.value);
+        if (!target) return;
+        applyMobileSection(picker.value);
+        window.history.replaceState(null, '', '#' + picker.value);
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        target.setAttribute('tabindex', '-1');
+        window.setTimeout(function () { target.focus({ preventScroll: true }); }, 450);
+      });
+    }
+
+    var initialId = window.location.hash.slice(1);
+    if (initialId && byId(initialId)) {
+      applyMobileSection(initialId);
+      if (picker) picker.value = initialId;
+      window.setTimeout(function () { byId(initialId).scrollIntoView({ block: 'start' }); }, 0);
+    } else if (window.matchMedia('(max-width: 900px)').matches) {
+      applyMobileSection(practiceSections[0][0]);
+      if (picker) picker.value = practiceSections[0][0];
+    }
+  }
+
+  function applyMobileSection(sectionId) {
+    var isMobile = window.matchMedia('(max-width: 900px)').matches;
+    practiceSections.forEach(function (item) {
+      var card = byId(item[0]);
+      if (!card) return;
+      card.classList.toggle('is-mobile-hidden', isMobile && sectionId !== 'all' && item[0] !== sectionId);
     });
   }
 
@@ -283,7 +325,7 @@
   }
 
   function bindStaticEvents() {
-    byId('start-practising').addEventListener('click', function () { byId('player-search-section').scrollIntoView({ behavior: 'smooth' }); });
+    byId('start-practising').addEventListener('click', function () { applyMobileSection('player-search-section'); var picker = byId('ipl-section-picker'); if (picker) picker.value = 'player-search-section'; byId('player-search-section').scrollIntoView({ behavior: 'smooth' }); });
     byId('view-challenges').addEventListener('click', function () { byId('automation-challenges').scrollIntoView({ behavior: 'smooth' }); });
     byId('player-search-form').addEventListener('submit', function (event) { event.preventDefault(); runPlayerSearch(); });
     byId('clear-player-filters').addEventListener('click', clearPlayerFilters);
@@ -790,6 +832,13 @@
       return '<article class="glass-card challenge-card" data-testid="challenge-card-' + (i + 1) + '"><span class="difficulty">' + c[0] + '</span><h3>Challenge ' + (i + 1) + '</h3><p><strong>Task:</strong> ' + escapeHtml(c[1]) + '</p><p><strong>Expected outcome:</strong> ' + escapeHtml(c[2]) + '</p><p><strong>Section:</strong> ' + escapeHtml(c[3]) + '</p><button class="compact-btn" type="button" aria-expanded="false" data-testid="challenge-hint-' + (i + 1) + '">Expand solution hint</button><p hidden>' + escapeHtml(c[4]) + '</p></article>';
     }).join('');
     byId('challenge-grid').querySelectorAll('button').forEach(function (btn) { btn.addEventListener('click', function () { var p = this.nextElementSibling; p.hidden = !p.hidden; this.setAttribute('aria-expanded', String(!p.hidden)); }); });
+    var toggle = byId('toggle-all-challenges');
+    if (toggle) toggle.addEventListener('click', function () {
+      var expanded = toggle.getAttribute('aria-expanded') === 'true';
+      byId('challenge-grid').classList.toggle('is-expanded', !expanded);
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      toggle.textContent = expanded ? 'Show all practice challenges' : 'Show fewer practice challenges';
+    });
   }
 
   init().catch(function (error) {

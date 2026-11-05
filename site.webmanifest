@@ -1,0 +1,9 @@
+{
+  "name": "TestNova Learning Hub",
+  "short_name": "TestNova",
+  "description": "Practical learning for QA, automation, development and AI.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#080b12",
+  "theme_color": "#0b1020"
+}

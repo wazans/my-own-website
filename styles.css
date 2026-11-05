@@ -2609,6 +2609,14 @@ body.content-locked .page-header::after {
   grid-template-rows: auto minmax(170px, 300px) auto;
 }
 
+.ai-assistant-privacy {
+  margin: 0;
+  padding: 0 1rem 0.85rem;
+  color: var(--tn-text-muted);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
 .ai-assistant-header {
   display: flex;
   align-items: flex-start;
@@ -3032,6 +3040,14 @@ body.corporate-register-page .floating-register {
   display: none;
 }
 
+@media (max-width: 780px) {
+  /* Keep content readable: the mobile header already links to these destinations. */
+  .floating-register,
+  .floating-ipl-playground {
+    display: none !important;
+  }
+}
+
 @media (max-width: 480px) {
   .nova-hero h1,
   .thankyou-card h1 {
@@ -3165,15 +3181,23 @@ body.corporate-register-page .floating-register {
   }
 
   .ai-course-assistant {
-    right: 1rem;
-    bottom: 4.8rem;
+    right: 4.75rem;
+    bottom: 1rem;
   }
 
   .ai-assistant-toggle {
-    min-width: 104px;
-    height: 50px;
-    font-size: 0.82rem;
-    padding: 0 0.8rem;
+    min-width: 54px;
+    height: 48px;
+    font-size: 0.78rem;
+    padding: 0 0.7rem;
+  }
+
+  .ai-assistant-label {
+    display: none;
+  }
+
+  .ai-assistant-toggle::before {
+    content: "Ask";
   }
 
   .ai-assistant-panel {
@@ -3241,13 +3265,14 @@ body.landing-page .container {
 }
 
 .landing-hero {
-  min-height: clamp(460px, 62vh, 590px);
+  min-height: clamp(400px, 54vh, 520px);
   display: flex;
   align-items: center;
-  padding: 5.5rem 0;
+  padding: clamp(3.5rem, 7vw, 4.75rem) 0;
   background:
-    linear-gradient(90deg, rgba(8, 11, 18, 0.94) 0%, rgba(8, 11, 18, 0.76) 48%, rgba(8, 11, 18, 0.38) 100%),
-    url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=82") center / cover;
+    radial-gradient(circle at 82% 18%, rgba(79, 70, 229, 0.22), transparent 34%),
+    radial-gradient(circle at 14% 82%, rgba(16, 185, 129, 0.14), transparent 32%),
+    linear-gradient(135deg, #0d1927 0%, #0b1421 52%, #10162a 100%);
   border-bottom: 1px solid rgba(148, 163, 184, 0.12);
 }
 
@@ -3319,12 +3344,12 @@ body.landing-page .container {
 }
 
 .landing-section {
-  padding: clamp(4.5rem, 8vw, 7rem) 0;
+  padding: clamp(3.5rem, 6vw, 5rem) 0;
 }
 
 .landing-mentors {
   padding: clamp(2rem, 5vw, 3.5rem) 0;
-  background: rgba(10, 14, 26, 0.5);
+  background: var(--tn-surface-soft);
   border-bottom: 1px solid rgba(148, 163, 184, 0.12);
 }
 
@@ -3527,12 +3552,13 @@ body.landing-page .text-link {
   }
 
   .landing-hero {
-    min-height: 520px;
-    align-items: flex-end;
-    padding: 3.2rem 0;
+    min-height: auto;
+    align-items: center;
+    padding: 3rem 0;
     background:
-      linear-gradient(180deg, rgba(8, 11, 18, 0.34) 0%, rgba(8, 11, 18, 0.88) 54%, #080b12 100%),
-      url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1100&q=82") center / cover;
+      radial-gradient(circle at 84% 12%, rgba(79, 70, 229, 0.2), transparent 36%),
+      radial-gradient(circle at 12% 88%, rgba(16, 185, 129, 0.13), transparent 34%),
+      linear-gradient(150deg, #0d1927 0%, #0b1421 58%, #10162a 100%);
   }
 
   .landing-hero h1 {
@@ -3541,7 +3567,7 @@ body.landing-page .text-link {
   }
 
   .landing-section {
-    padding: 3rem 0;
+    padding: 2.5rem 0;
   }
 
   .landing-mentors {
@@ -3555,7 +3581,8 @@ body.landing-page .text-link {
 
 @media (max-width: 480px) {
   .landing-hero {
-    min-height: 500px;
+    min-height: auto;
+    padding: 2.5rem 0;
   }
 
   .landing-hero h1 {

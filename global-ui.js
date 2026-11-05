@@ -157,14 +157,29 @@
     }
   }
 
+  function ensureReaderLoaded() {
+    var content = document.querySelector('[data-reader-content]');
+    if (!content || content.querySelector('[data-topic-title]')) return;
+    content.innerHTML = '<section class="reader-load-error" role="alert"><p class="reader-kicker">COURSE READER</p><h2>The lesson could not be loaded</h2><p>Refresh the page to try again. If the problem continues, return to the Learning Hub and reopen the lesson.</p><div class="hero-actions"><button class="primary-btn" type="button" data-reader-retry>Refresh lesson</button><a class="secondary-btn" href="/learning-hub.html">Learning Hub</a></div></section>';
+    var retry = content.querySelector('[data-reader-retry]');
+    if (retry) retry.addEventListener('click', function () { window.location.reload(); });
+  }
+
   applyTheme(preferredTheme());
   function init() {
+    if (!document.querySelector('link[rel="manifest"]')) {
+      var manifest = document.createElement('link');
+      manifest.rel = 'manifest';
+      manifest.href = '/site.webmanifest';
+      document.head.appendChild(manifest);
+    }
     initAdminMode();
     initGlobalFooter();
     setTimeout(initGlobalTools, 0);
     buildReaderToc();
     var reader = document.querySelector('[data-reader-content]');
     if (reader && window.MutationObserver) new MutationObserver(function () { window.clearTimeout(reader._tocTimer); reader._tocTimer = window.setTimeout(buildReaderToc, 80); }).observe(reader, { childList: true, subtree: true });
+    if (reader) window.setTimeout(ensureReaderLoaded, 2500);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

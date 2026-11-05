@@ -18,7 +18,7 @@
 .ipl-topic-nav strong { font-size: .92rem; }
 .ipl-reader-main { min-width: 0; display: grid; gap: 1.2rem; }
 .ipl-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
-.ipl-card { padding: 1.25rem; border-radius: 18px; }
+.ipl-card { padding: 1.25rem; border-radius: 18px; scroll-margin-top: 82px; }
 .ipl-card--wide { grid-column: 1 / -1; }
 .ipl-card h3 { margin: 0 0 .75rem; font-size: clamp(1.25rem, 2vw, 1.65rem); letter-spacing: 0; }
 .ipl-card p, .ipl-card li, .status-text { color: var(--tn-muted); }
@@ -52,7 +52,7 @@
 .loading-spinner { display: inline-grid; place-items: center; gap: .5rem; color: #bfdbfe; }
 .loading-spinner::before { content: ""; width: 22px; height: 22px; border: 3px solid rgba(148,163,184,.3); border-top-color: #38bdf8; border-radius: 999px; animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.table-wrap { overflow-x: auto; border: 1px solid rgba(148,163,184,.2); border-radius: 14px; }
+.table-wrap { position: relative; overflow-x: auto; border: 1px solid rgba(148,163,184,.2); border-radius: 14px; }
 .ipl-table { width: 100%; border-collapse: collapse; min-width: 760px; }
 .ipl-table th, .ipl-table td { padding: .75rem; border-bottom: 1px solid rgba(148,163,184,.16); text-align: left; vertical-align: top; }
 .ipl-table th { color: #dbeafe; background: rgba(99,102,241,.12); white-space: nowrap; }
@@ -110,6 +110,7 @@ mark { background: rgba(245,158,11,.28); color: #fde68a; border-radius: 4px; pad
 .flip-back { transform: rotateY(180deg); background: rgba(30,41,59,.95); }
 .quiz-options { display: grid; gap: .5rem; margin: 1rem 0; }
 .challenge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+.challenge-toggle { display: none; margin-top: 1rem; }
 .challenge-card { padding: 1rem; }
 .challenge-card h3 { margin: 0 0 .35rem; font-size: 1.1rem; letter-spacing: 0; }
 .difficulty { display: inline-flex; width: fit-content; border-radius: 999px; padding: .2rem .55rem; font-size: .78rem; font-weight: 900; background: rgba(99,102,241,.18); color: #c7d2fe; }
@@ -129,11 +130,20 @@ mark { background: rgba(245,158,11,.28); color: #fde68a; border-radius: 4px; pad
 .toast-region { position: fixed; z-index: 600; right: 1rem; bottom: 1rem; display: grid; gap: .5rem; }
 .toast { padding: .8rem 1rem; border-radius: 12px; background: #0f172a; border: 1px solid rgba(56,189,248,.4); color: #e0f2fe; box-shadow: var(--tn-shadow); }
 .mobile-comparison-cards { display: none; }
+.ipl-mobile-picker { display: none; gap: .4rem; padding: .9rem; border: 1px solid rgba(56,189,248,.28); border-radius: 14px; background: rgba(8,47,73,.24); }
+.ipl-mobile-picker label { color: #e0f2fe; font-weight: 800; }
+.ipl-mobile-picker select { width: 100%; min-height: 48px; border: 1px solid rgba(148,163,184,.32); border-radius: 10px; padding: .65rem .75rem; background: #0f172a; color: #f8fafc; }
+.ipl-mobile-picker p { margin: 0; font-size: .85rem; }
 @media (max-width: 900px) {
   .ipl-hero-grid, .ipl-reader-layout, .ipl-grid, .form-grid, .drag-layout, .starter-panel, .compare-cards { grid-template-columns: 1fr; }
   .ipl-hero-panel { grid-template-columns: 1fr 1fr; }
   .ipl-topic-sidebar { position: static; max-height: none; }
-  .ipl-topic-nav { max-height: 360px; overflow: auto; }
+  .ipl-topic-nav { display: none; }
+  .ipl-mobile-picker { display: grid; position: sticky; top: 66px; z-index: 35; }
+  .ipl-card.is-mobile-hidden { display: none; }
+  .challenge-grid .challenge-card:nth-child(n+7) { display: none; }
+  .challenge-grid.is-expanded .challenge-card { display: block; }
+  .challenge-toggle { display: inline-flex; }
 }
 @media (max-width: 640px) {
   .ipl-hero-panel, .choice-grid { grid-template-columns: 1fr; }
@@ -143,6 +153,7 @@ mark { background: rgba(245,158,11,.28); color: #fde68a; border-radius: 4px; pad
   .leaderboard-item, .feed-item, .favourite-row, .suggestion-option, .match-row { flex-direction: column; }
   .draggable-player { align-items: flex-start; flex-direction: column; }
   .captain-choice { white-space: normal; }
+  .table-wrap::before { content: "Swipe horizontally to see all columns →"; position: sticky; left: 0; display: block; width: max-content; padding: .55rem .7rem; color: #bae6fd; background: #0f172a; font-size: .78rem; font-weight: 800; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }

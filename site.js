@@ -152,7 +152,7 @@
     shell.setAttribute('aria-label', 'TestNova AI Assistant');
     shell.innerHTML = [
       '<button class="ai-assistant-toggle" type="button" aria-expanded="false" aria-controls="ai-assistant-panel">',
-      '<span aria-hidden="true">Ask TestNova</span>',
+      '<span class="ai-assistant-label" aria-hidden="true">Ask TestNova</span>',
       '<span class="sr-only">Open TestNova AI Assistant</span>',
       '</button>',
       '<div class="ai-assistant-panel" id="ai-assistant-panel" aria-hidden="true">',
@@ -165,9 +165,10 @@
       '</header>',
       '<div class="ai-assistant-messages" role="log" aria-live="polite"></div>',
       '<form class="ai-assistant-form">',
-      '<input class="ai-assistant-input" type="text" autocomplete="off" placeholder="Ask about this course..." aria-label="Ask a course question" />',
+      '<input class="ai-assistant-input" type="text" maxlength="1000" autocomplete="off" placeholder="Ask about this course..." aria-label="Ask a course question" aria-describedby="ai-assistant-privacy" />',
       '<button class="ai-assistant-send" type="submit">Send</button>',
       '</form>',
+      '<p class="ai-assistant-privacy" id="ai-assistant-privacy">Course help only. Do not share passwords, private health information, or company secrets.</p>',
       '</div>'
     ].join('');
 
@@ -201,11 +202,15 @@
       send.disabled = true;
 
       try {
+        var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+        var timeout = controller ? setTimeout(function () { controller.abort(); }, 20000) : null;
         var response = await fetch('/api/course-assistant', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text })
+          body: JSON.stringify({ message: text }),
+          signal: controller ? controller.signal : undefined
         });
+        if (timeout) clearTimeout(timeout);
 
         var data = await response.json().catch(function() { return {}; });
         if (!response.ok) {
@@ -220,10 +225,11 @@
       } catch (error) {
         setAssistantMessageContent(
           loadingMessage,
-          error.message || 'I could not reach the assistant right now. Please try again in a moment.',
+          error && error.name === 'AbortError' ? 'The assistant took too long to respond. Please try a shorter question.' : (error.message || 'I could not reach the assistant right now. Please try again in a moment.'),
           ['Not available in course content']
         );
       } finally {
+        if (timeout) clearTimeout(timeout);
         loadingMessage.classList.remove('is-loading');
         input.disabled = false;
         send.disabled = false;
@@ -826,7 +832,7 @@
       id: 'ai-emerging-technologies',
       title: 'AI Learning Hub',
       url: 'ai-emerging-technologies.html',
-      description: 'Choose between AI for Everyone and AI Engineers, each with focused reader pages, progress, and editable lessons.',
+      description: 'Choose between AI for Everyone and AI Engineers, each with focused reader pages, practical lessons, and progress tracking.',
       courses: [
         { title: 'Basic AI', url: 'ai-for-everyone.html', difficulty: 'Beginner', summary: 'AI basics, ChatGPT, LLMs, prompts, embeddings, fine tuning, RAG, and agentic AI.' },
         { title: 'AI for QA', url: 'ai-engineers.html', difficulty: 'Intermediate', summary: 'AI testing, QA roadmap, test design support, automation assistance, evaluation, and production-ready QA workflows.' },

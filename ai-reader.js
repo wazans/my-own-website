@@ -5279,6 +5279,15 @@
     }
   }
 
+  function isReaderAuthoringMode() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      return params.get('admin') === '1' || params.get('edit') === '1' || localStorage.getItem('testnova-admin') === 'true';
+    } catch (e) {
+      return false;
+    }
+  }
+
   function updateTopicUrl(topicId) {
     if (!window.history || !window.history.pushState) return;
     var url = new URL(window.location.href);
@@ -5305,6 +5314,7 @@
   }
 
   function initEditableSurfaces() {
+    if (!isReaderAuthoringMode()) return;
     document.querySelectorAll('[data-edit-key]').forEach(function (node) {
       var key = 'testnova-edit-' + node.getAttribute('data-edit-key');
       var saved = localStorage.getItem(key);
@@ -5343,7 +5353,8 @@
     }
     var contentKey = track.storageKey + ':content:' + topic.id;
     if (track.contentVersion) contentKey = track.storageKey + ':content:v' + track.contentVersion + ':' + topic.id;
-    var savedContent = track.readOnly ? '' : localStorage.getItem(contentKey);
+    var authoringMode = isReaderAuthoringMode();
+    var savedContent = track.readOnly || !authoringMode ? '' : localStorage.getItem(contentKey);
     if (savedContent) savedContent = savedContent.replace(/<div class="ai-inline-save-panel"[\s\S]*?<\/div>/g, '');
 
     var objective = topic.learningObjective || lessonKeyPoint(topic);
@@ -5358,7 +5369,7 @@
     ].join('');
 
     var review = topic.hideReview ? '' : renderLessonReview(topic);
-    if (track.readOnly) {
+    if (track.readOnly || !authoringMode) {
       return '<div class="reader-lesson-wrap">' + header + '<div class="ai-reader-edit-body" data-reader-body>' + body + '</div>' + review + renderLessonNavigation(topic, index, topics, progress) + '</div>';
     }
     return [
@@ -5582,7 +5593,7 @@
       nav.classList.add('reader-topic-list');
       nav.innerHTML = topics.map(function(topic, index) {
         return '<button type="button" data-topic-link="' + topic.id + '" data-search-title="' + escapeHtml(displayTopicTitle(topic).toLowerCase()) + '"><span>' + (index + 1) + '</span><strong>' + escapeHtml(displayTopicTitle(topic)) + '</strong><i aria-hidden="true">✓</i></button>';
-      }).join('') + (track.readOnly ? '' : '<button class="ai-add-topic-btn" type="button" data-add-topic><span>+</span><strong>Add topic</strong></button>');
+      }).join('') + (track.readOnly || !isReaderAuthoringMode() ? '' : '<button class="ai-add-topic-btn" type="button" data-add-topic><span>+</span><strong>Add topic</strong></button>');
 
       nav.querySelectorAll('[data-topic-link]').forEach(function(link) {
         link.addEventListener('click', function(event) {
