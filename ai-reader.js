@@ -108,7 +108,8 @@
           'Multimodal models work with multiple data types. AI-DLC uses AI throughout software delivery. QA remains the quality gate for both AI-generated artifacts and AI-enabled applications.',
           'The core principle is simple: AI can accelerate QA, but deterministic assertions, reproducible tests, measurable evaluations, secure data handling, and human judgment remain essential.'
         ], 'Write a one-page checklist your QA team can use before accepting AI-generated test assets or releasing an AI feature.'),
-        threeAgentSkillsLesson()
+        threeAgentSkillsLesson(),
+        codingAgentsHealthDietLesson()
       ]
     },
     everyone: {
@@ -4835,6 +4836,231 @@
             ['.agents/skills/', 'Portable project skills supported by compatible agents'],
             ['~/.copilot/skills/', 'Personal Copilot skills across projects'],
             ['~/.agents/skills/', 'Personal portable skills across compatible agents']
+          ]}
+        ])
+      ]
+    };
+  }
+
+  function codingAgentsHealthDietLesson() {
+    function agentSection(id, title, paragraphs, examples, ui) {
+      return {
+        id: id,
+        title: title,
+        paragraphs: paragraphs,
+        examples: examples || [],
+        resources: [],
+        ui: ui || []
+      };
+    }
+
+    function promptExample(title, lines, explanation, language) {
+      return {
+        title: title,
+        code: lines.join('\n'),
+        explanation: explanation,
+        language: language || 'text'
+      };
+    }
+
+    return {
+      id: 'coding-agents-health-diet-app',
+      title: 'Coding Agents: Build a Health Diet Chart App',
+      paragraphs: [
+        'Use a coding agent as a practical development partner: describe the app, let the agent inspect and edit project files, run the app, review the result, and improve it through focused prompts.',
+        'In this project you will build a responsive health diet chart app, make it dynamic, add a respectful pre-result message, and later add optional forest ambience with accessible audio controls.'
+      ],
+      practice: 'Create the app with one coding agent, review every change, test it in a browser, and document which prompts produced the most useful improvements.',
+      examples: [],
+      resources: [],
+      subsections: [
+        agentSection('coding-agent-concept', '1. What Is a Coding Agent?', [
+          'A normal chat assistant mainly suggests code. A coding agent can inspect the current folder, create or edit files, run commands, read errors, and use the results to continue the task.',
+          'Examples include Claude Code, GitHub Copilot coding agents, OpenAI Codex, and Cursor. Their interfaces differ, but the working pattern is similar: explain the goal, review the plan, approve appropriate actions, test the result, and request small improvements.',
+          'The agent uses an AI model for reasoning and language, plus tools for files, terminal commands, browser checks, and other controlled actions. You remain responsible for requirements, permissions, review, and final quality.'
+        ], [], [
+          { type: 'flow', title: 'Coding Agent Workflow', steps: ['Describe the goal', 'Agent inspects files', 'Review the plan', 'Agent edits code', 'Run and test', 'Review output', 'Request the next change'] },
+          { type: 'callout', title: 'One change at a time', tone: 'info', text: 'Small prompts are easier to review and debug than one very large prompt. Ask the agent to explain what changed after every step.' }
+        ]),
+        agentSection('health-app-project-setup', '2. Create the Health App Project', [
+          'Create a new folder named health-diet-chart-app and open that folder in VS Code or your coding-agent workspace.',
+          'Start with plain HTML, CSS, and JavaScript so the app is easy to understand. The agent may create index.html, styles.css, script.js, and an assets folder.',
+          'Do not enter real medical records, passwords, or private health information into prompts. This learning app should provide general educational suggestions, not diagnosis or treatment.'
+        ], [
+          promptExample('Create and open the project', [
+            'mkdir health-diet-chart-app',
+            'cd health-diet-chart-app',
+            'code .'
+          ], 'Open the empty folder, then start your coding agent in that workspace.', 'bash'),
+          promptExample('Suggested final structure', [
+            'health-diet-chart-app/',
+            '|-- assets/',
+            '|   `-- forest.mp3',
+            '|-- index.html',
+            '|-- styles.css',
+            '|-- script.js',
+            '`-- README.md'
+          ], 'The forest audio file is optional and is added only in the later audio step.', 'text')
+        ]),
+        agentSection('health-app-first-prompt', '3. First Prompt: Generate the Basic App', [
+          'Begin with a small working version. Ask for a responsive page, clear meal sections, good accessibility, and a visible educational disclaimer.',
+          'Review the generated files before opening the app. The agent should not add frameworks, accounts, databases, or external APIs unless you request them.'
+        ], [
+          promptExample('Prompt for the first version', [
+            'Create a responsive Health Diet Chart web app using HTML, CSS, and JavaScript.',
+            '',
+            'Requirements:',
+            '- Create index.html, styles.css, and script.js.',
+            '- Use a calm, clean health-focused design.',
+            '- Show sample sections for breakfast, lunch, dinner, healthy snacks, and hydration.',
+            '- Add a simple daily timetable and a shopping-list card.',
+            '- Use semantic HTML, visible labels, keyboard-friendly controls, and mobile styling.',
+            '- Add a clear note that the chart is general educational information and not medical advice.',
+            '- Do not use external frameworks or collect personal data.',
+            '',
+            'After creating the files, explain what you changed and tell me how to run the app locally.'
+          ], 'A clear first prompt defines the goal, technology, design, limits, safety note, and expected handoff.'),
+          promptExample('Run locally', [
+            'python -m http.server 8000',
+            '',
+            'Open: http://127.0.0.1:8000'
+          ], 'You can also use a VS Code live-server extension. Check the browser console for errors.', 'bash')
+        ]),
+        agentSection('health-app-analyze-first', '4. Ask the Agent to Analyze Before Editing', [
+          'Do not immediately request another rewrite. First ask the coding agent to inspect the current app and report problems without changing files.',
+          'This creates a review point. You can accept, reject, or reorder the suggestions before code is modified.'
+        ], [
+          promptExample('Analysis-only prompt', [
+            'Analyze the current health diet chart app.',
+            '',
+            'Do not edit any files yet.',
+            'Review:',
+            '- page structure and visual hierarchy',
+            '- mobile responsiveness',
+            '- form and keyboard accessibility',
+            '- JavaScript errors or fragile code',
+            '- missing validation and empty states',
+            '- privacy and health-safety concerns',
+            '- opportunities to make the app dynamic',
+            '',
+            'Return a short prioritized improvement plan and wait for my approval.'
+          ], 'The words “do not edit” and “wait for my approval” prevent the agent from making unreviewed changes.'),
+          promptExample('Approve only selected changes', [
+            'Implement priorities 1, 2, and 4 only.',
+            'Keep the existing visual style.',
+            'Do not change filenames or add dependencies.',
+            'After editing, summarize each changed file and run a quick browser check.'
+          ], 'You control scope instead of accepting every suggestion at once.')
+        ]),
+        agentSection('health-app-dynamic', '5. Make the Diet Chart Dynamic', [
+          'The next version should generate an example chart from simple preferences. Keep inputs minimal and avoid pretending that the app can make clinical decisions.',
+          'Useful inputs include diet preference, general goal, activity level, allergies to exclude, and meals per day. The output should remain a sample plan with a safety reminder.'
+        ], [
+          promptExample('Dynamic-app prompt', [
+            'Update the existing app to generate a dynamic sample diet chart.',
+            '',
+            'Add a form with:',
+            '- diet preference: vegetarian, vegan, or mixed',
+            '- general goal: balanced eating, higher protein, or lighter meals',
+            '- activity level: low, moderate, or high',
+            '- allergies or ingredients to exclude',
+            '- preferred number of meals',
+            '',
+            'Behavior:',
+            '- Validate required fields with clear inline messages.',
+            '- Generate the chart in the browser without sending data to a server.',
+            '- Exclude ingredients entered in the allergy field.',
+            '- Show breakfast, lunch, dinner, snacks, hydration, and a shopping list.',
+            '- Add Reset and Print buttons.',
+            '- Never claim to diagnose, treat, or prescribe.',
+            '- Show: “For medical conditions, pregnancy, allergies, or eating disorders, consult a qualified healthcare professional.”',
+            '- Preserve keyboard accessibility and mobile layout.',
+            '',
+            'Test at least three input combinations and report the result.'
+          ], 'The prompt asks for observable behavior and safe boundaries, not vague “make it dynamic” instructions.')
+        ]),
+        agentSection('health-app-pre-result-message', '6. Add a Message Before Showing the Chart', [
+          'If you want a sponsor, awareness, or preparation message before the result, keep it short and respectful. Users should be able to continue or skip without deceptive delays.',
+          'The diet chart must remain accessible after the message closes, and keyboard focus should move to the generated result heading.'
+        ], [
+          promptExample('Pre-result message prompt', [
+            'Before showing the generated diet chart, display a small preparation panel.',
+            '',
+            'Requirements:',
+            '- Show the message: “Your sample chart is ready. Review your choices before continuing.”',
+            '- Include Continue and Edit Choices buttons.',
+            '- If a sponsor message is used, label it clearly as Sponsored.',
+            '- Do not use a forced countdown, fake close button, or misleading design.',
+            '- Support Escape, Tab, Enter, and visible keyboard focus.',
+            '- After Continue, reveal the chart and move focus to its heading.',
+            '- Do not regenerate or lose the user’s selected values.',
+            '',
+            'Implement the change and test both mouse and keyboard flows.'
+          ], 'This creates the extra step without using a dark pattern or trapping the user.')
+        ]),
+        agentSection('health-app-forest-audio', '7. Later Prompt: Add Forest Background Audio', [
+          'Add background ambience only after the core app works. Audio should be optional, off by default, and controlled by the user.',
+          'Use a locally owned or properly licensed forest audio file. Do not embed copyrighted music from an unknown source.'
+        ], [
+          promptExample('Forest ambience prompt', [
+            'Add optional forest ambience to the existing health diet chart app.',
+            '',
+            'Use a local file at assets/forest.mp3.',
+            'Requirements:',
+            '- Do not autoplay audio.',
+            '- Add a clearly labelled Play Forest Sounds button.',
+            '- Add Pause, Mute/Unmute, and volume controls.',
+            '- Loop the audio only after the user presses Play.',
+            '- Remember the volume during the current browser session.',
+            '- Show a friendly message if the audio file is missing or cannot play.',
+            '- Keep all controls keyboard accessible with visible focus.',
+            '- Do not change the diet-chart generation logic.',
+            '',
+            'After editing, test play, pause, mute, volume, looping, and the missing-file case.'
+          ], 'Modern browsers often block autoplay. User-initiated playback is more reliable and respectful.'),
+          promptExample('Audio asset reminder', [
+            'assets/',
+            '  forest.mp3  # Use an audio file you own or are licensed to use.'
+          ], 'The coding agent can wire the controls, but you must provide a permitted audio asset.', 'text')
+        ]),
+        agentSection('health-app-test-deploy', '8. Review, Test, and Deploy', [
+          'Before deployment, ask the agent to test the complete app instead of merely stating that the code looks correct.',
+          'For a static HTML/CSS/JavaScript app, you can publish with a static hosting service. GitHub Pages is a simple option; Railway or another service can also host the project when configured appropriately.'
+        ], [
+          promptExample('Final review prompt', [
+            'Review the complete health diet chart app and do not make silent changes.',
+            '',
+            'Run or inspect checks for:',
+            '- no browser console errors',
+            '- mobile and desktop layout',
+            '- required-field validation',
+            '- keyboard navigation and visible focus',
+            '- all dynamic chart combinations',
+            '- allergy exclusions',
+            '- reset and print behavior',
+            '- pre-result Continue and Edit flows',
+            '- forest audio play, pause, mute, and missing-file behavior',
+            '- visible educational and medical-safety notices',
+            '',
+            'Report passed checks, failed checks, and anything not tested.',
+            'Wait for my approval before making additional changes.'
+          ], 'A good coding agent reports evidence and limitations instead of claiming everything passed without testing.'),
+          promptExample('Deployment preparation prompt', [
+            'Prepare this static app for deployment.',
+            'Create a short README with local run steps and deployment steps.',
+            'Check that all asset paths are relative and case-correct.',
+            'Do not add secrets or commit private health data.',
+            'Show me the deployment plan before running any publish command.'
+          ], 'Review hosting configuration and external changes before authorizing publication.')
+        ], [], [
+          { type: 'checklist', title: 'Final Coding-Agent Checklist', items: [
+            'The agent inspected the current project before editing',
+            'Each prompt changed one clear part of the app',
+            'Generated code was reviewed, run, and tested',
+            'The app gives general educational suggestions only',
+            'No real private health data or secrets were added',
+            'Forest audio is licensed, optional, and off by default',
+            'Deployment actions are reviewed before publishing'
           ]}
         ])
       ]
