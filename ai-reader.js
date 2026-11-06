@@ -109,7 +109,8 @@
           'The core principle is simple: AI can accelerate QA, but deterministic assertions, reproducible tests, measurable evaluations, secure data handling, and human judgment remain essential.'
         ], 'Write a one-page checklist your QA team can use before accepting AI-generated test assets or releasing an AI feature.'),
         threeAgentSkillsLesson(),
-        codingAgentsHealthDietLesson()
+        codingAgentsHealthDietLesson(),
+        instructionBasedAgentsLesson()
       ]
     },
     everyone: {
@@ -5061,6 +5062,168 @@
             'No real private health data or secrets were added',
             'Forest audio is licensed, optional, and off by default',
             'Deployment actions are reviewed before publishing'
+          ]}
+        ])
+      ]
+    };
+  }
+
+  function instructionBasedAgentsLesson() {
+    function section(id, title, paragraphs, examples, ui) {
+      return {
+        id: id,
+        title: title,
+        paragraphs: paragraphs,
+        examples: examples || [],
+        resources: [],
+        ui: ui || []
+      };
+    }
+
+    function example(title, code, explanation, language) {
+      return {
+        title: title,
+        code: code,
+        explanation: explanation,
+        language: language || 'markdown'
+      };
+    }
+
+    return {
+      id: 'instruction-based-ai-agents',
+      title: 'Instruction-Based AI Agents: Supervisor and Skills Project',
+      paragraphs: [
+        'An instruction-based AI agent follows written rules while completing a task. In this hands-on project, GitHub Copilot reads Markdown instructions for a supervisor, an idea agent, a games agent, and an invitation agent.',
+        'You will create the complete folder structure, write every instruction file, run the supervisor in VS Code, and understand exactly what a Skill does. The project uses Markdown only, so it does not require Python, Node.js, or an API key beyond your GitHub Copilot access.'
+      ],
+      practice: 'Build the Markdown-only event-planning project, ask the supervisor to plan an event, and verify that the final answer contains a theme, a simple schedule, exactly three games, and an invitation without invented date or venue details.',
+      examples: [],
+      resources: [],
+      subsections: [
+        section('instruction-agent-concept', '1. What Is an Instruction-Based Agent?', [
+          'An instruction-based agent is an AI agent that reads predefined rules and follows them for a relevant task. The rules may define its role, steps, limits, output format, and the tools or specialist agents it may use.',
+          'For example, a QA agent can be instructed to read requirements, identify positive and negative scenarios, create Playwright tests, execute them, and report failures. The same instructions can be reused each time a testing task is assigned.',
+          'The AI model supplies reasoning and language ability. The instruction file supplies the working rules. Tools give the agent controlled actions such as reading files, calling another agent, or running tests.'
+        ], [
+          example('A simple reusable QA skill', '# QA Testing Skill\n\n1. Read the requirements.\n2. Identify positive and negative scenarios.\n3. Generate Playwright tests.\n4. Execute the tests.\n5. Report pass and fail results.', 'Before working, the QA agent reads this file and follows the same five-step process.')
+        ], [
+          { type: 'flow', title: 'Simple instruction flow', steps: ['User gives a task', 'Agent reads instructions', 'Agent performs the steps', 'Agent checks the result', 'Agent reports the outcome'] },
+          { type: 'callout', title: 'Instructions are not execution', tone: 'warning', text: 'Creating Markdown files does not automatically start several agents. The AI tool must support custom agents, subagent delegation, or another orchestration framework.' }
+        ]),
+
+        section('skills-agents-supervisor', '2. Skill, Agent, and Supervisor: The Difference', [
+          'A Skill is a reusable set of instructions for one capability. An agent is the worker that uses instructions and tools to complete a task. A Supervisor Agent coordinates specialist agents and combines their results.',
+          'In this project, the idea, games, and invitation folders contain skills. The matching .agent.md files define specialist agents. The supervisor decides which specialist runs first and what information is passed to the next one.',
+          'An AGENTS.md file is commonly used for broad project-level rules. This supplied demo instead uses .github/agents/*.agent.md for custom agent definitions and .github/skills/*/SKILL.md for reusable task instructions.'
+        ], [], [
+          { type: 'table', title: 'Know what each file controls', headers: ['Part', 'Purpose', 'Project example'], rows: [
+            ['SKILL.md', 'Reusable instructions for one capability', 'Choose a theme or create three games'],
+            ['*.agent.md', 'Defines an agent role and tells it which skill to read', 'Idea Agent or Games Agent'],
+            ['Supervisor agent', 'Delegates work and combines results', 'Fun Day Supervisor'],
+            ['AGENTS.md', 'Optional wider rules for a project or folder', 'Not required by this demo']
+          ]}
+        ]),
+
+        section('project-requirements', '3. Before You Start', [
+          'Install VS Code and sign in to GitHub Copilot. Open Copilot Chat in a mode that supports custom agents and the agent subagent tool. In the supplied project this is described as the Local agent harness.',
+          'The folder and file names matter. Keep .github, agents, skills, SKILL.md, and the .agent.md suffix exactly as shown. Hidden folders beginning with a dot may not appear unless your file explorer is configured to show them.',
+          'If your Copilot setup does not show custom agents or does not allow the agent tool, you can still study and use the Markdown instructions, but the supervisor will not be able to launch the three specialists as real subagents.'
+        ], [], [
+          { type: 'checklist', title: 'Setup checklist', items: [
+            'VS Code is installed',
+            'GitHub Copilot is signed in and working',
+            'The project folder is open as the VS Code workspace',
+            'Custom agents are visible in Copilot Chat',
+            'The agent or subagent tool is enabled for the local session'
+          ]}
+        ]),
+
+        section('create-project-folders', '4. Create the Project and Folder Structure', [
+          'Create a folder named instruction-based-event-agents and open it in VS Code. Inside it, create one supervisor file, three worker-agent files, and one SKILL.md file for each worker.',
+          'You can create the folders manually in the VS Code Explorer or use the PowerShell commands below. The project is Markdown-only; the folders are the architecture.'
+        ], [
+          example('Final project structure', 'instruction-based-event-agents/\n|-- README.md\n`-- .github/\n    |-- agents/\n    |   |-- fun-day-supervisor.agent.md\n    |   |-- idea-agent.agent.md\n    |   |-- games-agent.agent.md\n    |   `-- invitation-agent.agent.md\n    `-- skills/\n        |-- idea/\n        |   `-- SKILL.md\n        |-- games/\n        |   `-- SKILL.md\n        `-- invitation/\n            `-- SKILL.md', 'The supervisor and workers are agent definitions. Each worker has a separate reusable skill.', 'text'),
+          example('Create the folders in PowerShell', 'mkdir instruction-based-event-agents\ncd instruction-based-event-agents\nmkdir .github\\agents\nmkdir .github\\skills\\idea\nmkdir .github\\skills\\games\nmkdir .github\\skills\\invitation\ncode .', 'After VS Code opens, create the seven Markdown files shown in the folder tree.', 'powershell')
+        ]),
+
+        section('write-skill-files', '5. Write the Three Skill Files', [
+          'Each SKILL.md contains one small, focused capability. The YAML block at the top gives the skill a name and description. The Markdown below it gives the rules.',
+          'Small skills are easier to reuse and test. Notice the precise limits: one theme, exactly three games, and no invented date, time, or location.'
+        ], [
+          example('.github/skills/idea/SKILL.md', '---\nname: idea\ndescription: Choose an event theme for different age groups.\n---\n\n# Idea Skill\n\nChoose one fun, simple, age-appropriate theme. Give a theme name and one sentence explaining it. Do not invent dates or venues.', 'The Idea Skill creates only the theme. It does not plan games or write an invitation.'),
+          example('.github/skills/games/SKILL.md', '---\nname: games\ndescription: Create safe and easy games for everyone.\n---\n\n# Games Skill\n\nCreate exactly three simple, age-appropriate games based on the given theme. For each game, write a name and one sentence explaining how to play. Avoid dangerous activities.', 'The word exactly makes the expected result easy to check.'),
+          example('.github/skills/invitation/SKILL.md', '---\nname: invitation\ndescription: Write a friendly invitation for a fun day, outing, or get-together.\n---\n\n# Invitation Skill\n\nWrite a short, welcoming invitation using the given theme and three games. Do not invent date, time, or location; say "Details to be announced" if any are missing.', 'The skill prevents the agent from presenting missing event details as facts.')
+        ]),
+
+        section('write-worker-agents', '6. Write the Three Specialist Agents', [
+          'A worker agent has a clear role and points to the skill it must read. user-invocable: false means the worker is intended to be called by the supervisor instead of selected directly by the user.',
+          'Each worker returns a small result. The agents do not call one another; the supervisor carries the output from one step into the next.'
+        ], [
+          example('.github/agents/idea-agent.agent.md', '---\nname: Idea Agent\ndescription: Create a theme for a fun day, outing, or get-together.\nuser-invocable: false\n---\n\n# Idea Agent\n\nCreate a theme for a fun day, outing, or get-together.\n\nRead and follow `.github/skills/idea/SKILL.md` before answering.\n\nReturn the theme with a short description.', 'This specialist reads only the idea skill and returns a theme.'),
+          example('.github/agents/games-agent.agent.md', '---\nname: Games Agent\ndescription: Use the given theme to suggest three games.\nuser-invocable: false\n---\n\n# Games Agent\n\nUse the given theme to suggest three games.\n\nRead and follow `.github/skills/games/SKILL.md` before answering.\n\nUse the theme supplied in the conversation. Return the theme and three games.', 'The supervisor must pass the selected theme to this agent.'),
+          example('.github/agents/invitation-agent.agent.md', '---\nname: Invitation Agent\ndescription: Write the invitation using the theme and three games.\nuser-invocable: false\n---\n\n# Invitation Agent\n\nWrite the invitation using the theme and three games.\n\nRead and follow `.github/skills/invitation/SKILL.md` before answering.\n\nUse the theme and games supplied in the conversation. Return only the invitation.', 'This is the final worker. It receives the earlier results and writes only the invitation.')
+        ]),
+
+        section('write-supervisor-agent', '7. Write the Supervisor Agent', [
+          'The supervisor is the coordinator. Its front matter enables the agent tool and lists the three specialists it is allowed to call.',
+          'Its numbered instructions define the order: Idea Agent first, Games Agent second, and Invitation Agent third. Sequential delegation matters because later agents need the earlier results. The supervisor then organizes those results into a simple schedule.'
+        ], [
+          example('.github/agents/fun-day-supervisor.agent.md', '---\nname: Fun Day Supervisor\ndescription: Coordinates three agents to plan a fun day, outing, or get-together.\ntools: [\'agent\']\nagents: [\'Idea Agent\', \'Games Agent\', \'Invitation Agent\']\n---\n\n# Fun Day Supervisor\n\nWhen asked to plan a fun day, outing, or get-together:\n\n1. Delegate to **Idea Agent** to create a theme.\n2. Pass the returned theme to **Games Agent** and request exactly three games.\n3. Pass both the theme and games to **Invitation Agent** to write the invitation.\n4. Arrange the theme and games into a simple morning, afternoon, and evening schedule.\n5. Show the final theme, schedule, games, and invitation.\n\nRun each delegation one at a time. Do not skip any agent. Do not invent missing event details.', 'The tools and agents fields enable delegation. The supervisor creates the schedule only after it receives the specialist results.')
+        ], [
+          { type: 'flow', title: 'Supervisor workflow', steps: ['User prompt', 'Idea Agent: theme', 'Games Agent: 3 games', 'Invitation Agent: invitation', 'Supervisor: schedule and combined answer'] }
+        ]),
+
+        section('add-readme', '8. Add the README Instructions', [
+          'README.md tells another learner how to open and run the project. It is documentation for the human; it is not one of the agents.',
+          'Keep the run instructions next to the project so the required Copilot mode and prompt are not forgotten.'
+        ], [
+          example('README.md', '# Instruction-Based Event Agents\n\nOpen this folder in **VS Code** with GitHub Copilot Chat using a local agent session. Choose **Fun Day Supervisor** from the custom-agent dropdown, then type:\n\n> Plan a full-day event for 10 adults aged 30.\n\nThe supervisor invokes **Idea Agent**, then **Games Agent**, then **Invitation Agent**. Each worker reads its matching `.github/skills/*/SKILL.md`.\n\nNo Python, Node.js, or separate API key configuration is required beyond your GitHub Copilot access. Ensure the `agent` subagent tool is enabled. The agents do not call one another directly.', 'This prompt adapts the supplied fun-day project for an adult event while keeping the same agent workflow.')
+        ]),
+
+        section('run-project', '9. Run the Project in GitHub Copilot', [
+          'Open the complete instruction-based-event-agents folder in VS Code. Open Copilot Chat, select the local agent session, and choose Fun Day Supervisor from the custom-agent dropdown.',
+          'Enter the sample prompt. Review the tool activity: the supervisor should call Idea Agent, then pass its theme to Games Agent, then pass both results to Invitation Agent. Approve tool use only when the requested action is expected.',
+          'The final wording may vary because an AI model is generating it. Check the structure and rules rather than expecting one exact sentence.'
+        ], [
+          example('Prompt to run the supervisor', 'Plan a full-day event for 10 adults aged 30.\n\nUse the available event-planning agent instructions.\nReturn one theme, a morning/afternoon/evening schedule, exactly three safe games, and one invitation.\nDo not invent the date, exact times, or venue.', 'The prompt supplies the audience and output requirements while leaving unknown logistics clearly unknown.', 'text'),
+          example('Example final output', 'Theme: Forest Adventure Day\nA relaxed nature-inspired day with friendly team activities.\n\nSchedule:\n- Morning: Welcome, theme introduction, and Nature Photo Hunt\n- Afternoon: Story Circle and Team Trivia Trail\n- Evening: Group wrap-up and invitation reminder\n\nGames:\n1. Nature Photo Hunt - Teams find and photograph items from a safe checklist.\n2. Story Circle - Each person adds one sentence to a shared adventure story.\n3. Team Trivia Trail - Small teams answer themed questions at simple stations.\n\nInvitation:\nJoin us for a Forest Adventure Day with a photo hunt, story circle, and team trivia trail. Date, time, and location: Details to be announced.', 'The exact creative content can change, but the answer must contain one theme, a schedule, three games, and an invitation without fabricated logistics.', 'text')
+        ], [
+          { type: 'checklist', title: 'Confirm the run worked', items: [
+            'Fun Day Supervisor was selected',
+            'Idea Agent ran before Games Agent',
+            'Invitation Agent received the theme and all three games',
+            'The supervisor organized the activities into a simple schedule',
+            'The result contains exactly three games',
+            'Missing date, time, and venue were not invented',
+            'The supervisor returned one combined answer'
+          ]}
+        ]),
+
+        section('understand-execution', '10. What Really Happened?', [
+          'The Markdown files supplied roles and rules. GitHub Copilot provided the AI model, agent runtime, and delegation tool. The supervisor used that tool to request work from the specialists and then combined their replies.',
+          'If the same files are opened in an editor that does not support this custom-agent format, they remain useful documentation but will not create running agents. For application code, multi-agent execution can also be built with frameworks such as LangGraph, CrewAI, OpenAI Agents SDK, or Google ADK. No-code and low-code alternatives include n8n, Langflow, and Make.',
+          'Instruction-based and multi-agent are related but not identical. One agent can follow many instruction files. A real multi-agent run requires separate agent roles plus a runtime that can delegate, exchange results, and coordinate the workflow.'
+        ], [], [
+          { type: 'table', title: 'Common ways to build agent workflows', headers: ['Approach', 'Examples', 'Best understood as'], rows: [
+            ['Instruction files', 'SKILL.md, AGENTS.md, *.agent.md', 'Reusable rules and roles'],
+            ['No-code / low-code', 'n8n, Langflow, Make', 'Visual workflow and integrations'],
+            ['Code-based', 'LangGraph, CrewAI, OpenAI Agents SDK, Google ADK', 'Programmable orchestration and control']
+          ]},
+          { type: 'callout', title: 'Key takeaway', tone: 'info', text: 'A Skill provides reusable instructions, an Agent performs a role, and a Supervisor coordinates specialists. The files describe the behavior; a supported runtime makes the behavior execute.' }
+        ]),
+
+        section('troubleshooting-instruction-agents', '11. Quick Troubleshooting', [
+          'If Fun Day Supervisor is missing, confirm that the whole project folder is open in VS Code and that the file is inside .github/agents with the .agent.md suffix. Reload the VS Code window after adding new agent files.',
+          'If delegation does not happen, confirm the supervisor contains tools: [\'agent\'], lists the three agent names exactly, and the local session has the subagent tool enabled. Agent names in front matter must match the names in the supervisor list.',
+          'If a worker ignores its rules, verify the SKILL.md path and spelling. Make the requirement measurable—for example, “exactly three games”—and run the prompt again. Always review generated output; instruction-following can improve consistency but does not guarantee correctness.'
+        ], [], [
+          { type: 'checklist', title: 'Final project checklist', items: [
+            'All seven Markdown files exist in the correct folders',
+            'Every YAML front-matter block begins and ends with ---',
+            'Agent names match the supervisor agents list exactly',
+            'Every worker points to the correct SKILL.md path',
+            'The Copilot session supports custom agents and delegation',
+            'The final output was reviewed against the instructions'
           ]}
         ])
       ]
