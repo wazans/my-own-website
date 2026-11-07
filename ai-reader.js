@@ -664,7 +664,7 @@
     },
     playwright: {
       storageKey: 'testnova-reader-playwright-v2',
-      contentVersion: 11,
+      contentVersion: 12,
       readOnly: true,
       title: 'Playwright',
       topics: buildPlaywrightPdfNotesTopics(),

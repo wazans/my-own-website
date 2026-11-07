@@ -821,6 +821,82 @@
           ['forbidOnly: !!process.env.CI', 'Allow .only locally and block it in CI']
         ]),
         callout('One Line to Remember', 'info', 'Workers decide HOW MANY tests run simultaneously, fullyParallel decides WHERE parallelism is allowed, serial forces ordered execution, and forbidOnly protects CI from accidental test.only().')
+      ]),
+    ]),
+
+    topic(76, 'Capturing Screenshots and Recording Videos', [
+      'Screenshots capture one visual moment from a test. Videos record the complete browser journey and are useful when a failure depends on the sequence of actions.',
+      'Use manual screenshots for important checkpoints. Use Playwright configuration when you want screenshots or videos to be collected automatically for every test, failures, or retries.'
+    ], [], [
+      flow('Artifact Workflow', ['Run the test', 'Playwright opens the page', 'Capture screenshots', 'Record the browser journey', 'Close the context', 'Review test-results and the HTML report'])
+    ], [
+      { label: 'Official Playwright screenshots guide', url: 'https://playwright.dev/docs/screenshots' },
+      { label: 'Official Playwright videos guide', url: 'https://playwright.dev/docs/videos' },
+      { label: 'Official screenshot and video configuration', url: 'https://playwright.dev/docs/api/class-testoptions' }
+    ], [
+      section('1. Screenshot and Video - Simple Difference', 'A screenshot is a PNG image of the browser at one moment. A video is a WebM recording of the complete test. Screenshots are faster to review; videos help you understand what happened before a failure.', null, [
+        table('When to Use Each Artifact', ['Artifact', 'Best use', 'Typical file'], [
+          ['Viewport screenshot', 'Capture only the currently visible browser area', 'PNG'],
+          ['Full-page screenshot', 'Capture the complete scrollable page', 'PNG'],
+          ['Element screenshot', 'Capture one heading, form, card, or component', 'PNG'],
+          ['Video', 'Replay navigation and actions in order', 'WebM']
+        ])
+      ]),
+
+      section('2. Create a Simple Screenshot Test', 'Create tests/artifacts.spec.ts. This working test opens Example Domain and saves three screenshots: the visible viewport, the full page, and only the main heading.',
+        example('tests/artifacts.spec.ts', "import { test, expect } from '@playwright/test';\n\ntest('capture screenshots of Example Domain', async ({ page }) => {\n  await page.goto('https://example.com/');\n\n  const heading = page.getByRole('heading', {\n    name: 'Example Domain'\n  });\n  await expect(heading).toBeVisible();\n\n  await page.screenshot({\n    path: 'screenshots/example-viewport.png'\n  });\n\n  await page.screenshot({\n    path: 'screenshots/example-full-page.png',\n    fullPage: true\n  });\n\n  await heading.screenshot({\n    path: 'screenshots/example-heading.png'\n  });\n});", 'page.screenshot() captures the page. fullPage: true includes content below the visible area. locator.screenshot() captures only the selected heading.', 'ts'), [
+          callout('Why Example Domain?', 'info', 'It is a small public page with a stable heading and no login or consent popup, so the example stays easy to understand.'),
+          callout('File names', 'warning', 'Use different file names. Reusing the same path overwrites the previous screenshot.')
+        ]),
+
+      section('3. Run the Test and Check the Output', 'Run the spec file from the project terminal. The test should pass and create the screenshots folder in the project root.',
+        example('Run and inspect the files', "npx playwright test tests/artifacts.spec.ts\n\n# Expected files\nscreenshots/\n  example-viewport.png\n  example-full-page.png\n  example-heading.png", 'Open each PNG from the VS Code Explorer. The viewport and full-page images may look similar on this short page; the element image contains only the heading.', 'bash'), [
+          checklist('Expected Result', [
+            'The test passes',
+            'screenshots/example-viewport.png exists',
+            'screenshots/example-full-page.png exists',
+            'screenshots/example-heading.png contains only the heading'
+          ])
+        ]),
+
+      section('4. Record Video with playwright.config.ts', 'The easiest way to record a Playwright Test video is the video option inside use. Start with video: on so a passing practice test creates a video. Playwright saves the recording when its browser context closes automatically at the end of the test.',
+        example('playwright.config.ts - learning mode', "import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  testDir: './tests',\n  use: {\n    screenshot: 'on',\n    video: 'on'\n  }\n});", 'This learning configuration keeps one automatic screenshot and one video for every test run. It uses more disk space, so change the modes after practising.', 'ts'), [
+          flow('Automatic Video Flow', ['Test starts', 'Browser context starts recording', 'Test actions run', 'Context closes', 'video.webm is saved'])
+        ]),
+
+      section('5. Run the Video Example', 'Run the same working test again after updating the configuration. Playwright stores automatically managed artifacts under test-results. The exact subfolder name includes the test and browser project.',
+        example('Run and open the report', "npx playwright test tests/artifacts.spec.ts\nnpx playwright show-report\n\n# Typical generated output\ntest-results/\n  artifacts-capture-screenshots-of-Example-Domain-chromium/\n    screenshot.png\n    video.webm", 'Open video.webm from the test-results folder or open the HTML report and select the test attachment.', 'bash'), [
+          callout('Where is the video?', 'info', 'Video is off by default. If no video appears, confirm that video is set inside the use block and that the test ran after the configuration was saved.')
+        ]),
+
+      section('6. Recommended Configuration for Real Projects', 'Recording every passing test consumes time and storage. A practical project normally keeps screenshots for failures and records video only for a failed run or a retry.',
+        example('playwright.config.ts - practical project settings', "import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  retries: process.env.CI ? 1 : 0,\n  use: {\n    screenshot: 'only-on-failure',\n    video: 'on-first-retry',\n    trace: 'on-first-retry'\n  }\n});", 'Locally there are no retries. In CI, one failed test is retried once, and the retry receives a video and trace. A screenshot is saved when a test run fails.', 'ts'), [
+          table('Useful Capture Modes', ['Setting', 'Meaning'], [
+            ["screenshot: 'on'", 'Save an automatic screenshot for every test'],
+            ["screenshot: 'only-on-failure'", 'Save it only when the test fails'],
+            ["video: 'on'", 'Record and keep every test video'],
+            ["video: 'retain-on-failure'", 'Record every run but keep only failed-run videos'],
+            ["video: 'on-first-retry'", 'Record only the first retry']
+          ]),
+          callout('Easy CI meaning', 'info', 'CI means an automated system such as Jenkins, GitHub Actions, Azure DevOps, or GitLab CI that runs your tests after code changes.')
+        ]),
+
+      section('7. Manual Browser-Context Video Recording', 'Use manual context recording only when you create the browser context yourself. recordVideo enables recording for every page in that context. context.close() is required to finish and save the video file.',
+        example('Manual video recording', "import { test, expect } from '@playwright/test';\n\ntest('record a manual context video', async ({ browser }) => {\n  const context = await browser.newContext({\n    recordVideo: {\n      dir: 'videos/',\n      size: { width: 1280, height: 720 }\n    }\n  });\n\n  const page = await context.newPage();\n  const video = page.video();\n\n  await page.goto('https://example.com/');\n  await expect(page.getByRole('heading', {\n    name: 'Example Domain'\n  })).toBeVisible();\n\n  await context.close();\n\n  if (video) {\n    console.log('Video saved to:', await video.path());\n  }\n});", 'Save the video reference before closing the context. After context.close(), video.path() reports the completed file location.', 'ts'), [
+          callout('Most important line', 'warning', 'Always await context.close() for a manually created recording context. Without a graceful close, the video may not be fully written to disk.')
+        ]),
+
+      section('8. Quick Revision', 'Use manual screenshot calls when the test needs a specific visual checkpoint. Use configuration for automatic evidence across the suite. Prefer failure or retry modes in larger projects to control storage.', null, [
+        checklist('Remember These Points', [
+          'page.screenshot() captures the current viewport by default',
+          'fullPage: true captures the complete scrollable page',
+          'locator.screenshot() captures one element',
+          'Automatic videos are configured inside use',
+          'Videos are normally saved under test-results',
+          'Manual recordVideo requires context.close()',
+          'Use unique screenshot paths to avoid overwriting files',
+          'Use only-on-failure or retry recording modes for larger suites'
+        ])
       ])
     ])
   ];
