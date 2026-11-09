@@ -1,26 +1,25 @@
 :root {
-  /* Modern Premium Color Palette */
-  --tn-bg: #070a13; /* Darker background for premium feel */
-  --tn-bg-soft: #0f1520;
-  --tn-bg-elevated: #1a2332;
-  --tn-surface: rgba(17, 24, 39, 0.85); /* Slightly more opaque glass */
-  --tn-surface-strong: rgba(26, 35, 50, 0.98); /* Stronger glass for modals/menus */
-  --tn-surface-border: rgba(99, 115, 137, 0.25); /* Stronger, subtle border */
-  --tn-text: #f1f5f9; /* High contrast text */
-  --tn-text-secondary: #cbd5e1; /* Secondary text color */
-  --tn-muted: #94a3b8; /* Muted text for descriptions */
-  --tn-accent: #6366f1; /* Primary accent color (Indigo) */
-  --tn-accent-light: #818cf8; /* Lighter accent for highlights */
-  --tn-accent-dark: #4f46e5; /* Darker accent for active states */
-  --tn-accent-glow: rgba(99, 102, 241, 0.4); /* Glow effect for accents */
-  --tn-accent-secondary: #06b6d4; /* Secondary accent (Cyan) */
-  --tn-accent-tertiary: #10b981; /* Tertiary accent (Emerald) */
-  --tn-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.4); /* Softer, more diffused shadow */
-  --tn-shadow-lg: 0 25px 45px -12px rgba(0, 0, 0, 0.5); /* Larger shadow for elevated elements */
-  --tn-section-border: rgba(99, 115, 137, 0.15); /* Subtle section dividers */
-  --tn-gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%); /* Primary button/brand gradient */
-  --tn-gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #10b981 100%); /* Secondary gradient */
-  --tn-gradient-surface: linear-gradient(180deg, rgba(99, 102, 241, 0.05) 0%, transparent 100%); /* Subtle surface gradient */
+  --tn-bg: #f8fafc;
+  --tn-bg-soft: #f1f5f9;
+  --tn-bg-elevated: #fff;
+  --tn-surface: #fff;
+  --tn-surface-strong: #fff;
+  --tn-surface-border: #e2e8f0;
+  --tn-text: #0f172a;
+  --tn-text-secondary: #475569;
+  --tn-muted: #54657d;
+  --tn-accent: #2563eb;
+  --tn-accent-light: #3b82f6;
+  --tn-accent-dark: #1d4ed8;
+  --tn-accent-glow: rgba(37, 99, 235, 0.15);
+  --tn-accent-secondary: #0369a1;
+  --tn-accent-tertiary: #16803c;
+  --tn-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  --tn-shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --tn-section-border: #e2e8f0;
+  --tn-gradient-primary: var(--tn-accent);
+  --tn-gradient-secondary: var(--tn-accent-secondary);
+  --tn-gradient-surface: var(--tn-bg-soft);
 
   /* General UI Colors - Aliases for easier use */
   --bg: var(--tn-bg);
@@ -425,7 +424,7 @@ a {
   padding-right: 2.5rem;
   border: 1px solid var(--tn-surface-border);
   border-radius: var(--radius-full);
-  background: rgba(8, 15, 28, 0.84);
+  background: var(--tn-bg-soft);
   color: var(--tn-text);
   font-size: var(--font-size-sm);
   transition: all 0.2s ease;
@@ -596,7 +595,7 @@ a {
 
 /* ============ GAME-STYLE PROGRESS (Specific to learning pages) ============ */
 .progress-panel {
-  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #6d28d9 100%);
+  background: var(--tn-accent-dark);
   border-radius: var(--radius-md);
   padding: 0.85rem 0.95rem;
   color: #fff;
@@ -732,8 +731,8 @@ a {
   display: inline-block;
   padding: 0.3rem 0.8rem;
   border-radius: var(--radius-full);
-  background: #172031;
-  color: #ffffff;
+  background: var(--tn-bg-soft);
+  color: var(--tn-accent-dark);
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -998,7 +997,7 @@ a {
   padding: 0.58rem 0.78rem;
   border: 1px solid var(--tn-surface-border);
   border-radius: var(--radius-md);
-  background: rgba(8, 15, 28, 0.84); /* Darker background for inputs */
+  background: var(--tn-bg-soft);
   color: var(--tn-text);
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
   min-height: 46px; /* Consistent input height */
@@ -1162,7 +1161,7 @@ a {
 .hero-audience span {
   padding: 0.48rem 0.82rem;
   border-radius: var(--radius-full);
-  background: rgba(15, 23, 42, 0.8);
+  background: var(--tn-bg-soft);
   border: 1px solid var(--tn-surface-border);
   color: var(--tn-text-secondary);
   font-size: 0.88rem;
@@ -1891,7 +1890,7 @@ body.register-page .form-submit:hover {
   padding: 1rem;
   border: 1px solid rgba(148, 163, 184, 0.16);
   border-radius: 16px;
-  background: rgba(15, 21, 32, 0.7);
+  background: var(--tn-bg-soft);
 }
 
 .corporate-register-highlights strong,
@@ -2333,7 +2332,7 @@ body.content-locked .page-header::after {
   padding-right: 2.5rem; /* Space for icon */
   border: 1px solid var(--tn-surface-border);
   border-radius: var(--radius-full);
-  background: rgba(8, 15, 28, 0.84);
+  background: var(--tn-bg-soft);
   color: var(--tn-text);
   font-size: var(--font-size-sm);
   transition: all 0.2s ease;
@@ -3220,16 +3219,8 @@ body.corporate-register-page .floating-register {
 }
 
 /* ============ CLEAN LANDING PAGE ============ */
-body.landing-page {
-  background: #080b12;
-}
-
-body.landing-page::before {
-  background:
-    linear-gradient(180deg, rgba(8, 11, 18, 0.28), #080b12 82%),
-    radial-gradient(circle at 18% 12%, rgba(99, 102, 241, 0.16), transparent 30%),
-    radial-gradient(circle at 88% 18%, rgba(6, 182, 212, 0.11), transparent 32%);
-}
+body.landing-page { background: var(--tn-bg); }
+body.landing-page::before { display: none; }
 
 body.landing-page .container {
   width: min(1120px, 100% - 48px);
@@ -3447,7 +3438,7 @@ body.landing-page #learning-categories {
 }
 
 body.landing-page .glass-card {
-  background: rgba(15, 21, 32, 0.72);
+  background: var(--tn-bg-soft);
   border-color: rgba(148, 163, 184, 0.15);
   border-radius: 18px;
   box-shadow: none;
@@ -3455,7 +3446,7 @@ body.landing-page .glass-card {
 
 body.landing-page .glass-card:hover {
   transform: translateY(-2px);
-  background: rgba(18, 26, 39, 0.84);
+  background: var(--tn-bg-soft);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
 }
 
@@ -3789,7 +3780,7 @@ body.landing-page .text-link {
 .about-tools span {
   padding: 0.62rem 0.9rem;
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.8);
+  background: var(--tn-bg-soft);
   border: 1px solid rgba(148, 163, 184, 0.18);
   color: var(--tn-text-secondary);
   font-size: 0.92rem;
@@ -3959,7 +3950,7 @@ body.landing-page .text-link {
   padding: 1rem;
   border: 1px solid var(--tn-surface-border);
   border-radius: var(--radius-md);
-  background: rgba(15, 23, 42, 0.86);
+  background: var(--tn-bg-soft);
   box-shadow: var(--tn-shadow);
 }
 
@@ -4071,7 +4062,7 @@ body.landing-page .text-link {
   padding: 0.75rem;
   border: 1px solid var(--tn-surface-border);
   border-radius: var(--radius-md);
-  background: rgba(15, 23, 42, 0.95);
+  background: var(--tn-bg-soft);
   box-shadow: var(--tn-shadow);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -4145,7 +4136,7 @@ body.landing-page .text-link {
   margin: 1rem 0;
   border: 1px solid rgba(148, 163, 184, 0.18);
   border-radius: 10px;
-  background: rgba(2, 6, 23, 0.62);
+  background: var(--tn-bg-soft);
   overflow: hidden;
 }
 
@@ -4160,7 +4151,7 @@ body.landing-page .text-link {
 .ai-reader-subsection {
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.5);
+  background: var(--tn-bg-soft);
   overflow: hidden;
 }
 
@@ -4209,7 +4200,7 @@ body.landing-page .text-link {
   gap: 0.65rem;
   min-height: 48px;
   padding: 0.45rem 0.65rem 0.45rem 0.85rem;
-  background: rgba(15, 23, 42, 0.9);
+  background: var(--tn-bg-soft);
   border-bottom: 1px solid rgba(148, 163, 184, 0.16);
 }
 
@@ -4303,7 +4294,7 @@ body.landing-page .text-link {
   padding: 0.7rem 0.85rem;
   font-size: 0.92rem;
   color: var(--tn-text);
-  background: rgba(15, 23, 42, 0.9);
+  background: var(--tn-bg-soft);
   border-bottom: 1px solid rgba(148, 163, 184, 0.16);
 }
 
@@ -4427,8 +4418,8 @@ body.landing-page .text-link {
   padding: 17px;
   border: 1px solid rgba(148, 163, 184, 0.42);
   border-radius: 12px;
-  color: #e2e8f0;
-  background: #111827;
+  color: var(--tn-text);
+  background: var(--tn-bg-soft);
   font: 500 0.9rem/1.65 Consolas, "SFMono-Regular", Menlo, monospace;
   tab-size: 2;
   white-space: pre;
@@ -4538,21 +4529,6 @@ body.landing-page .text-link {
   background: rgba(99, 102, 241, 0.08);
 }
 
-@media (prefers-color-scheme: dark) {
-  .array-playground-card {
-    border-color: rgba(148, 163, 184, 0.25);
-    background: rgba(15, 23, 42, 0.55);
-  }
-
-  .array-result-panel {
-    background: rgba(15, 23, 42, 0.48);
-  }
-
-  .array-error-panel {
-    background: rgba(127, 29, 29, 0.2);
-  }
-}
-
 @media (max-width: 720px) {
   .array-playground-card {
     padding: 16px;
@@ -4589,7 +4565,7 @@ body.landing-page .text-link {
   margin: 1.1rem 0;
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.62);
+  background: var(--tn-bg-soft);
   overflow: hidden;
 }
 
@@ -4624,7 +4600,7 @@ body.landing-page .text-link {
   color: #a5f3fc;
   font-size: 0.82rem;
   text-transform: uppercase;
-  background: rgba(2, 6, 23, 0.38);
+  background: var(--tn-bg-soft);
 }
 
 .ai-ui-table td {
@@ -4731,7 +4707,7 @@ body.landing-page .text-link {
   padding: 1rem;
   border: 1px solid var(--tn-surface-border);
   border-radius: var(--radius-md);
-  background: rgba(15, 23, 42, 0.82);
+  background: var(--tn-bg-soft);
   box-shadow: var(--tn-shadow);
 }
 

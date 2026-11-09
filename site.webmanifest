@@ -4,6 +4,6 @@
   "description": "Practical learning for QA, automation, development and AI.",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#080b12",
-  "theme_color": "#0b1020"
+  "background_color": "#f8fafc",
+  "theme_color": "#ffffff"
 }

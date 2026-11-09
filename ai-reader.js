@@ -1,4 +1,104 @@
 (function () {
+  var RELATED_LEARNING = {
+    testng: [
+      ["Data providers in the Hybrid Framework", "/hybrid.html#inline-data-provider"],
+      ["Parallel execution in the Hybrid Framework", "/hybrid.html#parallel-execution"],
+      ["Listeners in the Hybrid Framework", "/hybrid.html#testng-listener"]
+    ],
+    jenkins: [
+      ["Jenkins and Maven project walkthrough", "/hybrid.html#jenkins-maven"],
+      ["Jenkins email notifications", "/hybrid.html#jenkins-email"]
+    ],
+  "playwright": [
+    [
+      "Original Playwright tutorial",
+      "/playwright.html"
+    ],
+    [
+      "IPL automation playground",
+      "/ipl-automation-practice.html"
+    ]
+  ],
+  "java": [
+    [
+      "Java practice and interview notes",
+      "/master.html"
+    ]
+  ],
+  "jsTs": [
+    [
+      "Original JavaScript and TypeScript examples",
+      "/playwright.html#js-hello"
+    ]
+  ],
+  "aiModels": [
+    [
+      "Basic AI",
+      "/ai-for-everyone.html"
+    ],
+    [
+      "AI for QA",
+      "/ai-engineers.html"
+    ],
+    [
+      "AI for beginners",
+      "/ai-for-beginners.html"
+    ],
+    [
+      "Prompt engineering",
+      "/prompt-engineering.html"
+    ],
+    [
+      "AI agents and MCP",
+      "/ai-agents-automation.html"
+    ],
+    [
+      "Machine learning",
+      "/machine-learning-fundamentals.html"
+    ],
+    [
+      "Blockchain and Web3",
+      "/blockchain-web3-basics.html"
+    ],
+    [
+      "Internet of Things",
+      "/iot-essentials.html"
+    ]
+  ],
+  "selenium": [
+    [
+      "TestNG course",
+      "/testng.html"
+    ],
+    [
+      "IPL automation playground",
+      "/ipl-automation-practice.html"
+    ]
+  ],
+  "hybrid": [
+    [
+      "Cucumber BDD",
+      "/cucumber.html"
+    ],
+    [
+      "Jenkins",
+      "/jenkins.html"
+    ]
+  ],
+  "api": [
+    [
+      "Continue with REST Assured",
+      "/rest.html#api-testing-prerequisites"
+    ]
+  ],
+  "rest": [
+    [
+      "Standalone API Testing Fundamentals",
+      "/api.html"
+    ]
+  ]
+};
+
   var TRACKS = {
     aiModels: {
       storageKey: 'testnova-reader-ai-models-v1',
@@ -5327,7 +5427,8 @@
     return [
       '<div class="ai-resource-row">',
       topic.resources.map(function(resource) {
-        return '<a class="primary-btn" href="' + escapeHtml(resource.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(resource.label) + '</a>';
+        var external = /^https?:\/\//i.test(resource.url) ? ' target="_blank" rel="noopener noreferrer"' : '';
+        return '<a class="primary-btn" href="' + escapeHtml(resource.url) + '"' + external + '>' + escapeHtml(resource.label) + '</a>';
       }).join(''),
       '</div>'
     ].join('');
@@ -5383,12 +5484,12 @@
     if (!topic.subsections || !topic.subsections.length) return renderTopicMaterial(topic);
     return '<div class="ai-reader-subsections">' + topic.subsections.map(function(subsection, index) {
       return [
-        '<details class="ai-reader-subsection"' + (index === 0 ? ' open' : '') + '>',
-        '<summary><span>' + escapeHtml(displayTopicTitle(subsection)) + '</span></summary>',
+        '<section class="ai-reader-subsection" id="reader-subtopic-' + (index + 1) + '">',
+        '<h3 class="reader-subtopic-title">' + escapeHtml(displayTopicTitle(subsection)) + '</h3>',
         '<div class="ai-reader-subsection-body">',
         renderTopicMaterial(subsection),
         '</div>',
-        '</details>'
+        '</section>'
       ].join('');
     }).join('') + '</div>';
   }
@@ -5467,16 +5568,18 @@
     }
   }
 
-  function updateTopicUrl(topicId, hashNavigation) {
+  function updateTopicUrl(topicId, hashNavigation, subtopic) {
     if (!window.history || !window.history.pushState) return;
     var url = new URL(window.location.href);
+    if (subtopic) url.searchParams.set('section', subtopic);
+    else url.searchParams.delete('section');
     if (hashNavigation) {
       url.hash = topicId;
       url.searchParams.delete('topic');
-      if (url.href === window.location.href) return;
     } else {
       url.searchParams.set('topic', topicId);
     }
+    if (url.href === window.location.href) return;
     window.history.pushState({ topic: topicId }, '', url.pathname + url.search + url.hash);
   }
 
@@ -5534,13 +5637,68 @@
     ].join('');
   }
 
+  function topicStorageKey(track, topicId) {
+    if (track.apiTopics && track.apiTopics.has(topicId)) return window.TestNovaApiCourse.storageKey;
+    return track.storageKey;
+  }
+
+  function readerTrack(trackId) {
+    var course = window.TestNovaDocumentCourse;
+    var apiCourse = window.TestNovaApiCourse;
+    if (trackId === 'api') return apiCourse;
+    if (trackId === 'rest' && course && apiCourse) {
+      var apiTopics = apiCourse.topics.map(function(topic) {
+        var legacyIds = (topic.legacyIds || []).filter(function(id) {
+          return !course.topics.some(function(lesson) { return (lesson.legacyIds || []).includes(id); });
+        });
+        return Object.assign({}, topic, { module: 'API Testing Basics · ' + topic.module, legacyIds: legacyIds });
+      });
+      return Object.assign({}, course, {
+        title: 'API Testing Basics & REST Assured',
+        topics: apiTopics.concat(course.topics),
+        apiTopics: new Set(apiTopics.map(function(topic) { return topic.id; }))
+      });
+    }
+    if (trackId === 'testng' && course && course.id === 'selenium') {
+      return Object.assign({}, course, {
+        title: 'TestNG', readOnly: true,
+        topics: course.topics.filter(function(topic) { return topic.module === 'TestNG Fundamentals'; })
+      });
+    }
+    return course && course.id === trackId ? course : TRACKS[trackId];
+  }
+
+  function lessonGroup(trackId, topic, index) {
+    if (topic.module) return topic.module;
+    if (trackId === 'jsTs' && topic.paragraphs && /^Level: /.test(topic.paragraphs[0])) {
+      return topic.paragraphs[0].replace(/^Level: Level \d+ - /, '');
+    }
+    if (trackId === 'playwright') {
+      if (index < 4) return 'Getting started';
+      if (index < 15) return 'Assertions, locators and forms';
+      if (index < 24) return 'Browser workflows and troubleshooting';
+      return 'Projects, parallelism and reporting';
+    }
+    if (trackId === 'aiModels') {
+      if (index < 9) return 'AI models and testing';
+      if (index < 17) return 'Prompt engineering for QA';
+      return 'Hands-on agent projects';
+    }
+    if (trackId === 'git') {
+      if (index < 6) return 'Setup, commits and collaboration';
+      if (index < 11) return 'Local changes, branches and remotes';
+      return 'Releases, workflows and tools';
+    }
+    return 'Lessons';
+  }
+
   function renderTopicHtml(track, topic, index, progress, topics) {
     var total = topics.length;
     if (window.TestNovaArraysPlayground && topic.id === window.TestNovaArraysPlayground.topicId) {
       return window.TestNovaArraysPlayground.render() + renderLessonNavigation(topic, index, topics, progress);
     }
-    var contentKey = track.storageKey + ':content:' + topic.id;
-    if (track.contentVersion) contentKey = track.storageKey + ':content:v' + track.contentVersion + ':' + topic.id;
+    var contentKey = topicStorageKey(track, topic.id) + ':content:' + topic.id;
+    if (track.contentVersion) contentKey = topicStorageKey(track, topic.id) + ':content:v' + track.contentVersion + ':' + topic.id;
     var authoringMode = isReaderAuthoringMode();
     var savedContent = '';
     if (!track.readOnly && (authoringMode || track.showSavedEdits)) {
@@ -5601,6 +5759,7 @@
         xml: /<\/?[\w:-]+|\/>|>|"[^"]*"|\b\d+(?:\.\d+)*\b/g,
         html: /<\/?[\w:-]+|\/>|>|"[^"]*"/g,
         yaml: /#[^\n]*|"[^"]*"|'[^']*'|\b[\w-]+(?=:)|\b\d+\b/g,
+        git: /--?[\w-]+|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(git|add|branch|checkout|clone|commit|init|log|pull|push|remote|status|switch|tag)\b/g,
         properties: /^[#!][^\n]*|^[\w.-]+(?=\s*[=:])|\b(?:true|false)\b/gm,
         groovy: /\/\/[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(pipeline|agent|stages|stage|steps|post|always|success|failure|tools|bat|sh|junit|emailext|checkout|archiveArtifacts|true|false)\b/g,
         http: /\b(GET|POST|PUT|PATCH|DELETE|HTTP|Bearer)\b|\b[\w-]+(?=:\s)|\b[1-5]\d\d\b/g
@@ -5623,8 +5782,7 @@
 
   function initReader() {
     var trackId = document.body.getAttribute('data-ai-reader-track');
-    var documentCourse = window.TestNovaDocumentCourse;
-    var track = documentCourse && documentCourse.id === trackId ? documentCourse : TRACKS[trackId];
+    var track = readerTrack(trackId);
     if (!trackId || !track) return;
 
     var nav = document.querySelector('[data-reader-nav]');
@@ -5643,6 +5801,7 @@
     var readerTopbar = document.querySelector('.topbar');
     var progressKey = track.storageKey + ':progress';
     var progress = loadJson(progressKey);
+    if (track.apiTopics) Object.assign(progress, loadJson(window.TestNovaApiCourse.storageKey + ':progress'));
     if (track.legacyProgressKey) {
       try {
         if (localStorage.getItem(progressKey) === null) {
@@ -5663,6 +5822,15 @@
       return (track.hashNavigation && window.location.hash.slice(1)) || topicFromUrl();
     }
     var currentTopic = requestedTopic() || track.topics[0].id;
+    var activeSubtopic = 0;
+    var drawerViewport = window.matchMedia('(max-width: 980px)');
+    var drawerBackground = Array.from(document.querySelectorAll('.topbar, .ai-reader-main, .site-footer, [data-reader-sidebar-toggle]'));
+    var noResults = document.createElement('p');
+    noResults.className = 'reader-no-results';
+    noResults.setAttribute('role', 'status');
+    noResults.textContent = 'No matching topics. Try another search.';
+    nav.after(noResults);
+    noResults.hidden = true;
     var saveTimer = null;
 
     function syncReaderHeaderOffset() {
@@ -5705,9 +5873,9 @@
       }
       var editBody = content.querySelector('[data-topic-edit]');
       if (!editBody) return;
-      var contentKey = track.storageKey + ':content:' + editBody.getAttribute('data-topic-edit');
+      var contentKey = topicStorageKey(track, currentTopic) + ':content:' + currentTopic;
       if (track.contentVersion) {
-        contentKey = track.storageKey + ':content:v' + track.contentVersion + ':' + editBody.getAttribute('data-topic-edit');
+        contentKey = topicStorageKey(track, currentTopic) + ':content:v' + track.contentVersion + ':' + currentTopic;
       }
       localStorage.setItem(contentKey, editBody.innerHTML);
       var message = (mode === 'auto' ? 'Auto-saved ' : 'Saved ') + new Date().toLocaleTimeString();
@@ -5735,6 +5903,8 @@
       }
       topic = topic || topics[0];
       currentTopic = topic.id;
+      var subtopic = Number(options.subtopic) || 0;
+      activeSubtopic = Number.isInteger(subtopic) && subtopic > 0 && topic.subsections && subtopic <= topic.subsections.length ? subtopic : 0;
       if (editLink) {
         var editUrl = new URL(window.location.href);
         var authoring = isReaderAuthoringMode();
@@ -5752,9 +5922,6 @@
       document.title = displayTopicTitle(topic) + ' | ' + track.title + ' | TestNova';
       var descriptionNode = document.querySelector('meta[name="description"]');
       if (descriptionNode) descriptionNode.setAttribute('content', topic.learningObjective || ((topic.paragraphs || [])[0]) || 'Learn ' + track.title + ' with TestNova.');
-      var activeModule = nav.querySelector('[data-topic-link="' + topic.id + '"]');
-      activeModule = activeModule && activeModule.closest('details');
-      if (activeModule) activeModule.open = true;
       highlightCodeBlocks(content);
       content.querySelectorAll('[data-code-copy]').forEach(function (button) {
         button.addEventListener('click', function () {
@@ -5776,11 +5943,21 @@
       if (window.TestNovaArraysPlayground && topic.id === window.TestNovaArraysPlayground.topicId) {
         window.TestNovaArraysPlayground.mount(content.querySelector('[data-arrays-playground]'));
       }
-      if (options.updateUrl !== false) updateTopicUrl(topic.id, track.hashNavigation);
+      if (options.updateUrl !== false) updateTopicUrl(topic.id, track.hashNavigation, activeSubtopic);
 
-      nav.querySelectorAll('[data-topic-link]').forEach(function (link) {
-        link.classList.toggle('active', link.getAttribute('data-topic-link') === topic.id);
+      var activeLink;
+      nav.querySelectorAll('[data-topic-link], [data-subtopic]').forEach(function (link) {
+        var isTopic = link.getAttribute('data-topic-link') === topic.id;
+        var isCurrent = activeSubtopic ? link.getAttribute('data-parent-topic') === topic.id && Number(link.dataset.subtopic) === activeSubtopic : isTopic;
+        link.classList.toggle('active', isTopic || isCurrent);
+        if (isCurrent) {
+          link.setAttribute('aria-current', 'location');
+          activeLink = link;
+        } else link.removeAttribute('aria-current');
       });
+      if (activeLink && !activeLink.closest('[hidden]') && sidebar && (!drawerViewport.matches || sidebar.classList.contains('is-open'))) {
+        keepTopicVisible(activeLink);
+      }
 
       var completeButton = content.querySelector('[data-reader-complete]');
       if (completeButton) {
@@ -5791,7 +5968,11 @@
           completeButton.setAttribute('aria-pressed', String(completed));
           completeButton.classList.toggle('is-complete', completed);
           completeButton.innerHTML = '<span aria-hidden="true">✓</span> ' + (completed ? 'Completed' : 'Mark Complete');
-          saveJson(progressKey, progress);
+          var key = topicStorageKey(track, topic.id) + ':progress';
+          var storedProgress = loadJson(key);
+          if (completed) storedProgress[topic.id] = 1;
+          else delete storedProgress[topic.id];
+          saveJson(key, storedProgress);
           updateProgress();
           if (completionToast) {
             clearTimeout(completionTimer);
@@ -5811,10 +5992,7 @@
       if (previousButton && index > 0) previousButton.addEventListener('click', function() { openTopic(topics[index - 1].id, { updateUrl: true, scroll: true }); });
       if (nextButton && index < topics.length - 1) nextButton.addEventListener('click', function() { openTopic(topics[index + 1].id, { updateUrl: true, scroll: true }); });
 
-      if (sidebar) sidebar.classList.remove('is-open');
-      if (sidebarScrim) sidebarScrim.hidden = true;
-      if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
-      document.body.classList.remove('reader-drawer-open');
+      setSidebarOpen(false);
 
       var editBody = content.querySelector('[data-topic-edit]');
       if (editBody) {
@@ -5829,34 +6007,46 @@
       var inlineSave = content.querySelector('[data-inline-save]');
       if (inlineSave) inlineSave.addEventListener('click', saveCurrentContent);
 
-      if (options.scroll !== false) {
-        content.scrollIntoView({ block: 'start', behavior: 'smooth' });
-      }
+      var target = activeSubtopic ? document.getElementById('reader-subtopic-' + activeSubtopic) : content;
+      if (target && (activeSubtopic || options.scroll !== false)) target.scrollIntoView({ block: 'start', behavior: 'instant' });
+    }
+
+    function keepTopicVisible(link) {
+      var bounds = sidebar.getBoundingClientRect();
+      var item = link.getBoundingClientRect();
+      var top = bounds.top + (drawerViewport.matches && sidebarClose ? sidebarClose.offsetHeight + 12 : 0);
+      if (item.top < top) sidebar.scrollTop += item.top - top - 8;
+      else if (item.bottom > bounds.bottom) sidebar.scrollTop += item.bottom - bounds.bottom + 8;
     }
 
     function renderNav() {
       nav.classList.add('reader-topic-list');
-      var buttons = topics.map(function(topic, index) {
-        return '<button type="button" data-topic-link="' + topic.id + '" data-search-title="' + escapeHtml(displayTopicTitle(topic).toLowerCase()) + '"><span>' + (index + 1) + '</span><strong>' + escapeHtml(displayTopicTitle(topic)) + '</strong><i aria-hidden="true">✓</i></button>';
-      });
       var modules = new Map();
-      if (track.hashNavigation) {
-        topics.forEach(function(topic, index) {
-          var name = topic.module || 'Your lessons';
-          if (!modules.has(name)) modules.set(name, []);
-          modules.get(name).push(buttons[index]);
+      topics.forEach(function(topic, index) {
+        var name = lessonGroup(trackId, topic, index);
+        if (!modules.has(name)) modules.set(name, []);
+        var id = escapeHtml(topic.id);
+        var subtopics = (topic.subsections || []).map(function(subsection, subIndex) {
+          return '<li><button type="button" class="reader-subtopic-link" data-parent-topic="' + id + '" data-subtopic="' + (subIndex + 1) + '">' + escapeHtml(displayTopicTitle(subsection)) + '</button></li>';
         });
-      }
-      var lessonList = modules.size ? Array.from(modules, function(entry) {
-        return '<details class="ai-reader-subsection reader-course-module"><summary>' + escapeHtml(entry[0]) +
-          '</summary>' + entry[1].join('') + '</details>';
-      }).join('') : buttons.join('');
+        modules.get(name).push('<li class="reader-topic"><button type="button" data-topic-link="' + id + '"><span>' + (index + 1) + '</span><strong>' + escapeHtml(displayTopicTitle(topic)) + '</strong><i aria-hidden="true">✓</i></button>' +
+          (subtopics.length ? '<ul class="reader-subtopic-list">' + subtopics.join('') + '</ul>' : '') + '</li>');
+      });
+      var sectionNumber = 0;
+      var lessonList = Array.from(modules, function(entry) {
+        sectionNumber += 1;
+        return '<section class="reader-course-module" aria-labelledby="reader-module-' + sectionNumber + '"><h2 id="reader-module-' + sectionNumber + '"><small>Section ' + String(sectionNumber).padStart(2, '0') + '</small>' + escapeHtml(entry[0]) + '</h2><ul class="reader-module-topics">' + entry[1].join('') + '</ul></section>';
+      }).join('');
       nav.innerHTML = lessonList + (track.readOnly || !isReaderAuthoringMode() ? '' : '<button class="ai-add-topic-btn" type="button" data-add-topic><span>+</span><strong>Add topic</strong></button>');
+      if (RELATED_LEARNING[trackId]) {
+        nav.insertAdjacentHTML('beforeend', '<section class="reader-course-module reader-related"><h2>Related learning</h2>' +
+          RELATED_LEARNING[trackId].map(function(link) { return '<a href="' + escapeHtml(link[1]) + '">' + escapeHtml(link[0]) + '</a>'; }).join('') + '</section>');
+      }
+      filterTopics();
 
-      nav.querySelectorAll('[data-topic-link]').forEach(function(link) {
-        link.addEventListener('click', function(event) {
-          event.preventDefault();
-          openTopic(link.getAttribute('data-topic-link'), { updateUrl: true, scroll: true });
+      nav.querySelectorAll('[data-topic-link], [data-subtopic]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          openTopic(link.dataset.topicLink || link.dataset.parentTopic, { updateUrl: true, scroll: true, subtopic: link.dataset.subtopic });
         });
       });
 
@@ -5884,31 +6074,34 @@
       saveCurrentContent('auto');
     });
 
-    function setSidebarOpen(open) {
-      if (!sidebar || !sidebarToggle || !sidebarScrim) return;
-      sidebar.classList.toggle('is-open', open);
-      sidebarToggle.setAttribute('aria-expanded', String(open));
-      sidebarScrim.hidden = !open;
-      document.body.classList.toggle('reader-drawer-open', open);
-      if (open && searchInput) searchInput.focus();
+    var setSidebarOpen = sidebar && sidebarToggle && sidebarClose && sidebarScrim
+      ? window.TestNovaTopicDrawer(sidebar, sidebarToggle, sidebarClose, sidebarScrim, drawerBackground, function() {
+        var active = nav.querySelector('[aria-current="location"]');
+        if (active && !active.closest('[hidden]')) keepTopicVisible(active);
+      })
+      : function() {};
+
+    function filterTopics() {
+      var query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+      var found = false;
+      nav.querySelectorAll('.reader-course-module').forEach(function(module) {
+        if (module.classList.contains('reader-related')) { module.hidden = !!query; return; }
+        var sectionMatches = module.querySelector('h2').textContent.toLowerCase().includes(query);
+        module.querySelectorAll('.reader-topic').forEach(function(item) {
+          var titleMatches = item.querySelector('strong').textContent.toLowerCase().includes(query);
+          var children = Array.from(item.querySelectorAll('.reader-subtopic-list li'));
+          children.forEach(function(child) {
+            child.hidden = !sectionMatches && !titleMatches && !child.textContent.toLowerCase().includes(query);
+          });
+          item.hidden = !sectionMatches && !titleMatches && !children.some(function(child) { return !child.hidden; });
+        });
+        module.hidden = !module.querySelector('.reader-topic:not([hidden])');
+        found = found || !module.hidden;
+      });
+      noResults.hidden = found;
     }
 
-    if (sidebarToggle) sidebarToggle.addEventListener('click', function() { setSidebarOpen(true); });
-    if (sidebarClose) sidebarClose.addEventListener('click', function() { setSidebarOpen(false); });
-    if (sidebarScrim) sidebarScrim.addEventListener('click', function() { setSidebarOpen(false); });
-    document.addEventListener('keydown', function(event) { if (event.key === 'Escape') setSidebarOpen(false); });
-
-    if (searchInput) searchInput.addEventListener('input', function() {
-      var query = searchInput.value.trim().toLowerCase();
-      nav.querySelectorAll('[data-topic-link]').forEach(function(link) {
-        var visible = !query || (link.getAttribute('data-search-title') || '').indexOf(query) !== -1;
-        link.hidden = !visible;
-      });
-      nav.querySelectorAll('.reader-course-module').forEach(function(module) {
-        module.hidden = !module.querySelector('[data-topic-link]:not([hidden])');
-        if (query && !module.hidden) module.open = true;
-      });
-    });
+    if (searchInput) searchInput.addEventListener('input', filterTopics);
 
     initEditableSurfaces();
     if (editLink && track.showSavedEdits) {
@@ -5916,12 +6109,14 @@
         if (isReaderAuthoringMode()) saveCurrentContent();
       });
     }
-    renderNav();
-    openTopic(currentTopic, { updateUrl: !track.hashNavigation && !!topicFromUrl(), scroll: false });
+    function openRequestedTopic(scroll) {
+      var subtopic = new URLSearchParams(window.location.search).get('section');
+      openTopic(requestedTopic() || track.topics[0].id, { updateUrl: false, scroll: scroll, subtopic: subtopic });
+    }
 
-    window.addEventListener('popstate', function () {
-      openTopic(requestedTopic() || track.topics[0].id, { updateUrl: false, scroll: true });
-    });
+    renderNav();
+    openRequestedTopic(false);
+    window.addEventListener('popstate', function () { openRequestedTopic(true); });
   }
 
   function init() {

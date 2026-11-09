@@ -269,131 +269,137 @@
 
   // Function to set up mobile navigation toggle
   function setupMobileNav() {
-    var navContainer = document.querySelector('.nav-container');
-    var siteNav = document.querySelector('.site-nav');
-    if (!navContainer || !siteNav) return;
+    var container = document.querySelector('.nav-container');
+    var nav = document.querySelector('.site-nav');
+    if (!container || !nav || container.querySelector('.nav-toggle')) return;
+    nav.id = nav.id || 'primary-navigation';
+    var courses = nav.querySelector('.course-menu');
+    var toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'nav-toggle';
+    toggle.setAttribute('aria-label', 'Toggle navigation');
+    toggle.setAttribute('aria-controls', nav.id);
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('data-testid', 'nav-toggle');
+    toggle.innerHTML = '<span></span>';
+    container.insertBefore(toggle, nav);
 
-    var existing = navContainer.querySelector('.nav-toggle');
-    if (existing) return;
+    function closeNav() {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      if (courses) courses.open = false;
+    }
 
-    var btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'nav-toggle';
-    btn.setAttribute('aria-label', 'Toggle navigation');
-    btn.setAttribute('aria-expanded', 'false');
-    btn.setAttribute('data-testid', 'nav-toggle');
-    btn.innerHTML = '<span></span>';
-    navContainer.insertBefore(btn, siteNav);
-
-    btn.addEventListener('click', function () {
-      var open = siteNav.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-
-    siteNav.querySelectorAll('.learning-dropdown > a').forEach(function(dropdownLink) {
-      dropdownLink.setAttribute('aria-expanded', 'false');
-      dropdownLink.addEventListener('click', function(event) {
-        if (!window.matchMedia('(max-width: 780px)').matches) return;
-
-        event.preventDefault();
-        var dropdown = dropdownLink.closest('.learning-dropdown');
-        if (!dropdown) return;
-
-        var open = dropdown.classList.toggle('is-open');
-        dropdownLink.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-    });
-
-    siteNav.addEventListener('click', function (event) {
-      var target = event.target;
-      if (target && target.tagName === 'A' && target.closest('.learning-dropdown') && target.parentElement === target.closest('.learning-dropdown')) {
-        return;
-      }
-
-      if (target && target.tagName === 'A' && siteNav.classList.contains('open')) {
-        siteNav.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
-        siteNav.querySelectorAll('.learning-dropdown.is-open').forEach(function(dropdown) {
-          dropdown.classList.remove('is-open');
-          var link = dropdown.querySelector(':scope > a');
-          if (link) link.setAttribute('aria-expanded', 'false');
-        });
+    toggle.addEventListener('click', function () {
+      if (nav.classList.contains('open')) closeNav();
+      else {
+        nav.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
       }
     });
-
+    nav.addEventListener('click', function (event) {
+      if (event.target.closest('a')) closeNav();
+    });
     document.addEventListener('click', function (event) {
-      if (!siteNav.classList.contains('open')) return;
-      if (navContainer.contains(event.target)) return;
-
-      siteNav.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-      siteNav.querySelectorAll('.learning-dropdown.is-open').forEach(function(dropdown) {
-        dropdown.classList.remove('is-open');
-        var link = dropdown.querySelector(':scope > a');
-        if (link) link.setAttribute('aria-expanded', 'false');
-      });
+      if (!container.contains(event.target)) closeNav();
+      else if (courses && !courses.contains(event.target)) courses.open = false;
     });
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape') return;
+      if (courses && courses.open) {
+        courses.open = false;
+        courses.querySelector('summary').focus();
+      } else if (nav.classList.contains('open')) {
+        closeNav();
+        toggle.focus();
+      }
+    });
+    window.matchMedia('(max-width: 980px)').addEventListener('change', closeNav);
   }
 
-  // Function to set up mobile sidebar toggle for "On this page" sections
+  function bindTopicDrawer(sidebar, toggle, close, scrim, background, onOpen) {
+    var mobile = window.matchMedia('(max-width: 980px)');
+
+    function setOpen(open) {
+      if (sidebar.classList.contains('is-open') === open || (open && !mobile.matches)) return;
+      sidebar.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      scrim.hidden = !open;
+      document.body.classList.toggle('reader-drawer-open', open);
+      background.forEach(function(node) { node.inert = open; });
+      sidebar.inert = !open && mobile.matches;
+      if (open) {
+        sidebar.setAttribute('role', 'dialog');
+        sidebar.setAttribute('aria-modal', 'true');
+        close.focus({ preventScroll: true });
+        if (onOpen) onOpen();
+      } else {
+        sidebar.removeAttribute('role');
+        sidebar.removeAttribute('aria-modal');
+        if (mobile.matches) toggle.focus({ preventScroll: true });
+      }
+    }
+
+    function syncViewport() {
+      if (!mobile.matches) setOpen(false);
+      sidebar.inert = mobile.matches && !sidebar.classList.contains('is-open');
+    }
+
+    toggle.addEventListener('click', function() { setOpen(true); });
+    close.addEventListener('click', function() { setOpen(false); });
+    scrim.addEventListener('click', function() { setOpen(false); });
+    mobile.addEventListener('change', syncViewport);
+    syncViewport();
+    document.addEventListener('keydown', function(event) {
+      if (!sidebar.classList.contains('is-open')) return;
+      if (event.key === 'Escape') setOpen(false);
+      if (event.key !== 'Tab') return;
+      var focusable = Array.from(sidebar.querySelectorAll('a[href], button, input')).filter(function(node) { return !node.closest('[hidden]'); });
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
+    return setOpen;
+  }
+
+  window.TestNovaTopicDrawer = bindTopicDrawer;
+
   function setupMobileSidebar() {
     var sidebar = document.querySelector('.page-sidebar');
-    var sidebarToggle = document.querySelector('.sidebar-toggle');
-    var sidebarNavContent = document.querySelector('.sidebar-nav-content');
-    var mobileQuery = window.matchMedia('(max-width: 980px)');
+    var toggle = sidebar && sidebar.querySelector('.sidebar-toggle');
+    var nav = sidebar && sidebar.querySelector('.sidebar-nav-content');
+    if (!sidebar || !toggle || !nav) return;
 
-    if (!sidebar || !sidebarToggle || !sidebarNavContent) return;
+    sidebar.id = sidebar.id || 'legacy-course-topics';
+    sidebar.setAttribute('aria-label', 'Course topics');
+    sidebar.classList.add('legacy-topic-drawer');
+    toggle.textContent = '☰ Topics';
+    toggle.setAttribute('aria-label', 'Open topics');
+    toggle.setAttribute('aria-controls', sidebar.id);
+    var toolbar = document.createElement('div');
+    toolbar.className = 'legacy-topic-toolbar';
+    sidebar.before(toolbar);
+    toolbar.append(toggle);
 
-    if (!sidebarNavContent.id) {
-      sidebarNavContent.id = 'page-sidebar-nav';
-    }
-    sidebarToggle.setAttribute('aria-controls', sidebarNavContent.id);
-
-    function setSidebarOpen(isOpen) {
-      sidebar.classList.toggle('open', isOpen);
-      sidebarToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    }
-
-    function syncSidebarForViewport() {
-      if (mobileQuery.matches) {
-        setSidebarOpen(true);
-      } else {
-        setSidebarOpen(false);
-      }
-    }
-
-    sidebarToggle.addEventListener('click', function() {
-      setSidebarOpen(!sidebar.classList.contains('open'));
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'legacy-topic-close';
+    close.setAttribute('aria-label', 'Close topics');
+    close.textContent = '×';
+    sidebar.prepend(close);
+    var scrim = document.createElement('div');
+    scrim.className = 'topic-drawer-scrim';
+    scrim.hidden = true;
+    sidebar.before(scrim);
+    var background = Array.from(document.querySelectorAll('.topbar, .page-content, .site-footer, .page-hero-section')).concat(toggle);
+    var setOpen = bindTopicDrawer(sidebar, toggle, close, scrim, background, function() {
+      var active = nav.querySelector('[aria-current]');
+      if (active) active.scrollIntoView({ block: 'nearest' });
     });
-
-    sidebarNavContent.addEventListener('click', function(event) {
-      var target = event.target;
-      if (target && target.tagName === 'A' && sidebar.classList.contains('open') && mobileQuery.matches) {
-        setSidebarOpen(false);
-      }
+    nav.addEventListener('click', function(event) {
+      if (event.target.closest('a')) setOpen(false);
     });
-
-    document.addEventListener('click', function(event) {
-      if (!mobileQuery.matches || !sidebar.classList.contains('open')) return;
-      if (sidebar.contains(event.target)) return;
-
-      setSidebarOpen(false);
-    });
-
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape' && mobileQuery.matches && sidebar.classList.contains('open')) {
-        setSidebarOpen(false);
-        sidebarToggle.focus();
-      }
-    });
-
-    if (mobileQuery.addEventListener) {
-      mobileQuery.addEventListener('change', syncSidebarForViewport);
-    } else {
-      mobileQuery.addListener(syncSidebarForViewport);
-    }
-
-    syncSidebarForViewport();
   }
 
   function setupAnchorLandingOffsets() {
@@ -475,7 +481,7 @@
     });
   }
 
-  // Function to set up active state and offset scrolling for "On this page" links
+  // Function to set up active state and offset scrolling for "Topics" links
   function setupPageSidebarLinks() {
     var pageSidebar = document.querySelector('.page-sidebar');
     var topbar = document.querySelector('.topbar');
@@ -620,7 +626,7 @@
       }
     }
 
-    if (formType === 'learning' && !selected) selected = 'Learning Hub Access';
+    if (formType === 'learning' && !selected) selected = 'General Learning Inquiry';
     if (formType === 'free_ai_kit') selected = selected || 'Free AI Kit';
 
     return {
@@ -796,6 +802,19 @@
     });
   }
 
+  var COURSES = [
+    {"title":"Playwright","url":"playwright-reader.html","summary":"Playwright tests, locators, fixtures, and reporting.","icon":"▷","aliases":["playwright.html","ipl-automation-practice.html"]},
+    {"title":"Java","url":"java-programming.html","summary":"Learn Java fundamentals, OOP, collections, and exceptions.","icon":"{ }","aliases":["master.html"]},
+    {"title":"JavaScript","url":"js-typescript.html","summary":"Build from JavaScript basics to TypeScript for browser automation.","icon":"JS","aliases":["javascript-frontend.html","typescript-deep-dive.html"]},
+    {"title":"AI","url":"ai-models.html","summary":"Explore models, prompting, agents, MCP, and AI-assisted QA.","icon":"✦","aliases":["ai-emerging-technologies.html","ai-courses.html","ai-for-beginners.html","ai-for-everyone.html","ai-engineers.html","ai-agents-automation.html","prompt-engineering.html","machine-learning-fundamentals.html","blockchain-web3-basics.html","iot-essentials.html"]},
+    {"title":"Selenium Basics","url":"selenium.html","summary":"Use WebDriver to find elements, wait for changes, and automate a browser.","icon":"Se","aliases":["Selenium Basics.html"]},
+    {"title":"TestNG","url":"testng.html","summary":"Organize Java tests with annotations, assertions, groups, and suites.","icon":"✓","aliases":[]},
+    {"title":"Jenkins","url":"jenkins.html","summary":"Run automation in CI, from repository checkout to build results.","icon":"⚙","aliases":[]},
+    {"title":"Hybrid Framework","url":"hybrid.html","summary":"Put Selenium, TestNG, Maven, and reusable framework components together.","icon":"▦","aliases":["cucumber.html"]},
+    {"title":"REST Assured","url":"rest.html","summary":"Start with API testing basics, then automate HTTP requests and assertions in Java.","icon":"↔","aliases":["api.html"]},
+    {"title":"Git & GitHub","url":"git-github-essentials.html","summary":"Track changes, work with branches, and collaborate through pull requests.","icon":"⑂","aliases":[]}
+  ];
+
   var LEARNING_CATEGORIES = [
     {
       id: 'qa-engineering',
@@ -809,7 +828,7 @@
         { title: 'API Testing Fundamentals', url: 'api.html', difficulty: 'Beginner', summary: 'HTTP, Postman, and end-to-end API testing workflows.', openAccess: true },
         { title: 'REST Assured with Java', url: 'rest.html', difficulty: 'Intermediate', summary: 'Automate booking workflows and build a reusable Java API testing framework.', openAccess: true },
         { title: 'Cucumber BDD', url: 'cucumber.html', difficulty: 'Intermediate', summary: 'Feature files, step definitions, runners, hooks, and readable scenarios.' },
-        { title: 'UI Hybrid Framework', url: 'hybrid.html', difficulty: 'Advanced', summary: 'A structured Selenium Java framework with reusable layers and reporting.' },
+        { title: 'Selenium Java Hybrid Framework', url: 'hybrid.html', difficulty: 'Advanced', summary: 'Learn to build a complete Selenium Java Hybrid Automation Framework using Page Object Model, TestNG, Maven, reusable utilities, Excel data-driven testing, reporting, listeners, retry mechanisms, Jenkins, and Selenium Grid.' },
         { title: 'Jenkins Automation', url: 'jenkins.html', difficulty: 'Intermediate', summary: 'CI job setup, automation pipelines, reports, and scheduled test runs.' },
         { title: 'Master Doc Notes (Java)', url: 'master.html', difficulty: 'Advanced', summary: 'Curated Java and automation notes for interview and project readiness.' }
       ]
@@ -818,19 +837,15 @@
       id: 'development-technologies',
       title: 'Development Technologies',
       url: 'development-technologies.html',
-      description: 'Programming, cloud, DevOps, data, and version-control skills for builders.',
+      description: 'Programming fundamentals and version control for automation projects.',
       courses: [
         { title: 'Core Java Programming', url: 'java-programming.html', difficulty: 'Beginner', summary: 'Learn Java programming from fundamentals to OOP, Strings, Arrays, Collections, Exceptions, multithreading, and interview-focused coding exercises.', openAccess: true },
-        { title: 'Python for Automation', url: 'python-automation.html', difficulty: 'Beginner', summary: 'Python scripting, data handling, automation utilities, and practical workflows.' },
-        { title: 'DevOps Fundamentals', url: 'devops-fundamentals.html', difficulty: 'Intermediate', summary: 'CI/CD, Docker, Kubernetes concepts, environments, and release workflows.' },
-        { title: 'Cloud Platforms', url: 'cloud-platforms.html', difficulty: 'Intermediate', summary: 'AWS and Azure fundamentals for deployment, scaling, and operations.' },
-        { title: 'SQL & Database Management', url: 'sql-database-management.html', difficulty: 'Beginner', summary: 'Queries, joins, constraints, and database concepts for real projects.' },
         { title: 'Git & GitHub Essentials', url: 'git-github-essentials.html', difficulty: 'Beginner', summary: 'Version control, branching, pull requests, team collaboration basics, and expanded in-page notes.', openAccess: true }
       ]
     },
     {
       id: 'ai-emerging-technologies',
-      title: 'AI Learning Hub',
+      title: 'AI Tutorials',
       url: 'ai-emerging-technologies.html',
       description: 'Choose between AI for Everyone and AI Engineers, each with focused reader pages, practical lessons, and progress tracking.',
       courses: [
@@ -1139,70 +1154,52 @@
     });
   }
 
-  function openAccessUrls() {
-    var urls = LEARNING_CATEGORIES.map(function(category) {
-      return category.url;
-    });
-    LEARNING_CATEGORIES.forEach(function(category) {
-      category.courses.forEach(function(course) {
-        if (urls.indexOf(course.url) === -1) urls.push(course.url);
-      });
-    });
-    return urls;
-  }
-
-  function isOpenAccessUrl(url) {
-    if (!url) return false;
-    var normalized = url.charAt(0) === '/' ? url.slice(1) : url;
-    return openAccessUrls().indexOf(normalized) !== -1;
-  }
-
-  function isUnlockedAiCourseUrl(url) {
-    return isOpenAccessUrl(url);
-  }
-
   function isAiEmergingPage() {
     return ['ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'js-typescript.html', 'playwright-reader.html', 'git-github-essentials.html'].indexOf(currentPageName()) !== -1;
   }
 
   function renderLearningNav() {
-    var siteNavs = document.querySelectorAll('.site-nav');
-    if (!siteNavs.length) return;
-
     var page = currentPageName();
-    var isLearning = ['learning-hub.html', 'qa-engineering.html', 'development-technologies.html', 'ai-emerging-technologies.html', 'ai-for-everyone.html', 'ai-engineers.html', 'js-typescript.html', 'playwright-reader.html', 'git-github-essentials.html', 'ipl-automation-practice.html', 'tech-courses.html', 'ai-courses.html'].indexOf(page) !== -1 || document.body.classList.contains('learning-page');
     var navHtml = [
-      '<a' + (page === 'index.html' ? ' class="active"' : '') + ' href="/index.html">Home</a>',
-      '<a' + (isLearning ? ' class="active"' : '') + ' href="/learning-hub.html">Learning Hub</a>',
-      '<a' + (page === 'qa-engineering.html' ? ' class="active"' : '') + ' href="/qa-engineering.html">QA</a>',
-      '<a' + (page === 'ai-emerging-technologies.html' ? ' class="active"' : '') + ' href="/ai-emerging-technologies.html">AI</a>',
-      '<a' + (page === 'development-technologies.html' ? ' class="active"' : '') + ' href="/development-technologies.html">Tech</a>',
-      '<div class="has-mega-menu learning-dropdown">',
-      '<a href="/learning-hub.html">Courses</a>',
-      '<div class="mega-menu compact-learning-menu">',
-      '<a href="/playwright-reader.html">Playwright</a>',
-      '<a href="/selenium.html">Selenium</a>',
-      '<a href="/api.html">API Testing</a>',
-      '<a href="/js-typescript.html">JavaScript &amp; TypeScript</a>',
-      '</div></div>',
-      '<a' + (page === 'about.html' ? ' class="active"' : '') + ' href="/about.html">About</a>',
-      '<a class="nav-register' + (page === 'registration' || page === 'register.html' ? ' active' : '') + '" href="/registration/">Register</a>'
+      navLink("Home", "index.html", page === "index.html"),
+      '<details class="course-menu"><summary>Courses</summary><div class="course-menu-list">',
+      COURSES.map(function(course) {
+        return navLink(course.title, course.url, page === course.url || course.aliases.some(function(alias) {
+          return alias.toLowerCase() === page;
+        }));
+      }).join(''),
+      '</div></details>',
+      navLink("About", "about.html", page === "about.html"),
+      navLink("Contact", "contact.html", page === "contact.html")
     ].join('');
+    document.querySelectorAll('.site-nav').forEach(function(nav) { nav.innerHTML = navHtml; });
+  }
 
-    siteNavs.forEach(function(nav) {
-      nav.innerHTML = navHtml;
-    });
+  function navLink(title, url, active) {
+    return '<a' + (active ? ' class="active" aria-current="page"' : '') +
+      ' href="/' + url + '">' + escapeHtml(title) + '</a>';
+  }
+
+  function renderCourseCatalog() {
+    var grid = document.querySelector('[data-course-catalog]');
+    if (!grid) return;
+    grid.innerHTML = COURSES.map(function(course) {
+      return [
+        '<article class="tutorial-card">',
+        '<span class="tutorial-icon" aria-hidden="true">' + escapeHtml(course.icon) + '</span>',
+        '<h3>' + escapeHtml(course.title) + '</h3><p>' + escapeHtml(course.summary) + '</p>',
+        '<a class="tutorial-link" href="/' + course.url + '" aria-label="Start learning ' + escapeHtml(course.title) + '">Start Learning <span aria-hidden="true">→</span></a></article>'
+      ].join('');
+    }).join('');
   }
 
   function courseCardHtml(course) {
-    var accessBadge = '<span class="access-badge open-access-badge">Open Access</span>';
     var action = '<a href="' + course.url + '" class="primary-btn">View Course</a>';
 
     return [
       '<article class="glass-card course-discovery-card invite-card">',
       '<div class="course-card-top">',
       '<span class="difficulty-badge">' + course.difficulty + '</span>',
-      accessBadge,
       '</div>',
       '<h3>' + course.title + '</h3>',
       '<p>' + course.summary + '</p>',
@@ -1344,7 +1341,6 @@
       hubContainer.innerHTML = LEARNING_CATEGORIES.map(function(category) {
         return [
           '<article class="glass-card category-discovery-card invite-card">',
-          '<span class="access-badge open-access-badge">Open Access</span>',
           '<h3>' + category.title + '</h3>',
           '<p>' + category.description + '</p>',
           '<div class="pill-row">',
@@ -1353,9 +1349,10 @@
           '<a class="primary-btn" href="' + category.url + '">Browse Topics</a>',
           '</article>'
         ].join('');
-      }).join('') + [
+      }).join('') + courseCardHtml(LEARNING_CATEGORIES[0].courses.find(function(course) {
+        return course.url === 'hybrid.html';
+      })) + [
         '<article class="glass-card category-discovery-card invite-card" data-testid="ipl-practice-hub-card">',
-        '<span class="access-badge open-access-badge">Open Access</span>',
         '<h3>IPL Automation Practice</h3>',
         '<p>Practice tables, filters, waits, API testing, iframes, Shadow DOM and more using IPL records.</p>',
         '<div class="pill-row">',
@@ -1368,18 +1365,6 @@
         '</article>'
       ].join('');
     }
-  }
-
-  function setupGatedActions() {
-    document.querySelectorAll('a, button').forEach(function(link) {
-      var existingAccessUrl = link.getAttribute('data-access-url');
-      var isExplicit = link.classList.contains('gated-action') || link.hasAttribute('data-access-url');
-
-      if (!isExplicit) return;
-      if (existingAccessUrl && link.matches('a')) link.setAttribute('href', existingAccessUrl);
-      link.classList.remove('gated-action');
-      link.removeAttribute('data-access-url');
-    });
   }
 
   function setupContextualLeadActions() {
@@ -1433,10 +1418,6 @@
         }
       }
     });
-  }
-
-  function setupLearningContentGate() {
-    return;
   }
 
   function removeDocumentationNavigation() {
@@ -1772,26 +1753,27 @@
   // Initialize all functions
   function init() {
     renderLearningNav();
+    renderCourseCatalog();
     removeDocumentationNavigation();
     setupSharedCourseNavigation();
     renderAiLearningHub();
     renderCategoryCards();
-    setupGatedActions();
     setupContextualLeadActions();
-    setupLearningContentGate();
     setupAnchorLandingOffsets();
-    injectRegisterButton();
-    injectIplPlaygroundButton();
-    setupContextualLeadActions();
-    injectWhatsAppButton();
-    injectCourseAssistant();
+    if (!document.body.matches(".learning-page, .tutorial-home")) {
+      injectRegisterButton();
+      injectIplPlaygroundButton();
+      setupContextualLeadActions();
+      injectWhatsAppButton();
+    }
+    if (!document.body.matches(".ai-reader-page")) injectCourseAssistant();
     setupMobileNav();
     setupMobileSidebar();
     setupPageSidebarLinks();
     setupSiteDatePickers();
     window.registrationModalHandlers = setupModal('registration-modal', 'main-registration', 'General Inquiry'); // Expose handlers if needed
     setupInviteOnlyCards();
-    setupExitIntentPopup(); // New exit intent popup setup
+    if (!document.body.classList.contains("learning-page")) setupExitIntentPopup();
     syncFooterYear();
   }
 

@@ -1,4 +1,4 @@
-window.TestNovaDocumentCourse = {
+window.TestNovaApiCourse = {
   "id": "api",
   "title": "API Testing Fundamentals",
   "storageKey": "testnova-reader-api-v1",

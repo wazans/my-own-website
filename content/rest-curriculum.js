@@ -121,6 +121,75 @@ window.TestNovaDocumentCourse = {
       ]
     },
     {
+      "id": "automate-your-first-api-check",
+      "title": "Automate your first API check",
+      "module": "Java API testing setup",
+      "learningObjective": "Turn a manual GET request into repeatable checks for a known user and a missing user.",
+      "hideReview": true,
+      "blocks": [
+        {
+          "text": "Start the local JSON Server fixture from Set up JSON Server and use the Maven project from Maven and local API setup. Restore the original db.json if an earlier CRUD exercise deleted user u1."
+        },
+        {
+          "heading": "Compare the manual and automated checks"
+        },
+        {
+          "table": [
+            [
+              "What you check",
+              "Postman",
+              "REST Assured"
+            ],
+            [
+              "Request setup",
+              "Accept: application/json and a user ID",
+              "given().accept(ContentType.JSON).pathParam(\"id\", \"u1\")"
+            ],
+            [
+              "Request",
+              "GET http://localhost:3000/users/u1",
+              "when().get(\"/users/{id}\")"
+            ],
+            [
+              "Response",
+              "200, JSON, and id u1",
+              "then().statusCode(200).contentType(ContentType.JSON).body(\"id\", equalTo(\"u1\"))"
+            ]
+          ]
+        },
+        {
+          "title": "src/main/java/UsersContractCheck.java",
+          "language": "java",
+          "code": "import io.restassured.http.ContentType;\nimport static io.restassured.RestAssured.given;\nimport static org.hamcrest.Matchers.equalTo;\n\npublic class UsersContractCheck {\n    public static void main(String[] args) {\n        given().baseUri(\"http://localhost:3000\")\n            .accept(ContentType.JSON).pathParam(\"id\", \"u1\")\n        .when().get(\"/users/{id}\")\n        .then().statusCode(200).contentType(ContentType.JSON)\n            .body(\"id\", equalTo(\"u1\"));\n\n        given().baseUri(\"http://localhost:3000\")\n            .pathParam(\"id\", \"missing-user\")\n        .when().get(\"/users/{id}\")\n        .then().statusCode(404);\n    }\n}"
+        },
+        {
+          "title": "Run both checks",
+          "language": "bash",
+          "code": "mvn compile exec:java -Dexec.mainClass=UsersContractCheck"
+        },
+        {
+          "heading": "Practice"
+        },
+        {
+          "text": "Add an assertion for the known user’s name. Then deliberately change the expected value and run the check again to see how REST Assured reports the mismatch."
+        }
+      ],
+      "resources": [
+        {
+          "label": "Set up JSON Server",
+          "url": "/rest.html#json-server"
+        },
+        {
+          "label": "Set up Maven and REST Assured",
+          "url": "/rest.html#setup"
+        },
+        {
+          "label": "REST Assured usage guide",
+          "url": "https://github.com/rest-assured/rest-assured/wiki/Usage"
+        }
+      ]
+    },
+    {
       "id": "base-uri",
       "title": "Base URI",
       "module": "Read and validate bookings",
