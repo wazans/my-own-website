@@ -33,6 +33,7 @@ async function usePage(width, height, run) {
     await context.route('**/*', async (route) => {
       const url = new URL(route.request().url());
       if (url.origin !== origin) return route.fulfill({ status: 204 });
+      if (url.pathname === '/api/student-config') return route.fulfill({ status: 503 });
       const pathname = decodeURIComponent(url.pathname);
       const file = path.resolve(root, '.' + (pathname.endsWith('/') ? pathname + 'index.html' : pathname));
       assert.ok(file.startsWith(root + path.sep));
@@ -153,16 +154,13 @@ test('subtopics, history, search, copy controls, and mobile dismissal in landsca
   });
 });
 
-test('API progress and old bookmarks work in both readers', async () => {
+test('API bookmarks and REST Assured code work for public readers', async () => {
   await usePage(1440, 900, async (page, context) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin });
     await page.goto(origin + '/api.html#definition');
     await page.getByRole('button', { name: 'Mark Complete' }).click();
-    await page.goto(origin + '/rest.html#definition');
-    assert.equal(await page.getByRole('button', { name: 'Completed' }).count(), 1);
-    await page.getByRole('button', { name: 'Completed' }).click();
-    await page.goto(origin + '/api.html#definition');
-    assert.equal(await page.getByRole('button', { name: 'Mark Complete' }).count(), 1);
+    await page.waitForURL('**/dashboard/?next=*');
+    await page.getByText(/Student accounts are currently unavailable/).waitFor();
     await page.goto(origin + '/rest.html');
     await page.getByRole('link', { name: 'Skip to REST Assured setup' }).click();
     await page.waitForURL('**/rest.html#setup');
@@ -196,5 +194,105 @@ test('legacy Playwright bookmarks retain the original lessons', async () => {
     assert.equal(await page.locator('[data-topic-title]').textContent(), 'Build process');
     await page.goto(origin + '/hybrid.html#step-29');
     assert.match(await page.locator('[data-topic-title]').textContent(), /Page Factory/i);
+  });
+});
+
+test('students sign in, save progress, and see their own dashboard', async () => {
+  await usePage(390, 800, async (page, context) => {
+    const rows = new Map();
+    await context.route('**/api/student-config', (route) => route.fulfill({
+      json: { url: 'https://test.supabase.co', key: 'sb_publishable_test' }
+    }));
+    await context.route('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@*/+esm', (route) => route.fulfill({
+      contentType: 'application/javascript',
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: `
+        export function createClient() {
+          let callback;
+          const current = () => JSON.parse(sessionStorage.getItem('mock-student') || 'null');
+          return {
+            auth: {
+              onAuthStateChange(fn) { callback = fn; },
+              async getSession() { return { data: { session: current() } }; },
+              async signUp() { return { data: { session: null } }; },
+              async resetPasswordForEmail() { return {}; },
+              async signInWithPassword({email}) {
+                const session = { user: { id: email, email } };
+                sessionStorage.setItem('mock-student', JSON.stringify(session));
+                callback('SIGNED_IN', session);
+                return { data: { session } };
+              },
+              async signOut() {
+                sessionStorage.removeItem('mock-student');
+                callback('SIGNED_OUT', null);
+                return {};
+              }
+            },
+            from() {
+              const query = {
+                select() { return this; },
+                eq(_, student) { this.student = student; return this; },
+                order() { return this; },
+                range() { return this; },
+                in(_, courses) { this.courses = courses; return this; },
+                then(resolve, reject) { return this.read().then(resolve, reject); },
+                async read() {
+                  const response = await fetch('/test-progress?student=' + encodeURIComponent(this.student));
+                  const data = await response.json();
+                  return { data: data.filter(row => !this.courses || this.courses.includes(row.course_id)) };
+                },
+                async upsert(row) {
+                  const response = await fetch('/test-progress', { method: 'POST', body: JSON.stringify(row) });
+                  return response.json();
+                }
+              };
+              return query;
+            }
+          };
+        }
+      `
+    }));
+    await context.route('**/test-progress*', (route) => {
+      if (route.request().method() === 'POST') {
+        const row = route.request().postDataJSON();
+        const id = [row.student_id, row.course_id, row.lesson_id, row.section_id].join('|');
+        rows.set(id, { ...rows.get(id), ...row });
+        return route.fulfill({ json: {} });
+      }
+      const student = new URL(route.request().url()).searchParams.get('student');
+      return route.fulfill({ json: [...rows.values()].filter(row => row.student_id === student) });
+    });
+    const signIn = async (email) => {
+      await page.getByLabel('Email').fill(email);
+      await page.getByLabel('Password', { exact: true }).fill('sample-password');
+      await page.locator('#student-submit').click();
+    };
+    await page.goto(origin + '/rest.html#definition');
+    await page.getByRole('button', { name: 'Mark Complete' }).click();
+    await page.waitForURL('**/dashboard/?next=*');
+    await page.getByRole('button', { name: 'Create account' }).click();
+    await page.getByLabel('Email').fill('student-a@example.test');
+    await page.getByLabel('Password', { exact: true }).fill('sample-password');
+    await page.locator('#student-submit').click();
+    await page.getByText('Check your email for the next step.').waitFor();
+    await page.getByRole('button', { name: 'Forgot password' }).click();
+    await page.locator('#student-submit').click();
+    await page.getByText('Check your email for the next step.').waitFor();
+    await page.locator('[data-mode=signin]').click();
+    await signIn('student-a@example.test');
+    await page.waitForURL('**/rest.html#definition');
+    await page.getByRole('button', { name: 'Mark Complete' }).click();
+    await page.getByRole('button', { name: 'Completed', exact: true }).waitFor();
+    await page.reload();
+    await page.getByRole('button', { name: 'Completed', exact: true }).waitFor();
+    await page.goto(origin + '/api.html#definition');
+    await page.getByRole('button', { name: 'Completed', exact: true }).waitFor();
+    await page.goto(origin + '/dashboard/');
+    await page.getByText(/1 lessons complete/).waitFor();
+    await page.getByRole('button', { name: 'Sign out' }).click();
+    await signIn('student-b@example.test');
+    await page.getByText(/0 lessons complete/).waitFor();
+    assert.equal(await page.getByText('student-a@example.test').count(), 0);
+    await checkLayout(page, 'student dashboard');
   });
 });

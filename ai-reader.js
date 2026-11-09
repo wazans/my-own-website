@@ -5799,22 +5799,18 @@
     var completionToast = document.querySelector('[data-reader-completion-toast]');
     var completionTimer;
     var readerTopbar = document.querySelector('.topbar');
-    var progressKey = track.storageKey + ':progress';
-    var progress = loadJson(progressKey);
-    if (track.apiTopics) Object.assign(progress, loadJson(window.TestNovaApiCourse.storageKey + ':progress'));
-    if (track.legacyProgressKey) {
-      try {
-        if (localStorage.getItem(progressKey) === null) {
-          var legacyProgress = loadJson(track.legacyProgressKey);
-          track.topics.forEach(function(topic) {
-            if (legacyProgress[topic.id] === 1 || legacyProgress[topic.id] === true) {
-              progress[topic.id] = true;
-            }
-          });
-          saveJson(progressKey, progress);
-        }
-      } catch (e) {}
-    }
+    var account = window.TestNovaStudent;
+    var progress = {};
+    var progressRevision = 0;
+    var progressReady = Promise.resolve();
+    var savedSections = new Set();
+    var writes = Promise.resolve();
+    var activeStudent;
+    var progressStatus = document.createElement('p');
+    progressStatus.setAttribute('role', 'status');
+    progressStatus.className = 'reader-progress-status';
+    content.after(progressStatus);
+
     var customTopics = loadJson(customTopicsKey(track));
     if (!Array.isArray(customTopics)) customTopics = [];
     var topics = loadTopics(track);
@@ -5959,33 +5955,8 @@
         keepTopicVisible(activeLink);
       }
 
-      var completeButton = content.querySelector('[data-reader-complete]');
-      if (completeButton) {
-        completeButton.addEventListener('click', function () {
-          var completed = completeButton.getAttribute('aria-pressed') !== 'true';
-          if (completed) progress[topic.id] = 1;
-          else delete progress[topic.id];
-          completeButton.setAttribute('aria-pressed', String(completed));
-          completeButton.classList.toggle('is-complete', completed);
-          completeButton.innerHTML = '<span aria-hidden="true">✓</span> ' + (completed ? 'Completed' : 'Mark Complete');
-          var key = topicStorageKey(track, topic.id) + ':progress';
-          var storedProgress = loadJson(key);
-          if (completed) storedProgress[topic.id] = 1;
-          else delete storedProgress[topic.id];
-          saveJson(key, storedProgress);
-          updateProgress();
-          if (completionToast) {
-            clearTimeout(completionTimer);
-            var courseComplete = completed && topics.every(function(item) { return progress[item.id]; });
-            completionToast.classList.toggle('show', courseComplete);
-            completionToast.textContent = courseComplete ? '✓ Course complete!' : '';
-            if (courseComplete) completionTimer = setTimeout(function() {
-              completionToast.classList.remove('show');
-              completionToast.textContent = '';
-            }, 3000);
-          }
-        });
-      }
+      wireProgressButtons(topic);
+      recordVisit(topic);
 
       var previousButton = content.querySelector('[data-reader-previous]');
       var nextButton = content.querySelector('[data-reader-next-topic]');
@@ -6109,6 +6080,123 @@
         if (isReaderAuthoringMode()) saveCurrentContent();
       });
     }
+    function lessonRecord(topic, sectionIndex) {
+      var section = topic.subsections && topic.subsections[sectionIndex - 1];
+      var url = new URL(location.pathname, location.origin);
+      if (track.hashNavigation) url.hash = topic.id;
+      else url.searchParams.set('topic', topic.id);
+      if (section) url.searchParams.set('section', sectionIndex);
+      var apiCourse = track.apiTopics?.has(topic.id) ? window.TestNovaApiCourse : null;
+      return { course_id: apiCourse ? 'api' : trackId, course_title: apiCourse ? apiCourse.title : track.title, lesson_id: topic.id,
+        section_id: section ? String(sectionIndex) : '',
+        lesson_title: section ? displayTopicTitle(topic) + ' / ' + displayTopicTitle(section) : displayTopicTitle(topic),
+        lesson_url: url.pathname + url.search + url.hash,
+        lesson_count: apiCourse ? apiCourse.topics.length : track.topics.length - (track.apiTopics?.size || 0) };
+    }
+
+    function queueProgress(record, completed) {
+      var student = account.user.id;
+      var task = writes.then(function() {
+        if (student !== account.user?.id) return;
+        return account.save(record, completed, student);
+      });
+      writes = task.catch(function() {});
+      return task;
+    }
+
+    function recordVisit(topic) {
+      if (!account?.user || !track.topics.includes(topic)) return;
+      queueProgress(lessonRecord(topic, 0)).catch(showSaveError);
+      if (activeSubtopic) queueProgress(lessonRecord(topic, activeSubtopic)).catch(showSaveError);
+    }
+
+    function showSaveError() {
+      progressStatus.textContent = 'Progress could not be saved. Please try again.';
+    }
+
+    function wireProgressButtons(topic) {
+      var buttons = [];
+      var mainButton = content.querySelector('[data-reader-complete]');
+      if (mainButton) buttons.push(mainButton);
+      content.querySelectorAll('.ai-reader-subsections > .ai-reader-subsection').forEach(function(section) {
+        var button = section.querySelector('[data-section-complete]');
+        if (!button) {
+          button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'reader-complete-button';
+          button.dataset.sectionComplete = section.id.split('-').pop();
+          section.querySelector('.ai-reader-subsection-body').append(button);
+        }
+        buttons.push(button);
+      });
+      buttons.forEach(function(button) {
+        var section = Number(button.dataset.sectionComplete) || 0;
+        var key = topic.id + ':' + section;
+        function sync() {
+          var completed = section ? savedSections.has(key) : Boolean(progress[topic.id]);
+          button.setAttribute('aria-pressed', String(completed));
+          button.classList.toggle('is-complete', completed);
+          button.innerHTML = completed ? '<span aria-hidden="true">✓</span> Completed' : section ? 'Mark subtopic complete' : 'Mark Complete';
+        }
+        sync();
+        button.onclick = async function() {
+          if (!track.topics.includes(topic)) return;
+          button.disabled = true;
+          await account?.ready;
+          await progressReady;
+          if (!account?.user) {
+            location.assign('/dashboard/?next=' + encodeURIComponent(lessonRecord(topic, section || activeSubtopic).lesson_url));
+            return;
+          }
+          var student = account.user.id;
+          var completed = button.getAttribute('aria-pressed') !== 'true';
+          try {
+            await queueProgress(lessonRecord(topic, section), completed);
+            if (student !== account.user?.id) return;
+            if (section) {
+              if (completed) savedSections.add(key); else savedSections.delete(key);
+            } else if (completed) progress[topic.id] = 1;
+            else delete progress[topic.id];
+            progressStatus.textContent = '';
+            sync();
+            updateProgress();
+          } catch { showSaveError(); }
+          finally { button.disabled = false; }
+        };
+      });
+    }
+
+    async function loadAccountProgress() {
+      await account.ready;
+      var student = account.user?.id;
+      if (activeStudent === student) return;
+      activeStudent = student;
+      var version = ++progressRevision;
+      progress = {};
+      savedSections.clear();
+      updateProgress();
+      var current = topics.find(function(topic) { return topic.id === currentTopic; });
+      if (current) wireProgressButtons(current);
+      if (!student) return;
+      try {
+        var records = await account.progress(track.apiTopics ? [trackId, 'api'] : [trackId]);
+        if (version !== progressRevision) return;
+        records.forEach(function(row) {
+          if (!row.completed_at) return;
+          if (row.section_id) savedSections.add(row.lesson_id + ':' + row.section_id);
+          else progress[row.lesson_id] = 1;
+        });
+        current = topics.find(function(topic) { return topic.id === currentTopic; });
+        updateProgress();
+        if (current) {
+          wireProgressButtons(current);
+          recordVisit(current);
+        }
+      } catch {
+        if (version === progressRevision) progressStatus.textContent = 'Saved progress could not load.';
+      }
+    }
+
     function openRequestedTopic(scroll) {
       var subtopic = new URLSearchParams(window.location.search).get('section');
       openTopic(requestedTopic() || track.topics[0].id, { updateUrl: false, scroll: scroll, subtopic: subtopic });
@@ -6116,6 +6204,13 @@
 
     renderNav();
     openRequestedTopic(false);
+    if (account) account.ready.then(function() {
+      function refreshAccountProgress() {
+        if (activeStudent !== account.user?.id) progressReady = loadAccountProgress();
+      }
+      account.subscribe(refreshAccountProgress);
+      refreshAccountProgress();
+    });
     window.addEventListener('popstate', function () { openRequestedTopic(true); });
   }
 

@@ -1170,7 +1170,8 @@
       }).join(''),
       '</div></details>',
       navLink("About", "about.html", page === "about.html"),
-      navLink("Contact", "contact.html", page === "contact.html")
+      navLink("Contact", "contact.html", page === "contact.html"),
+      navLink("Dashboard", "dashboard/", window.location.pathname === "/dashboard/")
     ].join('');
     document.querySelectorAll('.site-nav').forEach(function(nav) { nav.innerHTML = navHtml; });
   }

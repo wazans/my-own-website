@@ -1,0 +1,12 @@
+.student-dashboard { padding-block: 2rem 4rem; }
+.student-dashboard [hidden] { display: none !important; }
+.student-dashboard h2 { margin-block: 1rem .5rem; }
+.student-panel { max-width: 34rem; padding: 1.25rem; background: white; border: 1px solid var(--tn-border); border-radius: var(--radius-md); }
+.student-panel form, .student-panel label { display: grid; gap: .5rem; }
+.student-panel form { gap: .85rem; }
+.student-panel input { width: 100%; padding: .5rem .75rem; }
+.student-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem 1rem; margin-top: 1rem; }
+.student-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+.student-grid article { padding: 1rem; border: 1px solid var(--tn-border); border-radius: var(--radius-md); background: white; }
+.student-dashboard p, #student-recent { margin-block: .75rem; overflow-wrap: anywhere; }
+#student-recent { padding-left: 1.25rem; }
