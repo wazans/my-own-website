@@ -5334,6 +5334,22 @@
   }
 
   function renderTopicMaterial(topic) {
+    if (topic.blocks) {
+      return '<section class="reader-lesson-section reader-document-lesson">' + topic.blocks.map(function(block) {
+        if (block.code) return renderCodeExample(block, '');
+        if (block.heading) return '<h3>' + escapeHtml(block.heading) + '</h3>';
+        if (block.image) return '<figure><img loading="lazy" src="' + escapeHtml(block.image) +
+          '" alt="' + escapeHtml(block.alt) + '"><figcaption>' + escapeHtml(block.alt) + '</figcaption></figure>';
+        if (block.table) {
+          return '<div class="reader-document-table" tabindex="0"><table><thead><tr>' +
+            block.table[0].map(function(cell) { return '<th scope="col">' + escapeHtml(cell) + '</th>'; }).join('') +
+            '</tr></thead><tbody>' + block.table.slice(1).map(function(row) {
+              return '<tr>' + row.map(function(cell) { return '<td>' + escapeHtml(cell) + '</td>'; }).join('') + '</tr>';
+            }).join('') + '</tbody></table></div>';
+        }
+        return '<p>' + escapeHtml(block.text) + '</p>';
+      }).join('') + '</section>' + renderTopicResources(topic);
+    }
     var paragraphs = (topic.paragraphs || []).map(function(paragraph) { return '<p>' + escapeHtml(paragraph) + '</p>'; }).join('');
     var topicTitle = displayTopicTitle(topic);
     var concept = paragraphs ? '<section class="reader-lesson-section reader-lesson-section--concept"><h3><span aria-hidden="true">TOPIC</span> ' + escapeHtml(topicTitle) + '</h3>' + paragraphs + '</section>' : '';
@@ -5451,10 +5467,16 @@
     }
   }
 
-  function updateTopicUrl(topicId) {
+  function updateTopicUrl(topicId, hashNavigation) {
     if (!window.history || !window.history.pushState) return;
     var url = new URL(window.location.href);
-    url.searchParams.set('topic', topicId);
+    if (hashNavigation) {
+      url.hash = topicId;
+      url.searchParams.delete('topic');
+      if (url.href === window.location.href) return;
+    } else {
+      url.searchParams.set('topic', topicId);
+    }
     window.history.pushState({ topic: topicId }, '', url.pathname + url.search + url.hash);
   }
 
@@ -5491,6 +5513,9 @@
   function estimateReadingTime(topic) {
     var parts = [topic].concat(topic.subsections || []);
     var text = parts.map(function(part) {
+      if (part.blocks) return part.blocks.map(function(block) {
+        return block.text || block.code || block.heading || '';
+      }).join(' ');
       return (part.paragraphs || []).join(' ') + ' ' + (part.examples || []).map(function(example) { return example.explanation || ''; }).join(' ');
     }).join(' ');
     return Math.max(2, Math.ceil(text.trim().split(/\s+/).length / 150)) + ' min read';
@@ -5568,12 +5593,22 @@
       var tokenPattern = language === 'bash'
         ? /(--?[\w-]+)|("[^"\n]*"|'[^'\n]*')|\b(npx|npm|playwright|test|node)\b/g
         : /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|\b(import|from|const|let|var|async|await|function|return|if|else|for|test|expect|true|false|null|undefined)\b|\b(\d+(?:\.\d+)?)\b/g;
+      var documentPatterns = {
+        java: /\/\/[^\n]*|"(?:\\.|[^"\\])*"|\b(import|static|public|private|class|void|int|boolean|return|new|true|false|null|String)\b|\b\d+\b/g,
+        xml: /<\/?[\w:-]+|\/>|>|"[^"]*"|\b\d+(?:\.\d+)*\b/g,
+        html: /<\/?[\w:-]+|\/>|>|"[^"]*"/g,
+        yaml: /#[^\n]*|"[^"]*"|'[^']*'|\b[\w-]+(?=:)|\b\d+\b/g,
+        properties: /^[#!][^\n]*|^[\w.-]+(?=\s*[=:])|\b(?:true|false)\b/gm,
+        groovy: /\/\/[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(pipeline|agent|stages|stage|steps|post|always|success|failure|tools|bat|sh|junit|emailext|checkout|archiveArtifacts|true|false)\b/g,
+        http: /\b(GET|POST|PUT|PATCH|DELETE|HTTP|Bearer)\b|\b[\w-]+(?=:\s)|\b[1-5]\d\d\b/g
+      };
+      if (documentPatterns[language]) tokenPattern = documentPatterns[language];
       var html = '';
       var cursor = 0;
       value.replace(tokenPattern, function(match) {
         var offset = arguments[arguments.length - 2];
         html += escapeHtml(value.slice(cursor, offset));
-        var tokenClass = /^--?/.test(match) ? 'option' : (/^['"`]/.test(match) ? 'string' : (/^\/\//.test(match) || /^\/\*/.test(match) ? 'comment' : (/^\d/.test(match) ? 'number' : 'keyword')));
+        var tokenClass = /^--?/.test(match) ? 'option' : (/^['"`]/.test(match) ? 'string' : (/^\/\//.test(match) || /^\/\*/.test(match) || /^[#!]/.test(match) ? 'comment' : (/^\d/.test(match) ? 'number' : 'keyword')));
         html += '<span class="token-' + tokenClass + '">' + escapeHtml(match) + '</span>';
         cursor = offset + match.length;
         return match;
@@ -5585,9 +5620,10 @@
 
   function initReader() {
     var trackId = document.body.getAttribute('data-ai-reader-track');
-    if (!trackId || !TRACKS[trackId]) return;
+    var documentCourse = window.TestNovaDocumentCourse;
+    var track = documentCourse && documentCourse.id === trackId ? documentCourse : TRACKS[trackId];
+    if (!trackId || !track) return;
 
-    var track = TRACKS[trackId];
     var nav = document.querySelector('[data-reader-nav]');
     var content = document.querySelector('[data-reader-content]');
     var saveState = document.querySelector('[data-reader-save-state]');
@@ -5598,12 +5634,16 @@
     var searchInput = document.querySelector('[data-reader-search]');
     var positionNode = document.querySelector('[data-reader-position]');
     var breadcrumbNode = document.querySelector('[data-reader-breadcrumb]');
+    var editLink = document.querySelector('[data-reader-edit-link]');
     var readerTopbar = document.querySelector('.topbar');
     var progress = loadJson(track.storageKey + ':progress');
     var customTopics = loadJson(customTopicsKey(track));
     if (!Array.isArray(customTopics)) customTopics = [];
     var topics = loadTopics(track);
-    var currentTopic = topicFromUrl() || track.topics[0].id;
+    function requestedTopic() {
+      return (track.hashNavigation && window.location.hash.slice(1)) || topicFromUrl();
+    }
+    var currentTopic = requestedTopic() || track.topics[0].id;
     var saveTimer = null;
 
     function syncReaderHeaderOffset() {
@@ -5676,6 +5716,13 @@
       }
       topic = topic || topics[0];
       currentTopic = topic.id;
+      if (editLink) {
+        var editUrl = new URL(window.location.href);
+        editUrl.searchParams.set('edit', '1');
+        editUrl.hash = topic.id;
+        editLink.href = editUrl.pathname + editUrl.search + editUrl.hash;
+        editLink.hidden = isReaderAuthoringMode();
+      }
       var index = topics.indexOf(topic);
       content.innerHTML = renderTopicHtml(track, topic, index, progress, topics);
       if (positionNode) positionNode.textContent = (index + 1) + ' of ' + topics.length;
@@ -5683,6 +5730,9 @@
       document.title = displayTopicTitle(topic) + ' | ' + track.title + ' | TestNova';
       var descriptionNode = document.querySelector('meta[name="description"]');
       if (descriptionNode) descriptionNode.setAttribute('content', topic.learningObjective || ((topic.paragraphs || [])[0]) || 'Learn ' + track.title + ' with TestNova.');
+      var activeModule = nav.querySelector('[data-topic-link="' + topic.id + '"]');
+      activeModule = activeModule && activeModule.closest('details');
+      if (activeModule) activeModule.open = true;
       highlightCodeBlocks(content);
       content.querySelectorAll('[data-code-copy]').forEach(function (button) {
         button.addEventListener('click', function () {
@@ -5704,7 +5754,7 @@
       if (window.TestNovaArraysPlayground && topic.id === window.TestNovaArraysPlayground.topicId) {
         window.TestNovaArraysPlayground.mount(content.querySelector('[data-arrays-playground]'));
       }
-      if (options.updateUrl !== false) updateTopicUrl(topic.id);
+      if (options.updateUrl !== false) updateTopicUrl(topic.id, track.hashNavigation);
 
       nav.querySelectorAll('[data-topic-link]').forEach(function (link) {
         link.classList.toggle('active', link.getAttribute('data-topic-link') === topic.id);
@@ -5754,9 +5804,22 @@
 
     function renderNav() {
       nav.classList.add('reader-topic-list');
-      nav.innerHTML = topics.map(function(topic, index) {
+      var buttons = topics.map(function(topic, index) {
         return '<button type="button" data-topic-link="' + topic.id + '" data-search-title="' + escapeHtml(displayTopicTitle(topic).toLowerCase()) + '"><span>' + (index + 1) + '</span><strong>' + escapeHtml(displayTopicTitle(topic)) + '</strong><i aria-hidden="true">✓</i></button>';
-      }).join('') + (track.readOnly || !isReaderAuthoringMode() ? '' : '<button class="ai-add-topic-btn" type="button" data-add-topic><span>+</span><strong>Add topic</strong></button>');
+      });
+      var modules = new Map();
+      if (track.hashNavigation) {
+        topics.forEach(function(topic, index) {
+          var name = topic.module || 'Your lessons';
+          if (!modules.has(name)) modules.set(name, []);
+          modules.get(name).push(buttons[index]);
+        });
+      }
+      var lessonList = modules.size ? Array.from(modules, function(entry) {
+        return '<details class="ai-reader-subsection reader-course-module"><summary>' + escapeHtml(entry[0]) +
+          '</summary>' + entry[1].join('') + '</details>';
+      }).join('') : buttons.join('');
+      nav.innerHTML = lessonList + (track.readOnly || !isReaderAuthoringMode() ? '' : '<button class="ai-add-topic-btn" type="button" data-add-topic><span>+</span><strong>Add topic</strong></button>');
 
       nav.querySelectorAll('[data-topic-link]').forEach(function(link) {
         link.addEventListener('click', function(event) {
@@ -5809,14 +5872,18 @@
         var visible = !query || (link.getAttribute('data-search-title') || '').indexOf(query) !== -1;
         link.hidden = !visible;
       });
+      nav.querySelectorAll('.reader-course-module').forEach(function(module) {
+        module.hidden = !module.querySelector('[data-topic-link]:not([hidden])');
+        if (query && !module.hidden) module.open = true;
+      });
     });
 
     initEditableSurfaces();
     renderNav();
-    openTopic(currentTopic, { updateUrl: !!topicFromUrl(), scroll: false });
+    openTopic(currentTopic, { updateUrl: !track.hashNavigation && !!topicFromUrl(), scroll: false });
 
     window.addEventListener('popstate', function () {
-      openTopic(topicFromUrl() || track.topics[0].id, { updateUrl: false, scroll: true });
+      openTopic(requestedTopic() || track.topics[0].id, { updateUrl: false, scroll: true });
     });
   }
 
