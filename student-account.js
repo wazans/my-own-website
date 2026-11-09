@@ -3,6 +3,7 @@
   let session = null;
   let recovery = false;
   let google = false;
+  let phone = false;
 
   const ready = (async () => {
     try {
@@ -12,6 +13,7 @@
       const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.80.0/+esm');
       const client = createClient(config.url, config.key, { auth: { flowType: 'pkce' } });
       google = config.google === true;
+      phone = config.phone === true;
       client.auth.onAuthStateChange((event, value) => {
         session = value;
         if (event === 'PASSWORD_RECOVERY') recovery = true;
@@ -57,6 +59,7 @@
     get user() { return session?.user || null; },
     get recovery() { return recovery; },
     get google() { return google; },
+    get phone() { return phone; },
     finishRecovery() { recovery = false; },
     subscribe(listener) { listeners.add(listener); }
   };

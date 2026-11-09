@@ -3,7 +3,8 @@
   const get = (id) => document.getElementById('student-' + id);
   const form = get('form');
   const status = get('status');
-  const labels = { signin: 'Sign in', signup: 'Create account', forgot: 'Send reset link', recovery: 'Set new password' };
+  const formStatus = get('form-status');
+  const labels = { signin: 'Sign in', signup: 'Create account', forgot: 'Send reset link', recovery: 'Set new password', phone: 'Send verification code', code: 'Verify code' };
   const requested = new URLSearchParams(location.search).get('next') || '';
   const next = /^\/[a-z0-9-]+\.html(?:[?#][^\s]*)?$/i.test(requested) ? requested : '';
   const returnUrl = new URL('/dashboard/', location.origin);
@@ -11,15 +12,29 @@
   let mode = 'signin';
   let revision = 0;
   let displayedStudent;
+  let pendingPhone;
+  let busy = false;
 
   function choose(value) {
     mode = value;
-    get('name-row').hidden = value !== 'signup';
-    get('email-row').hidden = value === 'recovery';
-    get('password-row').hidden = value === 'forgot';
+    const fields = {
+      'name': value === 'signup',
+      'email': ['signin', 'signup', 'forgot'].includes(value),
+      'password': ['signin', 'signup', 'recovery'].includes(value),
+      'phone': value === 'phone',
+      'code': value === 'code'
+    };
+    for (const [id, visible] of Object.entries(fields)) {
+      const row = get(id + '-row');
+      const input = row.querySelector('input');
+      row.hidden = !visible;
+      input.disabled = !visible;
+      input.required = visible && id !== 'name';
+    }
     get('options').hidden = value === 'recovery';
-    form.email.required = value !== 'recovery';
-    form.password.required = value !== 'forgot';
+    get('options').querySelectorAll('[data-mode]').forEach((button) => {
+      button.hidden = button.dataset.mode === value;
+    });
     form.password.minLength = ['signup', 'recovery'].includes(value) ? 8 : 1;
     form.password.autocomplete = ['signup', 'recovery'].includes(value) ? 'new-password' : 'current-password';
     get('form-title').textContent = labels[value];
@@ -81,7 +96,6 @@
       status.textContent = 'Student accounts are currently unavailable. You can still read every public tutorial.';
       return;
     }
-    get('google').hidden = !account.google;
     if (account.recovery) choose('recovery');
     else if (mode === 'recovery') choose('signin');
     if (!signedIn) {
@@ -92,7 +106,7 @@
     }
     if (next) { location.replace(next); return; }
     get('greeting').textContent = user.user_metadata?.display_name || 'Welcome back';
-    get('identity').textContent = user.email || '';
+    get('identity').textContent = user.email || user.phone || '';
     status.textContent = 'Loading saved progress…';
     try {
       const records = await account.progress();
@@ -105,38 +119,88 @@
     }
   }
 
-  async function perform(button, action) {
-    const client = await account.ready;
-    if (!client) return;
+  function explainError(error) {
+    switch (error?.code) {
+      case 'email_address_not_authorized': return 'This preview can send email only to members of the TestNova Supabase organization. Use a team email address.';
+      case 'over_email_send_rate_limit': return 'The preview email limit was reached. Wait before requesting another email.';
+      case 'invalid_credentials': return 'The email or password is incorrect.';
+      case 'email_not_confirmed': return 'Confirm your email before signing in. Check your inbox and spam folder.';
+      case 'otp_expired': return 'That code is invalid or expired. Check the code or request a new one.';
+      case 'over_sms_send_rate_limit': return 'Too many code requests. Wait before trying again.';
+      case 'weak_password': return 'Choose a stronger password of at least 8 characters.';
+      default: return 'The request could not be completed. Please try again.';
+    }
+  }
+
+  async function perform(button, action, message = formStatus) {
+    if (busy) return;
+    busy = true;
     button.disabled = true;
-    try { await action(client.auth); }
-    catch { status.textContent = 'The request could not be completed. Try again or check your credentials.'; }
-    finally { button.disabled = false; }
+    message.textContent = 'Working…';
+    try {
+      const client = await account.ready;
+      if (!client) throw new Error('Auth unavailable');
+      await action(client.auth);
+    } catch (error) { message.textContent = explainError(error); }
+    finally {
+      busy = false;
+      button.disabled = false;
+    }
   }
 
   get('options').addEventListener('click', (event) => {
-    if (event.target.dataset.mode) {
-      choose(event.target.dataset.mode);
-      status.textContent = '';
-      form.email.focus();
+    const value = event.target.dataset.mode;
+    if (!value || busy) return;
+    if (value === 'phone' && !account.phone) {
+      formStatus.textContent = 'Phone sign-in is unavailable until SMS delivery is configured.';
+      return;
     }
+    choose(value);
+    formStatus.textContent = '';
+    (value === 'phone' ? form.phone : form.email).focus();
   });
+  form.addEventListener('invalid', (event) => {
+    formStatus.textContent = event.target.validationMessage;
+  }, true);
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     const email = form.email.value.trim();
     const password = form.password.value;
     const action = mode;
+    const phone = form.phone.value.replace(/[ ()-]/g, '');
+    const token = form.code.value.trim();
+    if (action === 'phone' && !/^\+[1-9]\d{7,14}$/.test(phone)) {
+      formStatus.textContent = 'Enter your mobile number with its country code, for example +91 98765 43210.';
+      form.phone.focus();
+      return;
+    }
+    if (action === 'code' && !/^\d{6}$/.test(token)) {
+      formStatus.textContent = 'Enter the six-digit code from your SMS.';
+      form.code.focus();
+      return;
+    }
     perform(get('submit'), async (auth) => {
       let result;
-      if (action === 'signup') result = await auth.signUp({ email, password, options: { emailRedirectTo: returnUrl.href, data: { display_name: form.displayName.value.trim() } } });
+      if (action === 'phone') result = await auth.signInWithOtp({ phone });
+      else if (action === 'code') result = await auth.verifyOtp({ phone: pendingPhone, token, type: 'sms' });
+      else if (action === 'signup') result = await auth.signUp({ email, password, options: { emailRedirectTo: returnUrl.href, data: { display_name: form.displayName.value.trim() } } });
       else if (action === 'forgot') result = await auth.resetPasswordForEmail(email, { redirectTo: returnUrl.href });
       else if (action === 'recovery') result = await auth.updateUser({ password });
       else result = await auth.signInWithPassword({ email, password });
       if (result.error) throw result.error;
       form.password.value = '';
-      if (action === 'forgot' || action === 'signup' && !result.data.session) {
-        status.textContent = 'Check your email for the next step.';
+      if (action === 'phone') {
+        pendingPhone = phone;
+        form.code.value = '';
+        choose('code');
+        formStatus.textContent = 'Enter the verification code sent to your phone.';
+        form.code.focus();
+      } else if (action === 'forgot' || action === 'signup' && !result.data.session) {
+        formStatus.textContent = 'Check your email for the next step.';
       } else {
+        pendingPhone = undefined;
+        form.code.value = '';
+        formStatus.textContent = '';
         if (action === 'recovery') account.finishRecovery();
         await refresh();
       }
@@ -146,11 +210,18 @@
     const { error } = await auth.signOut({ scope: 'local' });
     if (error) throw error;
     await refresh();
-  }));
-  get('google').addEventListener('click', () => perform(get('google'), async (auth) => {
-    const { error } = await auth.signInWithOAuth({ provider: 'google', options: { redirectTo: returnUrl.href } });
-    if (error) throw error;
-  }));
+  }, status));
+  get('google').addEventListener('click', () => {
+    if (busy) return;
+    if (!account.google) {
+      formStatus.textContent = 'Google sign-in is unavailable until the Google OAuth client is configured.';
+      return;
+    }
+    perform(get('google'), async (auth) => {
+      const { error } = await auth.signInWithOAuth({ provider: 'google', options: { redirectTo: returnUrl.href } });
+      if (error) throw error;
+    });
+  });
   choose('signin');
   account.subscribe(refresh);
   refresh();

@@ -201,7 +201,7 @@ test('students sign in, save progress, and see their own dashboard', async () =>
   await usePage(390, 800, async (page, context) => {
     const rows = new Map();
     await context.route('**/api/student-config', (route) => route.fulfill({
-      json: { url: 'https://test.supabase.co', key: 'sb_publishable_test' }
+      json: { url: 'https://test.supabase.co', key: 'sb_publishable_test', phone: true }
     }));
     await context.route('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@*/+esm', (route) => route.fulfill({
       contentType: 'application/javascript',
@@ -214,7 +214,20 @@ test('students sign in, save progress, and see their own dashboard', async () =>
             auth: {
               onAuthStateChange(fn) { callback = fn; },
               async getSession() { return { data: { session: current() } }; },
-              async signUp() { return { data: { session: null } }; },
+              async signUp({email}) {
+                if (email === 'outside-team@example.test') return { error: { code: 'email_address_not_authorized' } };
+                return { data: { session: null } };
+              },
+              async signInWithOtp({phone}) {
+                return phone === '+919876543210' ? {} : { error: { code: 'invalid_phone' } };
+              },
+              async verifyOtp({phone, token, type}) {
+                if (token !== '123456' || type !== 'sms') return { error: { code: 'otp_expired' } };
+                const session = { user: { id: phone, phone } };
+                sessionStorage.setItem('mock-student', JSON.stringify(session));
+                callback('SIGNED_IN', session);
+                return { data: { session } };
+              },
               async resetPasswordForEmail() { return {}; },
               async signInWithPassword({email}) {
                 const session = { user: { id: email, email } };
@@ -271,8 +284,13 @@ test('students sign in, save progress, and see their own dashboard', async () =>
     await page.getByRole('button', { name: 'Mark Complete' }).click();
     await page.waitForURL('**/dashboard/?next=*');
     await page.getByRole('button', { name: 'Create account' }).click();
-    await page.getByLabel('Email').fill('student-a@example.test');
+    await page.locator('#student-submit').click();
+    assert.ok(await page.locator('#student-form-status').textContent());
+    await page.getByLabel('Email').fill('outside-team@example.test');
     await page.getByLabel('Password', { exact: true }).fill('sample-password');
+    await page.locator('#student-submit').click();
+    await page.getByText(/Use a team email address/).waitFor();
+    await page.getByLabel('Email').fill('student-a@example.test');
     await page.locator('#student-submit').click();
     await page.getByText('Check your email for the next step.').waitFor();
     await page.getByRole('button', { name: 'Forgot password' }).click();
@@ -294,5 +312,17 @@ test('students sign in, save progress, and see their own dashboard', async () =>
     await page.getByText(/0 lessons complete/).waitFor();
     assert.equal(await page.getByText('student-a@example.test').count(), 0);
     await checkLayout(page, 'student dashboard');
+    await page.getByRole('button', { name: 'Sign out' }).click();
+    await page.getByRole('button', { name: 'Continue with Google' }).click();
+    await page.getByText(/Google OAuth client is configured/).waitFor();
+    await page.getByRole('button', { name: 'Continue with phone' }).click();
+    await page.getByLabel(/Mobile number/).fill('+91 98765 43210');
+    await page.locator('#student-submit').click();
+    await page.getByLabel('Verification code').fill('000000');
+    await page.locator('#student-submit').click();
+    await page.getByText(/code is invalid or expired/).waitFor();
+    await page.getByLabel('Verification code').fill('123456');
+    await page.locator('#student-submit').click();
+    await page.getByText('+919876543210', { exact: true }).waitFor();
   });
 });
