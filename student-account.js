@@ -1,4 +1,6 @@
 (function () {
+  if (window.TestNovaStudent) return;
+
   const listeners = new Set();
   let session = null;
   let recovery = false;
@@ -53,6 +55,89 @@
     const { error } = await client.from('student_progress').upsert(row);
     if (error) throw error;
   }
+
+  function mountAccountMenu() {
+    const header = document.querySelector('.nav-container');
+    if (!header) return;
+    const menu = document.createElement('details');
+    menu.className = 'student-account-menu';
+    menu.innerHTML = '<summary>Signed in</summary><div class="student-account-panel">' +
+      '<p data-student-identity></p><a href="/dashboard/">Dashboard</a>' +
+      '<a data-student-resume href="/dashboard/">Continue learning</a>' +
+      '<button type="button">Sign out</button><p role="status" data-student-menu-status></p></div>';
+    const identity = menu.querySelector('[data-student-identity]');
+    const resume = menu.querySelector('[data-student-resume]');
+    const signOut = menu.querySelector('button');
+    const status = menu.querySelector('[data-student-menu-status]');
+    let shownStudent;
+    let request = 0;
+
+    function render() {
+      const user = session?.user;
+      if (!user) {
+        request++;
+        menu.remove();
+        menu.open = false;
+        shownStudent = undefined;
+        identity.textContent = '';
+        resume.href = '/dashboard/';
+        status.textContent = '';
+        return;
+      }
+      if (shownStudent !== user.id) {
+        request++;
+        resume.href = '/dashboard/';
+        status.textContent = '';
+        shownStudent = user.id;
+      }
+      identity.textContent = user.user_metadata?.display_name || user.email || user.phone || 'Signed in';
+      resume.hidden = recovery;
+      if (!menu.isConnected) header.insertBefore(menu, header.querySelector('.tn-nav-tools'));
+    }
+
+    menu.addEventListener('toggle', async () => {
+      if (!menu.open || recovery) return;
+      const student = session?.user.id;
+      const version = ++request;
+      const client = await ready;
+      if (!client || !student || student !== session?.user.id) return;
+      try {
+        const { data, error } = await client.from('student_progress').select('lesson_url')
+          .eq('student_id', student).order('last_visited_at', { ascending: false }).limit(1);
+        const url = data?.[0]?.lesson_url;
+        if (!error && version === request && student === session?.user.id &&
+            /^\/[a-z0-9-]+\.html(?:[?#][^\s]*)?$/i.test(url || '')) resume.href = url;
+      } catch {
+        // Dashboard remains available if the latest lesson cannot be fetched.
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (menu.open && !menu.contains(event.target)) menu.open = false;
+    });
+    menu.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !menu.open) return;
+      menu.open = false;
+      menu.querySelector('summary').focus();
+    });
+
+    signOut.addEventListener('click', async () => {
+      signOut.disabled = true;
+      status.textContent = '';
+      try {
+        const client = await ready;
+        const { error } = await client.auth.signOut({ scope: 'local' });
+        if (error) throw error;
+      } catch { status.textContent = 'Could not sign out. Please try again.'; }
+      finally { signOut.disabled = false; }
+    });
+
+    listeners.add(render);
+    ready.then(render);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountAccountMenu);
+  else mountAccountMenu();
 
   window.TestNovaStudent = {
     ready, progress, save,

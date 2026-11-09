@@ -247,6 +247,7 @@ test('students sign in, save progress, and see their own dashboard', async () =>
                 eq(_, student) { this.student = student; return this; },
                 order() { return this; },
                 range() { return this; },
+                limit() { return this; },
                 in(_, courses) { this.courses = courses; return this; },
                 then(resolve, reject) { return this.read().then(resolve, reject); },
                 async read() {
@@ -305,9 +306,21 @@ test('students sign in, save progress, and see their own dashboard', async () =>
     await page.getByRole('button', { name: 'Completed', exact: true }).waitFor();
     await page.goto(origin + '/api.html#definition');
     await page.getByRole('button', { name: 'Completed', exact: true }).waitFor();
+    await page.goto(origin + '/');
+    await page.locator('.student-account-menu summary').click();
+    await page.locator('.student-account-panel').getByText('student-a@example.test').waitFor();
+    const resume = page.getByRole('link', { name: 'Continue learning' });
+    await page.waitForFunction(() => document.querySelector('[data-student-resume]').hash === '#definition');
+    await checkLayout(page, 'signed-in homepage');
+    await resume.click();
+    await page.getByRole('button', { name: 'Completed', exact: true }).waitFor();
     await page.goto(origin + '/dashboard/');
     await page.getByText(/1 lessons complete/).waitFor();
-    await page.getByRole('button', { name: 'Sign out' }).click();
+    await page.goto(origin + '/about.html');
+    await page.locator('.student-account-menu summary').click();
+    await page.locator('.student-account-panel').getByRole('button', { name: 'Sign out' }).click();
+    await page.locator('.student-account-menu').waitFor({ state: 'detached' });
+    await page.goto(origin + '/dashboard/');
     await signIn('student-b@example.test');
     await page.getByText(/0 lessons complete/).waitFor();
     assert.equal(await page.getByText('student-a@example.test').count(), 0);
@@ -323,6 +336,6 @@ test('students sign in, save progress, and see their own dashboard', async () =>
     await page.getByText(/code is invalid or expired/).waitFor();
     await page.getByLabel('Verification code').fill('123456');
     await page.locator('#student-submit').click();
-    await page.getByText('+919876543210', { exact: true }).waitFor();
+    await page.locator('#student-identity').filter({ hasText: '+919876543210' }).waitFor();
   });
 });
