@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 125" role="img" aria-labelledby="title">
+  <title id="title">W3C WebDriver command flow</title>
+  <rect width="860" height="125" rx="12" fill="#17213a"/>
+  <path d="M218 62H632" stroke="#9ebcff" stroke-width="3"/>
+  <path d="m620 54 13 8-13 8m-389-16-13 8 13 8" fill="none" stroke="#9ebcff" stroke-width="3"/>
+  <g fill="#273b66" stroke="#9ebcff"><rect x="25" y="35" width="190" height="54" rx="8"/><rect x="331" y="35" width="195" height="54" rx="8"/><rect x="635" y="35" width="200" height="54" rx="8"/></g>
+  <g fill="#f1f5ff" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18"><text x="120" y="69">Java binding</text><text x="429" y="69">Browser driver</text><text x="735" y="69">Browser</text></g>
+  <text x="273" y="29" fill="#f1f5ff" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13">W3C WebDriver</text>
+</svg>

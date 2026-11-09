@@ -24,6 +24,7 @@
   function preferredTheme() {
     var saved = localStorage.getItem('testnova-theme');
     if (saved === 'light' || saved === 'dark') return saved;
+    if (document.documentElement.getAttribute('data-default-theme') === 'dark') return 'dark';
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 

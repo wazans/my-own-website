@@ -5542,7 +5542,10 @@
     var contentKey = track.storageKey + ':content:' + topic.id;
     if (track.contentVersion) contentKey = track.storageKey + ':content:v' + track.contentVersion + ':' + topic.id;
     var authoringMode = isReaderAuthoringMode();
-    var savedContent = track.readOnly || !authoringMode ? '' : localStorage.getItem(contentKey);
+    var savedContent = '';
+    if (!track.readOnly && (authoringMode || track.showSavedEdits)) {
+      try { savedContent = localStorage.getItem(contentKey) || ''; } catch (e) {}
+    }
     if (savedContent) savedContent = savedContent.replace(/<div class="ai-inline-save-panel"[\s\S]*?<\/div>/g, '');
 
     var objective = topic.learningObjective || lessonKeyPoint(topic);
@@ -5591,10 +5594,10 @@
       var language = (code.className.match(/language-([\w-]+)/) || [])[1] || 'text';
       var value = code.textContent || '';
       var tokenPattern = language === 'bash'
-        ? /(--?[\w-]+)|("[^"\n]*"|'[^'\n]*')|\b(npx|npm|playwright|test|node)\b/g
+        ? /(--?[\w-]+)|("[^"\n]*"|'[^'\n]*')|\b(npx|npm|playwright|test|node|java|mvn|cd|mkdir|echo)\b/g
         : /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|\b(import|from|const|let|var|async|await|function|return|if|else|for|test|expect|true|false|null|undefined)\b|\b(\d+(?:\.\d+)?)\b/g;
       var documentPatterns = {
-        java: /\/\/[^\n]*|"(?:\\.|[^"\\])*"|\b(import|static|public|private|class|void|int|boolean|return|new|true|false|null|String)\b|\b\d+\b/g,
+        java: /\/\/[^\n]*|\/\*[\s\S]*?\*\/|"(?:\\.|[^"\\])*"|@[A-Za-z]\w*|\b(package|import|static|final|public|private|protected|class|extends|implements|void|int|boolean|if|else|for|switch|case|default|try|catch|finally|throw|return|new|true|false|null|String)\b|\b\d+\b/g,
         xml: /<\/?[\w:-]+|\/>|>|"[^"]*"|\b\d+(?:\.\d+)*\b/g,
         html: /<\/?[\w:-]+|\/>|>|"[^"]*"/g,
         yaml: /#[^\n]*|"[^"]*"|'[^']*'|\b[\w-]+(?=:)|\b\d+\b/g,
@@ -5635,8 +5638,24 @@
     var positionNode = document.querySelector('[data-reader-position]');
     var breadcrumbNode = document.querySelector('[data-reader-breadcrumb]');
     var editLink = document.querySelector('[data-reader-edit-link]');
+    var completionToast = document.querySelector('[data-reader-completion-toast]');
+    var completionTimer;
     var readerTopbar = document.querySelector('.topbar');
-    var progress = loadJson(track.storageKey + ':progress');
+    var progressKey = track.storageKey + ':progress';
+    var progress = loadJson(progressKey);
+    if (track.legacyProgressKey) {
+      try {
+        if (localStorage.getItem(progressKey) === null) {
+          var legacyProgress = loadJson(track.legacyProgressKey);
+          track.topics.forEach(function(topic) {
+            if (legacyProgress[topic.id] === 1 || legacyProgress[topic.id] === true) {
+              progress[topic.id] = true;
+            }
+          });
+          saveJson(progressKey, progress);
+        }
+      } catch (e) {}
+    }
     var customTopics = loadJson(customTopicsKey(track));
     if (!Array.isArray(customTopics)) customTopics = [];
     var topics = loadTopics(track);
@@ -5718,10 +5737,13 @@
       currentTopic = topic.id;
       if (editLink) {
         var editUrl = new URL(window.location.href);
-        editUrl.searchParams.set('edit', '1');
+        var authoring = isReaderAuthoringMode();
+        if (authoring && track.showSavedEdits) editUrl.searchParams.delete('edit');
+        else editUrl.searchParams.set('edit', '1');
         editUrl.hash = topic.id;
         editLink.href = editUrl.pathname + editUrl.search + editUrl.hash;
-        editLink.hidden = isReaderAuthoringMode();
+        if (track.showSavedEdits) editLink.textContent = authoring ? 'Done editing' : 'Edit lessons';
+        editLink.hidden = authoring && !track.showSavedEdits;
       }
       var index = topics.indexOf(topic);
       content.innerHTML = renderTopicHtml(track, topic, index, progress, topics);
@@ -5769,8 +5791,18 @@
           completeButton.setAttribute('aria-pressed', String(completed));
           completeButton.classList.toggle('is-complete', completed);
           completeButton.innerHTML = '<span aria-hidden="true">✓</span> ' + (completed ? 'Completed' : 'Mark Complete');
-          saveJson(track.storageKey + ':progress', progress);
+          saveJson(progressKey, progress);
           updateProgress();
+          if (completionToast) {
+            clearTimeout(completionTimer);
+            var courseComplete = completed && topics.every(function(item) { return progress[item.id]; });
+            completionToast.classList.toggle('show', courseComplete);
+            completionToast.textContent = courseComplete ? '✓ Course complete!' : '';
+            if (courseComplete) completionTimer = setTimeout(function() {
+              completionToast.classList.remove('show');
+              completionToast.textContent = '';
+            }, 3000);
+          }
         });
       }
 
@@ -5879,6 +5911,11 @@
     });
 
     initEditableSurfaces();
+    if (editLink && track.showSavedEdits) {
+      editLink.addEventListener('click', function() {
+        if (isReaderAuthoringMode()) saveCurrentContent();
+      });
+    }
     renderNav();
     openTopic(currentTopic, { updateUrl: !track.hashNavigation && !!topicFromUrl(), scroll: false });
 

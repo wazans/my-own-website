@@ -803,7 +803,7 @@
       url: 'qa-engineering.html',
       description: 'Automation, API testing, BDD, CI, and framework skills for practical QA careers.',
       courses: [
-        { title: 'Selenium Basics', url: 'selenium.html', difficulty: 'Beginner', summary: 'Browser automation, locators, waits, actions, tables, and Java examples.' },
+        { title: 'Selenium Automation with Java', url: 'selenium.html', difficulty: 'Beginner', summary: 'Learn Selenium WebDriver using Java, including locators, XPath, waits, browser interactions, WebElements, TestNG fundamentals, and practical UI automation.', openAccess: true },
         { title: 'JavaScript & TypeScript', url: 'js-typescript.html', difficulty: 'Beginner', summary: 'Playwright-focused JavaScript and TypeScript fundamentals arranged from zero programming knowledge to framework-ready skills.', openAccess: true },
         { title: 'Playwright with TypeScript', url: 'playwright-reader.html', difficulty: 'Intermediate', summary: 'Modern end-to-end testing with fixtures, selectors, assertions, and reports.', openAccess: true },
         { title: 'API Testing Fundamentals', url: 'api.html', difficulty: 'Beginner', summary: 'HTTP, Postman, and end-to-end API testing workflows.', openAccess: true },
@@ -820,7 +820,7 @@
       url: 'development-technologies.html',
       description: 'Programming, cloud, DevOps, data, and version-control skills for builders.',
       courses: [
-        { title: 'Java Programming', url: 'java-programming.html', difficulty: 'Beginner', summary: 'Core Java, OOP, collections, exceptions, and coding fundamentals.' },
+        { title: 'Core Java Programming', url: 'java-programming.html', difficulty: 'Beginner', summary: 'Learn Java programming from fundamentals to OOP, Strings, Arrays, Collections, Exceptions, multithreading, and interview-focused coding exercises.', openAccess: true },
         { title: 'Python for Automation', url: 'python-automation.html', difficulty: 'Beginner', summary: 'Python scripting, data handling, automation utilities, and practical workflows.' },
         { title: 'DevOps Fundamentals', url: 'devops-fundamentals.html', difficulty: 'Intermediate', summary: 'CI/CD, Docker, Kubernetes concepts, environments, and release workflows.' },
         { title: 'Cloud Platforms', url: 'cloud-platforms.html', difficulty: 'Intermediate', summary: 'AWS and Azure fundamentals for deployment, scaling, and operations.' },

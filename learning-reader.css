@@ -101,6 +101,7 @@
 .learning-reader-modern .xp-bar { display: block; width: 100%; min-width: 0; height: 9px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--reader-accent) 28%, var(--reader-border)); border-radius: 999px; background: color-mix(in srgb, var(--reader-accent) 12%, var(--reader-surface-soft)); }
 .learning-reader-modern .xp-fill { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--reader-accent-strong); transition: width 180ms ease; }
 
+.reader-course-links { display: grid; gap: 0.5rem; }
 .reader-search { position: relative; display: block; }
 .reader-search svg {
   position: absolute;
@@ -556,6 +557,8 @@
 .reader-document-table th, .reader-document-table td { text-align: left; padding: 0.5rem 0.75rem; }
 
 .learning-reader-modern[data-ai-reader-track="api"] [contenteditable="true"] + .ai-inline-save-panel,
-.learning-reader-modern[data-ai-reader-track="rest"] [contenteditable="true"] + .ai-inline-save-panel {
+.learning-reader-modern[data-ai-reader-track="rest"] [contenteditable="true"] + .ai-inline-save-panel,
+.learning-reader-modern[data-ai-reader-track="java"] [contenteditable="true"] + .ai-inline-save-panel,
+.learning-reader-modern[data-ai-reader-track="selenium"] [contenteditable="true"] + .ai-inline-save-panel {
   display: flex !important;
 }
