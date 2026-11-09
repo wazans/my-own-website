@@ -898,6 +898,138 @@
           'Use only-on-failure or retry recording modes for larger suites'
         ])
       ])
+    ]),
+
+    topic(77, 'Jira MCP + Playwright CLI: Register and Login Without POM', [
+      'Build an AI-assisted QA workflow from Jira requirements to working Playwright tests. The project uses Atlassian Jira MCP, VS Code custom agents, Playwright CLI for browser exploration, and two direct JavaScript spec files without a Page Object Model.',
+      'Registration runs first and saves a generated demo account locally. Login runs second and reads the same account. This dependency is useful for learning the workflow, but independent setup through an approved fixture or API is better for a large parallel regression suite.'
+    ], [], [
+      flow('Complete Learning Flow', ['Create Jira stories', 'Save requirements', 'Generate manual scenarios', 'Generate two no-POM specs', 'Run register', 'Run login', 'Break one locator', 'Investigate with Healer'])
+    ], [
+      { label: 'Playwright Test Agents documentation', url: 'https://playwright.dev/docs/test-agents' },
+      { label: 'Official Playwright CLI repository', url: 'https://github.com/microsoft/playwright-cli' },
+      { label: 'Atlassian Remote MCP setup', url: 'https://support.atlassian.com/atlassian-ai-gateway/docs/get-started-with-the-atlassian-remote-mcp-server/' },
+      { label: 'VS Code custom agents', url: 'https://code.visualstudio.com/docs/agent-customization/custom-agents' },
+      { label: 'Demo Web Shop', url: 'https://demowebshop.tricentis.com/' }
+    ], [
+      section('1. What You Will Build', 'The result contains two JavaScript test files with exactly one test in each file. register.spec.js creates a unique account and writes .auth/account.json. login.spec.js reads that record and signs in. Helper functions may stay inside each spec file, but no page-object class or POM folder is created.', null, [
+        table('Project Components', ['Component', 'Purpose'], [
+          ['Jira Cloud + Atlassian MCP', 'Create and retrieve registration and login stories'],
+          ['User Story Reader', 'Save Jira requirements as local Markdown'],
+          ['Manual Test Case Generator', 'Create positive and negative scenarios'],
+          ['Playwright Automation Agent', 'Generate two direct spec files without POM'],
+          ['Playwright CLI', 'Explore the browser and verify locators'],
+          ['Playwright Healer', 'Investigate one intentionally broken locator'],
+          ['Playwright Test Runner', 'Run registration first and login second']
+        ]),
+        callout('Learning dependency', 'warning', 'The login test depends on account data created by registration. Do not treat this as an independent parallel regression design.')
+      ]),
+
+      section('2. Create the Playwright Project and Install CLI Skills', 'Create a clean Playwright JavaScript project. Choose JavaScript, keep the tests folder, and install Chromium when the initializer asks. Playwright CLI is used for interactive exploration; npx playwright test runs the saved automated tests.',
+        example('Project and CLI setup', "mkdir demowebshop-ai-qa\ncd demowebshop-ai-qa\ncode .\nnpm init playwright@latest\n\n# Agent-oriented browser CLI\nnpm install -g @playwright/cli@latest\nplaywright-cli --help\nplaywright-cli install --skills=agents\n\n# Explore the registration page\nplaywright-cli open https://demowebshop.tricentis.com/register --headed\nplaywright-cli snapshot\nplaywright-cli close", 'The initializer creates package.json, playwright.config.js, tests, and a starter spec. The CLI skill teaches compatible coding agents how to use browser exploration commands.', 'bash'), [
+          callout('Two different CLIs', 'info', 'playwright-cli explores a browser interactively. npx playwright test executes the JavaScript test files saved in the project.'),
+          callout('Version differences', 'warning', 'Run playwright-cli --help if an option differs in your installed version. Regenerate installed skills after upgrading Playwright CLI.')
+        ]),
+
+      section('3. Connect Atlassian Jira MCP in VS Code', 'Create .vscode/mcp.json with the official Atlassian remote MCP URL. In VS Code, start the Atlassian server, complete the browser sign-in, and authorize the Jira site that contains your project. Test the connection with a read-only request before creating anything.',
+        example('.vscode/mcp.json', '{\n  "servers": {\n    "atlassian": {\n      "type": "http",\n      "url": "https://mcp.atlassian.com/v2/mcp"\n    }\n  }\n}', 'Use the VS Code MCP server list to start and authenticate this connection. Tool names exposed by the server can vary by client.', 'json'), [
+          callout('First connection test', 'info', 'Ask: “Using Atlassian MCP, list my Jira projects; do not modify anything.” Confirm the intended project is visible before creating stories.'),
+          callout('OAuth troubleshooting', 'warning', 'If the authorized account cannot access the selected Jira site, switch to the correct account or site and authenticate again. Avoid creating duplicate Jira sites.')
+        ]),
+
+      section('4. Create Two Jira Stories Through Copilot', 'Use the normal Copilot Agent with Atlassian tools enabled. Ask it to create one registration story and one login story. Require approval before creation, then verify both returned issue keys directly in Jira.',
+        example('Prompt to create the stories', "Using Atlassian MCP, create TWO stories in Jira project SHOP:\n\n1. Registration: unique email, first and last name, gender,\n   password, confirmation, and successful-registration confirmation.\n2. Login: authenticate with the SAME account created by registration,\n   verify the logged-in state, and handle invalid credentials.\n\nAsk for my approval before creating anything.\nReturn both actual Jira issue keys and source URLs.\nDo not create test scripts yet.", 'Replace SHOP with the real Jira project key. Creating issues is an external action, so review the proposed stories and approve only the intended project and content.', 'text'), [
+          checklist('Verify in Jira', ['Two stories exist', 'Issue keys are real', 'Acceptance criteria are complete', 'Registration and login use the same account', 'No test code was created yet'])
+        ]),
+
+      section('5. Create Three Workspace Agents', 'Create these files under .github/agents. In the VS Code Agent Customizations editor, configure each agent with only the read, edit, terminal, or Atlassian tools it needs. Use the tool picker because canonical tool names can differ between VS Code installations.', null, [
+        table('Agent Files', ['File', 'Responsibility'], [
+          ['user-story-reader.agent.md', 'Retrieve the two real Jira stories and save exact requirements'],
+          ['manual-test-case-generator.agent.md', 'Create positive and negative manual scenarios'],
+          ['playwright-automation-agent.agent.md', 'Create the two direct no-POM specs and run selected tests']
+        ])
+      ]),
+
+      section('6A. User Story Reader Definition', 'The first agent retrieves the two real Jira stories once and saves their exact requirements locally.',
+        example('.github/agents/user-story-reader.agent.md', "---\nname: user-story-reader\ndescription: Read Jira stories through Atlassian MCP and save them locally\n---\n\nRead the two Jira issue keys supplied by the user through Atlassian MCP.\nSave only retrieved story details and acceptance criteria to:\n- artifacts/user-stories/registration.md\n- artifacts/user-stories/login.md\n\nKeep the issue keys and source URLs.\nDo not invent missing requirements.\nIf required tools are unavailable, stop and explain what is missing.", 'Configure this agent with read, edit, and the exact Atlassian MCP tools exposed by VS Code.', 'markdown')),
+
+      section('6B. Manual Test Case Generator Definition', 'The second agent reads the cached requirements and creates traceable positive and negative scenarios without calling Jira again.',
+        example('.github/agents/manual-test-case-generator.agent.md', "---\nname: manual-test-case-generator\ndescription: Generate scenarios from locally saved Jira stories\n---\n\nRead artifacts/user-stories/registration.md and login.md.\nWrite artifacts/scenarios/registration.md and login.md.\nInclude positive and negative scenarios, steps, and expected results.\nTrace every scenario to acceptance criteria.\nDo not invent requirements.\nMark one successful registration and one successful login for automation.", 'This agent uses local requirements and does not need to call Jira again.', 'markdown')),
+
+      section('6C. Playwright Automation Agent Definition', 'The third agent creates exactly two direct JavaScript specs and verifies the selected test without adding a POM layer.',
+        example('.github/agents/playwright-automation-agent.agent.md', "---\nname: playwright-automation-agent\ndescription: Generate direct Playwright JavaScript specs without POM\n---\n\nRead artifacts/scenarios/registration.md and login.md.\nCreate exactly tests/register.spec.js and tests/login.spec.js.\nPut exactly one test() in each file. Do not create page objects or POM.\nRegistration creates a unique account and saves .auth/account.json.\nLogin reads .auth/account.json and authenticates with that account.\nVerify current locators through Playwright CLI when necessary.\nRun only the selected spec by default.\nPreserve real application defects and report failures accurately.", 'Configure this agent with read, edit, terminal, and the browser exploration tools available in your VS Code installation.', 'markdown')),
+
+      section('7. Run the Agent Workflow in Order', 'Select one agent at a time in Copilot Chat. Pass real Jira keys to the reader, then pass the saved requirement files to the scenario generator, and finally pass the scenario files to the automation agent.', null, [
+        table('Exact Chat Sequence', ['Step', 'Agent', 'Input', 'Output'], [
+          ['A', 'Default Copilot + Atlassian MCP', 'Jira project key', 'Two Jira stories'],
+          ['B', 'user-story-reader', 'Two real issue keys', 'artifacts/user-stories/*.md'],
+          ['C', 'manual-test-case-generator', 'Two requirement files', 'artifacts/scenarios/*.md'],
+          ['D', 'playwright-automation-agent', 'Two scenario files', 'tests/register.spec.js and tests/login.spec.js'],
+          ['E', 'Official healer', 'One failed spec and its error or trace', 'Targeted proposed repair']
+        ]),
+        callout('Do not attach agent definitions', 'info', 'Select the custom agent from Copilot Chat. Attach or reference the requirement and scenario files that the selected agent needs.')
+      ]),
+
+      section('8. Registration Test - One Test, No POM', 'The registration spec creates a unique email, submits the current public Demo Web Shop form, verifies the success message, and stores only the demo credentials required by the next test.',
+        example('tests/register.spec.js', "import { test, expect } from '@playwright/test';\nimport { mkdir, writeFile } from 'node:fs/promises';\n\nconst uniqueId = `${Date.now()}-${Math.floor(Math.random() * 100000)}`;\nconst email = `testnova.${uniqueId}@example.com`;\nconst password = 'Test@12345';\n\ntest('Register new customer', async ({ page }) => {\n  await page.goto('https://demowebshop.tricentis.com/register', {\n    waitUntil: 'domcontentloaded'\n  });\n\n  await page.getByLabel('Male', { exact: true }).check();\n  await page.getByLabel('First name:').fill('Wasim');\n  await page.getByLabel('Last name:').fill('Ansari');\n  await page.getByLabel('Email:').fill(email);\n  await page.getByLabel('Password:', { exact: true }).fill(password);\n  await page.getByLabel('Confirm password:').fill(password);\n  await page.getByRole('button', { name: 'Register' }).click();\n\n  await expect(page.locator('.result')).toContainText(\n    'Your registration completed'\n  );\n\n  await mkdir('.auth', { recursive: true });\n  await writeFile(\n    '.auth/account.json',\n    JSON.stringify({ email, password }, null, 2),\n    'utf8'\n  );\n});", 'The file contains one test and no page-object class. Date.now plus a random suffix greatly reduces collisions on the shared demo site.', 'js'), [
+          callout('Credential safety', 'warning', 'This is a training account on a public demo. Add .auth/ to .gitignore, never use a real password, and never publish account.json as a CI artifact.'),
+          callout('Shared demo limitation', 'info', 'Public demo sites can reset data, throttle requests, reject some email domains, or change without notice. Treat an external-site failure as something to investigate, not automatically as a test-code defect.')
+        ]),
+
+      section('9. Login Test - Read the Registered Account', 'The login spec reads the local JSON file produced by registration, signs in with that exact account, and verifies the logged-in email in the header.',
+        example('tests/login.spec.js', "import { test, expect } from '@playwright/test';\nimport { readFile } from 'node:fs/promises';\n\ntest('Login with registered account', async ({ page }) => {\n  const { email, password } = JSON.parse(\n    await readFile('.auth/account.json', 'utf8')\n  );\n\n  await page.goto('https://demowebshop.tricentis.com/login', {\n    waitUntil: 'domcontentloaded'\n  });\n\n  await page.getByLabel('Email:').fill(email);\n  await page.getByLabel('Password:').fill(password);\n  await page.getByRole('button', { name: 'Log in' }).click();\n\n  await expect(page.locator('.header-links .account'))\n    .toHaveText(email);\n});", 'The second test uses the same demo account created by the first test. It fails clearly when account.json is missing or registration did not complete.', 'js'), [
+          callout('Why not parallel?', 'warning', 'login.spec.js cannot start before register.spec.js in this teaching design. Run the two files separately in the shown order.')
+        ]),
+
+      section('10A. Ignore the Generated Credential File', 'Add the local account folder to .gitignore before running registration. This prevents the generated demo email and password from entering Git history.',
+        example('.gitignore', '# Local demo account generated by the registration test\n.auth/', 'Keep .auth/account.json only in the protected local or CI workspace.', 'gitignore')),
+
+      section('10B. Run Registration and Login in Order', 'Run registration by itself, confirm it passes and creates account.json, then run login. Use one worker to make the teaching sequence explicit.',
+        example('PowerShell run order', "# 1. Register and verify it passes\nnpx playwright test tests/register.spec.js --project=chromium --headed --workers=1\n\n# 2. Only after registration passes, run login\nnpx playwright test tests/login.spec.js --project=chromium --headed --workers=1\n\n# 3. Open the latest HTML report\nnpx playwright show-report", 'Run each command separately in Windows PowerShell 5.1. The second command reads the file created by the first.', 'powershell'), [
+          flow('Required Execution Order', ['register.spec.js passes', '.auth/account.json exists', 'login.spec.js runs', 'Logged-in email is verified'])
+        ]),
+
+      section('11A. Introduce One Deliberate Failure', 'After both tests pass, deliberately break only the login email locator by changing Email: to Email1:. Run only login.spec.js and confirm the failure is a locator-not-found error.',
+        example('Intentional locator mistake', "// Working\nawait page.getByLabel('Email:').fill(email);\n\n// Deliberately broken for the exercise\nawait page.getByLabel('Email1:').fill(email);", 'The application is unchanged. Only the test locator is intentionally wrong.', 'js')),
+
+      section('11B. Generate the Official Playwright Agents', 'Generate the official VS Code agent definitions, then run only the deliberately broken login test. Playwright currently provides Planner, Generator, and Healer agents.',
+        example('Generate agents and run the failed test', "npx playwright init-agents --loop=vscode\nnpx playwright test tests/login.spec.js --project=chromium --headed --workers=1", 'Regenerate the official agent definitions after Playwright updates so their tools and instructions stay current.', 'bash')),
+
+      section('11C. Ask the Healer for the Minimal Repair', 'Select the generated Playwright Healer and give it only the failed login test plus relevant error or trace evidence. The Healer should inspect the live UI, explain the mismatch, and change only the locator.',
+        example('Healer investigation prompt', "Investigate only the failed login test.\nThe Email1 locator was intentionally broken.\nInspect the current page with the available Playwright browser tool or CLI skill.\nRepair only the verified locator.\nDo not weaken assertions or change application behavior.\nExplain the root cause, show the minimal diff, and rerun only this test.", 'The expected minimal repair is Email1: back to Email:. If the failure is a real application problem, report it instead of masking it.', 'text')),
+
+      section('12. Final Folder Structure', 'After completing the workflow, the project should clearly separate MCP configuration, agent definitions, retrieved requirements, generated scenarios, tests, and local runtime artifacts.',
+        example('Expected structure', "demowebshop-ai-qa/\n|-- .vscode/mcp.json\n|-- .github/agents/\n|   |-- user-story-reader.agent.md\n|   |-- manual-test-case-generator.agent.md\n|   |-- playwright-automation-agent.agent.md\n|   `-- playwright-test-healer.agent.md   # generated when installed\n|-- artifacts/user-stories/\n|   |-- registration.md\n|   `-- login.md\n|-- artifacts/scenarios/\n|   |-- registration.md\n|   `-- login.md\n|-- tests/\n|   |-- register.spec.js                  # exactly one test()\n|   `-- login.spec.js                     # exactly one test()\n|-- .auth/account.json                    # generated and ignored\n|-- playwright.config.js\n|-- package.json\n|-- test-results/                         # generated\n`-- playwright-report/                    # generated", 'Agent definitions describe roles; artifacts preserve traceability; tests contain the executable no-POM flows.', 'text')
+      ),
+
+      section('13. Jenkins and Token-Efficiency Notes', 'For a later Jenkins pipeline, install dependencies and Chromium, run registration first, then login in the same protected workspace. Use headless mode in CI and publish Playwright reports, but never publish .auth/account.json. Direct CLI and test-runner commands do not themselves call an AI model; an agent reading their output does consume model context.',
+        example('Later Jenkins shell stages', "npm ci\nnpx playwright install --with-deps chromium\nnpx playwright test tests/register.spec.js --project=chromium\nnpx playwright test tests/login.spec.js --project=chromium", 'The two stages must share the protected workspace for this teaching design. A production design should create and clean test accounts through an approved fixture or API.', 'bash'), [
+          table('Efficient Usage', ['Action', 'AI model involved?', 'Advice'], [
+            ['Direct playwright-cli command', 'No, unless an agent is interpreting it', 'Take snapshots only when needed'],
+            ['Direct npx playwright test', 'No', 'Use it for routine regression'],
+            ['Jira MCP through Copilot', 'Yes', 'Retrieve only the required story keys'],
+            ['Custom agents', 'Yes', 'Reuse cached Markdown requirements'],
+            ['Healer', 'Yes', 'Provide only the failed spec and relevant evidence']
+          ])
+        ]),
+
+      section('14. Verification Checklist', 'Finish by checking every artifact and behavior against the original Jira acceptance criteria. Agent output is a draft until the test has run and the result has been reviewed.', null, [
+        checklist('Project Complete When', [
+          'The intended Jira site is authenticated through Atlassian MCP',
+          'Two real Jira stories were created and verified',
+          'Requirements were saved into two local Markdown files',
+          'Positive and negative scenarios were generated with traceability',
+          'register.spec.js and login.spec.js each contain exactly one test()',
+          'No page-object file or POM folder was created',
+          '.auth/ is ignored by Git',
+          'Registration passes before login runs',
+          'Login reads and verifies the stored email',
+          'The broken locator fails for the expected reason',
+          'The Healer proposes the minimal verified repair',
+          'The HTML report is generated and reviewed'
+        ]),
+        callout('One line to remember', 'info', 'Jira defines the requirement, agents transform it into traceable artifacts, Playwright CLI verifies the live UI, and Playwright Test proves the saved no-POM automation works.')
+      ])
     ])
   ];
 })();
