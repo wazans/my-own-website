@@ -1,7 +1,17 @@
-.student-dashboard { padding-block: 2rem 4rem; }
+.student-dashboard { padding-block: clamp(2rem, 5vw, 4rem); }
+.student-dashboard h1 { margin: .35rem 0 1.25rem; font-size: clamp(1.9rem, 4vw, 3rem); }
+.student-dashboard .student-eyebrow { margin: 0; color: var(--tn-accent-strong); font-size: .75rem; font-weight: 750; letter-spacing: .08em; }
+.student-dashboard:has(#student-auth:not([hidden])) { max-width: 36rem; }
+.student-dashboard .student-intro { margin: .5rem 0 1.25rem; }
+.student-dashboard .student-auth-options { border-top: 1px solid var(--tn-border); padding-top: 1rem; }
+.student-dashboard .student-auth-options button { flex: 1 1 10rem; justify-content: center; }
+.student-dashboard #student-submit { justify-self: start; }
+.student-dashboard .student-public-link { margin-top: 1.25rem; }
+.student-dashboard [role="status"]:empty { margin: 0; }
 .student-dashboard [hidden] { display: none !important; }
 .student-dashboard h2 { margin-block: 1rem .5rem; }
-.student-panel { max-width: 34rem; padding: 1.25rem; background: white; border: 1px solid var(--tn-border); border-radius: var(--radius-md); }
+.student-panel { max-width: 34rem; padding: clamp(1rem, 4vw, 1.75rem); background: var(--tn-surface); border: 1px solid var(--tn-border); border-radius: var(--radius-md); box-shadow: var(--shadow-md); }
+.student-panel h2 { margin-top: 0; }
 .student-panel form, .student-panel label { display: grid; gap: .5rem; }
 .student-panel form { gap: .85rem; }
 .student-panel input { width: 100%; padding: .5rem .75rem; }

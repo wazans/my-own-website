@@ -7,17 +7,19 @@
   <meta name="robots" content="noindex">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/design-system.css">
-  <link rel="stylesheet" href="/dashboard/dashboard.css">
+  <link rel="stylesheet" href="/dashboard/dashboard.css?v=student-4">
 </head>
 <body class="tutorial-home">
   <header class="topbar"><div class="container nav-container">
     <a class="brand" href="/">TestNova</a><nav class="site-nav" aria-label="Primary navigation"></nav>
   </div></header>
   <main class="container student-dashboard">
+    <p class="student-eyebrow">TESTNOVA LEARNING</p>
     <h1>Student dashboard</h1>
     <p role="status" id="student-status">Loading student account…</p>
-    <section id="student-auth" class="student-panel" hidden>
+    <section id="student-auth" class="student-panel" aria-labelledby="student-form-title" hidden>
       <h2 id="student-form-title">Sign in</h2>
+      <p class="student-intro">Save your progress and pick up where you left off.</p>
       <form id="student-form">
         <label id="student-name-row" hidden>Display name <input name="displayName" autocomplete="name" maxlength="80"></label>
         <label id="student-email-row">Email <input name="email" type="email" autocomplete="email" maxlength="254"></label>
@@ -27,7 +29,7 @@
         <button class="primary-btn" type="submit" id="student-submit">Sign in</button>
         <p role="status" id="student-form-status"></p>
       </form>
-      <div class="student-actions" id="student-options">
+      <div class="student-actions student-auth-options" id="student-options">
         <button class="secondary-btn" type="button" data-mode="signin">Sign in</button>
         <button class="secondary-btn" type="button" data-mode="signup">Create account</button>
         <button class="secondary-btn" type="button" data-mode="forgot">Forgot password</button>
@@ -44,7 +46,7 @@
       <h2>Recently studied</h2>
       <ul id="student-recent"></ul>
     </section>
-    <p><a href="/#tutorials">Browse public tutorials</a></p>
+    <p class="student-public-link"><a href="/#tutorials">Browse public tutorials</a></p>
   </main>
   <footer class="site-footer"></footer>
   <script src="/site.js?v=student-1"></script>
