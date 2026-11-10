@@ -9,4 +9,6 @@
 
 Existing anonymous browser progress has no verified owner, so this rollout starts account progress separately. Dashboard counts use the published course curriculum; locally authored lessons are outside account progress. Interview practice and scoring follow in the next feature.
 
-Supabase’s built-in mailer sends only to organization members. For public email signups and recovery, configure custom SMTP and test delivery before launch. To enable phone signup and sign-in, configure a supported SMS provider in Authentication, then set `SUPABASE_PHONE_ENABLED=true` in Vercel for the same environment. Real SMS can incur charges. A fixed test code is for test numbers only.
+Supabase’s built-in mailer sends only to organization members. For public email signups and recovery, configure custom SMTP and test delivery before launch.
+
+Run `node scripts/build-dashboard-index.cjs` after changing a published curriculum to refresh dashboard counts and lesson links.

@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/design-system.css">
-  <link rel="stylesheet" href="/dashboard/dashboard.css?v=student-4">
+  <link rel="stylesheet" href="/dashboard/dashboard.css?v=student-5">
 </head>
 <body class="tutorial-home">
   <header class="topbar"><div class="container nav-container">
@@ -24,8 +24,6 @@
         <label id="student-name-row" hidden>Display name <input name="displayName" autocomplete="name" maxlength="80"></label>
         <label id="student-email-row">Email <input name="email" type="email" autocomplete="email" maxlength="254"></label>
         <label id="student-password-row">Password <input name="password" type="password" minlength="8" maxlength="72" autocomplete="current-password"></label>
-        <label id="student-phone-row" hidden>Mobile number with country code <input name="phone" type="tel" autocomplete="tel" placeholder="+91 98765 43210" maxlength="24"></label>
-        <label id="student-code-row" hidden>Verification code <input name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6"></label>
         <button class="primary-btn" type="submit" id="student-submit">Sign in</button>
         <p role="status" id="student-form-status"></p>
       </form>
@@ -34,24 +32,85 @@
         <button class="secondary-btn" type="button" data-mode="signup">Create account</button>
         <button class="secondary-btn" type="button" data-mode="forgot">Forgot password</button>
         <button class="secondary-btn" type="button" id="student-google">Continue with Google</button>
-        <button class="secondary-btn" type="button" data-mode="phone">Continue with phone</button>
       </div>
     </section>
     <section id="student-progress" hidden>
-      <div class="student-actions"><h2 id="student-greeting"></h2><button class="secondary-btn" type="button" id="student-logout">Sign out</button></div>
-      <p id="student-identity"></p>
-      <p id="student-summary"></p>
-      <h2>Your courses</h2>
-      <div id="student-courses" class="student-grid"></div>
-      <h2>Recently studied</h2>
-      <ul id="student-recent"></ul>
+      <div class="student-workspace">
+        <aside class="student-sidebar">
+          <button type="button" class="secondary-btn" id="student-nav-toggle" aria-controls="student-nav" aria-expanded="true">Learning menu</button>
+          <nav id="student-nav" aria-label="Student dashboard">
+            <a href="#overview" aria-current="location">◈ Dashboard</a>
+            <a href="#my-learning">▤ My Learning</a>
+            <a href="/#tutorials">⊕ Explore Courses</a>
+            <a href="#my-progress">◔ My Progress</a>
+            <a href="#practice">◇ Practice &amp; Interviews</a>
+            <a href="#achievements">☆ Achievements</a>
+            <a href="#profile">◎ Profile &amp; Settings</a>
+            <a href="#support">? Help &amp; Support</a>
+          </nav>
+        </aside>
+        <div class="student-main">
+          <section class="student-welcome" id="overview" tabindex="-1">
+            <div><span class="student-kicker">YOUR LEARNING SPACE</span><h2 id="student-greeting"></h2><p>Build your skills one lesson at a time.</p></div>
+            <details class="student-updates"><summary>Learning updates</summary><p id="student-updates"></p></details>
+            <div id="student-summary" class="student-stats"></div>
+          </section>
+          <section id="student-continue" class="student-feature" aria-label="Continue learning"></section>
+          <section id="my-learning" tabindex="-1">
+            <h2>My Learning</h2>
+            <div class="student-filters">
+              <label>Search courses or lessons <input id="student-course-search" type="search" placeholder="Search your learning catalog"></label>
+              <label>Progress <select id="student-course-filter"><option value="all">All courses</option><option value="active">In progress</option><option value="complete">Completed</option><option value="new">Not started</option></select></label>
+            </div>
+            <div id="student-courses" class="student-grid"></div>
+          </section>
+          <section id="my-progress" tabindex="-1">
+            <h2>My Progress</h2>
+            <div id="student-analytics" class="student-grid"></div>
+            <h3>Recently studied</h3>
+            <ul id="student-recent" class="student-activity"></ul>
+          </section>
+          <section id="practice" tabindex="-1">
+            <h2>Practice Your Skills</h2>
+            <p>Review interview questions and exercises from the course readers. Practice attempts and scores are not tracked yet.</p>
+            <div id="student-practice" class="student-grid"></div>
+          </section>
+          <section id="achievements" tabindex="-1">
+            <h2>Achievements</h2>
+            <ul id="student-achievements" class="student-badges"></ul>
+          </section>
+          <section id="profile" tabindex="-1">
+            <h2>Profile &amp; Settings</h2>
+            <div class="student-card student-profile">
+              <div class="student-avatar" id="student-avatar" aria-hidden="true"></div>
+              <div><p id="student-identity"></p><p id="student-joined"></p></div>
+              <form id="student-profile-form">
+                <label>Display name <input name="displayName" maxlength="80" autocomplete="name" required></label>
+                <button class="primary-btn" type="submit" id="student-profile-save">Save profile</button>
+                <p id="student-profile-status" role="status"></p>
+              </form>
+              <button class="secondary-btn" type="button" id="student-logout">Sign out</button>
+            </div>
+          </section>
+          <section id="support" tabindex="-1">
+            <h2>Help &amp; Support</h2>
+            <div class="student-card">
+              <p><a href="mailto:support@testnova.in">support@testnova.in</a></p>
+              <div class="student-actions"><a class="secondary-btn" href="mailto:support@testnova.in">Contact support</a><a class="secondary-btn" href="mailto:support@testnova.in?subject=Report%20a%20problem">Report a problem</a><a class="secondary-btn" href="mailto:support@testnova.in?subject=TestNova%20suggestion">Suggest an improvement</a></div>
+              <details><summary>Where is my progress saved?</summary><p>Your progress is saved to your account and appears when you sign in on another device.</p></details>
+              <details><summary>How do I resume a lesson?</summary><p>Use Continue Learning to open the next unfinished lesson, or use Recently studied to revisit a specific lesson.</p></details>
+            </div>
+          </section>
+        </div>
+      </div>
     </section>
     <p class="student-public-link"><a href="/#tutorials">Browse public tutorials</a></p>
   </main>
   <footer class="site-footer"></footer>
   <script src="/site.js?v=student-1"></script>
-  <script src="/global-ui.js"></script>
-  <script src="/student-account.js?v=student-3"></script>
-  <script src="/dashboard/dashboard.js?v=student-2"></script>
+  <script src="/global-ui.js?v=student-5"></script>
+  <script src="/student-account.js?v=student-5"></script>
+  <script src="/dashboard/course-index.js?v=student-5"></script>
+  <script src="/dashboard/dashboard.js?v=student-5"></script>
 </body>
 </html>

@@ -10,5 +10,5 @@ module.exports = function handler(req, res) {
   if (!/^https:\/\/[a-z0-9]+\.supabase\.co\/?$/.test(url) || !/^sb_publishable_[\w-]+$/.test(key)) {
     return res.status(503).json({ error: 'Student accounts are not configured.' });
   }
-  return res.status(200).json({ url, key, google: process.env.SUPABASE_GOOGLE_ENABLED === 'true', phone: process.env.SUPABASE_PHONE_ENABLED === 'true' });
+  return res.status(200).json({ url, key, google: process.env.SUPABASE_GOOGLE_ENABLED === 'true' });
 };

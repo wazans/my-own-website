@@ -201,7 +201,7 @@ test('students sign in, save progress, and see their own dashboard', async () =>
   await usePage(390, 800, async (page, context) => {
     const rows = new Map();
     await context.route('**/api/student-config', (route) => route.fulfill({
-      json: { url: 'https://test.supabase.co', key: 'sb_publishable_test', phone: true }
+      json: { url: 'https://test.supabase.co', key: 'sb_publishable_test' }
     }));
     await context.route('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@*/+esm', (route) => route.fulfill({
       contentType: 'application/javascript',
@@ -218,22 +218,19 @@ test('students sign in, save progress, and see their own dashboard', async () =>
                 if (email === 'outside-team@example.test') return { error: { code: 'email_address_not_authorized' } };
                 return { data: { session: null } };
               },
-              async signInWithOtp({phone}) {
-                return phone === '+919876543210' ? {} : { error: { code: 'invalid_phone' } };
-              },
-              async verifyOtp({phone, token, type}) {
-                if (token !== '123456' || type !== 'sms') return { error: { code: 'otp_expired' } };
-                const session = { user: { id: phone, phone } };
-                sessionStorage.setItem('mock-student', JSON.stringify(session));
-                callback('SIGNED_IN', session);
-                return { data: { session } };
-              },
               async resetPasswordForEmail() { return {}; },
               async signInWithPassword({email}) {
                 const session = { user: { id: email, email } };
                 sessionStorage.setItem('mock-student', JSON.stringify(session));
                 callback('SIGNED_IN', session);
                 return { data: { session } };
+              },
+              async updateUser({data}) {
+                const session = current();
+                session.user.user_metadata = data;
+                sessionStorage.setItem('mock-student', JSON.stringify(session));
+                callback('USER_UPDATED', session);
+                return {};
               },
               async signOut() {
                 sessionStorage.removeItem('mock-student');
@@ -316,6 +313,10 @@ test('students sign in, save progress, and see their own dashboard', async () =>
     await page.getByRole('button', { name: 'Completed', exact: true }).waitFor();
     await page.goto(origin + '/dashboard/');
     await page.getByText(/1 lessons complete/).waitFor();
+    assert.match(await page.locator('#student-continue a').getAttribute('href'), /rest\.html#api-vs-ui$/);
+    await page.locator('#student-profile-form').getByLabel('Display name').fill('Learner A');
+    await page.getByRole('button', { name: 'Save profile' }).click();
+    await page.getByRole('heading', { name: 'Welcome back, Learner A!' }).waitFor();
     await page.goto(origin + '/about.html');
     await page.locator('.student-account-menu summary').click();
     await page.locator('.student-account-panel').getByRole('button', { name: 'Sign out' }).click();
@@ -323,19 +324,24 @@ test('students sign in, save progress, and see their own dashboard', async () =>
     await page.goto(origin + '/dashboard/');
     await signIn('student-b@example.test');
     await page.getByText(/0 lessons complete/).waitFor();
+    await page.locator('#student-course-filter').selectOption('active');
+    await page.getByText('No courses match this filter.').waitFor();
+    await page.locator('#student-course-filter').selectOption('new');
+    await page.locator('#student-course-search').fill('REST Assured');
+    assert.equal(await page.locator('#student-courses article').count(), 1);
+    await page.getByRole('button', { name: 'Learning menu' }).click();
+    await page.locator('#student-nav').getByRole('link', { name: /Help & Support/ }).click();
+    assert.equal(await page.locator('#student-nav').isVisible(), false);
+    assert.equal(await page.getByRole('link', { name: 'Contact support' }).getAttribute('href'), 'mailto:support@testnova.in');
+    await page.getByRole('button', { name: 'Search TestNova' }).click();
+    await page.locator('[data-tn-search-input]').fill('automate your first API check');
+    await page.getByRole('link', { name: /automate your first API check/i }).waitFor();
+    await page.keyboard.press('Escape');
     assert.equal(await page.getByText('student-a@example.test').count(), 0);
     await checkLayout(page, 'student dashboard');
     await page.getByRole('button', { name: 'Sign out' }).click();
     await page.getByRole('button', { name: 'Continue with Google' }).click();
     await page.getByText(/Google OAuth client is configured/).waitFor();
-    await page.getByRole('button', { name: 'Continue with phone' }).click();
-    await page.getByLabel(/Mobile number/).fill('+91 98765 43210');
-    await page.locator('#student-submit').click();
-    await page.getByLabel('Verification code').fill('000000');
-    await page.locator('#student-submit').click();
-    await page.getByText(/code is invalid or expired/).waitFor();
-    await page.getByLabel('Verification code').fill('123456');
-    await page.locator('#student-submit').click();
-    await page.locator('#student-identity').filter({ hasText: '+919876543210' }).waitFor();
+    assert.equal(await page.getByRole('button', { name: 'Continue with phone' }).count(), 0);
   });
 });

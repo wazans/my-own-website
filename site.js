@@ -1771,7 +1771,7 @@
     setupMobileNav();
     if (document.querySelector(".nav-container") && !window.TestNovaStudent) {
       var studentScript = document.createElement("script");
-      studentScript.src = "/student-account.js?v=student-3";
+      studentScript.src = "/student-account.js?v=student-5";
       document.head.append(studentScript);
     }
     setupMobileSidebar();

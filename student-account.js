@@ -5,7 +5,6 @@
   let session = null;
   let recovery = false;
   let google = false;
-  let phone = false;
 
   const ready = (async () => {
     try {
@@ -15,7 +14,6 @@
       const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.80.0/+esm');
       const client = createClient(config.url, config.key, { auth: { flowType: 'pkce' } });
       google = config.google === true;
-      phone = config.phone === true;
       client.auth.onAuthStateChange((event, value) => {
         session = value;
         if (event === 'PASSWORD_RECOVERY') recovery = true;
@@ -62,7 +60,7 @@
     const menu = document.createElement('details');
     menu.className = 'student-account-menu';
     menu.innerHTML = '<summary>Signed in</summary><div class="student-account-panel">' +
-      '<p data-student-identity></p><a href="/dashboard/">Dashboard</a>' +
+      '<p data-student-identity></p><a href="/dashboard/">Dashboard</a><a href="/dashboard/#profile">Profile &amp; settings</a>' +
       '<a data-student-resume href="/dashboard/">Continue learning</a>' +
       '<button type="button">Sign out</button><p role="status" data-student-menu-status></p></div>';
     const identity = menu.querySelector('[data-student-identity]');
@@ -90,7 +88,7 @@
         status.textContent = '';
         shownStudent = user.id;
       }
-      identity.textContent = user.user_metadata?.display_name || user.email || user.phone || 'Signed in';
+      identity.textContent = user.user_metadata?.display_name || user.email || 'Signed in';
       resume.hidden = recovery;
       if (!menu.isConnected) header.insertBefore(menu, header.querySelector('.tn-nav-tools'));
     }
@@ -144,7 +142,6 @@
     get user() { return session?.user || null; },
     get recovery() { return recovery; },
     get google() { return google; },
-    get phone() { return phone; },
     finishRecovery() { recovery = false; },
     subscribe(listener) { listeners.add(listener); }
   };

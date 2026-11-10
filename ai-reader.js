@@ -6204,6 +6204,9 @@
 
     renderNav();
     openRequestedTopic(false);
+    if (new URLSearchParams(location.search).get('review') === '1') {
+      content.querySelector('.reader-review-grid')?.scrollIntoView({ block: 'start' });
+    }
     if (account) account.ready.then(function() {
       function refreshAccountProgress() {
         if (activeStudent !== account.user?.id) progressReady = loadAccountProgress();

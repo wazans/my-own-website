@@ -33,7 +33,23 @@
     var courses = Array.from(document.querySelectorAll('.course-menu-list a')).map(function(link) {
       return ['Courses', link.textContent.replace(/&/g, '&amp;'), link.pathname, 'Open course'];
     });
-    var matches = courses.concat(SEARCH_ITEMS).filter(function (item) { return !query || item.join(' ').toLowerCase().indexOf(query) !== -1; });
+    var lessonIndex = (window.TestNovaCourseIndex || []).flatMap(function(course) {
+      function safe(value) {
+        return value.replace(/[&<>"']/g, function(char) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
+        });
+      }
+      return course.lessons.flatMap(function(lesson) {
+        var links = [[safe(course.title), safe(lesson.title), safe(lesson.url), 'Lesson']];
+        (lesson.sections || []).forEach(function(section, index) {
+          var url = new URL(lesson.url, location.origin);
+          url.searchParams.set('section', index + 1);
+          links.push([safe(course.title), safe(section), safe(url.pathname + url.search + url.hash), safe(lesson.title)]);
+        });
+        return links;
+      });
+    });
+    var matches = courses.concat(query && lessonIndex.length ? lessonIndex : SEARCH_ITEMS).filter(function (item) { return !query || item.join(' ').toLowerCase().indexOf(query) !== -1; }).slice(0, 60);
     if (!matches.length) {
       results.innerHTML = '<p class="tn-search-empty">No matching lessons or courses. Try a broader term.</p>';
       return;
