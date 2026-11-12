@@ -1035,6 +1035,53 @@
         ]),
         callout('One line to remember', 'info', 'Jira defines the requirement, agents transform it into traceable artifacts, Playwright CLI verifies the live UI, and Playwright Test proves the saved no-POM automation works.')
       ])
+    ]),
+
+    topic(78, 'CI/CD with Jenkins for Playwright', [
+      'Continuous integration builds and tests changes as they are integrated. Continuous delivery keeps passing builds ready for release. Continuous deployment automatically ships changes that pass the production release gates.',
+      'Jenkins is an open-source automation server. A Jenkinsfile defines the pipeline in the repository, and a Jenkins agent runs the stages against the checked-out commit.'
+    ], [], [
+      flow('From pull request to test results', ['Playwright framework with 10 tests', 'GitHub pull request and main branch', 'CI trigger', 'Checkout and install', 'Run tests', 'Publish and notify'])
+    ], [], [
+      section('GitHub pull requests and CI triggers', 'Open a pull request, run the required check, review the change, and merge to main after the check passes. Configure GitHub webhooks and branch discovery for a Jenkins Multibranch Pipeline. GitHub Actions workflows can also run the same checks.', null, [
+        table('When to run the suite', ['Trigger', 'Test scope'], [
+          ['Pull request opened or updated', 'Run smoke tests with npx playwright test --grep @smoke after tagging the critical tests.'],
+          ['New commit or build on main', 'Run all 10 tests against the new build.'],
+          ['Nightly at 2:00 a.m. Asia/Kolkata', 'Run all 10 tests even when there are no new commits.'],
+          ['Release candidate', 'Run all 10 tests on staging before promoting the release.']
+        ])
+      ]),
+      section('Run Playwright from a Jenkinsfile', 'Place this Jenkinsfile in the repository root for the main regression job. The Linux agent needs Node.js and Playwright system dependencies. Commit package-lock.json for npm ci. This example assumes the Playwright config uses Chromium only. Configure GitHub push and release triggers separately from the nightly schedule.',
+        example('Declarative Jenkinsfile', `pipeline {
+    agent { label 'linux-playwright' }
+    options { skipDefaultCheckout() }
+    triggers { cron('TZ=Asia/Kolkata\\n0 2 * * *') }
+    stages {
+        stage('Checkout') {
+            steps { checkout scm }
+        }
+        stage('Install') {
+            steps {
+                sh 'npm ci'
+                sh 'npx playwright install chromium'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'CI=true PLAYWRIGHT_HTML_OPEN=never npx playwright test --reporter=line,html --trace retain-on-failure'
+            }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'playwright-report/**,test-results/**',
+                             allowEmptyArchive: true
+        }
+    }
+}`, 'If the configuration includes Firefox or WebKit, install those browsers too or select the named Chromium project with --project.', 'groovy')),
+      section('Publish reports and notify the team', 'A failing Playwright command fails the build. Jenkins archives available HTML reports and traces even after a test failure. Configure email, Slack or Microsoft Teams notifications with the corresponding integration and include the build link, commit and result. Azure Pipelines can run the same npm and npx commands with its own YAML triggers and artifact publishing.', null, [
+        checklist('Verify your pipeline', ['Run all 10 tests and open the archived HTML report.', 'Make one assertion fail and check that Jenkins marks the build failed and archives the trace.', 'Restore the assertion and confirm the next run passes.'])
+      ])
     ])
   ];
 })();

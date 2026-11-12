@@ -128,7 +128,8 @@ test('subtopics, history, search, copy controls, and mobile dismissal in landsca
     await search.fill('Getting started');
     assert.equal(await page.locator('[data-topic-link]:visible').count(), 4);
     await search.fill('');
-    assert.equal(await page.locator('[data-topic-link]:visible').count(), 28);
+    assert.equal(await page.locator('[data-topic-link]:visible').count(), 29);
+    assert.match(await page.locator('[data-topic-link]:visible').last().textContent(), /CI\/CD with Jenkins for Playwright/);
     const subtopic = page.locator('[data-subtopic]').last();
     const title = await subtopic.textContent();
     await subtopic.click();
