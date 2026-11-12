@@ -1041,57 +1041,17 @@
     ]),
 
     topic(78, 'CI/CD with Jenkins for Playwright', [
-      'Continuous integration builds and tests changes as they are integrated. Continuous delivery keeps passing builds ready for release. Continuous deployment automatically ships changes that pass the production release gates.',
-      'Jenkins is an open-source automation server. A Jenkinsfile defines the pipeline in the repository, and a Jenkins agent runs the stages against the checked-out commit.'
-    ], [], [
-      flow('From pull request to test results', ['Playwright framework with 10 tests', 'GitHub pull request and main branch', 'CI trigger', 'Checkout and install', 'Run tests', 'Publish and notify'])
-    ], [], [
-      section('GitHub pull requests and CI triggers', 'Open a pull request, run the required check, review the change, and merge to main after the check passes. Configure GitHub webhooks and branch discovery for a Jenkins Multibranch Pipeline. GitHub Actions workflows can also run the same checks.', null, [
-        table('When to run the suite', ['Trigger', 'Test scope'], [
-          ['Pull request opened or updated', 'Run smoke tests with npx playwright test --grep @smoke after tagging the critical tests.'],
-          ['New commit or build on main', 'Run all 10 tests against the new build.'],
-          ['Nightly at 2:00 a.m. Asia/Kolkata', 'Run all 10 tests even when there are no new commits.'],
-          ['Release candidate', 'Run all 10 tests on staging before promoting the release.']
-        ])
+      'Continuous integration (CI) checks changes by building and testing them as they are integrated. Continuous delivery keeps passing builds ready to release. Continuous deployment automatically releases changes that pass the production gates.',
+      'Jenkins runs automation jobs. A Pipeline job reads a Jenkinsfile from Git. Jenkins schedules the work and an agent executes the stages. In this local Windows exercise, the Jenkins built-in node runs one Playwright login test.'
+    ], [], [flow('From code to test result', ['Git repository', 'Jenkins Pipeline job', 'Install dependencies', 'Run the login test', 'Open the report'])], [], [
+      section('1. Install Jenkins on Windows 11', 'Install Eclipse Temurin JDK 21 and enable Add to PATH in the installer. Verify it with java -version in a new Command Prompt. Download the Jenkins LTS Generic Java package and save it as C:\\Jenkins\\jenkins.war. Start it with the commands below and keep the window open. In Chrome, go to http://localhost:8080.', [
+        example('Start Jenkins locally', 'cd /d C:\\Jenkins\njava -jar jenkins.war --httpListenAddress=127.0.0.1', 'Press Ctrl+C to stop Jenkins. To restart, run the same commands. If port 8080 is busy, append --httpPort=9090 and open localhost:9090 instead.', 'bat')
+      ], [table('Official downloads', ['Software', 'Download page'], [['Java 21 JDK', 'adoptium.net/temurin/releases/'], ['Jenkins LTS WAR', 'jenkins.io/download/']])]),
+      section('2. Configure Jenkins', 'On Unlock Jenkins, paste the temporary password from the file listed in the startup log. Choose Install suggested plugins, create your first administrator, and set the Jenkins URL to the local address you opened. For this local practice job, verify the built-in node has at least one executor under Manage Jenkins → Nodes.', [
+        example('Read the temporary password in a second Command Prompt', 'type "%USERPROFILE%\\.jenkins\\secrets\\initialAdminPassword"', 'If your Jenkins home is different, use the path in the startup log.', 'bat')
       ]),
-      section('Run Playwright from a Jenkinsfile', 'Place this Jenkinsfile in the repository root for the main regression job. The Linux agent needs Node.js and Playwright system dependencies. Commit package-lock.json for npm ci. This example assumes the Playwright config uses Chromium only. Configure GitHub push and release triggers separately from the nightly schedule.',
-        example('Declarative Jenkinsfile', `pipeline {
-    agent { label 'linux-playwright' }
-    options { skipDefaultCheckout() }
-    triggers { cron('TZ=Asia/Kolkata\\n0 2 * * *') }
-    stages {
-        stage('Checkout') {
-            steps { checkout scm }
-        }
-        stage('Install') {
-            steps {
-                sh 'npm ci'
-                sh 'npx playwright install chromium'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'CI=true PLAYWRIGHT_HTML_OPEN=never npx playwright test --reporter=line,html --trace retain-on-failure'
-            }
-        }
-    }
-    post {
-        always {
-            archiveArtifacts artifacts: 'playwright-report/**,test-results/**',
-                             allowEmptyArchive: true
-        }
-    }
-}`, 'If the configuration includes Firefox or WebKit, install those browsers too or select the named Chromium project with --project.', 'groovy')),
-      section('Publish reports and notify the team', 'A failing Playwright command fails the build. Jenkins archives available HTML reports and traces even after a test failure. Configure email, Slack or Microsoft Teams notifications with the corresponding integration and include the build link, commit and result. Azure Pipelines can run the same npm and npx commands with its own YAML triggers and artifact publishing.', null, [
-        checklist('Verify your pipeline', ['Run all 10 tests and open the archived HTML report.', 'Make one assertion fail and check that Jenkins marks the build failed and archives the trace.', 'Restore the assertion and confirm the next run passes.'])
-      ])
-    ]),
-
-    topic(79, 'Run a Playwright Login in Jenkins', [
-      'Run one SauceDemo login test from Jenkins. Create a fresh Git repository with Playwright Test, package.json and package-lock.json. Use the public demo credentials in the example.'
-    ], [], [], [{ label: 'Jenkins Installation on Windows 11', url: 'jenkins.html#jenkins-installation' }], [
-      section('Save the login spec', 'Save the example as tests/standalone-login.spec.cjs. The test signs in and checks that the Products heading appears.', [
-        example('tests/standalone-login.spec.cjs', `const { test, expect } = require('@playwright/test');
+      section('3. Prepare the login test', 'Install Node.js LTS and Git on Windows, then restart Jenkins so it picks up PATH changes. In a fresh practice repository, run npm init -y and npm install --save-dev @playwright/test. Save the file below as tests/login.spec.cjs. Commit it along with package.json, package-lock.json and the Jenkinsfile in the next step, then push to GitHub.', [
+        example('tests/login.spec.cjs', `const { test, expect } = require('@playwright/test');
 
 test('sign in to SauceDemo', async ({ page }) => {
   await page.goto('https://www.saucedemo.com/');
@@ -1099,74 +1059,33 @@ test('sign in to SauceDemo', async ({ page }) => {
   await page.getByPlaceholder('Password').fill('secret_sauce');
   await page.getByRole('button', { name: 'Login', exact: true }).click();
   await expect(page.getByText('Products', { exact: true })).toBeVisible();
-});`, 'The username and password are shared demo credentials.', 'js')
+});`, 'This uses public SauceDemo practice credentials.', 'js')
       ]),
-      section('Run the declarative pipeline', 'Commit the spec and this Jenkinsfile to your practice repository. Create a Jenkins Pipeline job, select Pipeline script from SCM, configure Git and your branch, and leave the script path as Jenkinsfile. Click Build Now. The linux-playwright label must point to agents with Node.js and the system libraries for all three browsers. Three available executors let the browser runs overlap.', [
+      section('4. Configure and run the pipeline', 'Save this Jenkinsfile at the repository root. In Jenkins select New Item → Pipeline. Under Pipeline, select Pipeline script from SCM, choose Git, enter your repository URL and branch, then set Script Path to Jenkinsfile. Add Jenkins credentials if the repository is private. Save and click Build Now. This example assumes Jenkins is running on your local Windows machine as the only available node.', [
         example('Jenkinsfile', `pipeline {
-    agent none
-    options { skipDefaultCheckout() }
-    triggers { cron('TZ=Asia/Kolkata\\n0 2 * * *') }
+    agent any
     stages {
-        stage('Login smoke test') {
-            matrix {
-                axes {
-                    axis {
-                        name 'BrowserName'
-                        values 'chromium', 'firefox', 'webkit'
-                    }
-                }
-                agent { label 'linux-playwright' }
-                stages {
-                    stage('Prepare') {
-                        steps {
-                            checkout scm
-                            sh 'npm ci'
-                            sh 'npx playwright install "$BrowserName"'
-                        }
-                    }
-                    stage('Run login') {
-                        steps {
-                            sh 'CI=true PLAYWRIGHT_HTML_OPEN=never npx playwright test tests/standalone-login.spec.cjs --browser="$BrowserName" --reporter=line,html --trace retain-on-failure'
-                        }
-                    }
-                }
-                post {
-                    always {
-                        archiveArtifacts artifacts: 'playwright-report/**,test-results/**', allowEmptyArchive: true
-                    }
-                }
+        stage('Install') {
+            steps {
+                bat 'npm ci'
+                bat 'npx playwright install chromium'
+            }
+        }
+        stage('Run login') {
+            steps {
+                bat 'npx playwright test tests/login.spec.cjs --reporter=line,html'
             }
         }
     }
-}`, 'Use a fresh Playwright repository without named projects for the --browser flag. If your generated config defines projects, remove the projects array for this exercise. Build Now runs immediately and registers the nightly schedule at 2 a.m. India time.', 'groovy')
-      ]),
-      section('Compare the attached pipeline patterns', 'The declarative sample groups work into Smoke, Regression and E2E stages. This exercise implements the login smoke check. The downstream-job sample passes BrowserName to Execute Playwright Test. To use that design, create the child Pipeline job with a BrowserName choice parameter and run the same login command in it. The browser matrix already covers all three browsers in the single-job example.', [
-        example('Scripted Pipeline alternative', `node('linux-playwright') {
-    stage('Preparation') {
-        checkout scm
-        sh 'npm ci'
-        sh 'npx playwright install chromium'
-    }
-    try {
-        stage('Run login') {
-            sh 'CI=true PLAYWRIGHT_HTML_OPEN=never npx playwright test tests/standalone-login.spec.cjs --browser=chromium --reporter=line,html --trace retain-on-failure'
-        }
-    } finally {
-        stage('Results') {
-            archiveArtifacts artifacts: 'playwright-report/**,test-results/**', allowEmptyArchive: true
+    post {
+        always {
+            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
         }
     }
-}`, 'The Scripted Pipeline attachment uses node, stage and a Results stage. This version uses the same structure with Playwright commands.', 'groovy')
+}`, 'Jenkins checks out the repository before the stages. Playwright uses headless Chromium by default in this fresh project.', 'groovy')
       ]),
-      section('Check results and configure email', 'Open the Jenkins build and inspect each browser result. The HTML report and any retained failure trace appear in the archived artifacts. For optional Gmail alerts, configure Jenkins Mailer with smtp.gmail.com, SSL on port 465, your Gmail address, and an app password stored in Jenkins. Add a pipeline-level failure notification after verifying the SMTP configuration.', [
-        example('Optional top-level post block', `post {
-    failure {
-        mail to: 'qa@example.com',
-             subject: "Login smoke failed: \${env.JOB_NAME} #\${env.BUILD_NUMBER}",
-             body: "See \${env.BUILD_URL}"
-    }
-}`, 'Add this inside pipeline alongside stages and replace the example recipient. Keep the app password out of the Jenkinsfile.', 'groovy')
-      ])
+      section('5. Read the result and choose a trigger', 'Open Console Output and look for one passing test and Finished: SUCCESS. Download the archived playwright-report folder to inspect the HTML report. Build Now runs the job manually. Once it passes, you can configure a scheduled build or a GitHub webhook if GitHub can reach the Jenkins instance.')
     ])
+
   ];
 })();

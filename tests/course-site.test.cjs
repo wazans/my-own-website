@@ -128,8 +128,8 @@ test('subtopics, history, search, copy controls, and mobile dismissal in landsca
     await search.fill('Getting started');
     assert.equal(await page.locator('[data-topic-link]:visible').count(), 4);
     await search.fill('');
-    assert.equal(await page.locator('[data-topic-link]:visible').count(), 30);
-    assert.match(await page.locator('[data-topic-link]:visible').last().textContent(), /Run a Playwright Login in Jenkins/);
+    assert.equal(await page.locator('[data-topic-link]:visible').count(), 29);
+    assert.match(await page.locator('[data-topic-link]:visible').last().textContent(), /CI\/CD with Jenkins for Playwright/);
     const subtopic = page.locator('[data-subtopic]').last();
     const title = await subtopic.textContent();
     await subtopic.click();
@@ -191,9 +191,6 @@ test('legacy Playwright bookmarks retain the original lessons', async () => {
       await checkLayout(page, name);
       await checkInternalLinks(page);
     }
-    await page.goto(origin + '/jenkins.html');
-    assert.equal(await page.locator('[data-topic-title]').textContent(), 'Jenkins Installation on Windows 11');
-    assert.equal(await page.getByRole('link', { name: 'Run a Playwright Login in Jenkins' }).getAttribute('href'), 'playwright-reader.html?topic=playwright-notes-30');
     await page.goto(origin + '/jenkins.html#build-process');
     assert.equal(await page.locator('[data-topic-title]').textContent(), 'Build process');
     await page.goto(origin + '/hybrid.html#step-29');
