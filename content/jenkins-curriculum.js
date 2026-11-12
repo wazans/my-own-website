@@ -6,6 +6,108 @@ window.TestNovaDocumentCourse = {
   "readOnly": true,
   "topics": [
     {
+      "id": "jenkins-installation",
+      "title": "Jenkins Installation on Windows 11",
+      "module": "Getting started",
+      "blocks": [
+        {
+          "heading": "1. What you need"
+        },
+        {
+          "text": "Start with Windows 11, Chrome, the Java JDK and the Jenkins WAR. Jenkins can fetch your GitHub project, run Playwright and publish results. Install Node.js and Git when you reach the pipeline lesson."
+        },
+        {
+          "heading": "2. Install Java 21"
+        },
+        {
+          "text": "Download the Eclipse Temurin Java 21 LTS Windows JDK MSI. Choose x64 for most PCs or ARM64 for an ARM PC. Enable Add to PATH and Set JAVA_HOME if offered. Open a fresh Command Prompt and verify that java -version reports Java 21."
+        },
+        {
+          "heading": "3. Download Jenkins"
+        },
+        {
+          "text": "Choose the Jenkins LTS Generic Java package (.war). In File Explorer create C:\\Jenkins and move jenkins.war into it."
+        },
+        {
+          "heading": "4. Start and unlock Jenkins"
+        },
+        {
+          "text": "Run the startup commands below in Command Prompt and leave that window open. Wait for Jenkins to finish starting, then open http://localhost:8080 in Chrome. Use a second Command Prompt to read the temporary password. If the default path differs, use the location printed in the startup log. Paste the password into Unlock Jenkins and select Continue."
+        },
+        {
+          "heading": "5. Complete the setup wizard"
+        },
+        {
+          "text": "Choose Install suggested plugins. Create your first administrator with a unique password, name and email address. Set the Jenkins URL to http://localhost:8080/, save the settings and select Start using Jenkins."
+        },
+        {
+          "heading": "6. Create your first Windows job"
+        },
+        {
+          "text": "From the dashboard select New Item, name it First-Jenkins-Job, choose Freestyle project and select OK. Under Build Steps, add Execute Windows batch command and paste the example below. Save and click Build Now. Open the build’s Console Output and confirm it prints both messages, the Java version and Finished: SUCCESS."
+        },
+        {
+          "heading": "7. Stop and restart"
+        },
+        {
+          "text": "Press Ctrl+C in the Command Prompt running Jenkins. To restart, run the same startup commands. Jobs and settings persist when you reuse the same Jenkins home."
+        },
+        {
+          "heading": "8. Troubleshoot"
+        },
+        {
+          "text": "If Java is unrecognized, reopen Command Prompt and check PATH. If the WAR cannot be opened, check its filename and directory. If port 8080 is busy, append --httpPort=9090 and browse to http://localhost:9090. For password or startup errors, check the console. If plugins fail, check internet access and retry."
+        },
+        {
+          "heading": "9. Continue with Playwright"
+        },
+        {
+          "text": "Install Node.js and Git, then follow the linked login pipeline lesson. The WAR runs in your terminal. The Jenkins Windows MSI is available if you want a Windows service."
+        }
+      ],
+      "examples": [
+        {
+          "title": "Verify Java",
+          "language": "bat",
+          "code": "java -version"
+        },
+        {
+          "title": "Start Jenkins locally",
+          "language": "bat",
+          "code": "cd /d C:\\Jenkins\njava -jar jenkins.war --httpListenAddress=127.0.0.1"
+        },
+        {
+          "title": "Read the initial admin password",
+          "language": "bat",
+          "code": "type \"%USERPROFILE%\\.jenkins\\secrets\\initialAdminPassword\""
+        },
+        {
+          "title": "First-Jenkins-Job",
+          "language": "bat",
+          "code": "echo Hello Jenkins!\necho Jenkins installation successful!\njava -version"
+        }
+      ],
+      "resources": [
+        {
+          "label": "Eclipse Temurin JDK",
+          "url": "https://adoptium.net/temurin/releases/"
+        },
+        {
+          "label": "Jenkins LTS download",
+          "url": "https://www.jenkins.io/download/"
+        },
+        {
+          "label": "Jenkins Java support policy",
+          "url": "https://www.jenkins.io/doc/book/platform-information/support-policy-java/"
+        },
+        {
+          "label": "Run a Playwright Login in Jenkins",
+          "url": "playwright-reader.html?topic=playwright-notes-30"
+        }
+      ],
+      "hideReview": true
+    },
+    {
       "id": "why-jenkins",
       "title": "Why Jenkins?",
       "module": "Continuous integration",
