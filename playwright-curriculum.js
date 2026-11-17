@@ -1088,4 +1088,113 @@ test('sign in to SauceDemo', async ({ page }) => {
     ])
 
   ];
+
+  var apiModule = 'API Testing with Playwright';
+  window.TestNovaPlaywrightApiTopics = [
+    {
+      id: 'playwright-api-request-fixture',
+      title: 'Request Fixture and API Base URLs',
+      module: apiModule,
+      paragraphs: [
+        'Use the built-in request fixture when your test needs to send HTTP requests directly. In the test callback, async ({ request }) asks Playwright for a test-scoped APIRequestContext. This fixture can call an API without opening a browser.',
+        'A browser context holds browser pages and their session state. An APIRequestContext sends HTTP requests and manages its own cookies. Use { page } when you need to interact with the browser and { request } when you need to call the API directly.',
+        'Set use.baseURL in the config so tests can call relative paths such as /users/1. These lessons use two hosts, so create a separate API config with one project per host. The existing browser test config can stay as it is.'
+      ],
+      examples: [
+        example('playwright.api.config.ts', `import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests/api',
+  projects: [
+    {
+      name: 'jsonplaceholder',
+      testMatch: '**/get-user.api.spec.ts',
+      use: { baseURL: 'https://jsonplaceholder.typicode.com' },
+    },
+    {
+      name: 'restful-booker',
+      testMatch: '**/create-booking.api.spec.ts',
+      use: { baseURL: 'https://restful-booker.herokuapp.com' },
+    },
+  ],
+});`, 'Save this config in the Playwright project root and put the two specs from the next lessons in tests/api.', 'ts')
+      ],
+      practice: 'Find the project that handles get-user.api.spec.ts and write the full URL it will use for /users/1.',
+      resources: [
+        { label: 'Playwright API testing guide', url: 'https://playwright.dev/docs/api-testing' }
+      ]
+    },
+    {
+      id: 'playwright-api-get-user',
+      title: 'GET a User and Assert the Response',
+      module: apiModule,
+      paragraphs: [
+        'GET reads a resource. Use request.get() with /users/1 to fetch one user from JSONPlaceholder. Await the request to get an APIResponse, then inspect the status and headers before reading the body.',
+        'Calling await response.json() parses the body into an object. The nested ZIP code is body.address.zipcode. Call status(), statusText(), and headers() on the APIResponse itself. Use the numeric status for the assertion and print the reason phrase for debugging.'
+      ],
+      examples: [
+        example('tests/api/get-user.api.spec.ts', `import { test, expect } from '@playwright/test';
+
+test('GET a JSONPlaceholder user', async ({ request }) => {
+  const response = await request.get('/users/1');
+  const headers = response.headers();
+
+  console.log(response.status(), response.statusText());
+  console.log(headers);
+  expect(response.status()).toBe(200);
+  expect(headers['content-type']).toContain('application/json');
+
+  const body = await response.json();
+  console.log(body.address.zipcode);
+  expect(body.id).toBe(1);
+  expect(body.address.zipcode).toBe('92998-3874');
+});`, 'The API uses the exact key zipcode. Keep the expected ID and ZIP code aligned with the user you request.', 'ts'),
+        example('Run the GET example', 'npx playwright test --config=playwright.api.config.ts --project=jsonplaceholder', '', 'bash')
+      ],
+      practice: 'Add an assertion for body.username, then run the GET project and inspect the output.',
+      resources: [
+        { label: 'JSONPlaceholder user response', url: 'https://jsonplaceholder.typicode.com/users/1' },
+        { label: 'Playwright APIResponse methods', url: 'https://playwright.dev/docs/api/class-apiresponse' }
+      ]
+    },
+    {
+      id: 'playwright-api-post-booking',
+      title: 'POST a Booking and Validate the JSON',
+      module: apiModule,
+      paragraphs: [
+        'POST sends data to the server. Create a practice booking with request.post("/booking", { data }). When data is an object, Playwright serializes it to JSON and sets the request Content-Type. Use fictitious values because Restful Booker is a shared practice API.',
+        'This endpoint returns HTTP 200 for a successful create. Assert the numeric status on the APIResponse, then await response.json() and check the new booking ID and the booking fields. Other APIs may specify a different success status.'
+      ],
+      examples: [
+        example('tests/api/create-booking.api.spec.ts', `import { test, expect } from '@playwright/test';
+
+test('POST a booking in Restful Booker', async ({ request }) => {
+  const booking = {
+    firstname: 'Test',
+    lastname: 'Guest',
+    totalprice: 120,
+    depositpaid: true,
+    bookingdates: { checkin: '2030-05-10', checkout: '2030-05-12' },
+    additionalneeds: 'Breakfast',
+  };
+
+  const response = await request.post('/booking', {
+    headers: { Accept: 'application/json' },
+    data: booking,
+  });
+  expect(response.status()).toBe(200);
+
+  const body = await response.json();
+  expect(Number.isInteger(body.bookingid)).toBe(true);
+  expect(body.bookingid).toBeGreaterThan(0);
+  expect(body.booking).toMatchObject(booking);
+});`, 'Assert the returned ID by type and value range. The API chooses the ID, so it can differ on each run.', 'ts'),
+        example('Run the POST example', 'npx playwright test --config=playwright.api.config.ts --project=restful-booker', '', 'bash')
+      ],
+      practice: 'Change the price and dates in the request, run the POST project, and confirm the response reflects the new values.',
+      resources: [
+        { label: 'Restful Booker API documentation', url: 'https://restful-booker.herokuapp.com/apidoc/index.html#api-Booking-CreateBooking' }
+      ]
+    }
+  ];
 })();

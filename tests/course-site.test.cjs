@@ -128,8 +128,17 @@ test('subtopics, history, search, copy controls, and mobile dismissal in landsca
     await search.fill('Getting started');
     assert.equal(await page.locator('[data-topic-link]:visible').count(), 4);
     await search.fill('');
-    assert.equal(await page.locator('[data-topic-link]:visible').count(), 29);
-    assert.match(await page.locator('[data-topic-link]:visible').last().textContent(), /CI\/CD with Jenkins for Playwright/);
+    const topics = page.locator('[data-topic-link]:visible');
+    assert.equal(await topics.count(), 32);
+    assert.match(await topics.nth(28).textContent(), /CI\/CD with Jenkins for Playwright/);
+    const apiSection = page.locator('.reader-course-module').filter({
+      has: page.getByRole('heading', { name: /API Testing with Playwright/ }),
+    });
+    assert.deepEqual(await apiSection.locator('[data-topic-link] strong').allTextContents(), [
+      'Request Fixture and API Base URLs',
+      'GET a User and Assert the Response',
+      'POST a Booking and Validate the JSON',
+    ]);
     const subtopic = page.locator('[data-subtopic]').last();
     const title = await subtopic.textContent();
     await subtopic.click();

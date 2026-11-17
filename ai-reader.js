@@ -2201,7 +2201,7 @@
       workersTopic.hideReview = true;
     }
 
-    return readerTopics;
+    return readerTopics.concat(window.TestNovaPlaywrightApiTopics || []);
   }
 
   function codeBlock(lines) {
