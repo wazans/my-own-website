@@ -630,106 +630,185 @@
       storageKey: 'testnova-reader-git-github',
       title: 'Git & GitHub',
       topics: [
-        lesson('git-github-overview', 'Git & GitHub Overview', [
-          'Git is the version control system that tracks code changes on your computer. GitHub is the collaboration platform where teams host repositories, review pull requests, discuss issues, and share releases.',
-          'Learn Git first as a local workflow: working directory, staging area, commits, branches, and history. Then connect that workflow to GitHub for team collaboration.',
-          'For QA and automation projects, Git helps you manage test code, feature branches, framework updates, and reviewable changes.'
-        ], 'Explain the difference between Git and GitHub in two sentences.'),
+        lesson('git-github-overview', 'Git Basics & Version Control', [
+          'Git tracks changes to files over time. A repository is your project together with its Git history. A commit records a snapshot of the changes you selected, with a message explaining what you did.',
+          'You can create a repository, make commits, and read history entirely on your computer. GitHub hosts repositories online and gives teams a place to review and share work.',
+          'Work through the local lessons in the same practice repository. You will start with one HTML file, inspect what changed, and build up to a feature branch and a pull request.'
+        ], 'Explain what a repository and a commit are. Give an example of a change you would record in a QA project.'),
         lesson('git-install-setup', 'Install & Configure Git', [
-          'Install Git for Windows from Git SCM, then verify the command is available from the terminal.',
-          'Configure your name and email once. Git stores this identity in your commits so collaborators can understand who changed what.',
-          'Use the VS Code terminal for a consistent workflow: create folders, run Git commands, open files, and commit changes from one place.'
-        ], 'Install Git and configure your name and email.', [
+          'Install Git from the official download page. On Windows, open a new PowerShell or VS Code terminal after installing it and run git --version.',
+          'Set the name and email that will appear on your commits. The --global option sets defaults for your user account. To override them for one repository, run git config --local inside that repository.'
+        ], 'Configure your identity and verify the two values displayed in the terminal.', [
           {
             title: 'Verify Git setup',
-            code: 'git -v\n\ngit config --global user.name "Your Name"\ngit config --global user.email "you@example.com"\n\ngit config --global --list'
+            language: 'git',
+            code: 'git --version\n\ngit config --global user.name "Your Name"\ngit config --global user.email "you@example.com"\n\ngit config --global user.name\ngit config --global user.email'
           }
-        ]),
-        lesson('git-core-workflow', 'Core Git Workflow', [
-          'The basic workflow is edit files, check status, stage changes, commit a meaningful snapshot, then inspect history.',
-          'Use git status often. It tells you which files are modified, staged, untracked, or clean.',
-          'A commit should represent one logical change. Good commit messages make later debugging and reviews much easier.'
-        ], 'Create a practice folder, edit a README file, stage it, and commit it.', [
+        ], [{ label: 'Download Git', url: 'https://git-scm.com/downloads' }]),
+        lesson('git-core-workflow', 'Create a Repository & Make Your First Commit', [
+          'Create a new practice folder and initialize it with git init -b main. The hidden .git directory holds the repository metadata and history.',
+          'Create index.html with the example below. It starts as an untracked file. Use git add to stage it, git diff --staged to review the staged content, and git commit to record the snapshot.',
+          'Run git status again after the commit. If you saved the file and made no further changes, Git reports a clean working tree.'
+        ], 'Create the practice repository and confirm that git log --oneline shows your first commit.', [
+          {
+            title: 'Create the practice repository in PowerShell',
+            language: 'powershell',
+            code: 'mkdir git-practice\ncd git-practice\ngit init -b main\nNew-Item index.html\nnotepad index.html'
+          },
+          {
+            title: 'Save this as index.html',
+            language: 'html',
+            code: '<!doctype html>\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <title>Git Practice</title>\n</head>\n<body>\n  <h1>Welcome to Git Practice</h1>\n</body>\n</html>'
+          },
           {
             title: 'First local commit',
-            code: 'mkdir git-practice\ncd git-practice\ngit init\n\nNew-Item README.md\nAdd-Content README.md "# Git Practice"\n\ngit status\ngit add README.md\ngit commit -m "Add project readme"\ngit log --oneline'
+            language: 'git',
+            code: 'git status\ngit add index.html\ngit diff --staged\ngit commit -m "Add practice home page"\ngit status\ngit log --oneline'
+          }
+        ]),
+        lesson('git-staging-workflow', 'Working Tree, Staging & Diffs', [
+          'The working tree contains the files you edit. The staging area, also called the index, holds the exact versions you have selected for the next commit. The repository stores the snapshots you have committed.',
+          'Edit the heading in index.html and create about.html. Stage only index.html. Run git status to see the staged file and the untracked file separately.',
+          'git diff shows unstaged changes to tracked files. git diff --staged shows what will go into the next commit. If you edit a file after staging it, run git add again when you are ready to include the new version.'
+        ], 'Stage the heading change, unstage it while keeping your edit, then stage it again and commit. Confirm that about.html is still untracked.', [
+          {
+            title: 'Review and commit one file',
+            language: 'git',
+            code: 'git status\ngit diff -- index.html\ngit add index.html\ngit diff --staged\ngit restore --staged index.html\ngit status\ngit add index.html\ngit commit -m "Update home page heading"\ngit status'
+          }
+        ]),
+        lesson('git-log-history', 'Read Commit History with Git Log', [
+          'git log starts with the newest commits reachable from the current branch. Read the commit hash, author, date, and message to find the change you want to inspect.',
+          'Use --oneline for a quick scan, --stat for a file summary, and --graph --decorate --all to see how branches relate. Add -- index.html to focus on the history of one path.',
+          'Filter by author or date when a project has a long history. Use git show with a hash from the log to read the changes in that commit.'
+        ], 'Find the first commit that changed index.html, copy its short hash, and inspect its patch with git show.', [
+          {
+            title: 'Inspect and filter history',
+            language: 'git',
+            code: 'git log --oneline\ngit log --stat\ngit log --graph --decorate --oneline --all\ngit log --author="Your Name" --since="2 weeks ago"\ngit log --oneline -- index.html'
           }
         ]),
         lesson('git-branches-merges', 'Branches, Merges & Conflicts', [
-          'Branches let you work on changes without disturbing the main line of development.',
-          'Merge brings completed branch work back into another branch. A conflict happens when Git cannot safely combine competing edits.',
-          'Resolve conflicts by opening the file, choosing the correct final content, staging the resolved file, and committing the merge.'
-        ], 'Create a branch, make a change, merge it into main, and describe when conflicts happen.', [
+          'A branch is a name that points to a commit and advances when you commit on it. Run git branch to list branches and git switch to move between them. The older git checkout feature/about-page command also switches to that branch.',
+          'Create a feature branch in your practice repository and add the about.html file from the staging exercise. Switch to main and check which files it contains, then merge your feature branch into main.',
+          'If both branches change the same lines and Git cannot combine them, edit the conflicted file to keep the intended content. Stage the resolution and run git merge --continue, or use git merge --abort to stop the merge.'
+        ], 'Compare the project files on main before and after merging the about page.', [
           {
             title: 'Branch workflow',
-            code: 'git switch -c feature/login-tests\n# edit files\ngit add .\ngit commit -m "Add login test notes"\n\ngit switch main\ngit merge feature/login-tests'
-          }
-        ]),
-        lesson('github-repositories', 'GitHub Repositories & Remotes', [
-          'A remote connects your local repository to a hosted repository such as GitHub.',
-          'Clone copies an existing repository to your machine. Push uploads local commits. Pull brings remote changes into your branch.',
-          'Always check the branch and status before pushing, especially when working on shared repositories.'
-        ], 'Create or clone a GitHub repository and practice push and pull.', [
-          {
-            title: 'Remote commands',
-            code: 'git clone https://github.com/example/project.git\ncd project\n\ngit remote -v\ngit status\n\ngit push origin main\ngit pull origin main'
-          }
-        ]),
-        lesson('pull-requests-reviews', 'Pull Requests & Code Reviews', [
-          'A pull request is a review request for branch changes before they are merged.',
-          'Good pull requests include a clear title, short summary, test evidence, screenshots when UI changed, and any known risks.',
-          'For QA projects, include what was tested: browser, test command, report, or scenario coverage.'
-        ], 'Draft a pull request description for a new automation test.', [
-          {
-            title: 'PR description template',
-            code: 'Summary:\n- Added login smoke test\n- Covered valid user flow\n\nTesting:\n- npx playwright test login.spec.ts\n\nNotes:\n- No data model changes'
-          }
-        ]),
-        lesson('git-staging-workflow', 'Git Staging Area & Workflow', [
-          'The Git workflow has three important areas: working directory, staging area, and repository. The working directory contains changed files, the staging area holds selected changes, and the repository stores committed snapshots.',
-          'Use git add to move changes into staging, git status to inspect state, and git commit to save a snapshot with a message.',
-          'You do not always need git add before commit if you use git commit -am for already tracked files, but untracked files still need git add first.'
-        ], 'Change two files, stage only one, and explain what git status shows before and after staging.', [
-          {
-            title: 'Staging workflow',
-            code: 'git status\ngit add file-one.js\ngit status\ngit commit -m "Update selected file"'
+            language: 'git',
+            code: 'git switch -c feature/about-page\ngit branch\ngit add about.html\ngit commit -m "Add about page"\n\ngit switch main\ngit merge feature/about-page\ngit log --oneline'
           }
         ]),
         lesson('git-stash-ignore-clean', 'Git Stash, Gitignore & Cleanup', [
-          'git stash temporarily saves uncommitted changes and clears the working directory. It is useful when you need to switch branches quickly without committing unfinished work.',
-          '.gitignore tells Git which files or folders to ignore, such as logs, build files, node_modules, environment files, and generated outputs.',
-          'Cleanup commands remove untracked files or directories. Use them carefully, because cleaning can delete files that are not committed.'
-        ], 'Create a .gitignore for node_modules, logs, build output, and .env files. Then stash and re-apply a local change.', [
+          'Use a stash when you need to pause unfinished work and switch to another task. By default, git stash push saves staged and unstaged changes to tracked files. Add -u to include untracked files.',
+          'Edit the tracked index.html file, stash the edit, and verify that git status shows it has been set aside. Apply the stash to resume work. After you confirm the edit is back, drop the saved entry.',
+          'Put local settings and generated output in .gitignore. Ignore rules apply to untracked files. To preview which untracked files and directories git clean would remove, run git clean -nd.'
+        ], 'Stash your homepage edit, make a separate change to about.html, and restore the homepage edit after committing the about page change.', [
           {
-            title: 'Stash and ignore',
-            code: 'git stash\ngit stash list\ngit stash pop\n\n# .gitignore examples\nnode_modules/\ndist/\n*.log\n.env'
+            title: 'Pause and resume an edit',
+            language: 'git',
+            code: 'git stash push -m "Homepage draft"\ngit status\ngit stash list\ngit stash show -p "stash@{0}"\ngit stash apply "stash@{0}"\ngit diff -- index.html\n# After verifying the restored edit\ngit stash drop "stash@{0}"'
+          },
+          {
+            title: 'Example .gitignore',
+            language: 'text',
+            code: 'node_modules/\ndist/\n*.log\n.env'
           }
         ]),
-        lesson('git-undoing-changes', 'Undoing Changes: Reset, Revert & Checkout', [
-          'git reset moves HEAD and can unstage or rewrite local history depending on the mode. Soft reset keeps changes staged, mixed reset unstages changes, and hard reset discards changes.',
-          'git revert creates a new commit that undoes an earlier commit. It is safer for shared branches because it does not rewrite public history.',
-          'git checkout or git restore can discard changes in a file or switch branches depending on the command style used.'
-        ], 'Explain when to use reset, revert, and restore for a committed bug versus an uncommitted local edit.', [
+        lesson('git-undoing-changes', 'Undo Changes with Restore, Reset & Revert', [
+          'Use git restore --staged to unstage a tracked file while keeping your local edit. Use git restore on a file when you want to discard its unstaged changes. Check git diff before discarding anything.',
+          'Reset can move a local branch back to an earlier commit. A soft reset keeps the changes staged. A mixed reset keeps the changes in the working tree and unstages them. A hard reset also discards tracked changes in the working tree. Practice reset on a disposable branch.',
+          'Use git revert for a commit already shared with others. It adds a new commit that reverses the selected change and preserves the existing history.'
+        ], 'Create a disposable branch, make a practice commit, then use a soft reset and confirm that its changes are still staged. Recommit those changes and use git revert to see the difference in the log.', [
           {
-            title: 'Undo command examples',
-            code: 'git reset --soft HEAD~1\ngit reset --mixed HEAD~1\ngit reset --hard HEAD~1\n\ngit revert <commit-id>\ngit restore file.js'
+            title: 'Unstage a tracked file without losing your edit',
+            language: 'git',
+            code: 'git add index.html\ngit restore --staged index.html\ngit status'
+          },
+          {
+            title: 'Practice reset and revert on a disposable branch',
+            language: 'git',
+            code: 'git switch -c practice/undo\n# Make and save a practice edit to index.html\ngit add index.html\ngit commit -m "Try a practice edit"\ngit reset --soft HEAD~1\ngit diff --staged\ngit commit -m "Try a practice edit again"\ngit revert --no-edit HEAD\ngit log --oneline -3'
+          }
+        ]),
+        lesson('git-refs-reflog', 'Refs, Detached HEAD & Reflog', [
+          'A ref is a name Git uses to find a commit. Branch names are refs, and HEAD usually points to your current branch. When you switch directly to a commit, HEAD points to that commit and Git calls this detached HEAD.',
+          'Use git switch --detach HEAD~1 to inspect the previous snapshot. Return to your previous branch with git switch -. If you make a commit while detached, create a branch before switching away to keep the commit easy to find.',
+          'git reflog shows where HEAD and local branch refs pointed recently. It can help you find a commit after a local reset. Once you identify the commit hash, create a recovery branch at that hash.'
+        ], 'Starting with a clean working tree, inspect the previous commit, return to your branch, and find both switches in the reflog.', [
+          {
+            title: 'Inspect an earlier snapshot and return',
+            language: 'git',
+            code: 'git log --oneline -3\ngit switch --detach HEAD~1\ngit status\ngit switch -\ngit reflog -5'
+          },
+          {
+            title: 'Recover a commit found in the reflog',
+            language: 'git',
+            code: 'git branch recovered-work <commit-hash>',
+            explanation: 'Replace <commit-hash> with the hash from your reflog.'
+          }
+        ], [{ label: 'Git reflog reference', url: 'https://git-scm.com/docs/git-reflog' }]),
+        lesson('github-repositories', 'GitHub Repositories & Remotes', [
+          'A remote is a named connection to another repository. origin is the default name Git assigns when you clone a repository.',
+          'To publish your practice repository, create an empty GitHub repository without a README, then add its URL as origin and push main. The -u option sets the upstream so Git knows which remote branch to use for future pushes and pulls.',
+          'To start from an existing GitHub project, copy its URL and run git clone from the parent folder where you want your local copy.'
+        ], 'Connect the local practice repository to your own GitHub repository and confirm the commits appear on GitHub.', [
+          {
+            title: 'Publish the existing practice repository',
+            language: 'git',
+            code: 'git switch main\ngit status\ngit remote add origin https://github.com/YOUR-USERNAME/git-practice.git\ngit remote -v\ngit push -u origin main'
+          },
+          {
+            title: 'Clone an existing repository from its parent directory',
+            language: 'git',
+            code: 'git clone https://github.com/OWNER/REPOSITORY.git'
           }
         ]),
         lesson('git-fetch-pull-remotes', 'Fetch, Pull & Remote Tracking Branches', [
-          'A remote is a hosted copy of a repository, usually on GitHub. origin is the default remote name, and origin/main is a remote-tracking branch representing the state of main on the remote.',
-          'git fetch downloads remote commits into remote-tracking branches but does not merge them into your current branch.',
-          'git pull performs fetch plus merge or rebase, updating your current branch automatically. Use fetch when you want to inspect remote changes before integrating them.'
-        ], 'Run fetch, compare local main with origin/main, then decide whether to merge, rebase, or pull.', [
+          'origin/main is your local record of the main branch on origin as of your last fetch or other update. git fetch origin updates that record while leaving your current branch in place.',
+          'git pull fetches, then integrates changes into your current branch. Use --ff-only to update only when your branch can advance directly. If both sides have new commits, inspect the history and choose a merge or a rebase.',
+          'git pull --rebase fetches and then replays local commits on top of the fetched upstream branch. git rebase origin/main uses the remote-tracking branch you already have locally. Run git fetch first to refresh it.'
+        ], 'Fetch and compare main with origin/main. If your main can fast-forward, update it and confirm that both point to the same commit.', [
           {
             title: 'Remote inspection',
-            code: 'git remote -v\ngit fetch origin\ngit log --oneline main..origin/main\ngit pull origin main'
+            language: 'git',
+            code: 'git switch main\ngit fetch origin\ngit log --left-right --oneline main...origin/main\ngit pull --ff-only origin main'
+          }
+        ], [{ label: 'Git pull reference', url: 'https://git-scm.com/docs/git-pull' }]),
+        lesson('git-merge-rebase-fast-forward', 'Merge, Rebase & Fast-Forward', [
+          'A fast-forward moves the current branch pointer ahead when its tip is an ancestor of the branch being merged. When the branches have diverged, a regular merge can join both histories with a merge commit.',
+          'Rebase replays your branch commits on a new base, creating new commit IDs. Use it on a local feature branch before sharing the commits. A shared branch may already be the base of someone else’s work.',
+          'If a rebase pauses on a conflict, resolve and stage the file, then run git rebase --continue. Use git rebase --abort to return to the state before the rebase.'
+        ], 'On a local feature branch with commits of its own, compare the graph before and after rebasing onto an updated main.', [
+          {
+            title: 'Update an unpublished feature branch',
+            language: 'git',
+            code: 'git switch feature/update-home\ngit fetch origin\ngit log --graph --oneline --all\ngit rebase origin/main\ngit log --graph --oneline --all',
+            explanation: 'Create feature/update-home from main and make a commit on it before running this example.'
           }
         ]),
-        lesson('git-merge-rebase-fast-forward', 'Merge, Rebase & Fast-Forward', [
-          'Merge combines histories and keeps non-linear commits. Rebase replays commits on top of another branch, producing a cleaner linear history.',
-          'A fast-forward merge happens when the target branch has no new commits and Git can simply move the branch pointer ahead without creating a merge commit.',
-          'For shared branches, avoid rebasing commits that others may already have based work on. For feature branches, rebase can keep history clean before opening a pull request.'
-        ], 'Create a short branch history diagram showing when merge, rebase, and fast-forward happen.'),
+        lesson('pull-requests-reviews', 'Pull Requests & Code Reviews', [
+          'Create a feature branch, commit a focused change, and push it with git push -u origin followed by the branch name. On GitHub, open a pull request with your feature branch as the compare branch and main as the base.',
+          'Explain what changed, why it changed, and how you verified it. Include test commands, scenario coverage, or screenshots when they help the reviewer.',
+          'Address feedback with new commits on the same branch. GitHub adds the commits to the existing pull request.'
+        ], 'Draft a pull request description for a new automation test.', [
+          {
+            title: 'PR description template',
+            language: 'text',
+            code: 'Summary:\n- Added login smoke test\n- Covered valid user flow\n\nTesting:\n- npx playwright test login.spec.ts\n\nNotes:\n- No data model changes'
+          }
+        ]),
+        lesson('git-hooks', 'Git Hooks for Local Checks', [
+          'Git hooks are scripts Git runs at specific points in a workflow. A pre-commit hook can run checks before a commit and stop it by returning a nonzero exit code. A post-commit hook runs after a commit exists.',
+          'In your practice repository, save the example as .git/hooks/pre-commit with no file extension and LF line endings. On macOS or Linux, run chmod +x .git/hooks/pre-commit. On Windows with Git for Windows, use an editor that saves LF line endings and verify the hook with a test commit.',
+          'Hooks in .git/hooks are local to this repository. Teams commonly enforce shared checks through CI or a hook setup that contributors install.'
+        ], 'Make a test commit and confirm that the hook prints its message. Stage a line with trailing whitespace and observe that git diff --cached --check blocks the commit until you fix it.', [
+          {
+            title: 'Sample pre-commit hook',
+            language: 'bash',
+            code: '#!/bin/sh\necho "Checking staged changes"\ngit diff --cached --check'
+          }
+        ], [{ label: 'Git hooks reference', url: 'https://git-scm.com/docs/githooks' }]),
         lesson('github-tags-releases-actions', 'GitHub Tags, Releases & Actions', [
           'A tag is a label pointing to a specific commit. Lightweight tags are simple pointers. Annotated tags store metadata such as tagger, date, and message and are preferred for releases.',
           'A release packages a tagged version with notes and assets. Teams use releases to communicate stable milestones.',
@@ -5685,9 +5764,10 @@
       return 'Hands-on agent projects';
     }
     if (trackId === 'git') {
-      if (index < 6) return 'Setup, commits and collaboration';
-      if (index < 11) return 'Local changes, branches and remotes';
-      return 'Releases, workflows and tools';
+      if (index < 5) return 'Git basics';
+      if (index < 9) return 'Branches and local changes';
+      if (index < 13) return 'GitHub and collaboration';
+      return 'Hooks, releases and workflows';
     }
     return 'Lessons';
   }
